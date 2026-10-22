@@ -1,7 +1,7 @@
 # Interactive Course Kit
 
 **用 Claude Code 做"读起来舒服、看得懂、有趣"的互动学习网页课程。**
-A set of Claude Code skills for building interactive, illustrated learning web courses. [English below ↓](#english)
+A set of Claude Code skills for building interactive, illustrated learning web courses. [English](README.en.md)
 
 ![游戏设计课第 2 章](docs/images/gd.jpg)
 
@@ -89,6 +89,10 @@ skill 本身有中英两份，代码共用；`new-course.mjs --lang en` 直接�
 
 <img src="docs/images/english.jpg" width="560" alt="英文版页面">
 
+## 皮肤
+
+目前验收入库的只有一套：**`notebook` 手绘笔记本**（来自游戏设计课）。其他几门课的风格（纸片、掌机像素、红白机像素、微缩小镇）已经记在 `references/skin-contract.md`，但还没抽成皮肤。那份文件也写了怎么抽取或新做一套皮肤：先用真实内容做一章样板，实测对比度、查三套配色，用户验收后入库。
+
 ## 安装
 
 把 `skills/` 下的四个文件夹复制到 Claude Code 的 skills 目录：
@@ -118,45 +122,3 @@ node ~/.claude/skills/course-kit/tools/check.mjs <课程文件夹绝对路径> -
 ## 许可
 
 代码与文档：MIT。手写字体 Patrick Hand：SIL Open Font License（见 `skins/notebook/fonts/OFL.txt`）。
-
----
-
-<a id="english"></a>
-
-## English
-
-**Build interactive learning web courses that are comfortable to read, easy to understand and fun.**
-
-### Background
-
-I built several complete web courses with Claude Code for ordinary people who want to learn a field properly (links in the table above: game design, intro to AI, data science, anthropology). Every piece of feedback on visuals, components, interaction and prose was turned into a rule. This repo packages those rules and the code, so Claude Code can build new courses to the same standard instead of improvising a new style each time.
-
-### What's inside
-
-| Skill | Purpose |
-|---|---|
-| `course-kit` / `course-kit-en` | Visual and component toolkit (Chinese / English editions, shared code) |
-| `zh-teaching-prose` | Chinese explanatory prose style, no AI voice |
-| `en-teaching-prose` | English explanatory prose style, written natively rather than translated |
-
-### Features
-
-- **One topic, told unhurriedly**, at moderate difficulty; derivations and research detail go into collapsible drawers.
-- **A visual every one or two paragraphs**, chosen by what the passage is doing: diagrams for structure, photos and timelines for history, illustrated carousels for examples.
-- **Readers always know which concept is being taught**: the heading names it, a highlighter marks its first naming, and an illustrated concept card follows.
-- **41 components organised by job**, independent of the skin.
-- **12 concept-diagram templates** that measure text before drawing, so labels never collide with lines.
-- **Hands-on interactions, not quizzes**: drag, tweak and build, then see the consequence immediately.
-- **Approved skins only** (currently a hand-drawn notebook), with reader-selectable colour schemes and motion levels.
-- **Optional modules**: concept map, glossary, flashcards, stamp-album reading rewards, a click-to-talk companion, sound.
-- **One-command checks**: syntax, class wiring, picture density, concept highlighting, links, then a headless-browser run at 420 and 1100 px with screenshots.
-
-### Install
-
-Copy the four folders in `skills/` into `~/.claude/skills/`, then ask Claude Code to "make an interactive course about …". Content rules live in `course-kit-en/references/content-rules.md`; you can copy it into your project as `CLAUDE.md`.
-
-Checks need Node 22+ and Microsoft Edge on Windows; on macOS / Linux only the `--fast` static checks run.
-
-### License
-
-MIT for code and docs. The Patrick Hand font is under the SIL Open Font License.
