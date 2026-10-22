@@ -14,8 +14,12 @@ const li = args.findIndex(a => a === "--lang" || a.startsWith("--lang="));
 const LANG = li < 0 ? "zh" : (args[li].includes("=") ? args[li].split("=")[1] : args[li + 1] || "").toLowerCase();
 if (!["zh", "en"].includes(LANG)) { console.error(`--lang 只认 zh 或 en，收到 "${LANG}"`); process.exit(1); }
 const EN = LANG === "en";
-const [DEST, SKIN = "notebook"] = args.filter((a, i) => !a.startsWith("--") && !(li >= 0 && args[li] === "--lang" && i === li + 1));
-if (!DEST || !path.isAbsolute(DEST)) { console.error("用法：node new-course.mjs <课程文件夹绝对路径> [皮肤名=notebook] [--lang en] [--update-kit]（必须绝对路径）"); process.exit(1); }
+const [DEST, SKIN] = args.filter((a, i) => !a.startsWith("--") && !(li >= 0 && args[li] === "--lang" && i === li + 1));
+if (!DEST || !path.isAbsolute(DEST)) { console.error("用法：node new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en] [--update-kit]（必须绝对路径）"); process.exit(1); }
+if (!SKIN) { // 皮肤由用户选，不给默认值（SKILL.md 第六节：开课先问美术风格）
+  const dir = path.join(path.dirname(path.dirname(fileURLToPath(import.meta.url))), "skins");
+  console.error("请指定皮肤名（先问用户要哪套）。现有：" + (fs.existsSync(dir) ? fs.readdirSync(dir).join("、") : "无")); process.exit(1);
+}
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SKILL = path.dirname(HERE);
 const KIT = path.join(SKILL, "kit"), SKINDIR = path.join(SKILL, "skins", SKIN);

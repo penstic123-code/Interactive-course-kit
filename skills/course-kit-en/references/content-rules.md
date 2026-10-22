@@ -73,7 +73,7 @@ The numbers in the table are reference values. Adjust them to the course's aims 
 | Terms | Explain each new term in one sentence where it appears; if hover definitions, a glossary or flashcards are used (see optional features table), add it there |
 | Practice | 4–6 questions with explanations; ≥1 asks "why", ≥1 asks "why was it invented"; they test the learning goals |
 | Length | Reading time set by the course's aims and recorded in the project document (about 25–40 minutes for an introductory course); 8–12 sections (more for an in-depth edition), one thing per section; paragraphs ≤4 lines |
-| Across chapters | No previews of later chapters; if a concept relationship map is used, register the chapter's concepts in `graph.js` |
+| Across chapters | No previews of later chapters; if a concept relationship map is used, register the chapter's concepts in `js/concepts.js` |
 | Accessibility | Colour is never the only carrier of information; contrast per section 10; interactions work by keyboard; respect "reduce motion"; sound is muted by default and can be turned off |
 | Technical | Passes the three checks in section 8; rerun after changes |
 
@@ -153,10 +153,10 @@ This kind of knowledge lets readers "see the world differently", and the user es
 |---|---|---|---|
 | Learning map | See at a glance how the course divides and what to learn first | Many chapters, with prerequisites | Map on the contents page grouped by part |
 | Learning paths | Different readers take different routes | Readers start from very different places | A few routes on the contents page, such as "one-week intro", "full route", "underlying principles route" |
-| Concept relationship map | See prerequisite, explanation, application and contrast relations between concepts | Many interlinked concepts | `map.html` + `js/graph.js` (nodes = concepts, edges = relations) |
-| Related chapters | Know which chapters to read next | Generated alongside a relationship map | Shared script generates it from `graph.js` |
+| Concept relationship map | See prerequisite, explanation, application and contrast relations between concepts | Many interlinked concepts | `map.html` + `js/concepts.js` (nodes = concepts, edges = relations; code in `kit/modules/graph.js`) |
+| Related chapters | Know which chapters to read next | Generated alongside a relationship map | `kit/modules/vl-concepts.js` generates it from `js/concepts.js` |
 | Hover definitions | Look up terms without leaving the text | Many terms, readers with no background | Shared script + term data |
-| Glossary | Look up all terms in one place | Many terms | `glossary.html`, data from `kit/modules/vl-concepts.js` |
+| Glossary | Look up all terms in one place | Many terms | `glossary.html`, data from the `terms` in `js/concepts.js` (collected from the chapters by `kit/modules/build-concepts.mjs --write`) |
 | Flashcards | Memorise terms and key points | Lots to memorise | `flashcards.html` |
 | Review chapter | Tie everything together at the end | Long courses | Final chapter |
 | Notes / "Your thoughts" | Readers write down their own ideas | Open questions, philosophy moments | Auto-saving text box |
@@ -190,20 +190,22 @@ Below is the default structure, adjusted per course (a game course might use `le
   map.html            Concept relationship map (optional)
   glossary.html       Glossary (optional)  flashcards.html  Flashcards (optional)
   chNN-xxx.html       One file per chapter, two-digit number, English kebab-case name
-  css/style.css       Shared styles (skin)
+  skin/               The chosen skin (copied from skins/<name>/ by new-course.mjs)
+  css/style.css       This course's own small style tweaks (beyond the skin)
   kit/                course-kit shared scripts and styles (top bar, progress, quizzes, in-chapter navigation, carousel, language switch)
   js/course.js        Chapter table, parts, module switches
-  js/graph.js         Concept relationship map data (optional)  js/illus.js  Illustration library
+  js/concepts.js      Concept and term data (optional; shared by the map, glossary, flashcards and stamp album)
+  js/illus-chNN.js    Each chapter's illustration pack
   lib/                Third-party libraries (see section 7)
-  en/                 English edition: same-named files, <html lang="en">, assets via ../css ../js
+  en/                 English edition: same-named files, <html lang="en">, assets via ../kit ../skin ../css ../js
   项目规则与经验.md    Course-specific rules, numbers and lessons learned
 ```
-- **Reordering or adding chapters**: rename the files → remap "第N章" (including forms like "第3、5章"), `href`, `data-ch`, `data-save` and `<title>` in one scripted pass → update the chapter table and part ranges in `js/course.js` and the contents page (and `graph.js` if present) → run `qa.mjs`.
+- **Reordering or adding chapters**: rename the files → remap "第N章" (including forms like "第3、5章"), `href`, `data-ch`, `data-save` and `<title>` in one scripted pass → update the chapter table and part ranges in `js/course.js` and the contents page (and each concept's `ch` in `js/concepts.js` if present) → run `qa.mjs`.
 
 ## 6. Chinese–English bilingual
 
 - English lives in same-named files under `en/`; the top bar and contents page have a language switch; progress and notes share storage keys across both languages.
-- Fully translate body text, in-picture text, interaction JS strings, quizzes, placeholders and term definitions; ids, structure and logic stay unchanged; English also follows 1C; if `graph.js` exists, it includes English fields too.
+- Fully translate body text, in-picture text, interaction JS strings, quizzes, placeholders and term definitions; ids, structure and logic stay unchanged; English also follows 1C; if `js/concepts.js` exists, it includes English fields too.
 - Translate only after the Chinese is final; show the language switch only once the English is complete.
 
 ## 7. Technical constraints
@@ -222,7 +224,7 @@ Below is the default structure, adjusted per course (a game course might use `le
 3. Briefs for subagents are complete and self-contained: chapter table, structure template, required reading, prose style (include the `en-teaching-prose` path, or `zh-teaching-prose` for Chinese), assigned worldview principles, fact-checking requirements, interaction list, checking requirements and report format. Subagents change only their own files and never touch shared files; the same batch of files is never given to two agents at once; temporary files go in each agent's own subfolder of the scratchpad. When a subagent is interrupted (for example by running out of quota), continue it by message instead of starting over. How many run in parallel is set by each course's project document.
 4. **Three checks per chapter**:
    - **Syntax**: extract the inline `<script>` blocks and run each through `new Function(code)`.
-   - **Runtime**: `node tools/qa.mjs <absolute course folder path> [chNN]` clicks every button and drags every slider at 420px and 1100px, checking for JS errors and horizontal overflow. Always pass an absolute path; a relative path silently returns empty results.
+   - **Runtime**: `node tools/qa.mjs <absolute course folder path> [chNN]` clicks every button and drags every slider at 420px and 1100px, checking for JS errors and horizontal overflow. Always pass an absolute path (a relative path is rejected); Chinese pages and English pages under `en/` are both tested.
    - **Visual**: `node tools/shot.mjs <absolute html path> <output.png> page <width>` captures the full page (one at 420 and one at 1100); then capture single illustrations or charts and inspect them enlarged: does the picture show, does text overlap, is contrast enough. Don't use `msedge --screenshot` directly (layout is wrong below about 500px).
 5. **Reader review**: after each chapter is delivered, send a review agent with no context to play the course's reader. It reads the reader view with `tools/readable.py`, tests itself closed-book first, then reports sticking points, jumps, AI voice and pacing. The lead verifies the findings and sends the list of changes back to the writing agent.
 6. **Lead acceptance**: after a subagent delivers, the lead takes screenshots and looks for themselves, scans all headings separately, and rechecks the subagent's "unverified/uncertain" list. Subagent reports can be wrong too.

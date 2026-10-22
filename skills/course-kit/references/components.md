@@ -2,7 +2,7 @@
 
 用途：每个核心组件做什么、什么时候用、内容怎么写、交互和皮肤样子；排版式、选组件时逐个对照。总规则（节奏、视觉底线、互动底线）在 `SKILL.md`，这里不重复。类名前缀 `vl-`，JS 命名空间 `VL`；下面的 HTML 已按 kit 现有代码写（`kit/vl.js`、`kit/README.md`）；标“kit 里暂无”的，代码还没进 kit，写法只是示意。**API 以 `kit/README.md` 为准**，两处不一致时以代码为准。
 
-课程简称（这套规矩的来源课，在线地址见仓库 README）：GD = 游戏设计课（笔记本），DS = 数据科学课（纸片爬塔），AI = AI 课（各世界复古媒介）。
+课程简称（这套规矩的来源课；下文的“正例 / 反例”只说明规矩从哪来，那些课程文件不随 skill 提供）：GD = 游戏设计课（笔记本），DS = 数据科学课（纸片爬塔），AI = AI 课（各世界复古媒介）。
 
 ## 零、所有组件共守的四条
 
@@ -34,7 +34,7 @@
 ## 二、导航
 
 ### N1 顶栏
-- **功能**：回目录、看全课进度、跳到任一章、开关偏好（配色亮 / 暗 / 护眼、动效 自动 / 全开 / 轻量 / 关、语言）。声音开关、激励面板由可选模块加进顶栏，见 kit/README.md 第八节。
+- **功能**：回目录、看全课进度、跳到任一章、开关偏好（配色亮 / 暗 / 护眼——暗色和护眼还没完整验收，开课默认用亮色、截图验收也只看亮色；动效 自动 / 全开 / 轻量 / 关、语言）。声音开关、激励面板由可选模块加进顶栏，见 kit/README.md 第八节。
 - **用 / 不用**：每页都用，vl.js 按章节表（`js/course.js` 的 `VL_COURSE`）和 `<body data-ch>` 自动生成，章节不手写；`data-part` 由 vl.js 写，不用手写。`VL_COURSE.topbar:false` 可关。
 - **内容**：只放导航和开关，不放正文提示。全课进度用"迷你图 + 弹层列表"两件套；手机上迷你图可以藏，弹层必须在（反例：AI 手机上隐藏章节点后无法跳章）。
 - **交互与键盘**：全部是 `button` / `a`；弹层 Esc 关、点外面关、关后焦点回按钮；迷你图里的格子不能 `tabindex=-1` 又 `aria-hidden`（反例：DS 小楼条）。
@@ -102,8 +102,6 @@
 - **用 / 不用**：每个核心概念一张，放在**概念首次被命名处**（读者已经见过处境和例子之后）；次要概念不用卡，用 K7 起名标记。
 - **内容**（固定字段，卡内不写第二段）：
 
-  | 字段 | 写什么 | 字数 |
-  |---|---|---|
   | 字段（类名） | 写什么 | 字数 |
   |---|---|---|
   | 名称 `.vl-cc-name` | 通行名，大字 | ≤10 字 |
@@ -211,7 +209,7 @@
 
 ### K7 行内标记（术语释义 / 起名 / 着重）
 - **功能**：新术语当场看一句释义；概念第一次起名被看见；一段里最要紧的一句被看见。
-- **内容**：术语首次出现用 `.vl-term`，`data-def` 一句话、不重复术语名（`data-name` 可改释义框标题）；概念首次起名、着重号一段最多两处，不用 `<b>` 堆强调（起名用 `<span class="vl-cn">`，皮肤画成荧光笔，只给核心概念和次要概念第一次被命名处；着重用 `<span class="vl-em">`，笔记本皮肤画成着重号、英文页画成下划线；普通 `<b>` 只是加粗，不当起名用）。核心概念的名字要在小标题、起名标记、概念卡三处一致，见 SKILL.md 第一节。`tools/build_glossary.py` 从 `data-def` 汇出术语表。
+- **内容**：术语首次出现用 `.vl-term`，`data-def` 一句话、不重复术语名（`data-name` 可改释义框标题）；概念首次起名、着重号一段最多两处，不用 `<b>` 堆强调（起名用 `<span class="vl-cn">`，皮肤画成荧光笔，只给核心概念和次要概念第一次被命名处；着重用 `<span class="vl-em">`，笔记本皮肤画成着重号、英文页画成下划线；普通 `<b>` 只是加粗，不当起名用）。核心概念的名字要在小标题、起名标记、概念卡三处一致，见 SKILL.md 第一节。术语表 `glossary.html` 由 `kit/modules/terms.js` 从概念数据 `js/concepts.js` 的 `terms` 生成；`node kit/modules/build-concepts.mjs <课程绝对路径> --write` 把各章 `.vl-term[data-def]` 汇进这份数据（同一术语两处释义不同会报 ✗）。
 - **交互与键盘**：`tabindex=0`（vl.js 自动加）；悬停 / 聚焦 / 轻点切换；Esc、滚动关闭；释义框用 JS 定位，夹在视口内、上下自动翻（正例：DS `.term-tip`；反例：GD / AI 纯 CSS `::after` 在屏幕边缘出屏）。
 - **动效**：反馈类（≤150ms 或无动画）。
 - **皮肤**：笔记本＝点线下划线 + 墨底气泡、荧光笔｜纸片＝点状下划线 + 白纸释义框｜像素＝点阵气泡｜小镇＝小纸签。
@@ -241,9 +239,9 @@
 - **皮肤**：笔记本＝夹进本子的另一张纸 / 剪报｜纸片＝不同纸色的剪纸｜像素＝游戏内道具窗｜小镇＝告示栏、信封。
 
 ```html
-<!-- 外观见 kit/vl-interact.css，写法见 kit/README.md 第七节；下面是示意 -->
+<!-- 写法见 kit/README.md 第七节 K9；外观在皮肤的 interact.css -->
 <div class="vl-doc" data-kind="news"><h4>……</h4><p>……</p></div>
-<!-- data-kind: file | report | diary | news | notebook | slip | letter | notice -->
+<!-- data-kind: file | news | diary | letter | lab（notebook 是 lab 的别名）；notebook 皮肤只画了这几种 -->
 ```
 
 ### K10 发明故事框
@@ -283,7 +281,7 @@
 ### T2 图文并排
 - **功能**：长文旁边就有图。
 - **规则**：宽屏一栏图（38%）一栏文字，**顶端对齐、不绕排、不垂直居中**；≤700px 上下排（图在上）。图注短，解释写进正文；人像等高图加 `.narrow`（图栏 26%）；默认图在左，`.rev` 图在右。文字比图长很多时，把图换成更高的竖图，或拆成两组并排，不让文字绕到图下。
-  反例：GD `.withimg` 垂直居中（`style.css` 第 251 行）；AI `.withimg` 浮动绕排；DS `layout.js` 的 `wi-wrap` 在文字更长时又回到绕排。正例：DS 栅格 38% / 1fr 顶端对齐 + `tools/layout-check.mjs` 检查。
+  反例：GD `.withimg` 垂直居中（`style.css` 第 251 行）；AI `.withimg` 浮动绕排；DS `layout.js` 的 `wi-wrap` 在文字更长时又回到绕排。正例：DS 栅格 38% / 1fr 顶端对齐（DS 另有自己的版式检查脚本，不随 skill 提供；这里用 `tools/shot.mjs` 截 420 / 1100 两张图人眼查）。
 - **皮肤**：只改图框（笔记本＝胶带｜纸片＝白边 + 投影｜像素＝墨框硬投影｜小镇＝木相框）。
 
 ```html
@@ -393,8 +391,8 @@
 
 ```html
 <div class="vl-vs"><div><b>✓ 有反馈</b>…</div><div class="bad"><b>✗ 没反馈</b>…</div></div>   <!-- 反面加 .bad（虚线） -->
-<!-- 拖线对比见 kit/README.md 第七节；下面是示意 -->
-<div class="vl-compare" role="slider" aria-valuenow="50" tabindex="0"><img …><img …></div>
+<!-- 拖线对比：kit/README.md 第七节 E2，分隔线的 role=slider 由 vl-interact.js 加 -->
+<div class="vl-compare" data-mode="slider"><div class="vl-cmp-a bad" data-label="改前">…</div><div class="vl-cmp-b" data-label="改后">…</div></div>
 ```
 
 ---
@@ -404,7 +402,7 @@
 ### M1 预测 → 揭晓
 - **功能**：先让读者猜，再揭晓；差距本身就是教学。
 - **用 / 不用**：节开头的钩子、发明故事"他们当时怎么办"、模拟前的预测。不能代替招牌互动。
-- **模式**（一个组件 `.vl-guess`，`data-mode` 切换；kit/vl.js 现有 think、pick、estimate，其余三种见 kit/README.md 第七节）：
+- **模式**（一个组件 `.vl-guess`，`data-mode` 切换；kit/vl.js 现有 think、pick、estimate；cards 用 `.vl-flip`（kit/README.md 第七节“M1 补：翻牌”）；draw、then-run kit 里暂无，要用时在页内自写）：
 
   | 模式 | 写法 | 正例 |
   |---|---|---|
@@ -441,10 +439,10 @@
 - **皮肤**：笔记本＝加粗墨线｜纸片＝纸片抬起｜像素＝闪烁框｜小镇＝建筑亮灯。
 
 ```html
-<!-- 概念图解的"点一层看一层"已在 VL.diagram（select:true，派发 vl:dgselect）；通用热区图见 kit/README.md 第七节，下面是示意 -->
-<figure class="vl-fig vl-hot" data-info="#ch01-info">
-  <svg><g data-hot="ml" tabindex="0" role="button" aria-label="机器学习">…</g></svg>
-  <div id="ch01-info" aria-live="polite">先点一层。</div>
+<!-- 概念图解的"点一层看一层"已在 VL.diagram（select:true，派发 vl:dgselect）；通用热区图写法见 kit/README.md 第七节 M2 -->
+<figure class="vl-fig vl-hot" data-hint="先点一层。">
+  <svg><g data-hot="ml" data-name="机器学习">…</g></svg>   <!-- tabindex、role、aria-pressed 自动加 -->
+  <div class="vl-hot-text" data-for="ml"><b>机器学习</b>：……</div>   <!-- 信息框 .vl-hot-info 缺了自动建 -->
 </figure>
 ```
 
@@ -513,7 +511,7 @@ G6–G9 的代码在 `kit/vl-interact.js`，写法见 kit/README.md 第七节；
 
 - **功能**：动手归类、排序、连线、把滑块调进区间、一张张判案例；没有失败。
 - **内容**：每题 = 题干 + 数据 + `hints:[看哪里, 为什么]` + 对 / 错各一句；打乱后不等于正确顺序；判定题每张写"本书判断 + 理由"。
-- **交互与键盘**：拖放 + 点选替代；排序 ↑↓ 按钮；配对点左再点右（①②③编号）；状态用 ✗、虚线框、删除线。错误两级："有 N 张放错了，标了 ✗ 的再想想" → 点名一张说为什么；提示三级：看哪里 → 为什么 → 直接摆好（照样算完成）。正例：DS boss 引擎 + `tools/boss-check.mjs` 自测。
+- **交互与键盘**：拖放 + 点选替代；排序 ↑↓ 按钮；配对点左再点右（①②③编号）；状态用 ✗、虚线框、删除线。错误两级："有 N 张放错了，标了 ✗ 的再想想" → 点名一张说为什么；提示三级：看哪里 → 为什么 → 直接摆好（照样算完成）。正例：DS boss 引擎（它的自测脚本不随 skill 提供；kit 的 `VL.task` 返回 `_solve / _spoil / _next` 自测钩子）。
 - **动效**：反馈类（放错轻抖 280ms、放对变绿）。
 
 ### G7 分局小游戏
@@ -547,7 +545,7 @@ G2–G9 的皮肤样子都随 G1 互动台；舞台内的图形按皮肤画法�
 
 ### P1 章末测验
 - **功能**：4–6 题检验学习目标（题数和题型要求见 content-rules.md 一A）。选择题只出现在这里。
-- **内容**：每题 `{q, opts, a, why, fixed, img}`，带解析；选项按章号 + 题号种子洗牌（`fixed:true` 不洗）；查"正确项总是最长"（项目里的 `tools/quizcheck.py`）；题目可带图（`img`）。
+- **内容**：每题 `{q, opts, a, why, fixed, img}`，带解析；选项按章号 + 题号种子洗牌（`fixed:true` 不洗）；查"正确项总是最长"（skill 里没有现成脚本，交付前逐题看一遍）；题目可带图（`img`）。
 - **交互与键盘**：一次一题横翻（◀ 圆点 ▶ / ←→，圆点三态 `.tried` 答错过 / `.ok` 答对 / `.on` 当前）；错项划掉禁用并轻抖、对项显示解析。作答两种：点选项（`mode:"pick"`）；或把答案卡拖进答题位（`mode:"drag"`：点选卡片 + 在答题位按回车放入，正例：GD 新版 `.qz-slot`）。全对：显示徽章、`VL.Progress.done(章号)` 记"读懂了"（`progress:false` 不记）、派发 `vl:quiz-perfect {ch, firstTry, n}`；每答对一题派发 `vl:answer {i, firstTry}`。
 - **动效**：反馈类（≤300ms）；全对庆祝交给激励模块。
 - **皮肤**：笔记本＝手写选项 + 通关徽章｜纸片＝纸片按钮｜像素＝STAGE CLEAR!｜小镇＝房子盖好。

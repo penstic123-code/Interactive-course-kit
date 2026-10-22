@@ -97,7 +97,7 @@
     if (o.hat === "tophat") g += '<path fill="' + C.dark + '" stroke-width="2.4" d="M' + f(x - 7 * s) + " " + f(y - hr + s) + " V" + f(y - hr - 14 * s) + " H" + f(x + 7 * s) + " V" + f(y - hr + s) + ' Z"/><path fill="none" stroke-width="3" d="M' + f(x - 11 * s) + " " + f(y - hr + s) + " H" + f(x + 11 * s) + '"/>';
     if (o.hat === "wizard") g += '<path fill="' + C.wizard + '" d="M' + f(x - 11 * s) + " " + f(y - 7 * s) + " L" + f(x + 2 * s) + " " + f(y - 34 * s) + " L" + f(x + 11 * s) + " " + f(y - 7 * s) + 'z"/><path d="M' + f(x - 14 * s) + " " + f(y - 7 * s) + " h" + f(28 * s) + '"/>';
     if (o.tie) g += '<path fill="' + C.red + '" stroke-width="2" d="M' + f(x) + " " + f(y + hr + s) + " l" + f(-3 * s) + " " + f(6 * s) + " l" + f(3 * s) + " " + f(10 * s) + " l" + f(3 * s) + " " + f(-10 * s) + 'z"/>';
-    return g;
+    return '<g class="px-person">' + g + "</g>";   // 外包一层：tools/illus-overlap.mjs 靠 g.px-person 找人物
   }
 
   /* ---------- 其他小工具 ---------- */

@@ -7,9 +7,9 @@
 | 种类 | 用途 | 来源 / 做法 | 组件 | 正例 |
 |---|---|---|---|---|
 | 场景插画 | 抛出处境、给例子和反例画面；节首节尾的"有温度的图" | 插图库绘制工具按皮肤画 | T1、E1 | DS `ch05-luck-and-skill.html` 的例子插画（`ch05-eg-exam`、`ch05-eg-rookie`） |
-| 机制图解 | 讲清一个结构：循环、嵌套、因果、对比、分类 | 手写 SVG，按 `diagrams.md` 模板 | T3 | GD `ch02-core-loop.html` 三层循环 |
+| 机制图解 | 讲清一个结构：循环、嵌套、因果、对比、分类 | `VL.diagram.*`（12 种，见 `diagrams.md`）；模板画不了的才手写 SVG | T3 | GD `ch02-core-loop.html` 三层循环 |
 | 数据图表 | 真实或示意的数据：柱、线、散点、分布 | 手写 SVG 放进 `figure.vl-fig`（共享绘图函数 `VL.plot()` kit 里暂无）；边缘笔直；示意数据标"示意" | T3 | DS `ch01-cholera.html` 两家水公司死亡率柱图 |
-| 活图 | "改一个数会怎样" | 滑块 `label.vl-ctl` + 页内重画的 SVG（见 kit/README.md 第七节） | G2 | AI `ch08-classic-algorithms.html` sigmoid 活图 |
+| 活图 | "改一个数会怎样" | 滑块 `label.vl-ctl` + 页内重画的 SVG（见 kit/README.md 第三节“互动台与控件”）；天平类可直接用 `VL.diagram.balance` 的 `slider` | G2 | AI `ch08-classic-algorithms.html` sigmoid 活图 |
 | 带图时间线 | 发明故事的 3–5 个节点 | 每节点一张插画或真实图片；放在发明故事框里收起 | T5、K10 | GD `ch24-case-mario.html` 1-1 教学时间线 |
 | 真实图片 | 历史人物、实物、地点、原始文献，让读者相信"这真发生过" | Wikimedia Commons 等（见第二节） | T4 | DS `ch01-cholera.html` 斯诺地图、肖像、水泵 |
 | 概念图标 | 概念卡、并列卡阵里的小图，画出概念的要素 | 插图库小图（≤240px），不用 emoji | K1、K2 | AI 概念道具全课不重复、回指复用 |
@@ -76,7 +76,7 @@ Commons 上搜英文关键词 + 年份最快；人物先找"File:人名.jpg"，�
 | 拿东西的手和物件分开画，东西离手 | AI | `arms:"hold"` 配 `kit.holding(x, y, opts, 物件)`；自画物件用 `kit.hands(x, y, opts)` 取两手坐标 |
 | 机器人手臂紧贴身体、僵直 | AI | 手臂离开身体、带一点外角 |
 | 坐着没有椅子、屏幕或书悬空 | GD | 坐姿自动配椅子，写进函数比事后逐张改省事 |
-| 手臂朝画面外而不是对象；捂耳朵画成捂眼睛；该躲在石头后却站在前面；动作和说明对不上 | GD | 只能人眼查：图库页 `tools/illus-gallery.html` 把全部插图按章排开，标图名和说明，逐张看 |
+| 手臂朝画面外而不是对象；捂耳朵画成捂眼睛；该躲在石头后却站在前面；动作和说明对不上 | GD | 只能人眼查：把全部插图排开逐张看（skill 里没有现成的全课图库页；可以仿 `skins/notebook/gallery.html` 写一页，引入各章插图包，遍历 `VL.illus.lib` 逐个画出并标图名和 alt） |
 | 人物和望远镜等物件重叠 | AI | `tools/illus-overlap.mjs` 查重叠 |
 | 文字压在形状边框上、挤在线旁、比框还宽 | GD（同心椭圆、嵌套图最多） | 文字离线 ≥4px，嵌套图用引线 + 外部标签（`diagrams.md`）；`tools/qa.mjs` 的碰撞检查 |
 | 气泡尾巴指向空处 | 三课 | `kit.bubble(x, y, w, h, [尾尖x, 尾尖y])` 尾尖对准说话人 |
@@ -95,7 +95,7 @@ Commons 上搜英文关键词 + 年份最快；人物先找"File:人名.jpg"，�
 
 `SKILL.md` 规定：每 1–2 段正文就有一个视觉，两个视觉之间的正文不超过约 300 字，框里的文字也算。检查方法：
 
-1. **自动扫**：`node <skill>/tools/check.mjs <课程绝对路径> --fast` 的第 3 步。它按源码顺序扫 `<main>`，累加正文字数（框里的文字也算；英文按词数 × 1.5 折成字），遇到视觉清零，两个视觉之间超过 300 字就报。算作视觉的：`img svg canvas figure video iframe` 标签、`data-illus`、`data-diagram`、类名 `vl-board vl-dg vl-fig vl-eg vl-cc-fig vl-illus vl-photo vl-comic`。收起内容（`details`）照样计入，展开后的内文同样要满足。脚本生成的内容（页面 JS 里拼的 HTML）它看不到，那部分靠截图人眼看。
+1. **自动扫**：`node <skill>/tools/check.mjs <课程绝对路径> --fast` 的第 3 步。它按源码顺序扫 `<main>`，累加正文字数（框里的文字也算；英文按词数 × 1.5 折成字），遇到视觉清零，两个视觉之间超过 300 字就报。算作视觉的：`img svg canvas figure video iframe` 标签、`data-illus`、`data-diagram`、类名 `vl-board vl-dg vl-fig vl-eg vl-cc-fig vl-illus vl-photo vl-comic`。默认收起的 `details`（发明故事框、支线）不计入，脚本跳过它们；但展开后的内文同样要满足“框也算正文”，靠截图展开后人眼查。脚本生成的内容（页面 JS 里拼的 HTML）它看不到，那部分靠截图人眼看。
 2. **配比**：数一章里图解、插画 / 照片 / 例子、互动各几个，大致 1/3 : 1/2 : 其余（数学多的课图解多，历史多的课照片多）。
 3. **相邻**：列出视觉序列，查有没有两张静态图解紧挨着（中间要隔插画、例子或互动）。
 4. **重复**：全课 grep `data-illus="…"` 和 `img src`，同一个名字出现两次就是重复用图。

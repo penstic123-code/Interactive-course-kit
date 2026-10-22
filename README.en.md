@@ -64,7 +64,7 @@ Readers drag, tweak, build and sort, and see the consequence immediately: comic 
 ![Interaction demo page](docs/images/interact.jpg)
 
 ### Approved skins only
-The AI is not allowed to improvise a style. Readers can switch colour scheme (light / easy-on-the-eyes) and motion level (full, light, off) from the top bar, and the system's reduced-motion setting is respected. See [Skins](#skins) for what is available.
+The AI is not allowed to improvise a style; a new course starts by asking you which skin to use (see [Skins](#skins)). Readers can switch colour scheme (light / easy-on-the-eyes) and motion level (full, light, off) from the top bar, and the system's reduced-motion setting is respected.
 
 ### Optional modules
 A concept map (sharing one dataset with the concept cards), glossary, flashcards, stamp-album reading rewards (one stamp per chapter understood), a companion character who speaks only when clicked, and sound (muted by default).
@@ -93,7 +93,18 @@ The skill itself comes in Chinese and English editions sharing one codebase. `ne
 
 ## Skins
 
-Only one skin is approved and shipped so far: **`notebook`** (hand-drawn notebook, from the game design course). The other courses' looks (paper cutout, Game Boy and NES pixel art, miniature town) are documented in `references/skin-contract.md` but not yet extracted into skins. The contract there explains how to extract or make a new skin: a sample chapter with real content, contrast measured, three colour schemes checked, then user approval.
+When a new course starts, the AI first asks which art style you want. Four approved skins ship today; every component and interaction works in all four, so switching skins doesn't touch the text:
+
+| Skin | Look | Suits |
+|---|---|---|
+| `notebook` hand-drawn notebook | Ruled paper, ink stick figures, colour blocks | Design, thinking, humanities |
+| `paper` paper cut-out | Card-paper cut-outs, white edges, soft shadows; the contents page is a tower | Courses with a story and characters |
+| `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses |
+| `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, history |
+
+![The four skins: notebook, paper, pixel, fieldbook](docs/images/skins.jpg)
+
+Each skin's approval page is `skins/<name>/gallery.html`, with every component on one page; double-click to open. For a new style, follow `references/skin-contract.md`: a sample chapter first, then approval.
 
 ## Install
 
@@ -109,7 +120,7 @@ Copy-Item -Recurse skills\* $HOME\.claude\skills\
 Then ask Claude Code to "make an interactive course about …" and it will pick up the skills. You can also generate a skeleton by hand:
 
 ```bash
-node ~/.claude/skills/course-kit/starter/new-course.mjs <absolute course folder path> notebook --lang en
+node ~/.claude/skills/course-kit/starter/new-course.mjs <absolute course folder path> <skin> --lang en
 node ~/.claude/skills/course-kit/tools/check.mjs <absolute course folder path> --fast
 ```
 
@@ -118,9 +129,9 @@ Content rules (how each concept is taught, chapter and course acceptance criteri
 ## Requirements and limits
 
 - Courses are plain front-end HTML that works offline: double-click to open, no build step.
-- The checks need Node 22+ and **Microsoft Edge on Windows** (headless). On macOS / Linux the `--fast` static checks work; the run and screenshot steps do not yet.
-- Only one skin so far; the dark colour scheme has not been fully tested.
+- The checks need Node 22+ and Edge or Chrome (headless), found automatically or set with `EDGE_PATH`. Only tested on Windows so far.
+- The dark colour scheme has variables but is not fully approved.
 
 ## License
 
-MIT for code and docs. The Patrick Hand font is under the SIL Open Font License (`skins/notebook/fonts/OFL.txt`).
+MIT for code and docs. Bundled third-party assets keep their own licences: the Patrick Hand and Fusion Pixel fonts are under the SIL Open Font License (see each skin's `fonts/` folder), and Rough.js is MIT.

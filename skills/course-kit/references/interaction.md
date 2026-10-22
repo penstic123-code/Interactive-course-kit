@@ -1,6 +1,6 @@
 # 交互与动效
 
-用途：有哪些交互方式可选、互动怎么设计才好玩又不难、键盘和触屏怎么做、动效四类的时长和开关细则。底线在 `SKILL.md` 第三、四节；各组件的结构在 `components.md`。**API 以 `kit/README.md` 为准**；表里 G2–G9、M1 的 draw / cards / then-run、K5 投票、E2 拖线、`.vl-pad` 的代码在 `kit/vl-interact.js`，写法见 kit/README.md 第七节。
+用途：有哪些交互方式可选、互动怎么设计才好玩又不难、键盘和触屏怎么做、动效四类的时长和开关细则。底线在 `SKILL.md` 第三、四节；各组件的结构在 `components.md`。**API 以 `kit/README.md` 为准**；表里 G6–G9、M1 的翻牌（`.vl-flip`）、M2 热区、K5 投票、E2 拖线、`.vl-pad` 的代码在 `kit/vl-interact.js`，写法见 kit/README.md 第七节；G1–G5 只有外壳 `.vl-board` 和控件类，舞台由章节自写；M1 的 draw、then-run kit 里暂无。
 
 ## 一、交互方式总表
 

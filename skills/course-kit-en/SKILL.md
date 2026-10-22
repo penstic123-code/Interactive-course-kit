@@ -1,11 +1,11 @@
 ---
 name: course-kit-en
-description: Visual and component toolkit for interactive learning web courses. It has a skin-independent component library organised by job (concept cards, "why it works" boxes, diagram templates, example carousels, "Try it" tasks, collapsible side paths, a hands-on task engine and more), approved visual skins (hand-drawn notebook and others), rules for pictures, interactions, motion and reading rewards, and guidance on pacing a chapter. Use it first whenever you make, revise or review the layout, visuals, diagrams, interactions, motion or visual style of an interactive web course or explainer page (course chapters, interactive tutorials, long-form science pages). Also use it when starting a new course and choosing a skin, building the shared skeleton, making a sample chapter, briefing chapter-writing agents, or running the checks. For prose style use en-teaching-prose for English (zh-teaching-prose for Chinese); content rules live in references/content-rules.md.
+description: Visual and component toolkit for interactive learning web courses. It has a skin-independent component library organised by job (concept cards, "why it works" boxes, diagram templates, example carousels, "Try it" tasks, collapsible side paths, a hands-on task engine and more), approved visual skins (hand-drawn notebook, paper cut-out, handheld pixel, field notebook), rules for pictures, interactions, motion and reading rewards, and guidance on pacing a chapter. Use it first whenever you make, revise or review the layout, visuals, diagrams, interactions, motion or visual style of an interactive web course or explainer page (course chapters, interactive tutorials, long-form science pages). Also use it when starting a new course and choosing a skin, building the shared skeleton, making a sample chapter, briefing chapter-writing agents, or running the checks. For prose style use en-teaching-prose for English (zh-teaching-prose for Chinese); content rules live in references/content-rules.md.
 ---
 
 # Interactive course toolkit (course-kit-en)
 
-These rules come from three finished courses: a game design course (hand-drawn notebook skin), a data science course (paper-cutout tower-climb skin) and an AI course (a different retro medium for each "world"). The user approved each rule. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
+These rules come from four finished courses: a game design course (hand-drawn notebook), a data science course (paper-cutout tower climb), an AI course (a different retro medium for each "world") and an anthropology course (field notebook). The user approved each rule. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
 
 Who owns what: how content is taught (the five layers, acceptance numbers) lives in `references/content-rules.md` (copy it into your project as `CLAUDE.md` if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction and motion** live here.
 
@@ -22,7 +22,7 @@ Length limits: the Chinese original counts characters. This edition converts the
 | Build interactions, add motion | `references/interaction.md` |
 | Add reading rewards, a companion character, a concept map, etc. | `references/modules.md` |
 | Choose a skin, make a new skin | `references/skin-contract.md` + `skins/<name>/README.md` |
-| Build a new course skeleton | `starter/README.md`: one command, `node starter/new-course.mjs <absolute course folder path> notebook`; API in `kit/README.md` |
+| Build a new course skeleton | `starter/README.md`: one command, `node starter/new-course.mjs <absolute course folder path> <skin>`; API in `kit/README.md` |
 | Check your work | Section 7 + `tools/check.mjs` |
 
 ## 1. Pacing a chapter
@@ -61,14 +61,14 @@ Secondary concepts get only the naming mark, no card. For the one sentence in a 
 
 ## 2. Visual baseline
 
-- **Only approved skins** (`skins/`); don't let the AI improvise a style. Default to `notebook` (hand-drawn notebook). A new skin gets one sample chapter for the user to approve before it joins the library.
+- **Only approved skins** (`skins/`); don't let the AI improvise a style. When a course starts, ask the user which one (section 6); never pick one for them. A new skin gets one sample chapter for the user to approve before it joins the library.
 - **A quiet ground**: long text sits directly on the ground (paper, wall, page), never on a card floating over a flat colour. Only *things* get physical presence (pictures, interaction boards, concept cards, document props), with shadows cast in one direction.
 - **Heavy borders only for the stars**: signature interactions and concept diagrams get thick strokes; everything else gets thin lines or none. No emoji as icons, no gradient text, no glow shadows.
 - **One theme colour per chapter**; chapters in the same part vary slightly in main colour, texture and header decoration, while fonts and component shapes stay the same.
 - **Fonts**: decorative fonts (calligraphy, chalk, etc.) only for large titles; a handwriting font verified as legible (with a clear font for letters and digits via `unicode-range`) may be used for subheadings, text inside figures and buttons; body text uses a clear font.
 - **Contrast** ≥4.5:1, including captions, text inside figures and selected buttons.
 - **Text beside pictures**: on wide screens one column of text and one of picture, top-aligned, no text wrapping around, no vertical centring; stacked on narrow screens.
-- Readers can switch **colour scheme** (light, dark, easy-on-the-eyes); the **skin** is fixed when the course starts, because illustrations are drawn in the skin's style.
+- Readers can switch **colour scheme** (light, easy-on-the-eyes; dark has variables but is not fully approved); the **skin** is fixed when the course starts, because illustrations are drawn in the skin's style.
 
 ## 3. Interaction baseline
 
@@ -100,11 +100,22 @@ Respect `prefers-reduced-motion` everywhere; the top bar has a three-way motion 
 
 ## 6. Starting a new course
 
-1. Agree topic, readers and parts/chapters with the user (content per `references/content-rules.md`).
-2. Recommend 1–2 skins from `skins/`; the user picks; choose optional modules.
-3. Generate the skeleton with `starter/new-course.mjs` (kit, skin, config, contents page, chapter 1 template, project doc template); edit the chapter table and module switches in `js/course.js`.
-4. Make one sample chapter for the user to approve the writing, layout and pacing, then roll out.
-5. Run the checks (section 7) before delivering each chapter; never rely on the report alone.
+**The first thing to ask is the art style.** When the user says "make a course", use the question tool (AskUserQuestion; otherwise just ask) to let them pick a skin. Don't default and don't improvise a style. Give each option one line on what it suits, plus the path to its approval page `skins/<name>/gallery.html`:
+
+| Skin | In one line | Suits |
+|---|---|---|
+| `notebook` hand-drawn notebook | Ruled paper, ink stick figures, colour blocks | Design, thinking, humanities; adults and high school |
+| `paper` paper cut-out | Card-paper cut-outs, white edges, soft shadows; the contents page is a tower | Courses with a story and characters; middle to high school |
+| `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses |
+| `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, fieldwork and history |
+
+If the user wants a style that isn't listed, explain that only approved skins are used; a new skin starts with one sample chapter for the user to approve (`skin-contract.md` section 5).
+
+Then:
+1. Agree topic, readers and parts/chapters with the user (content per `references/content-rules.md`); choose optional modules (section 5).
+2. Generate the skeleton with `starter/new-course.mjs <absolute course folder path> <skin name>` (kit, skin, config, contents page, chapter 1 template, project doc template); edit the chapter table and module switches in `js/course.js`.
+3. Make one sample chapter for the user to approve the writing, layout and pacing, then roll out.
+4. Run the checks (section 7) before delivering each chapter; never rely on the report alone.
 
 ## 7. Checks (catching errors you can't see while writing)
 

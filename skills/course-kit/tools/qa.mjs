@@ -1,16 +1,24 @@
 // 课程页面自动化测试：用 Edge 无头模式 + CDP 逐页加载、点击所有按钮、拖所有滑块、触发键盘/指针事件，检查 JS 报错与横向溢出。
 // 用法：node tools/qa.mjs <课程文件夹绝对路径> [章节前缀,逗号分隔，如 ch01,ch05]
-// 依赖：Node 22+（自带 WebSocket/fetch）、Windows 的 Edge。能抓运行时错误，不能判断画面好不好看（那要截图人工看）。
+// 依赖：Node 22+（自带 WebSocket/fetch）、Edge 或 Chrome（自动查找，或用环境变量 EDGE_PATH 指定，见 browser.mjs）。
+// 能抓运行时错误，不能判断画面好不好看（那要截图人工看）。中文页在课程根目录、英文页在 en/，两处都测。
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { findBrowser, tmpDir } from "./browser.mjs";
 
 const ROOT = process.argv[2];
 const ONLY = process.argv[3] ? process.argv[3].split(",") : null;
-const EDGE = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
+if (!ROOT || !path.isAbsolute(ROOT) || !fs.existsSync(ROOT)) { console.error("用法：node qa.mjs <课程文件夹绝对路径> [ch01,ch05]（必须是存在的绝对路径）"); process.exit(1); }
+const files = ["", "en"].flatMap(d => fs.existsSync(path.join(ROOT, d)) ? fs.readdirSync(path.join(ROOT, d)).filter(f => /^(?!_).*\.html$/.test(f)).sort().filter(f => !ONLY || ONLY.some(o => f.startsWith(o))).map(f => d ? d + "/" + f : f) : []);
+if (!files.length) { console.log("· 没有要测的页面（" + ROOT + " 和 en/ 下没有 .html）"); process.exit(0); }
+let EDGE;
+try { EDGE = findBrowser(); } catch (e) { console.error("✗ " + e.message); process.exit(2); }
 const PORT = 9333 + Math.floor(Math.random() * 500);
-const udd = path.join(process.env.TEMP || "C:/Windows/Temp", "qa-edge-" + PORT);
+const udd = path.join(tmpDir(), "qa-edge-" + PORT);
 const proc = spawn(EDGE, ["--headless=new", "--disable-gpu", "--remote-debugging-port=" + PORT, "--user-data-dir=" + udd, "--no-first-run", "about:blank"], { stdio: "ignore" });
+proc.on("error", e => { console.error("✗ 浏览器启动失败（" + EDGE + "）：" + e.message + "。可用环境变量 EDGE_PATH 指定浏览器路径。"); process.exit(2); });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function getWs() {
@@ -22,7 +30,7 @@ async function getWs() {
     } catch (e) {}
     await sleep(300);
   }
-  throw new Error("no edge");
+  proc.kill(); console.error("✗ 浏览器没有响应调试端口（" + EDGE + "）"); process.exit(2);
 }
 const ws = new WebSocket(await getWs());
 await new Promise(r => (ws.onopen = r));
@@ -36,11 +44,10 @@ const send = (method, params = {}) => new Promise(res => { const i = ++id; pendi
 await send("Page.enable"); await send("Runtime.enable"); await send("Log.enable");
 await send("Page.addScriptToEvaluateOnNewDocument", { source: "window.alert=()=>{};window.confirm=()=>true;window.prompt=()=>'';window.print=()=>{};window.open=()=>null;" });
 
-const files = fs.readdirSync(ROOT).filter(f => /^(?!_).*\.html$/.test(f)).sort().filter(f => !ONLY || ONLY.some(o => f.startsWith(o)));
 const probe = `(async()=>{
-  const out={clicked:0,ranges:0,overflow:0,svgNoRough:0,secs:document.querySelectorAll('.sec').length,svgs:document.querySelectorAll('main svg').length,inter:0};
+  const out={clicked:0,ranges:0,overflow:0,svgNoRough:0,secs:document.querySelectorAll('.vl-sec,.sec').length,svgs:document.querySelectorAll('main svg').length,inter:0};
   out.overflow=document.documentElement.scrollWidth-document.documentElement.clientWidth;
-  const skip=b=>/print|location|href/.test((b.getAttribute('onclick')||''))||b.closest('.navpanel,.vl-topbar,.vl-toc,.vl-tocpanel')||b.classList.contains('navfab');
+  const skip=b=>/print|location|href/.test((b.getAttribute('onclick')||''))||b.closest('.navpanel,.vl-navpanel,.vl-topbar,.vl-toc,.vl-tocpanel')||b.classList.contains('navfab')||b.classList.contains('vl-fab');
   const btns=[...document.querySelectorAll('main button, main .chip, main .opt, main [role=button]:not(.sec):not(.vl-sec)')].filter(b=>!skip(b));
   for(const b of btns){try{if(typeof b.click==='function')b.click();else b.dispatchEvent(new MouseEvent('click',{bubbles:true}));out.clicked++}catch(e){out.err=(out.err||'')+e.message+';'}}
   await new Promise(r=>setTimeout(r,200));
@@ -51,17 +58,17 @@ const probe = `(async()=>{
   for(const k of ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' ','Enter']){document.dispatchEvent(new KeyboardEvent('keydown',{key:k,bubbles:true}));document.dispatchEvent(new KeyboardEvent('keyup',{key:k,bubbles:true}))}
   await new Promise(r=>setTimeout(r,500));
   out.overflowAfter=document.documentElement.scrollWidth-document.documentElement.clientWidth;
-  const wide=[...document.querySelectorAll('main *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+2&&getComputedStyle(e).position!=='fixed'&&!e.closest('svg')&&!e.closest('pre')&&!e.closest('.navpanel')&&!e.closest('table')).slice(0,3).map(e=>e.tagName+'.'+(e.className&&e.className.baseVal===undefined?e.className:'')+'#'+e.id);
+  const wide=[...document.querySelectorAll('main *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+2&&getComputedStyle(e).position!=='fixed'&&!e.closest('svg')&&!e.closest('pre')&&!e.closest('.navpanel,.vl-navpanel')&&!e.closest('table')).slice(0,3).map(e=>e.tagName+'.'+(e.className&&e.className.baseVal===undefined?e.className:'')+'#'+e.id);
   out.wide=wide;
 
   // ---- 图内文字检查：出界 / 压在形状边框上 / 文字互相重叠 ----
   out.layout = [];
   document.querySelectorAll('main svg').forEach((svg, si) => {
-    if (svg.getAttribute('aria-hidden') === 'true' || svg.closest('.hero')) return;
+    if (svg.getAttribute('aria-hidden') === 'true' || svg.closest('.hero,.vl-hero')) return;
     const sr = svg.getBoundingClientRect(); if (!sr.width) return;
     const texts = [...svg.querySelectorAll('text')].filter(t => t.textContent.trim() && getComputedStyle(t).display !== 'none' && t.getBoundingClientRect().width > 0);
     const shapes = [...svg.querySelectorAll('rect,ellipse,circle')].filter(s => !s.closest('defs,marker,clipPath') && getComputedStyle(s).stroke !== 'none' && s.getBoundingClientRect().width > 0);
-    const lines = [...svg.querySelectorAll('path,line,polyline')].filter(s => !s.closest('defs,marker,clipPath,text') && getComputedStyle(s).stroke !== 'none' && s.getBoundingClientRect().width + s.getBoundingClientRect().height > 0 && !s.closest('.illus'));
+    const lines = [...svg.querySelectorAll('path,line,polyline')].filter(s => !s.closest('defs,marker,clipPath,text') && getComputedStyle(s).stroke !== 'none' && s.getBoundingClientRect().width + s.getBoundingClientRect().height > 0 && !s.closest('.illus,.vl-illus'));
     const rects = texts.map(t => t.getBoundingClientRect());
     texts.forEach((t, i) => {
       const b = rects[i], lab = t.textContent.trim().slice(0, 14);
@@ -111,7 +118,7 @@ for (const vp of [{ w: 420, h: 900, m: true }, { w: 1100, h: 900, m: false }]) {
   await send("Emulation.setDeviceMetricsOverride", { width: vp.w, height: vp.h, deviceScaleFactor: 1, mobile: vp.m });
   for (const f of files) {
     events = [];
-    await send("Page.navigate", { url: "file:///" + ROOT.replace(/\\/g, "/") + "/" + f });
+    await send("Page.navigate", { url: pathToFileURL(path.join(ROOT, f)).href });
     await sleep(1400);
     // 有公式的页面等 KaTeX 渲染完再测（否则未断行的 TeX 源码会被误报成横向溢出）
     await send("Runtime.evaluate", { expression: `new Promise(r=>{const m=document.querySelector("main");if(document.querySelector(".katex")||!m||!/\\\\\\(|\\$\\$|\\\\\\[/.test(m.innerHTML))return r();document.addEventListener("mathready",()=>r(),{once:true});setTimeout(r,4000)})`, awaitPromise: true });

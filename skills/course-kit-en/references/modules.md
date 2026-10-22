@@ -12,7 +12,7 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 | Learning paths | on when readers start from very different places | A few routes; pick one and the rest dim |
 | Town-style contents page | only for skins with offline-rendered art | One map = whole-course progress + this chapter's contents |
 | Timeline of events | on when history carries a lot of weight | Every invention story in the course, in year order |
-| Reader colour schemes | required | Light / dark / easy on the eyes; part of the skin contract |
+| Reader colour schemes | required (dark on hold) | Light / dark / easy on the eyes; part of the skin contract; dark and easy-on-the-eyes not fully approved yet |
 
 ---
 
@@ -125,7 +125,7 @@ VL.concepts = [
 | Piece | How | Pitfall |
 |---|---|---|
 | Hover definition | `.vl-term[data-def]` in the text (`components.md` K7); the JS definition box is clamped inside the viewport | Pure CSS `::after` runs off the screen at the edges (old GD / AI) |
-| Glossary `glossary.html` | `tools/build_glossary.py` collects `data-def` from every chapter (or `VL.glossary` from `kit/modules/terms.js`); sorted by pinyin / alphabet; each entry links back to the chapter where it first appears | The same term defined differently in different places: the script reports conflicts; the first occurrence wins |
+| Glossary `glossary.html` | `kit/modules/build-concepts.mjs --write` collects every chapter's `.vl-term[data-def]` into the `terms` of `js/concepts.js`, and `VL.glossary` (`kit/modules/terms.js`) reads it; sorted by pinyin / alphabet; each entry links back to its chapter | The same term defined differently in different places: the script reports ✗; the first occurrence wins |
 | Flashcards `flashcards.html` | Leitner, 4 boxes: right moves up a box, wrong goes back to box one; only terms from chapters already understood (`VL.flashcards`) | Can't flip by keyboard (old GD): Space flips, ←→ judge right/wrong; remove emoji (old AI still has them) |
 
 The English edition needs English fields for all three; storage keys are shared by both languages.
@@ -153,7 +153,7 @@ The English edition needs English fields for all three; storage keys are shared 
 
 **Worth adding when**: the skin itself is a map (town, tower, level route) and there is an offline rendering pipeline.
 
-**How**: one map does three jobs — the course map, cumulative progress (chapters understood are "built"), and this chapter's contents (click a building to jump to its section). Good example: AI W4 `js/w4-town.js` + `tools/render-town.mjs` render transparent PNGs offline, so chapter pages don't run three.js.
+**How**: one map does three jobs — the course map, cumulative progress (chapters understood are "built"), and this chapter's contents (click a building to jump to its section). Good example: the AI course's W4 renders transparent PNGs offline with its own script (not shipped with the skill), so chapter pages don't run three.js.
 
 **Pitfalls**
 - When it replaces the N4 floating button, test narrow-screen behaviour separately (AI W4 untested).
@@ -164,10 +164,10 @@ The English edition needs English fields for all three; storage keys are shared 
 
 **Worth adding when**: history carries a lot of weight and there are many invention stories.
 
-**How**: every invention story in the course in year order, filterable by type; clicking an event jumps to the story box in its chapter (good example: AI `timeline.html` + `js/timeline.js`). Event data is collected from each chapter's K10 / T5, not written a second time.
+**How**: every invention story in the course in year order, filterable by type; clicking an event jumps to the story box in its chapter (good example: the AI course's timeline page; the kit has no timeline module yet). Event data is collected from each chapter's K10 / T5, not written a second time.
 
 **Pitfall**: years and names on the timeline must match the chapters — generate both from the same data.
 
 ## 9. Reader colour schemes
 
-Not optional; part of the skin contract (`skin-contract.md`): every skin provides light / dark / easy-on-the-eyes schemes, switched under "Display" in the top bar and saved (key `vl-scheme`, shared across courses). **The skin is fixed when the course starts; readers only change the colour scheme**, because illustrations are drawn in the skin's style and the drawing style can't be swapped at runtime.
+Not optional; part of the skin contract (`skin-contract.md`): every skin provides light / dark / easy-on-the-eyes schemes, switched under "Display" in the top bar and saved (key `vl-scheme`, shared across courses). **Dark is on hold**: the switch stays, but dark and easy-on-the-eyes are not fully approved, so start courses and check screenshots in Light. **The skin is fixed when the course starts; readers only change the colour scheme**, because illustrations are drawn in the skin's style and the drawing style can't be swapped at runtime.

@@ -8,6 +8,7 @@
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   var SCHEMES = ["light", "dark", "sepia"];
   var th = get("vl-scheme");
+  var qs = /[?&]scheme=(light|dark|sepia)/.exec(location.search); if (qs) th = qs[1]; // 网址带 ?scheme= 时临时用它（截图验收三套配色），不存档
   if (SCHEMES.indexOf(th) < 0) th = "light";
   root.setAttribute("data-scheme", th);
 

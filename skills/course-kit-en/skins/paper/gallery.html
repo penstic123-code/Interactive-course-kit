@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第2章 皮肤验收页（paper）</title>
+<!-- 皮肤验收页（references/skin-contract.md 第二节）：kit/vl.js 现有的每个组件各摆一个，做新皮肤时复制本页、只换下面三行皮肤路径来对照。
+     截三套配色：gallery.html?scheme=dark、?scheme=sepia（只在本页有效，不存档）。 -->
+<link rel="stylesheet" href="../../kit/vl.css">
+<link rel="stylesheet" href="skin.css">
+<script src="skin.js"></script>
+<script src="../../kit/vl-head.js"></script>
+<script>
+  // 验收页专用：?scheme= 临时切配色，方便截三套图（不写存档）
+  try { const s = new URLSearchParams(location.search).get("scheme"); if (["light", "dark", "sepia"].includes(s)) document.documentElement.setAttribute("data-scheme", s); } catch (e) {}
+  window.VL_COURSE = {
+    id: "skin-gallery", home: "gallery.html", enReady: false,
+    chapters: [
+      { zh: "第一篇的章", en: "Part one", file: "gallery.html" },
+      { zh: "皮肤验收页", en: "Skin gallery", file: "gallery.html" },
+      { zh: "第二篇的章", en: "Part two", file: "gallery.html" },
+      { zh: "第三篇的章", en: "Part three", file: "gallery.html" },
+      { zh: "第四篇的章", en: "Part four", file: "gallery.html" },
+      { zh: "第五篇的章", en: "Part five", file: "gallery.html" },
+      { zh: "还在写的章", en: "Not yet", file: "gallery.html", open: false },
+    ],
+    parts: [
+      { zh: "一、第一篇", en: "I", from: 1, to: 2 }, { zh: "二、第二篇", en: "II", from: 3, to: 3 }, { zh: "三、第三篇", en: "III", from: 4, to: 4 },
+      { zh: "四、第四篇", en: "IV", from: 5, to: 5 }, { zh: "五、第五篇", en: "V", from: 6, to: 7 },
+    ],
+  };
+</script>
+<style>
+  /* 验收页专属：gl- 前缀，不重定义 vl- 类 */
+  .gl-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+  .gl-sw{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+  .gl-sw span{display:inline-flex;align-items:center;gap:6px;font-size:.95rem}
+  .gl-sw i{display:inline-block;width:26px;height:18px;border-radius:4px;border:2px solid var(--ink)}
+  .gl-tbl{border-collapse:collapse;min-width:640px}
+  .gl-tbl th,.gl-tbl td{border:2px solid var(--ink);padding:4px 10px;text-align:left}
+  .gl-tbl th{background:var(--accent)}
+  .gl-todo{color:var(--ink2)}
+</style>
+</head>
+<body data-ch="2">
+<main class="vl-wrap">
+
+  <!-- N2 章首：徽记自动补，大章号角标来自 --vl-chnum -->
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>皮肤验收页</h1>
+      <p class="vl-sub">kit 现有的每个组件各摆一个：换一套皮肤，看它们是不是都还站得住。</p>
+    </div>
+    <span data-illus="gl-hero"></span>
+  </div>
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 5 分钟</span>
+    <ul><li>逐项对照新皮肤的外观。</li><li>在三套配色下截图对比。</li><li>发现层级不分、对比度不够的地方。</li></ul>
+  </div>
+
+  <!-- N3 分节、N4 浮钮与进度条、N1 顶栏（含篇色章节点、配色与动效开关）都自动生成 -->
+  <div class="vl-sec"><h2>长文直接印在卡纸上</h2></div>
+  <div class="vl-withimg">
+    <span data-illus="gl-scene"></span>
+    <div>
+      <p>正文没有框，直接排在纸面上。<b>加粗是荧光笔</b>，<a href="#gl-fig-cycle">正文链接</a>用深色写字，行内术语像这样：<span class="vl-term" data-def="正文里第一次出现的新词，悬停、聚焦或轻点看一句释义">术语</span>。</p>
+      <p class="vl-src">旁注与出处是小字，也要 ≥4.5:1。（示意）</p>
+    </div>
+  </div>
+  <div class="vl-withimg rev narrow">
+    <span data-illus="gl-portrait"></span>
+    <div><p>图文并排的 <code>.rev .narrow</code>：图在右、图栏 26%，适合人像。窄屏上下排。</p></div>
+  </div>
+  <div class="vl-vs">
+    <div><b>✓ 正面</b><p>两栏对比，左右同构图。</p></div>
+    <div class="bad"><b>✗ 反面</b><p>反面靠虚线和文字区分，不只靠颜色。</p></div>
+  </div>
+
+  <div class="vl-sec"><h2>图、图解和照片</h2></div>
+  <!-- T3 编号图 + 概念图解外框（粗墨线 + 硬投影；图解框可抖动） -->
+  <figure class="vl-fig" id="gl-fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[{"name":"行动","eg":"点、跳、选择","info":"<b>行动</b>：点中后的信息行。"},{"name":"反馈","eg":"叮！血条减少"},{"name":"奖励","eg":"金币、经验"},{"name":"成长","eg":"变强、解锁"}],"center":"再来一局"}</script>
+    <figcaption>概念图解：可以点一块看一块，图号自动编。</figcaption>
+  </figure>
+  <p>正文回指图号：见<a data-figref="gl-fig-cycle" href="#gl-fig-cycle">图</a>。数据图边缘笔直、不加抖动，量的颜色用 <code>--q1…--q6</code>：</p>
+  <figure class="vl-fig" id="gl-fig-data">
+    <svg viewBox="0 0 600 170" role="img" aria-label="六根直边柱子，分别用量的编码颜色 q1 到 q6，高度依次为 60、90、120、80、140、100（示意）">
+      <line x1="40" y1="150" x2="580" y2="150" stroke="#2b2b3a" stroke-width="2"/>
+      <rect x="60" y="90" width="60" height="60" style="fill:var(--q1)"/><rect x="145" y="60" width="60" height="90" style="fill:var(--q2)"/>
+      <rect x="230" y="30" width="60" height="120" style="fill:var(--q3)"/><rect x="315" y="70" width="60" height="80" style="fill:var(--q4)"/>
+      <rect x="400" y="10" width="60" height="140" style="fill:var(--q5)"/><rect x="485" y="50" width="60" height="100" style="fill:var(--q6)"/>
+    </svg>
+    <figcaption>数据图：直边、一种量一种颜色（示意数据）。</figcaption>
+  </figure>
+  <div class="gl-sw" aria-label="量的编码色板">
+    <span><i style="background:var(--q1)"></i>q1</span><span><i style="background:var(--q2)"></i>q2</span><span><i style="background:var(--q3)"></i>q3</span>
+    <span><i style="background:var(--q4)"></i>q4</span><span><i style="background:var(--q5)"></i>q5</span><span><i style="background:var(--q6)"></i>q6</span>
+  </div>
+  <!-- T4 照片框：.vl-fig.photo（真实课程里放 img；这里用一张画出来的“照片”占位，不依赖外部文件） -->
+  <div class="vl-withimg narrow">
+    <figure class="vl-fig photo">
+      <svg viewBox="0 0 160 200" role="img" aria-label="照片占位：一张灰色调的人像剪影"><rect width="160" height="200" fill="#d9d4c7"/><circle cx="80" cy="74" r="34" fill="#8d877a"/><path d="M22 200c4-50 30-76 58-76s54 26 58 76z" fill="#8d877a"/></svg>
+      <figcaption>照片框。<span class="vl-src">作者，年份，授权，来源</span></figcaption>
+    </figure>
+    <div><p>真实图片贴在卡纸上（一截纸胶带）。图注一句说明 + 出处小字。</p></div>
+  </div>
+  <!-- T8 横滚包 -->
+  <div class="vl-scroll" tabindex="0">
+    <table class="gl-tbl"><tr><th>宽表</th><th>手机上</th><th>横着滚</th><th>不撑破页面</th><th>第五列</th></tr><tr><td>一</td><td>二</td><td>三</td><td>四</td><td>五</td></tr></table>
+  </div>
+
+  <div class="vl-sec"><h2>概念卡、例子、原理</h2></div>
+  <!-- K1 概念卡（实体件，中） -->
+  <aside class="vl-cc">
+    <p class="vl-cc-name">核心循环</p>
+    <p class="vl-cc-en">Core loop</p>
+    <p class="vl-cc-by">出处：行业通用术语</p>
+    <p class="vl-cc-plain">玩家一遍遍重复的那串事情。</p>
+    <p class="vl-cc-def">玩家反复做的一串行动，做完回到起点，再来一轮。</p>
+    <p class="vl-cc-eg">开头那局“再来一局”。</p>
+    <div class="vl-cc-fig"><span data-illus="gl-cc"></span></div>
+  </aside>
+  <!-- E1 例子轮播：页签、反例标记、◀▶ -->
+  <div class="vl-eg" data-t="例子"><span data-illus="gl-eg1"></span><p><b>例子：</b>要素齐全的那一个。</p></div>
+  <div class="vl-eg" data-t="另一个"><span data-illus="gl-eg2"></span><p><b>另一个：</b>换一个场景。</p></div>
+  <div class="vl-eg bad" data-t="反例"><span data-illus="gl-eg3"></span><p><b>反例：</b>缺了一项，图上画出缺的那一项。</p></div>
+  <!-- K3 原理框（轻块：竖线 + 小签，无投影） -->
+  <div class="vl-why">
+    <h3>意料之外的奖励比意料之中的更有劲</h3>
+    <div class="vl-why-fig"><span data-illus="gl-why"></span></div>
+    <p>原理框是轻块：页边一条竖线加一个小签，不是浮起来的卡片。</p>
+    <p class="vl-src">出处：谁 · 哪项研究 · 年份。验证：上面的××。</p>
+  </div>
+  <!-- K10 发明故事框、P4 支线（默认收起；摘要 = 类型签 + 钩子 + 一句介绍 + 展开按钮） -->
+  <details class="vl-story">
+    <summary><b>1898 年，一只猫被关进笼子：奖励规律是怎么被发现的</b><small>演化链和带图时间线，展开看</small></summary>
+    <ol class="vl-chain">
+      <li>每次都给</li><li class="vl-chain-ar" aria-hidden="true">→</li><li>发完就不按了</li><li class="vl-chain-ar" aria-hidden="true">→</li><li>随机给，按得更久</li>
+    </ol>
+    <div class="vl-timeline">
+      <div class="vl-ev hasimg"><span data-illus="gl-tl"></span><div><b class="vl-yr">1898</b> 时间线节点配一张够大的小图。</div></div>
+      <div class="vl-ev"><div><b class="vl-yr">1957</b> 没有图的节点。</div></div>
+    </div>
+  </details>
+  <details class="vl-side" data-kind="math"><summary><b>可变比率到底有多“可变”？</b><small>一个掷骰子的小算术，可以跳过</small></summary><p>支线内文。</p></details>
+  <details class="vl-side" data-kind="debate"><summary><b>这条规律有人不同意吗？</b><small>两种立场</small></summary><p>支线内文。</p></details>
+
+  <div class="vl-sec"><h2>互动台和控件</h2></div>
+  <!-- G1 互动台（全课最重的实体件）+ 控件族 + M3 试试看（未完成 / 已完成两态） -->
+  <div class="vl-board">
+    <h3>互动台的标题就是它要回答的问题？</h3>
+    <p class="vl-try" data-try="g1" data-done="完成！这是完成后的反馈。">把滑块拖到 6 以上（未完成态）。</p>
+    <p class="vl-try" data-try="g2" data-done="完成态：打勾、变绿、显示反馈。">这一条加载后自动完成，用来看完成态。</p>
+    <div class="gl-row">
+      <button type="button" class="vl-btn">主按钮</button>
+      <button type="button" class="vl-btn alt">次按钮</button>
+      <button type="button" class="vl-btn" disabled>禁用</button>
+    </div>
+    <div class="gl-row">
+      <button type="button" class="vl-chip">芯片</button><button type="button" class="vl-chip on">选中 .on</button>
+      <button type="button" class="vl-chip right">对 .right</button><button type="button" class="vl-chip wrong">错 .wrong</button><button type="button" class="vl-chip miss">漏 .miss</button>
+    </div>
+    <div class="gl-row" role="group" aria-label="分段切换">
+      <button type="button" class="vl-chip" aria-pressed="true" data-seg>视图一</button><button type="button" class="vl-chip" aria-pressed="false" data-seg>视图二</button>
+    </div>
+    <label class="vl-ctl">参数 <output id="gl-out">3</output><input type="range" id="gl-r" min="1" max="8" value="3"></label>
+    <p class="vl-msg" id="gl-msg" aria-live="polite">反馈句写在这里。</p>
+  </div>
+  <!-- M1 先猜后揭晓：think / pick / estimate -->
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">同样平均五次给一次奖励，哪种发法让人停不下来？</p>
+    <ul class="vl-opts"><li>每五次准时给<span class="vl-fb">规律被摸清后，刚领完就懈怠。</span></li><li data-right>次数不固定<span class="vl-fb">每一次都可能是“那一次”。</span></li></ul>
+    <div class="vl-ans">揭晓：可变比率最“粘人”。</div>
+  </div>
+  <div class="vl-guess" data-mode="estimate" data-min="1" data-max="1000" data-answer="60" data-scale="log" data-unit="次">
+    <p class="vl-q">估一个数：奖励停发后还会按多少次？</p>
+    <div class="vl-ans">揭晓的解释（示意数字）。</div>
+  </div>
+  <div class="vl-guess" data-mode="think">
+    <p class="vl-q">先想一想，再看想法。</p>
+    <div class="vl-ans">想法。</div>
+  </div>
+
+  <div class="vl-sec"><h2>收束、练习和笔记</h2></div>
+  <div class="vl-withimg">
+    <span data-illus="gl-end"></span>
+    <div><p>章末的收束块：误区、要点、一句话。标签写在 HTML 里。</p></div>
+  </div>
+  <div class="vl-misc"><p><b>常见误区</b></p><p><b>“随机就是均匀”</b>——为什么错，一两句。</p></div>
+  <div class="vl-key"><p><b>要点</b></p><ul><li>要点一</li><li>要点二</li></ul></div>
+  <p class="vl-tldr"><b>一句话</b>结尾压成一句话。</p>
+  <!-- P1 测验：一题、三态圆点、全对徽章；拖卡模式 -->
+  <div id="gl-quiz"></div>
+  <div id="gl-quiz2"></div>
+  <h3>你的思考</h3>
+  <textarea class="vl-note" data-save="reflect" placeholder="笔记框：输入即存。"></textarea>
+
+  <!-- kit 里还没有、要等其他文件并入后再摆进来的（见 kit/README.md 第七节、kit/README.md 第九节、kit/README.md 第八节，待并入） -->
+  <details class="vl-side" data-kind="more">
+    <summary><b>还没摆进来的组件</b><small>代码并入 kit 后补到本页</small></summary>
+    <ul class="gl-todo">
+      <li>K2 并列卡阵、K5 立场卡、K9 文档道具（至少 3 种 data-kind）、T6 漫画分镜、T7 读数条与图例、G2–G9 招牌互动骨架：见 kit/README.md 第七节。</li>
+      <li>其余图解模板（时间轴、树、维恩、天平、网络、光谱、层叠）：见 kit/README.md 第九节。</li>
+      <li>阅读激励外观、陪伴角色、概念关系图：见 kit/README.md 第八节。</li>
+      <li>目录页学习地图：见 starter/index.html。</li>
+    </ul>
+  </details>
+</main>
+<script src="../../kit/vl.js"></script>
+<script src="../../kit/diagrams.js"></script>
+<script src="../../kit/illus.js"></script>
+<script>
+/* 插画样张：站、坐、拿东西、指东西、说话，人物自动换装 */
+VL.illus.add("gl-hero", "一个人坐在椅子上捧着一本书", k => k.ground() + k.person(80, 62, { legs: "sit", arms: "hold", face: "smile", look: 1 }) + k.holding(80, 62, { look: 1 }, "book"));
+VL.illus.add("gl-scene", "两个人站着，左边的人指着右边的人手里的手机，右边的人在说话", k => k.ground() + k.person(52, 63, { arms: "point", face: "grin" }) + k.person(140, 63, { arms: "hold", face: "o", look: -1 }) + k.holding(140, 63, { look: -1 }, "phone") + k.bubble(150, 6, 46, 30, [146, 44]), k => k.T(173, 26, 13, "咦？", "middle"));
+VL.illus.add("gl-portrait", "一个戴眼镜的人站着挥手", k => k.ground() + k.person(100, 63, { arms: "wave", glasses: true, face: "smile" }));
+VL.illus.add("gl-cc", "四段箭头首尾相连围成一个圈，中间一颗星", k => '<circle cx="100" cy="70" r="46" fill="none" stroke-dasharray="14 8" stroke-width="5"/>' + k.arrow(138, 40, 146, 56) + k.item("star", 100, 70));
+VL.illus.add("gl-eg1", "一个人站着，手里拿着一枚金币", k => k.ground() + k.person(90, 63, { arms: "hold", face: "grin", look: 1 }) + k.holding(90, 63, { look: 1 }, "coin"));
+VL.illus.add("gl-eg2", "一个人坐在椅子上拿着骰子", k => k.ground() + k.person(90, 62, { legs: "sit", arms: "hold", face: "smile", look: 1 }) + k.holding(90, 62, { look: 1 }, "die"));
+VL.illus.add("gl-eg3", "一个人空着手站在三个箱子旁边，表情难过", k => k.ground() + k.person(60, 63, { face: "sad" }) + k.item("box", 130, 116) + k.item("box", 152, 116) + k.item("box", 141, 100));
+VL.illus.add("gl-why", "一个戴眼镜的研究者拿着一杯果汁", k => k.ground() + k.person(90, 63, { arms: "hold", glasses: true, look: 1 }) + k.holding(90, 63, { look: 1 }, "cup"));
+VL.illus.add("gl-tl", "一个人站着举起双手欢呼", k => k.ground() + k.person(100, 63, { arms: "up", face: "grin" }));
+VL.illus.add("gl-end", "一个人站着托着下巴思考", k => k.ground() + k.person(100, 63, { arms: "chin", face: "flat" }));
+
+(function () {
+  const r = document.getElementById("gl-r"), out = document.getElementById("gl-out"), msg = document.getElementById("gl-msg");
+  r.addEventListener("input", () => { out.textContent = r.value; msg.textContent = "参数现在是 " + r.value + "。"; if (+r.value >= 6) VL.tryDone("g1"); });
+  document.querySelectorAll("[data-seg]").forEach(b => b.addEventListener("click", () => document.querySelectorAll("[data-seg]").forEach(x => x.setAttribute("aria-pressed", String(x === b)))));
+  VL.tryDone("g2");
+})();
+VL.quiz("#gl-quiz", [
+  { q: "测验卡：点一个选项。", opts: ["对的选项", "错的选项", "另一个错项"], a: 0, why: "解析在答对后出现。" },
+  { q: "第二题。", opts: ["对", "错"], a: 0, why: "解析。" },
+], { progress: false });
+VL.quiz("#gl-quiz2", [
+  { q: "拖卡作答：把对的卡拖进答题位。", opts: ["对的卡", "错的卡"], a: 0, why: "解析。" },
+], { mode: "drag", progress: false });
+</script>
+</body>
+</html>

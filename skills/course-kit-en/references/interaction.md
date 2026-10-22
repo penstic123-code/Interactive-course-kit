@@ -1,6 +1,6 @@
 # Interaction and motion
 
-Purpose: the interaction types to choose from, how to design an interaction that is fun without being hard, keyboard and touch, and the timing and switch rules for the four kinds of motion. The baseline is in `SKILL.md` sections 3 and 4; each component's structure is in `components.md`. **`kit/README.md` is the API reference**: the code for G2–G9, M1 draw / cards / then-run, K5 voting, E2 drag-divider and `.vl-pad` in the tables below is in `kit/vl-interact.js`, documented in `kit/README.md` section 7 (互动组件 / interactive components).
+Purpose: the interaction types to choose from, how to design an interaction that is fun without being hard, keyboard and touch, and the timing and switch rules for the four kinds of motion. The baseline is in `SKILL.md` sections 3 and 4; each component's structure is in `components.md`. **`kit/README.md` is the API reference**: the code for G6–G9, M1 cards (`.vl-flip`), M2 hotspots, K5 voting, E2 drag-divider and `.vl-pad` in the tables below is in `kit/vl-interact.js` (G1–G5 are only the `.vl-board` shell and control classes, with the stage written per chapter; M1 draw and then-run are not in the kit yet), documented in `kit/README.md` section 7 (互动组件 / interactive components).
 
 ## 1. Interaction types
 

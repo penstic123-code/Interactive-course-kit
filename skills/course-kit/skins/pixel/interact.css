@@ -1,0 +1,172 @@
+/* 皮肤 pixel · 互动类组件的外观（配合 kit/vl-interact.css 的结构）。只用 skin.css 的变量；方角、整格投影、阶梯缓动。
+   层级：动手题、小游戏、逐步演示、公式拆解放在 .vl-board 里（最重）；翻牌、文档道具、漫画格是"东西"（3px 方框 + 软投影）；立场卡是轻块（虚线框）。
+   放在 skin.css 和 kit/vl-interact.css 之后。 */
+
+/* ---------- G6 动手题 ---------- */
+.vl-task-title,.vl-review-title,.vl-game-title{font-family:var(--font-label);font-weight:700;font-size:1.35rem}
+.vl-task-prog,.vl-tk-jn{font-family:var(--font-label);color:var(--ink2)}
+.vl-task-q{font-weight:700}
+.vl-tk-card{color:var(--ink);background:var(--edge);border:3px solid var(--ink);border-radius:0;transition:transform .1s,background-color .15s}
+.vl-tk-card:hover:not(:disabled){transform:translateY(-2px);background:color-mix(in srgb,var(--accent) 45%,var(--edge))}
+.vl-tk-card.sel{background:var(--accent);outline:3px solid var(--ink);outline-offset:1px}
+.vl-tk-card.linked{background:color-mix(in srgb,var(--accent2) 35%,var(--edge))}
+.vl-tk-card.bad{background:var(--nobg);border-style:dashed}
+.vl-tk-card.ok{background:var(--okbg)}
+.vl-tk-card:disabled{opacity:1}
+.vl-tk-x{color:var(--no)}.vl-tk-ok{color:var(--ok)}
+.vl-tk-ghost{box-shadow:5px 7px 0 var(--shadow-c);transform-origin:center}
+.vl-tk-num{font-family:var(--font-label);font-weight:700;color:var(--ink2)}
+.vl-tk-num0{color:var(--muted)}
+.vl-tk-empty{color:var(--ink2)}
+.vl-tk-pool{border:3px dashed var(--ink2);border-radius:0;background:color-mix(in srgb,var(--sunk) 60%,transparent)}
+.vl-tk-bin{background:var(--edge);border:3px solid var(--ink);border-radius:0}
+.vl-tk-bin-h{border-bottom:2px dashed var(--line);margin-bottom:4px}
+.vl-tk-bin-h b{font-family:var(--font-label);font-size:1.12rem;background:none}
+.vl-tk-zone.vl-tk-over{background:color-mix(in srgb,var(--accent) 55%,var(--edge));border-style:solid}
+.vl-tk-mv{color:var(--ink);background:var(--edge);border:3px solid var(--ink);border-radius:0}
+.vl-tk-mv:hover:not(:disabled){background:var(--accent)}
+.vl-tk-rrow label{font-family:var(--font-label);font-weight:700}
+.vl-tk-rrow output{font-family:var(--font-label);font-size:1.3rem;font-weight:700}
+.vl-tk-range.bad output{color:var(--no)}
+.vl-tk-ends{color:var(--ink2)}
+.vl-tk-track{background:var(--sunk);border:2px solid var(--ink);border-radius:0}
+.vl-tk-target{background:var(--okbg);border-left:2px solid var(--ok);border-right:2px solid var(--ok)}
+.vl-tk-you{background:var(--ink);border-radius:0}
+.vl-tk-case{background:var(--edge);border:3px solid var(--ink);border-left:10px solid var(--accent2);border-radius:0;font-size:1.08rem}
+.vl-tk-why,.vl-tk-jlist li{background:color-mix(in srgb,var(--p2a) 40%,var(--edge));border:2px dashed var(--ink);border-radius:0}
+html[data-scheme="dark"] .vl-tk-why,html[data-scheme="dark"] .vl-tk-jlist li{background:#1e321e}
+.vl-tk-jlist li.ok{border-style:solid}
+.vl-tk-book{background:none;font-family:var(--font-label)}
+.vl-task-fb{font-size:1.02rem}
+.vl-task-fb.no{color:var(--ink)}
+.vl-task-fb.ok{color:var(--ink)}
+.vl-task-fb.warn{color:var(--ink2)}
+.vl-tk-tag{font-family:var(--font-label);font-weight:700;font-size:.95rem;border:2px solid var(--ink);border-radius:0;background:var(--edge)}
+.vl-tk-tag.no{background:var(--nobg)}
+.vl-tk-tag.ok{background:var(--okbg)}
+.vl-task-end{background:var(--okbg);border:3px solid var(--ink);border-radius:0}
+.vl-task-end-t{font-family:var(--font-label);font-weight:700;font-size:1.25rem}
+
+/* ---------- P2 篇末综合关：本篇复习页 + 红笔划掉错误论断 ---------- */
+.vl-review{padding:16px 18px 16px 30px;background:var(--edge);border:3px solid var(--ink);border-left:3px double var(--no);border-radius:0;box-shadow:var(--shadow-obj)}
+.vl-review-intro{color:var(--ink2)}
+.vl-review-can{background:color-mix(in srgb,var(--accent) 28%,var(--edge));border:3px dashed var(--ink);border-radius:0}
+.vl-review-can h4{font-size:1.1rem}
+.vl-review-ck{font-family:var(--font-label);font-weight:700;color:var(--ink2)}
+.vl-review-claim{font-family:var(--font-label);font-size:1.12rem;font-weight:700}
+.vl-review-claim.struck .vl-review-ct{color:var(--ink2);text-decoration:line-through;text-decoration-color:var(--no);text-decoration-thickness:3px}
+.vl-review-claim.struck::marker{color:var(--no)}
+.vl-review-now{font-family:var(--font-label);color:var(--ink)}
+
+/* ---------- G7 分局小游戏 ---------- */
+.vl-game-stat{font-family:var(--font-label);font-weight:700;padding:0 10px;border:2px solid var(--ink);border-radius:0;background:var(--edge)}
+.vl-game-stat b{background:none}
+.vl-game-lv.done{background:var(--okbg)}
+.vl-game-rules{color:var(--ink2);font-size:.98rem}
+.vl-game-goal{font-family:var(--font-label);font-weight:700;font-size:1.12rem}
+.vl-game-msg{font-family:var(--font-label);font-size:1.18rem;font-weight:700}
+.vl-game.won .vl-game-msg{color:var(--ok)}
+.vl-game-stars{color:var(--ink)}
+.vl-game-diag{background:var(--warnbg);border:3px dashed var(--ink);border-radius:0}
+.vl-game-review{background:var(--whybg);border:3px solid var(--ink);border-radius:0}
+.vl-game-dh,.vl-game-rh{font-size:1.1rem}
+.vl-pad-b{color:var(--ink);background:var(--edge);border:3px solid var(--ink);border-radius:0;box-shadow:2px 3px 0 var(--shadow-c)}
+.vl-pad-b:active{transform:translate(2px,3px);box-shadow:none}
+.vl-pad-b small{font-family:var(--font-body);font-weight:700}
+
+/* ---------- G8 逐步演示 ---------- */
+.vl-steps-say{font-size:1.05rem}
+.vl-steps-k{font-family:var(--font-label);font-weight:700;background:var(--accent);border:2px solid var(--ink);border-radius:0;padding:0 8px}
+.vl-st-prog > i{background:var(--sunk);border:2px solid var(--ink);border-radius:0}
+.vl-st-prog > i > b{background:var(--accent2)}
+.vl-st-prog:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.vl-st-n{font-family:var(--font-label);font-weight:700;color:var(--ink2)}
+.vl-steps .vl-st-on > :is(rect,circle,ellipse,path),.vl-steps :is(rect,circle,ellipse,path).vl-st-on{stroke:var(--dg-hi);stroke-width:5}
+
+/* ---------- G9 公式拆解：每片淡底圈出（不用下划线），解释行左边一条同色竖线 ---------- */
+.vl-anat-f{font-family:var(--font-mono);font-size:1.7rem;font-weight:700;color:var(--ink)}
+.vl-anat-part{color:var(--vk);background:color-mix(in srgb,var(--vk) 14%,transparent);border-radius:0}
+.vl-anat-part.on{background:color-mix(in srgb,var(--vk) 26%,transparent);box-shadow:0 0 0 3px var(--vk)}
+.vl-anat-key li{border-radius:0}
+.vl-anat-key li b{color:var(--vk);background:none;font-family:var(--font-mono)}
+.vl-anat-key li.on{background:color-mix(in srgb,var(--vk) 12%,var(--edge))}
+.vl-anat-key li[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--vk)}
+/* 暗色 / 护眼：--q 是按浅底定的，深底上往正文色里混一半，保证对比度 */
+html[data-scheme="dark"] :is(.vl-anat-part,.vl-anat-key li b,.vl-v1,.vl-v2,.vl-v3,.vl-v4,.vl-v5,.vl-v6){color:color-mix(in srgb,var(--vk) 50%,var(--ink))}
+
+/* ---------- E2 对比：本子左右页 ---------- */
+.vl-cmp-cols > *,.vl-cmp-toggle .vl-cmp-view > *{background:var(--edge);border:3px solid var(--ink);border-radius:0}
+.vl-cmp-cols > .bad,.vl-cmp-toggle .vl-cmp-view > .bad{border-style:dashed;background:var(--egbad)}
+.vl-cmp-lab,.vl-cmp-hd{font-family:var(--font-label);font-weight:700;font-size:1.12rem}
+.vl-cmp-mk{color:var(--ink)}
+.vl-cmp-tip{font-family:var(--font-body);font-weight:400;color:var(--ink2)}
+.vl-cmp-slider .vl-cmp-view{border:3px solid var(--ink);border-radius:0;overflow:hidden;background:var(--plate)}
+.vl-cmp-slider .vl-cmp-a,.vl-cmp-slider .vl-cmp-b{background:var(--plate);color:var(--plate-ink)}
+.vl-cmp-h i{background:var(--ink)}
+.vl-cmp-h::after{background:var(--accent);border:3px solid var(--ink)}
+.vl-cmp-h:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+
+/* ---------- M1 翻牌：正面黄便签，背面白卡 ---------- */
+.vl-flip-f{background:var(--note);border:3px solid var(--ink);border-radius:0;box-shadow:var(--shadow-soft);font-family:var(--font-label);font-weight:700;font-size:1.12rem;line-height:1.5}
+.vl-flip-b{background:var(--edge);border:3px solid var(--ink);border-radius:0;box-shadow:var(--shadow-soft)}
+.vl-flip-c:hover .vl-flip-f{background:color-mix(in srgb,var(--note) 80%,var(--accent))}
+.vl-flip-c:focus-visible{outline:none}
+.vl-flip-c:focus-visible .vl-flip-f,.vl-flip-c:focus-visible .vl-flip-b{outline:3px solid var(--focus);outline-offset:3px}
+
+/* ---------- M2 热区图 ---------- */
+.vl-hot .vl-hot-a.is-on > :is(rect,circle,ellipse,path,polygon){stroke:var(--dg-hi);stroke-width:5}
+.vl-hot svg .vl-hot-a:focus-visible > :is(rect,circle,ellipse,path,polygon){stroke:var(--focus);stroke-width:5;stroke-dasharray:7 4}
+.vl-hot-pin{color:var(--plate-ink);background:var(--accent);border:3px solid var(--plate-ink);border-radius:0;box-shadow:2px 3px 0 var(--plate-ink)}
+.vl-hot-pin.is-on{background:var(--okbg)}
+.vl-hot-info{border-top:2px dashed color-mix(in srgb,var(--ink) 30%,transparent);color:var(--ink)}
+.vl-hot-name b{font-family:var(--font-label);font-size:1.12rem;background:none}
+.vl-hot-hint{color:var(--ink2)}
+.vl-hot-n{font-family:var(--font-label);color:var(--ink2)}
+
+/* ---------- T6 漫画分镜：铅笔分格 ---------- */
+.vl-panel{background:var(--edge);border:3px solid var(--ink);border-radius:0}
+.vl-cap{font-size:.98rem;color:var(--ink)}
+.vl-pn{background:var(--ink);color:var(--edge);border-radius:0;font-family:var(--font-label);font-weight:700}
+.vl-bub{background:var(--plate);color:var(--plate-ink);border:2px solid var(--ink);border-radius:0;font-family:var(--font-label);font-weight:700}
+.vl-bub::after{background:var(--plate);border-right:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+
+/* ---------- K9 文档道具：夹进本子里的另一张纸 ---------- */
+.vl-doc{color:var(--ink);background:var(--edge);box-shadow:var(--shadow-soft);transform:none}
+.vl-doc h4{font-family:var(--font-label);font-weight:700;font-size:1.3rem}
+.vl-doc-meta{color:var(--ink2);font-family:var(--font-mono)}
+.vl-doc-sign{font-family:var(--font-label);font-size:1.2rem;font-weight:700}
+.vl-stamp{color:var(--no);border:3px double var(--no);border-radius:0;font-family:var(--font-label);font-weight:700;font-size:1.05rem;letter-spacing:2px;transform:none;background:color-mix(in srgb,var(--edge) 70%,transparent)}
+/* 案卷：牛皮纸文件夹 + 左上角标签 */
+.vl-doc[data-kind="file"]{background:color-mix(in srgb,var(--p3a) 45%,var(--edge));border:2px solid color-mix(in srgb,var(--ink) 45%,transparent);border-radius:0;margin-top:38px}
+.vl-doc[data-kind="file"]::before{content:"";position:absolute;left:18px;top:-20px;width:130px;height:20px;background:inherit;border:2px solid color-mix(in srgb,var(--ink) 45%,transparent);border-bottom:none;border-radius:0}
+.vl-doc[data-kind="file"] h4{font-family:var(--font-mono);font-size:1.15rem}
+/* 报纸：报头双线、两栏 */
+.vl-doc[data-kind="news"]{background:var(--sunk);border-top:6px double var(--ink);border-bottom:2px solid var(--ink);border-radius:0;transform:none;box-shadow:3px 4px 0 color-mix(in srgb,var(--shadow-c) 20%,transparent)}
+.vl-doc[data-kind="news"] .vl-doc-meta{border-bottom:1px solid var(--ink);padding-bottom:4px;font-family:var(--font-body)}
+.vl-doc[data-kind="news"] h4{font-size:1.6rem;line-height:1.25}
+/* 日记：横线纸 + 页边红线 */
+.vl-doc[data-kind="diary"]{background-color:var(--edge);background-image:linear-gradient(transparent 31px,var(--line) 31px);background-size:100% 32px;line-height:32px;padding-left:42px;border-radius:0;transform:none}
+.vl-doc[data-kind="diary"]::before{content:"";position:absolute;left:26px;top:0;bottom:0;border-left:2px solid var(--no);opacity:.6}
+.vl-doc[data-kind="diary"] p{margin:0 0 32px}
+.vl-doc[data-kind="diary"] p:last-child{margin-bottom:0}
+.vl-doc[data-kind="diary"] .vl-doc-meta{font-family:var(--font-label);font-weight:700;margin:0}
+/* 信：信纸 + 落款 */
+.vl-doc[data-kind="letter"]{border:2px solid color-mix(in srgb,var(--ink) 25%,transparent);border-radius:0;transform:none;padding:22px 28px 18px}
+/* 实验笔记：方格纸 + 左边装订线 */
+.vl-doc[data-kind="lab"],.vl-doc[data-kind="notebook"]{background-color:var(--sunk);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:22px 22px;border-left:10px solid var(--accent2);border-radius:0;transform:none}
+.vl-doc[data-kind="lab"] .vl-doc-meta{font-family:var(--font-label);font-weight:700}
+
+/* ---------- K5 立场卡：虚线页 + 便签贴立场 ---------- */
+.vl-philo{padding:10px 14px 12px;background:color-mix(in srgb,var(--whybg) 55%,transparent);border:3px dashed var(--ink);border-radius:0}
+.vl-philo-tab{font-family:var(--font-label);font-weight:700;font-size:.98rem;color:var(--ink);background:var(--edge);border:3px solid var(--ink);border-radius:0}
+.vl-philo-tab.on{background:var(--accent);box-shadow:2px 3px 0 var(--shadow-c)}
+.vl-philo-slide + .vl-philo-slide{background:var(--edge);border:3px solid var(--ink);border-radius:0;box-shadow:var(--shadow-soft);transform:none}
+.vl-philo-q{font-family:var(--font-label);font-weight:700;font-size:1.2rem;line-height:1.5}
+.vl-philo-you{font-family:var(--font-label);font-weight:700;color:var(--ink2)}
+.vl-philo-you.none{font-weight:400}
+.vl-philo-n{font-family:var(--font-label);color:var(--ink2)}
+.vl-vote-st{font-family:var(--font-label);font-weight:700;color:var(--ok)}
+
+/* ---------- 动效档位：轻量档去掉悬停位移 ---------- */
+html.vl-fx-lite .vl-tk-card:hover,html.vl-fx-lite .vl-pad-b:active{transform:none}
+@media print{.vl-review,.vl-doc,.vl-panel{box-shadow:none;transform:none}}

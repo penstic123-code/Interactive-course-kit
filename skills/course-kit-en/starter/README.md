@@ -5,7 +5,7 @@
 ## 一、一条命令
 
 ```
-node <skill>/starter/new-course.mjs <课程文件夹绝对路径> [皮肤名=notebook] [--lang en] [--update-kit]
+node <skill>/starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en] [--update-kit]
 ```
 
 - 课程文件夹不存在就新建；**已有的文件一律不覆盖**（跳过并列出来）。
@@ -79,4 +79,4 @@ kit 里有互动组件 `vl-interact.js / .css`（皮肤带 `interact.css` 时也
 
 ### In English (for English-only courses)
 
-Run `node <skill>/starter/new-course.mjs <absolute course folder> [skin=notebook] --lang en`. You get English pages (`index.html`, `ch01-intro.html`) whose placeholders read `[Fill in: …]`, an English `js/course.js` (write each chapter name in `en`, and the same text in `zh` as a fallback; one-line descriptions go in `descEn`), an English picture pack, a `css/style.css` that hides the language button (there is no Chinese edition to switch to), and `course-rules.md` for this course's own decisions. All kit UI text (top bar, "Try it", card labels, open / close, quiz buttons, diagram hints) switches to English on its own because the pages say `<html lang="en">`; to change any of it, add keys to `window.VL_I18N.en` in `js/course.js`. Write the prose with `en-teaching-prose`. Then follow the steps in sections 3 and 4: edit the chapter list, fill in `course-rules.md`, finish the sample chapter, and run `tools/check.mjs` until it reports 0. For a course with both Chinese and English pages, see the table above: Chinese pages live in the course root, English pages with the same file names live in `en/`, load assets via `../kit`, `../skin`, `../css`, `../js`, and share progress and notes with the Chinese pages.
+Run `node <skill>/starter/new-course.mjs <absolute course folder> <skin> --lang en`. You get English pages (`index.html`, `ch01-intro.html`) whose placeholders read `[Fill in: …]`, an English `js/course.js` (write each chapter name in `en`, and the same text in `zh` as a fallback; one-line descriptions go in `descEn`), an English picture pack, a `css/style.css` that hides the language button (there is no Chinese edition to switch to), and `course-rules.md` for this course's own decisions. All kit UI text (top bar, "Try it", card labels, open / close, quiz buttons, diagram hints) switches to English on its own because the pages say `<html lang="en">`; to change any of it, add keys to `window.VL_I18N.en` in `js/course.js`. Write the prose with `en-teaching-prose`. Then follow the steps in sections 3 and 4: edit the chapter list, fill in `course-rules.md`, finish the sample chapter, and run `tools/check.mjs` until it reports 0. For a course with both Chinese and English pages, see the table above: Chinese pages live in the course root, English pages with the same file names live in `en/`, load assets via `../kit`, `../skin`, `../css`, `../js`, and share progress and notes with the Chinese pages.

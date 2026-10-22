@@ -93,7 +93,7 @@ VL.illus.svg(name)   VL.illus.mount(根节点)   VL.illus.lib
 `<figure class="vl-fig" id="fig-x">图<figcaption>图注</figcaption></figure>`：按出现顺序在图注前写"图 N"（不要手写）。正文里 `<a data-figref="fig-x" href="#fig-x">图</a>` 自动改成"图 N"。动态加图后调 `VL.figs()`。照片用 `.vl-fig.photo`。宽表 / 宽图包 `.vl-scroll`。
 
 ### 概念图解（diagrams.js）
-五种函数，参数里 `nodes / layers / quads / rows` 的每项可带 `info`（点中后信息行显示的 HTML）和 `c`（色号 1–6）。
+共 12 种（全部参数见第九节），这里列最常用的五种；参数里 `nodes / layers / quads / rows` 的每项可带 `info`（点中后信息行显示的 HTML）和 `c`（色号 1–6）。
 ```js
 VL.diagram.cycle(target, { nodes:[{name, eg, info}], center:"再来一局", numbered:true, caption, label, hint, select:true, onSelect(i, item) })
 VL.diagram.nested(target, { layers:[从里到外], spin:true, caption })          // 宽屏右侧引线标签；窄屏编号对照
@@ -200,6 +200,7 @@ VL.quiz("#c2-quiz", [{ q, opts:[…], a:正确下标, why:"解析", fixed:false,
 - `html.vl-fx-off` 和 `prefers-reduced-motion` 下一切 animation / transition 关掉；组件里的过程动画都保证"关掉也是最终状态"。皮肤的氛围动效自己判断 `vl-fx-lite`。
 
 ## 六、配色（读者可切换）
+**暗色暂缓**：切换功能在，但暗色和护眼还没完整验收，开课和截图验收按亮色。
 三套 `html[data-scheme="light|dark|sepia"]`，由皮肤用变量实现。暗色和护眼下，`.vl-fig`、`.vl-cc-fig`、单独的 `.vl-illus` 保持浅色图板（`--plate`，字 `--plate-ink`），里面的颜色不变。页面专属的 SVG / canvas 若写死了深色字，放进 `.vl-fig` 里就安全。
 
 ## 七、互动组件（vl-interact.js / vl-interact.css）
@@ -409,7 +410,7 @@ notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线�
 
 用途：可选模块（统一概念数据、关系图、术语表、闪卡、阅读激励、陪伴角色、声音）的文件、引入顺序、配置和 API。什么时候加、有哪些坑见 `references/modules.md`；数据字段见 `kit/modules/concepts-schema.md`。演示：`kit/modules/demo-modules.html`（三章假数据小课）。
 
-### 一、文件与引入顺序
+### 8.1 文件与引入顺序
 
 | 文件 | 放哪 | 做什么 |
 |---|---|---|
@@ -442,7 +443,7 @@ notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线�
 ```
 只加选了的模块。概念卡、邮票里的插画要用到别章的图时，把那几章的插图包也加载（或把概念小图集中放进一个 `js/illus-concepts.js`）。
 
-### 二、配置（VL_COURSE.modules）
+### 8.2 配置（VL_COURSE.modules）
 
 ```js
 window.VL_COURSE = { …,
@@ -463,7 +464,7 @@ window.VL_COURSE = { …,
 };
 ```
 
-### 三、统一概念数据 VL.concepts
+### 8.3 统一概念数据 VL.concepts
 
 | API | 说明 |
 |---|---|
@@ -477,7 +478,7 @@ window.VL_COURSE = { …,
 | `relLabel(type, dir)` `TYPES` | 关系的说法（"先要懂""用在"…） |
 | `chHref(n, id?)` `mapHref(id?)` `isOpen(n)` `partOf(n)` | 链接与篇章 |
 
-### 四、概念关系图（graph.js）
+### 8.4 概念关系图（graph.js）
 
 - **全课页**：`map.html` 里一行 `VL.mapPage()`，接管 `#vl-map`（图）、`#vl-maplist`（列表）、`#vl-mapinfo`（概念卡 + 去第 N 章 + 按关系分组的邻居）、`#vl-mapq`（搜索）、`#vl-mapparts`（按篇筛选）、`#vl-maplegend`、`#vl-mapviews`、`#vl-maplayouts`。≤700px 默认列表视图。`map.html#概念id` 打开即选中。
 - **组件**：`VL.graph(target, {ids, layout:"layered"|"force", groupBy:"auto"|"chapter"|"part"|fn, maxRows:7, info, onSelect, here})` → `{select(id), clear(), filterParts(Set), search(q) → ids, setLayout(m), relayout(), selected}`；选中派冒泡事件 `vl:concept {id}`。
@@ -487,20 +488,20 @@ window.VL_COURSE = { …,
 - **本章小图**：`<div class="vl-minimap" data-ch="3"></div>` 或 `VL.miniMap(ch, target, {future:false})`。本章概念一列，前面章节里和它们相连的在左；默认不画后面的章（正文不预告后面）。点节点在下面出一行释义和"去第 N 章"。
 - **列表视图**：`VL.graphList(target)`，按篇 → 章分组的按钮，点开就地显示信息（`aria-expanded`）。
 
-### 五、术语表与闪卡（terms.js）
+### 8.5 术语表与闪卡（terms.js）
 
 - `VL.glossary(target)`：概念 + 术语，中文按拼音（`Intl` 拼音排序 + 分界字取首字母）、英文按字母；首字母跳转、搜索（中文、英文、别名、释义）、每条链回所在章（概念跳到 `#cc-id`，术语跳到 `anchor`），核心概念带"核心概念 / 世界观原理"小签链到关系图。`glossary.html#gl-<id>` 高亮那一条。
 - `VL.flashcards(target, {perRound:10})`：莱特纳 4 盒（当天 / 1 天 / 3 天 / 7 天），答对进下一盒，答错回第一盒且本轮末尾再来一次；先翻面才能判对错。空格翻面，← 还没记住，→ 记住了。只出已读懂（测验全对）章的词，读者可勾"也练还没读懂的章"。存档 `<id>-flash`。返回 `{round(ids?), flip(), judge(ok)}`。非"全开"动效档直接换面，不转 3D。
 
-### 六、阅读激励（collect.js）
+### 8.6 阅读激励（collect.js）
 
-- 订阅：`vl:try`（`first` 时收 `.vl-try[data-concept]` 或同一节第一张 `.vl-cc[data-concept]` 的概念）、`vl:quiz-perfect`（本章邮票 + 本章全部概念，测验徽章上盖"读懂了"）、`vl:review-round {concepts | ch}`（篇末综合关每回合答对，页面自己派）。章邮票读 `VL.Progress`，不另存。
+- 订阅：`vl:try`（`first` 时收 `.vl-try[data-concept]` 或同一节第一张 `.vl-cc[data-concept]` 的概念）、`vl:quiz-perfect`（本章邮票 + 本章全部概念，测验徽章上盖"读懂了"）、`vl:review-round {concepts | ch}`（篇末综合关每回合答对）。注意 `VL.review` 自己派的 `vl:review-round` 只带 `{id, i, n, claim, revealed, last}`，不带 `concepts` / `ch`，集邮册不会因此收卡；要收卡，页面在监听到它之后自己再派一次带 `concepts` 或 `ch` 的同名事件。章邮票读 `VL.Progress`，不另存。
 - 存档：`<id>-cards`（已收概念）、`<id>-col-seen`（庆祝过的事：`ch-N`、`full-N`、`all`），每件事只庆祝一次。
 - 外观：提示条 `.vl-col-toast`（≤1.2s，`pointer-events:none`；off 档只读屏播报）、顶栏 `.vl-tb-col` + `.vl-col-count`、对话框 `.vl-col-back > .vl-col-dlg`（Tab 留在框里、←→ 翻页、Esc 关）、章邮票 `.vl-col-stamp.is-got|is-empty`、图鉴格 `.vl-col-cell`、邮戳 `.vl-col-pm`、测验徽章上的 `.vl-col-mark`。
 - 目录页：`<div data-vl-collect="map">`（全课地图，读懂的章盖章）、`<p data-vl-collect="next">`（书签：第一个还没读懂的章）、`<div data-vl-collect="album">`（整本摊开）。
 - API：`VL.collect.has(id) / add(ids, reason, quiet) / open() / close() / next() / total() / reset()`；收进新概念时派 `vl:collect {ids, reason}`（关系图据此点亮节点）。
 
-### 七、陪伴角色（companion.js）
+### 8.7 陪伴角色（companion.js）
 
 - 台词：每节 `<div class="vl-sec" data-lines="句一|句二" data-lines-en="…">`（也可写 JSON 数组）。点击时按当前所在的节（顶边过视口 35%）轮流说；这一节没写就只冒"……"，不凑通用台词。
 - 主动冒话：试试看第一次完成（`.vl-try[data-say]` 优先，否则 `lines.try`）、测验全对（`lines.perfect`），每章 ≤ `max` 次。
@@ -508,13 +509,13 @@ window.VL_COURSE = { …,
 - 不挡正文：每次说话先量正文栏（`main.vl-wrap` 内容框）在角色那一侧的空白，≥180px 时气泡浮在空白里；不够时（860px 正文栏下约 1270px 以下都算，含 1100）气泡加 `.is-flow` 插进正文流（`main` 或 `.vl-sec-body` 的直接子元素之间，视口里最靠下、落在角色按钮上方的位置），下面的内容让开，收起时移回角色身边。没有侧边空白时 `<html>` 加 `vl-comp-pad`，body 底部留出角色按钮的高度。
 - 开关在顶栏"显示"浮层里（显示 / 隐藏），存档 `<id>-companion`。API：`VL.companion.say(text) / hide() / set(bool) / shown()`。
 
-### 八、声音（sound.js）
+### 8.8 声音（sound.js）
 
 - 默认静音；顶栏喇叭 `.vl-tb-sound[aria-pressed]`，存档 `<id>-sound`；打开时才建 AudioContext。
 - 音：`click flip pop ok wrong coin clear stamp`，`VL.sound.play(名)`；音色由皮肤 CSS 变量 `--vl-snd`：`paper`（纸和铅笔，笔记本）、`sine`、`square`（像素）、`triangle`。
 - 自动挂钩：`vl:try`、`vl:answer` → ok；答错的测验选项、`vl:guess` 猜错 → wrong；`vl:quiz-perfect` → clear；集邮册收卡 coin、盖章 stamp。不跟滚动响。
 
-### 九、build-concepts.mjs
+### 8.9 build-concepts.mjs
 
 ```
 node kit/modules/build-concepts.mjs <课程文件夹绝对路径> [--write] [--course js/course.js] [--concepts js/concepts.js] [--out 路径]
@@ -528,13 +529,14 @@ node kit/modules/build-concepts.mjs <课程文件夹绝对路径> [--write] [--c
 ### 加载
 
 ```html
-<link rel="stylesheet" href="css/vl.css">
-<link rel="stylesheet" href="skins/notebook/skin.css">
-<link rel="stylesheet" href="skins/notebook/diagrams.css">   <!-- 新七种图解的皮肤外观 -->
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<link rel="stylesheet" href="skin/diagrams.css">   <!-- 新七种图解的皮肤外观（notebook 已有） -->
 …
-<script src="js/vl.js"></script>
-<script src="js/diagrams.js"></script>                        <!-- 放在 vl.js 之后 -->
+<script src="kit/vl.js"></script>
+<script src="kit/diagrams.js"></script>            <!-- 放在 vl.js 之后 -->
 ```
+（路径按 `new-course.mjs` 生成的课程写：`kit/` 是复制来的 kit，`skin/` 是复制来的皮肤。）
 
 ### 两种写法
 

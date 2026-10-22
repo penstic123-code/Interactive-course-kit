@@ -8,7 +8,7 @@
 //   4 链接：href / src 指向的本地文件是否存在
 //   5 运行：调用同目录 qa.mjs，420 和 1100 宽度下点遍按钮、拖遍滑块，报 JS 错误、横向溢出、图内文字压线
 //   6 截图：每页 420、1100 各截一张整页图，打印路径——必须用 Read 打开看（脚本看不出好不好看）
-// 依赖：Node 22+、Windows 的 Edge（同 qa.mjs）。
+// 依赖：Node 22+、Edge 或 Chrome（同 qa.mjs，找浏览器的规则见 browser.mjs，可用环境变量 EDGE_PATH 指定）。
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -109,13 +109,14 @@ for (const p of pages) {
   }
 }
 
-if (!FAST) {
+if (!FAST && !pages.length) console.log("5–6 运行与截图：这个文件夹（和 en/）里没有 .html 页面，跳过");
+else if (!FAST) {
   // 5 运行
   console.log("5 运行（qa.mjs）");
   const r = spawnSync(process.execPath, [path.join(HERE, "qa.mjs"), ROOT, ...(onlyArg ? [onlyArg] : [])], { encoding: "utf8", timeout: 600000 });
   const out = (r.stdout || "") + (r.stderr || "");
   out.split("\n").filter(l => l.trim()).forEach(l => { if (l.startsWith("✗")) bad++; console.log("  " + l); });
-  if (!/[✓✗]/.test(out)) fail("运行", "qa.mjs 没有输出结果（路径对吗？Edge 装了吗？）");
+  if (!/[✓✗]/.test(out)) fail("运行", "qa.mjs 没有输出结果（路径对吗？浏览器找得到吗？可设 EDGE_PATH）");
 
   // 6 截图
   console.log("6 截图（必须用 Read 打开看）");

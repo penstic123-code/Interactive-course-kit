@@ -7,7 +7,7 @@ Purpose: what each core component does, when to use it, how to write its content
 - **UI labels come from `VL.t()`**, with English strings in the `EN` tables in `kit/vl.js` and `kit/vl-interact.js` (pages with `<html lang="en">` use them). Labels quoted below ("Concept card", "Try it:", "Why it works"…) are those EN strings. Override per course with `window.VL_I18N`.
 - Length limits are converted from the Chinese originals at 1 English word = 1.5 characters (the rate `tools/check.mjs` uses).
 
-Course shorthand (the source courses of these rules; live links in the repo README): GD = the game design course (notebook), DS = the data science course (paper-cutout tower climb), AI = the AI course (a retro medium per world).
+Course shorthand (the source courses of these rules; the "good / bad" examples below only say where a rule came from — those course files are not shipped with the skill): GD = the game design course (notebook), DS = the data science course (paper-cutout tower climb), AI = the AI course (a retro medium per world).
 
 ## 0. Four rules every component follows
 
@@ -39,7 +39,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ## 2. Navigation
 
 ### N1 Top bar
-- **Job**: back to contents, course progress, jump to any chapter, preferences (colours Light / Dark / Easy on the eyes; motion Auto / Full / Light / Off; language). Sound switch and reward panel are added to the top bar by optional modules; see `kit/README.md`.
+- **Job**: back to contents, course progress, jump to any chapter, preferences (colours Light / Dark / Easy on the eyes — dark and easy-on-the-eyes are not fully approved yet, so start courses and check screenshots in Light; motion Auto / Full / Light / Off; language). Sound switch and reward panel are added to the top bar by optional modules; see `kit/README.md`.
 - **Use / don't**: on every page. vl.js builds it from the chapter table (`VL_COURSE` in `js/course.js`) and `<body data-ch>`; never hand-write chapters. vl.js also writes `data-part`. `VL_COURSE.topbar:false` turns it off.
 - **Content**: navigation and switches only, no body hints. Course progress is a pair: mini map + popover list. On phones the mini map may hide, but the popover must stay (bad: AI hides the chapter dots on phones, so you can't jump chapters).
 - **Interaction and keyboard**: all `button` / `a`; popover closes on Esc or outside click and returns focus to its button; cells in the mini map must not be both `tabindex=-1` and `aria-hidden` (bad: the DS tower strip).
@@ -214,7 +214,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K7 Inline marks (term definitions / naming / emphasis)
 - **Job**: a new term gets a one-line definition on the spot; a concept's first naming is noticed; the key sentence of a paragraph is noticed.
-- **Content**: a term's first appearance uses `.vl-term`, with a one-sentence `data-def` that doesn't repeat the term (`data-name` changes the popup title). Naming and emphasis: at most two per paragraph; don't pile up `<b>` (naming uses `<span class="vl-cn">`, drawn as a highlighter, only where a concept is first named; emphasis uses `<span class="vl-em">`, drawn as emphasis dots in Chinese and an underline on English pages; plain `<b>` is just bold, never a naming mark). A core concept's name must match in the heading, the naming mark and the concept card; see SKILL.md section 1. `tools/build_glossary.py` collects the glossary from `data-def`.
+- **Content**: a term's first appearance uses `.vl-term`, with a one-sentence `data-def` that doesn't repeat the term (`data-name` changes the popup title). Naming and emphasis: at most two per paragraph; don't pile up `<b>` (naming uses `<span class="vl-cn">`, drawn as a highlighter, only where a concept is first named; emphasis uses `<span class="vl-em">`, drawn as emphasis dots in Chinese and an underline on English pages; plain `<b>` is just bold, never a naming mark). A core concept's name must match in the heading, the naming mark and the concept card; see SKILL.md section 1. The glossary `glossary.html` is built by `kit/modules/terms.js` from the `terms` in the course's concept data `js/concepts.js`; `node kit/modules/build-concepts.mjs <absolute course path> --write` collects every chapter's `.vl-term[data-def]` into that data (a term defined two different ways is reported as ✗).
 - **Interaction and keyboard**: `tabindex=0` (added by vl.js); hover / focus / tap toggles; Esc or scroll closes; the popup is positioned by JS, clamped to the viewport and flips up or down (good: DS `.term-tip`; bad: GD / AI pure-CSS `::after` runs off the screen edge).
 - **Motion**: feedback (≤150ms or no animation).
 - **Skins**: notebook = dotted underline + ink-backed bubble, highlighter | paper = dotted underline + white paper popup | pixel = dot-matrix bubble | town = small paper tag.
@@ -244,9 +244,9 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Skins**: notebook = another sheet or a clipping tucked into the notebook | paper = cutouts in different paper colours | pixel = in-game item window | town = notice board, envelope.
 
 ```html
-<!-- look in kit/vl-interact.css, usage in kit/README.md; sketch below -->
+<!-- usage in kit/README.md section 7, K9; the look lives in the skin's interact.css -->
 <div class="vl-doc" data-kind="news"><h4>…</h4><p>…</p></div>
-<!-- data-kind: file | report | diary | news | notebook | slip | letter | notice -->
+<!-- data-kind: file | news | diary | letter | lab (notebook is an alias of lab); the notebook skin draws only these -->
 ```
 
 ### K10 Invention story box
@@ -286,7 +286,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### T2 Text beside picture
 - **Job**: long text has a picture right beside it.
 - **Rules**: on wide screens, one column of picture (38%) and one of text, **top-aligned, no wrapping, no vertical centring**; stacked at ≤700px (picture on top). Short caption; the explanation goes in the text. Tall pictures such as portraits get `.narrow` (picture column 26%); picture on the left by default, `.rev` puts it on the right. If the text is much longer than the picture, use a taller picture or split into two side-by-side groups; never let text wrap under the picture.
-  Bad: GD `.withimg` centres vertically (`style.css` line 251); AI `.withimg` floats and wraps; DS `layout.js` `wi-wrap` falls back to wrapping when the text is longer. Good: DS grid 38% / 1fr top-aligned + `tools/layout-check.mjs` check.
+  Bad: GD `.withimg` centres vertically (`style.css` line 251); AI `.withimg` floats and wraps; DS `layout.js` `wi-wrap` falls back to wrapping when the text is longer. Good: DS grid 38% / 1fr top-aligned (DS has its own layout-check script, not shipped with the skill; here, take 420 and 1100 screenshots with `tools/shot.mjs` and check by eye).
 - **Skins**: only the picture frame changes (notebook = tape | paper = white border + shadow | pixel = ink frame + hard shadow | town = wooden frame).
 
 ```html
@@ -396,8 +396,8 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ```html
 <div class="vl-vs"><div><b>✓ With feedback</b>…</div><div class="bad"><b>✗ No feedback</b>…</div></div>   <!-- the bad side gets .bad (dashed) -->
-<!-- drag-line comparison: see kit/README.md; sketch below -->
-<div class="vl-compare" role="slider" aria-valuenow="50" tabindex="0"><img …><img …></div>
+<!-- drag-line comparison: kit/README.md section 7, E2; vl-interact.js adds role=slider to the divider -->
+<div class="vl-compare" data-mode="slider"><div class="vl-cmp-a bad" data-label="Before">…</div><div class="vl-cmp-b" data-label="After">…</div></div>
 ```
 
 ---
@@ -407,7 +407,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### M1 Predict → reveal
 - **Job**: the reader guesses first, then sees the answer; the gap itself teaches.
 - **Use / don't**: section-opening hooks, "what did they do back then?" in invention stories, predictions before a simulation. It doesn't replace a signature interaction.
-- **Modes** (one component `.vl-guess`, switched by `data-mode`; `kit/vl.js` has think, pick, estimate; the other three are in `kit/vl-interact.js`, see `kit/README.md`):
+- **Modes** (one component `.vl-guess`, switched by `data-mode`; `kit/vl.js` has think, pick, estimate; cards is `.vl-flip` in `kit/vl-interact.js` (kit/README.md section 7, "M1 补：翻牌"); draw and then-run are not in the kit yet — write them in the page if needed):
 
   | Mode | Shape | Good example |
   |---|---|---|
@@ -444,10 +444,10 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Skins**: notebook = bolder ink line | paper = paper piece lifts | pixel = blinking frame | town = building lights up.
 
 ```html
-<!-- "click a layer to see that layer" in concept diagrams is already in VL.diagram (select:true, dispatches vl:dgselect); for general hotspot pictures see kit/README.md; sketch below -->
-<figure class="vl-fig vl-hot" data-info="#ch01-info">
-  <svg><g data-hot="ml" tabindex="0" role="button" aria-label="Machine learning">…</g></svg>
-  <div id="ch01-info" aria-live="polite">Click a layer first.</div>
+<!-- "click a layer to see that layer" in concept diagrams is already in VL.diagram (select:true, dispatches vl:dgselect); general hotspot pictures: kit/README.md section 7, M2 -->
+<figure class="vl-fig vl-hot" data-hint="Click a layer first.">
+  <svg><g data-hot="ml" data-name="Machine learning">…</g></svg>   <!-- tabindex, role, aria-pressed added automatically -->
+  <div class="vl-hot-text" data-for="ml"><b>Machine learning</b>: …</div>   <!-- info box .vl-hot-info is created if missing -->
 </figure>
 ```
 
@@ -516,7 +516,7 @@ The code for G6–G9 is in `kit/vl-interact.js`; usage in `kit/README.md`. Below
 
 - **Job**: sort by hand, put in order, connect pairs, dial a slider into a range, judge cases one at a time; no failing.
 - **Content**: each task = prompt + data + `hints:[where to look, why]` + one line each for right and wrong; the shuffle must not equal the correct order; for judging tasks each card states "this book's verdict + reason".
-- **Interaction and keyboard**: drag and drop + click alternative; ordering via ↑↓ buttons; matching: click left then right (numbered ①②③); states shown with ✗, dashed boxes, strike-through. Two levels of error: "{0} card(s) are in the wrong box. Look again at the ones marked ✗." → then name one card and say why; three levels of hints: where to look → why → "Just show me" (still counts as done). Good: the DS boss engine + `tools/boss-check.mjs` self-test.
+- **Interaction and keyboard**: drag and drop + click alternative; ordering via ↑↓ buttons; matching: click left then right (numbered ①②③); states shown with ✗, dashed boxes, strike-through. Two levels of error: "{0} card(s) are in the wrong box. Look again at the ones marked ✗." → then name one card and say why; three levels of hints: where to look → why → "Just show me" (still counts as done). Good: the DS boss engine (its self-test script is not shipped with the skill; the kit's `VL.task` returns `_solve / _spoil / _next` test hooks).
 - **Motion**: feedback (light 280ms shake when wrong, green when right).
 
 ### G7 Round-based mini-game
@@ -550,7 +550,7 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 
 ### P1 End-of-chapter quiz
 - **Job**: 4–6 questions that test the learning goals (number and types of questions in section 1A of `references/content-rules.md`). Multiple choice appears only here.
-- **Content**: each question `{q, opts, a, why, fixed, img}`, with an explanation; options are shuffled with a seed from chapter number + question number (`fixed:true` means no shuffle); check that the right answer isn't always the longest (the project's `tools/quizcheck.py`); questions may have a picture (`img`).
+- **Content**: each question `{q, opts, a, why, fixed, img}`, with an explanation; options are shuffled with a seed from chapter number + question number (`fixed:true` means no shuffle); check that the right answer isn't always the longest (the skill has no script for this; read every question once before delivery); questions may have a picture (`img`).
 - **Interaction and keyboard**: one question at a time, turned sideways (◀ dots ▶ / ←→; dots have three states: `.tried` answered wrong before / `.ok` answered right / `.on` current); a wrong option is struck through, disabled and shaken lightly, the right one shows the explanation. Two ways to answer: click an option (`mode:"pick"`), or drag an answer card into the answer slot (`mode:"drag"`: select a card + press Enter on the slot to place it; good: the new GD `.qz-slot`). All correct: show the badge, `VL.Progress.done(chapter number)` records "understood" (`progress:false` skips it), dispatch `vl:quiz-perfect {ch, firstTry, n}`; each correct answer dispatches `vl:answer {i, firstTry}`.
 - **Motion**: feedback (≤300ms); the all-correct celebration is handled by the reward module.
 - **Skins**: notebook = handwritten options + completion badge | paper = paper buttons | pixel = STAGE CLEAR! | town = the house is finished.

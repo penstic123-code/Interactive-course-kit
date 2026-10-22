@@ -63,7 +63,7 @@ A set of Claude Code skills for building interactive, illustrated learning web c
 ![互动组件演示页](docs/images/interact.jpg)
 
 ### 只用验收过的皮肤
-不让 AI 自由发挥风格。目前有手绘笔记本皮肤；读者可在顶栏切换亮色 / 护眼配色和动效档位（全开、轻量、关），并尊重系统的"减少动态"设置。
+不让 AI 自由发挥风格，开课先问你选哪套（见下方"皮肤"）。读者可在顶栏切换亮色 / 护眼配色和动效档位（全开、轻量、关），并尊重系统的"减少动态"设置。
 
 ### 可选模块
 概念关系图（和概念卡共用一份数据）、术语表、闪卡、集邮式阅读激励（读懂一章盖一枚邮票）、点击才说话的陪伴角色、声音（默认静音）。
@@ -91,7 +91,18 @@ skill 本身有中英两份，代码共用；`new-course.mjs --lang en` 直接�
 
 ## 皮肤
 
-目前验收入库的只有一套：**`notebook` 手绘笔记本**（来自游戏设计课）。其他几门课的风格（纸片、掌机像素、红白机像素、微缩小镇）已经记在 `references/skin-contract.md`，但还没抽成皮肤。那份文件也写了怎么抽取或新做一套皮肤：先用真实内容做一章样板，实测对比度、查三套配色，用户验收后入库。
+开新课时，AI 第一步会问你要哪套美术风格。目前有四套验收过的皮肤，组件和互动在四套里都能用，换皮肤不用改正文：
+
+| 皮肤 | 样子 | 适合 |
+|---|---|---|
+| `notebook` 手绘笔记本 | 横线纸、墨线火柴人、色块 | 设计、思维、文科 |
+| `paper` 纸片 | 卡纸剪纸、白裁边、柔和投影，目录页是一座塔 | 有故事、有角色的课 |
+| `pixel` 掌机像素 | 四阶绿液晶屏、像素插画、阶梯动效 | 计算、编程、游戏化的课 |
+| `fieldbook` 田野手账 | 方格活页纸、彩铅、胶带贴的照片和票根 | 人文、社科、历史 |
+
+![四套皮肤：手绘笔记本、纸片、掌机像素、田野手账](docs/images/skins.jpg)
+
+每套皮肤的验收页在 `skins/<名>/gallery.html`，把所有组件摆在一页上，双击就能看。想要新风格，按 `references/skin-contract.md` 先做一章样稿再入库。
 
 ## 安装
 
@@ -107,7 +118,7 @@ Copy-Item -Recurse skills\* $HOME\.claude\skills\
 然后在 Claude Code 里直接说"帮我做一门关于××的互动课程"，它会读取这些 skill。也可以手动生成骨架：
 
 ```bash
-node ~/.claude/skills/course-kit/starter/new-course.mjs <课程文件夹绝对路径> notebook
+node ~/.claude/skills/course-kit/starter/new-course.mjs <课程文件夹绝对路径> <皮肤名>
 node ~/.claude/skills/course-kit/tools/check.mjs <课程文件夹绝对路径> --fast
 ```
 
@@ -116,9 +127,9 @@ node ~/.claude/skills/course-kit/tools/check.mjs <课程文件夹绝对路径> -
 ## 要求与限制
 
 - 课程是纯前端、离线可用的 HTML，双击就能打开，不需要构建。
-- 检查工具需要 Node 22+ 和 **Windows 上的 Microsoft Edge**（无头模式）。macOS / Linux 上 `--fast` 静态检查可用，运行和截图两步暂不可用。
-- 目前只有一套皮肤（手绘笔记本）；暗色配色未完整测试。
+- 检查工具需要 Node 22+ 和 Edge 或 Chrome（无头模式），会自动查找，也可用环境变量 `EDGE_PATH` 指定。目前只在 Windows 上实测过。
+- 暗色配色有变量但未完整验收。
 
 ## 许可
 
-代码与文档：MIT。手写字体 Patrick Hand：SIL Open Font License（见 `skins/notebook/fonts/OFL.txt`）。
+代码与文档：MIT。随附的第三方资源各有许可：Patrick Hand 和 Fusion Pixel 字体为 SIL Open Font License（见各皮肤 `fonts/` 下的许可文件），Rough.js 为 MIT。

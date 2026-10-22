@@ -1,0 +1,174 @@
+/* 皮肤 pixel · 可选模块的外观（结构在 kit/modules/modules.css）。放在 skin.css 之后。
+   阅读激励 = 卡带收藏册：章邮票换成方角像素卡片，读懂的章盖一个"CLEAR"红章；关系图节点 = 篇色像素方块；闪卡 = 液晶索引卡。声音音色 --vl-snd:chip（芯片音）。 */
+/* 皮肤 notebook · 可选模块的外观（结构在 kit/modules/modules.css）。放在 skin.css 之后。
+   阅读激励 = 集邮册 + 盖章：章邮票是带齿孔的小纸片，读懂的章盖一枚红色邮戳"读懂了"；图鉴格是本子上画的方格，没得的是灰剪影。
+   关系图节点 = 篇色便利贴；陪伴角色 = 贴在页角的贴纸；闪卡 = 横线索引卡。声音音色 = 纸和铅笔（--vl-snd:paper）。 */
+/* --ink 定义在 body 上，所以引用它的变量也写在 body 上（写在 :root 会解析成无效值，线就不见了） */
+:root{--vl-snd:chip}
+body{--vl-red:#a3283f;--vl-e1:var(--ink);--vl-e2:var(--q2);--vl-e3:var(--q3);--vl-e4:var(--q5)}
+html[data-scheme="dark"] body{--vl-red:#ff9aa8;--vl-e2:#ffb070;--vl-e3:#a8e07a;--vl-e4:#ff9aa8}
+
+/* ---------- 相关章节：几张夹在页尾的索引卡 ---------- */
+.vl-related h3{font-size:1.3rem}
+.vl-rel-item{background:var(--edge);border:3px solid var(--ink);border-radius:0;box-shadow:3px 4px 0 var(--accent2)}
+.vl-rel-item a{color:var(--ink)}
+.vl-rel-item a:hover .vl-rel-name{text-decoration:underline 2px var(--accent2);text-underline-offset:4px}
+.vl-rel-n{font-family:var(--font-label);color:var(--ink2);font-weight:700}
+.vl-rel-name{font-family:var(--font-label)}
+.vl-rel-why{color:var(--ink2);border-top:2px dashed var(--line);padding-top:4px}
+.vl-rel-off{color:var(--ink2)}
+
+/* ---------- 关系图 ---------- */
+.vl-ge-ln{stroke:var(--vl-e1)}
+.vl-ge-ah{fill:var(--vl-e1);stroke:none}
+.vl-ge.t-explains .vl-ge-ln,.vl-lg.t-explains .vl-ge-ln{stroke:var(--vl-e2)}.vl-ge.t-explains .vl-ge-ah,.vl-lg.t-explains .vl-ge-ah{fill:var(--vl-e2)}
+.vl-ge.t-applies .vl-ge-ln,.vl-lg.t-applies .vl-ge-ln{stroke:var(--vl-e3)}.vl-ge.t-applies .vl-ge-ah,.vl-lg.t-applies .vl-ge-ah{fill:var(--vl-e3)}
+.vl-ge.t-contrast .vl-ge-ln,.vl-lg.t-contrast .vl-ge-ln{stroke:var(--vl-e4)}
+.vl-lg .vl-ge-ln{fill:none;stroke-width:2.6;stroke:var(--vl-e1)}.vl-lg .vl-ge-ah{fill:var(--vl-e1)}
+.vl-lg.t-explains .vl-ge-ln{stroke-dasharray:8 5}.vl-lg.t-contrast .vl-ge-ln{stroke-dasharray:2 6;stroke-linecap:round}
+.vl-gh{font-family:var(--font-label);font-weight:700;color:var(--ink2)}
+.vl-gn,.vl-gl-btn{font-family:var(--font-label);font-weight:700;color:#0f380f;background:var(--p1a);border:3px solid #0f380f;border-radius:0;box-shadow:2px 3px 0 rgba(15,56,15,.3)}
+.vl-gn[data-part="2"],.vl-gl-btn[data-part="2"],.vl-mp-part[data-part="2"] .vl-sw{background:var(--p2a)}
+.vl-gn[data-part="3"],.vl-gl-btn[data-part="3"],.vl-mp-part[data-part="3"] .vl-sw{background:var(--p3a)}
+.vl-gn[data-part="4"],.vl-gl-btn[data-part="4"],.vl-mp-part[data-part="4"] .vl-sw{background:var(--p4a)}
+.vl-gn[data-part="5"],.vl-gl-btn[data-part="5"],.vl-mp-part[data-part="5"] .vl-sw{background:var(--p5a)}
+.vl-mp-part .vl-sw{background:var(--p1a);border:2px solid #0f380f}
+.vl-gn-ch{background:#fff;border:2px solid #0f380f;color:#0f380f;font-family:var(--font-label)}
+.vl-gn:hover:not(.is-off){transform:translateY(-2px)}
+.vl-gn.is-on,.vl-gl-btn.is-on{border-width:4px;box-shadow:4px 5px 0 #0f380f;transform:scale(1.06)}
+.vl-gn.is-nb{box-shadow:0 0 0 3px var(--edge),0 0 0 5.5px #0f380f}
+.vl-gn.is-hit{box-shadow:0 0 0 5px var(--hl)}
+.vl-gn.is-principle,.vl-gl-btn.is-principle{border-style:double;border-width:5px}
+.vl-gn.is-off{background:#dfe6c4;border-style:dashed;color:#33482d}
+.vl-gn.is-lit::after,.vl-gl-btn.is-lit::after{content:"✓";position:absolute;right:-8px;top:-9px;width:18px;height:18px;display:grid;place-items:center;font-size:.72rem;line-height:1;color:#fff;background:#306230;border:2px solid #0f380f;border-radius:0}
+.vl-gl-btn{position:relative}
+.vl-gn:focus-visible,.vl-gl-btn:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.vl-gl-btn small,.vl-gn small{color:#24421f}
+.vl-gl-ch{font-family:var(--font-label);color:var(--ink2)}
+.vl-gl-info{background:color-mix(in srgb,var(--edge) 80%,transparent);border:2px dashed var(--ink);border-radius:0}
+.vl-lg{color:var(--ink2)}
+.vl-lg-dot{background:#306230;border:2px solid #0f380f}
+.vl-mp-part{color:var(--ink);background:var(--edge);border:3px solid var(--ink);border-radius:0;font-family:var(--font-label);font-weight:700}
+.vl-mp-part[aria-pressed="false"]{border-style:dashed;color:var(--ink2)}
+.vl-mp-tools .vl-seg button{font-family:var(--font-label);color:var(--ink)}
+.vl-mp-q input,.vl-gloss-q input{color:var(--ink);background:var(--sunk);border:3px solid var(--ink);border-radius:0}
+.vl-mp-q,.vl-gloss-q{font-family:var(--font-label);font-weight:700}
+.vl-mp-count,.vl-gloss-n{color:var(--ink2)}
+.vl-gi-go{color:var(--deep);font-family:var(--font-label)}
+.vl-gi-go.off{color:var(--ink2)}
+.vl-gi-rel > b{font-family:var(--font-label);background:none}
+.vl-gi-nb small{color:var(--ink2)}
+/* 本章小图：页边画了一圈虚线的小区域 */
+.vl-minimap{border:3px dashed var(--ink);border-radius:0;background:color-mix(in srgb,var(--edge) 55%,transparent)}
+.vl-mm-cap b{font-family:var(--font-label);font-size:1.2rem;background:none}
+.vl-mm-cap small{color:var(--ink2)}
+.vl-mm-info{border-top:2px dashed var(--line)}
+.vl-mm-info small{color:var(--ink2)}
+
+/* ---------- 术语表 ---------- */
+.vl-gloss-az a{font-family:var(--font-label);font-weight:700;color:var(--ink);border:2px solid var(--ink);border-radius:0;background:var(--edge)}
+.vl-gloss-az a:hover{background:var(--accent)}
+.vl-gloss-L{font-family:var(--font-display);font-size:2.2rem;display:inline-block;padding:0 12px;background:linear-gradient(transparent 55%,var(--accent) 55%)}
+.vl-gloss-it{border-bottom:2px dashed var(--line)}
+.vl-gloss-it dfn{font-family:var(--font-label)}
+.vl-gloss-it.is-on dfn{background:linear-gradient(transparent 55%,var(--hl) 55%)}
+.vl-gloss-en{color:var(--ink2)}
+.vl-gloss-tag{font-family:var(--font-label);font-weight:700;color:var(--ink);border:2px solid var(--ink);border-radius:0;background:var(--accent2)}
+.vl-gloss-plain{color:var(--ink2)}
+.vl-gloss-ch{color:var(--deep)}
+.vl-gloss-ch.off{color:var(--ink2)}
+
+/* ---------- 闪卡：横线索引卡（实体：粗墨线 + 硬投影，在图板色上） ---------- */
+.vl-fc-box{background:var(--edge);border:3px solid var(--ink);border-radius:0;font-family:var(--font-label)}
+.vl-fc-box b{background:none}
+.vl-fc-box span{color:var(--ink2)}
+.vl-fc-all{font-family:var(--font-label);font-weight:700}
+.vl-fc-face{color:#0f380f;background-color:var(--plate);background-image:linear-gradient(#9b2257,#9b2257),linear-gradient(transparent 31px,#cfe0a8 31px);background-size:100% 3px,100% 32px;background-position:0 38px,0 42px;background-repeat:no-repeat,repeat;border:3px solid #0f380f;border-radius:0;box-shadow:var(--shadow-obj)}
+html:not([data-scheme="light"]) .vl-fc-face{box-shadow:5px 6px 0 #000}
+.vl-fc-term{font-family:var(--font-label);background:linear-gradient(transparent 62%,var(--p1a) 62%);padding:0 6px}
+.vl-fc-en,.vl-fc-q,.vl-fc-from{color:#24421f}
+.vl-fc-q{font-family:var(--font-label)}
+.vl-fc-txt b{background:none;font-family:var(--font-label);font-size:1.2rem}
+.vl-fc-card:focus-visible .vl-fc-face{outline:3px solid var(--focus);outline-offset:4px}
+.vl-fc-hint,.vl-fc-st{color:var(--ink2);font-family:var(--font-label)}
+.vl-fc-end{background:var(--okbg);border:3px solid var(--ink);border-radius:0}
+
+/* ---------- 集邮册 ---------- */
+.vl-tb-col .vl-col-count{background:var(--accent);border:2px solid var(--ink);font-family:var(--font-label);font-weight:700}
+.vl-tb-col.vl-col-pulse{animation:vl-px-col-pulse .6s var(--ease)}
+@keyframes vl-px-col-pulse{40%{transform:scale(1.15)}}
+.vl-col-back{background:rgba(25,25,35,.5)}
+/* 对话框是一页活页本：左边一列打孔 */
+.vl-col-dlg{background-color:var(--page);background-image:radial-gradient(circle at 14px 50%,var(--ink) 0 5px,transparent 5.5px),linear-gradient(var(--line) 1px,transparent 1px);background-size:28px 46px,100% 30px;background-repeat:repeat-y,repeat;color:var(--ink);border:3px solid var(--ink);border-radius:0;box-shadow:var(--shadow-obj);padding-left:42px}
+.vl-col-head h2{font-family:var(--font-display);font-weight:400;font-size:2.2rem}
+.vl-col-pg{font-family:var(--font-label);color:var(--ink2)}
+.vl-col-sum{font-family:var(--font-label);font-weight:700;font-size:1.1rem}
+.vl-col-next a,.vl-col-bm{color:var(--ink);font-family:var(--font-label);font-weight:700}
+.vl-col-bm{background:var(--accent);border:3px solid var(--ink);border-radius:0;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%);padding-right:26px}
+.vl-col-bm.done{background:var(--okbg);clip-path:none;border-radius:0}
+.vl-col-ptitle{font-family:var(--font-label);font-weight:700;font-size:1.3rem}
+.vl-col-chname{font-family:var(--font-label)}
+.vl-col-chname a{color:var(--ink)}
+/* 章邮票：带齿孔的小纸片（齿孔 = 平铺的小圆洞，中间被图盖住）；没拿到的是虚线空框 + 灰剪影 */
+.vl-col-stamp{width:120px;height:96px;padding:8px;border:0;border-radius:0}
+.vl-col-stamp.is-got{background:radial-gradient(circle at 6px 6px,transparent 3.6px,#f7faea 4.2px) -6px -6px/12px 12px;filter:drop-shadow(2px 3px 0 rgba(15,56,15,.35));transform:none}
+.vl-col-ch:nth-child(even) .vl-col-stamp.is-got,.vl-col-mlist li:nth-child(even) .vl-col-stamp.is-got{transform:none}
+.vl-col-stamp.is-got .vl-col-art{height:100%;background:var(--p1a);border:2px solid #0f380f;padding:2px;display:grid;place-items:center}
+.vl-col-page[data-part="2"] .vl-col-stamp.is-got .vl-col-art,.vl-col-mpart[data-part="2"] .vl-col-stamp.is-got .vl-col-art{background:var(--p2a)}
+.vl-col-page[data-part="3"] .vl-col-stamp.is-got .vl-col-art,.vl-col-mpart[data-part="3"] .vl-col-stamp.is-got .vl-col-art{background:var(--p3a)}
+.vl-col-page[data-part="4"] .vl-col-stamp.is-got .vl-col-art,.vl-col-mpart[data-part="4"] .vl-col-stamp.is-got .vl-col-art{background:var(--p4a)}
+.vl-col-page[data-part="5"] .vl-col-stamp.is-got .vl-col-art,.vl-col-mpart[data-part="5"] .vl-col-stamp.is-got .vl-col-art{background:var(--p5a)}
+.vl-col-stamp.is-got .vl-col-art svg{max-height:74px}
+.vl-col-stamp.is-empty{background:color-mix(in srgb,var(--edge) 60%,transparent);border:3px dashed var(--ink2);border-radius:0}
+.vl-col-stamp.is-empty .vl-col-art,.vl-col-cell.is-empty .vl-col-art{filter:brightness(0);opacity:.16}
+html[data-scheme="dark"] .vl-col-stamp.is-empty .vl-col-art,html[data-scheme="dark"] .vl-col-cell.is-empty .vl-col-art{filter:brightness(0) invert(1);opacity:.2}
+.vl-col-q{color:var(--ink2);font-family:var(--font-label)}
+.vl-col-num{font-family:var(--font-display);color:#0f380f}
+.vl-col-stamp.is-empty .vl-col-num{color:var(--ink)}
+/* 邮戳"读懂了"：红色油墨，歪着盖 */
+.vl-col-pm{color:var(--vl-red);border:3px solid var(--vl-red);border-radius:0;background:rgba(247,250,234,.82);font-family:var(--font-label);transform:none}
+html[data-scheme="dark"] .vl-col-pm{background:rgba(22,36,22,.85)}
+/* 图鉴格：本子上画的小方格 */
+.vl-col-cell{background:var(--edge);border:3px solid var(--ink);border-radius:0}
+.vl-col-cell.is-got .vl-col-art{background:var(--plate);border-radius:0}
+.vl-col-cell.is-empty{background:transparent;border-style:dashed;border-color:var(--ink2)}
+.vl-col-cell.is-principle.is-got{border-style:double;border-width:5px}
+.vl-col-name{font-family:var(--font-label);font-weight:700}
+.vl-col-cell.is-empty .vl-col-name{color:var(--ink2)}
+.vl-col-stamp:hover,.vl-col-cell:hover{outline:2px dashed var(--accent2);outline-offset:3px}
+.vl-col-stamp[aria-expanded="true"],.vl-col-cell[aria-expanded="true"]{outline:3px solid var(--ink);outline-offset:3px}
+.vl-col-stamp:focus-visible,.vl-col-cell:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.vl-col-tip{background:var(--note);color:var(--ink);border:2px solid var(--ink);border-radius:0}
+html[data-scheme="dark"] .vl-col-tip{background:#24361c}
+/* 测验徽章上盖的大邮戳 */
+.vl-col-mark{color:var(--vl-red);border:4px double var(--vl-red);border-radius:0;font-family:var(--font-label);background:rgba(247,250,234,.6);transform:none}
+.vl-col-mark.vl-col-anim{animation:vl-px-stamp .45s steps(4) .25s both}
+@keyframes vl-px-stamp{from{transform:scale(2.2);opacity:0}to{transform:scale(1);opacity:1}}
+/* 提示条：一张便签 */
+.vl-col-toast{background:var(--edge);color:var(--ink);border:3px solid var(--ink);border-radius:0;box-shadow:var(--shadow-obj);font-family:var(--font-label);font-weight:700}
+.vl-col-toast.is-stamp,.vl-col-toast.is-all{background:var(--note)}
+html[data-scheme="dark"] .vl-col-toast.is-stamp,html[data-scheme="dark"] .vl-col-toast.is-all{background:#24361c}
+.vl-col-tstamp{background:var(--plate);border:2px solid #0f380f;border-radius:0;padding:2px}
+/* 目录页的全课地图 */
+.vl-col-mitem{border-radius:0}
+.vl-col-mitem:hover .vl-col-mname{text-decoration:underline 2px var(--accent2);text-underline-offset:4px}
+.vl-col-mitem.off{opacity:.6}
+.vl-col-mname{font-family:var(--font-label);font-weight:700}
+.vl-col-mname small{color:var(--ink2)}
+.vl-col-mptitle{font-family:var(--font-label);font-size:1.15rem}
+
+/* ---------- 陪伴角色：贴在页角的贴纸，气泡是手绘对话框 ---------- */
+.vl-comp-btn{background:var(--edge);color:#0f380f;border:3px solid var(--ink);border-radius:0;box-shadow:3px 4px 0 var(--shadow-c)}
+.vl-comp-art svg{overflow:visible}
+.vl-comp-btn:hover{transform:none}
+.vl-comp-btn:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.vl-comp-bub{background:#fff;color:#0f380f;border:3px solid #0f380f;border-radius:0;box-shadow:3px 4px 0 rgba(15,56,15,.25);font-family:var(--font-body)}
+.vl-comp-bub::after{content:"";position:absolute;left:22px;bottom:-11px;width:16px;height:16px;background:#fff;border-right:3px solid #0f380f;border-bottom:3px solid #0f380f;transform:rotate(45deg)}
+.vl-comp.is-right .vl-comp-bub::after{left:auto;right:22px}
+html.vl-fx-full .vl-comp.talk .vl-comp-btn{animation:vl-px-hop .4s var(--ease)}
+@keyframes vl-px-hop{40%{transform:translateY(-8px)}}
+html.vl-fx-lite .vl-comp-btn:hover{transform:none}
+
+/* ---------- 动效档位 ---------- */
+html.vl-fx-lite .vl-gn:hover{transform:none}
+html.vl-fx-off .vl-col-mark.vl-col-anim,html.vl-fx-off .vl-tb-col.vl-col-pulse{animation:none}
