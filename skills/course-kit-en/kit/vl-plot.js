@@ -187,6 +187,7 @@
       }
       const XR = W - right, xHidden = o.x.hidden === true;
       const yBase = sy(Math.max(lo, Math.min(hi, 0)));
+      const R = [], S = [], V = [];   // 避让用：矩形障碍（柱、点、已放标签）、线段障碍、数值标签
       const his = new Set([].concat(o.hi == null ? [] : o.hi).filter(isNum));
 
       let s = '<defs>' + [45, -45, 0].map((a, j) => '<pattern id="' + uid + "h" + j + '" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(' + a + ')"><line x1="0" y1="0" x2="0" y2="6" class="vl-plot-hatch"/></pattern>').join("") + "</defs>";
@@ -205,6 +206,7 @@
             if (q.y == null || q.i >= nBand) return;
             const x = sx(q.i) - groupW / 2 + j * bw, y1 = sy(q.y), yT = Math.min(y1, yBase), h = Math.abs(yBase - y1);
             const hiC = his.has(q.i) ? " is-hi" : "";
+            R.push([x + 0.5, yT, x + 0.5 + Math.max(1, bw - 1), yT + h]);
             const geo = ' x="' + f1(x + 0.5) + '" y="' + f1(yT) + '" width="' + f1(Math.max(1, bw - 1)) + '" height="' + f1(h) + '"';
             s += "<rect" + geo + ' class="vl-plot-bar' + hiC + '" style="fill:' + (hiC ? "var(--vp-hi)" : c) + '"><title>' + esc((sr.name ? sr.name + " " : "") + fmtNum(q.y)) + "</title></rect>";
             if (j) s += "<rect" + geo + ' fill="url(#' + uid + "h" + ((j - 1) % 3) + ')" pointer-events="none"/>';
@@ -223,15 +225,16 @@
         if (run.length) runs.push(run);
         runs.forEach(r => {
           if (sr.fill && r.length > 1) s += '<path d="M' + r.map(p => f1(p[0]) + " " + f1(p[1])).join("L") + "L" + f1(r[r.length - 1][0]) + " " + f1(yBase) + "L" + f1(r[0][0]) + " " + f1(yBase) + 'Z" class="vl-plot-area" style="fill:' + c + '"/>';
+          for (let a = 1; a < r.length; a++) S.push([r[a - 1][0], r[a - 1][1], r[a][0], r[a][1]]);
           if (r.length > 1) s += '<polyline points="' + r.map(p => f1(p[0]) + "," + f1(p[1])).join(" ") + '" class="vl-plot-line" style="stroke:' + c + '"' + (dash ? ' stroke-dasharray="' + dash + '"' : "") + "/>";
         });
         const dots = sr.dots != null ? sr.dots : ps.length <= 24;
         runs.forEach(r => r.forEach(p => {
           const isHi = his.has(p[2].i);
-          if (dots || isHi || r.length === 1) s += marker(SHAPES[j % 4], p[0], p[1], isHi ? 6 : 4, ' class="vl-plot-dot' + (isHi ? " is-hi" : "") + '" style="fill:' + (isHi ? "var(--vp-hi)" : c) + '"');
+          if (dots || isHi || r.length === 1) { const rr = isHi ? 6 : 4; R.push([p[0] - rr, p[1] - rr, p[0] + rr, p[1] + rr]); s += marker(SHAPES[j % 4], p[0], p[1], isHi ? 6 : 4, ' class="vl-plot-dot' + (isHi ? " is-hi" : "") + '" style="fill:' + (isHi ? "var(--vp-hi)" : c) + '"'); }
         }));
       });
-      // 数值标签：放不下就整组不写（不挤、不重叠）
+      // 数值标签：放不下就整组不写（不挤、不重叠）；先登记位置，参考线 / 标注点的标签放完后，撞上的数值标签让位
       ser.forEach((sr, k) => {
         if (!sr.labels) return;
         const isBar = typeOf(sr) === "bar", P = band ? (q => sx(q.i)) : (q => sx(q.x));
@@ -240,23 +243,58 @@
         const ls = pts[k].filter(q => q.y != null && (!band || q.i < nBand)).map(q => ({ x: isBar ? sx(q.i) - groupW / 2 + (j + 0.5) * bw : P(q), y: sy(q.y), neg: q.y < 0, t: String(fmtL(q.y)) }));
         const room = band ? (isBar ? Math.max(bw, step / Math.max(1, bars.length)) : step) : 1e9;
         if (ls.some(l => mNum(l.t) > room * 0.98)) return;
-        ls.forEach(l => { s += '<text x="' + f1(l.x) + '" y="' + f1(l.neg ? l.y + fs + 4 : l.y - 6) + '" text-anchor="middle" class="vl-plot-val">' + esc(l.t) + "</text>"; });
+        ls.forEach(l => {
+          const by = l.neg ? l.y + fs + 4 : l.y - 6, hw = mNum(l.t) / 2;
+          V.push({ r: [l.x - hw, by - fs * 0.8, l.x + hw, by + fs * 0.2], svg: '<text x="' + f1(l.x) + '" y="' + f1(by) + '" text-anchor="middle" class="vl-plot-val">' + esc(l.t) + "</text>" });
+        });
       });
-      // 参考线 / 标注点
-      marks.forEach(m => {
-        const c = m.color || "var(--vp-ink)", lab = m.label ? esc(m.label) : "", mx = isNum(m.x) ? (band ? sx(m.x) : sx(m.x)) : null, my = isNum(m.y) ? sy(m.y) : null;
-        const w = m.label ? mTxt(m.label) : 0, clampX = x => Math.max(2, Math.min(W - 2 - w, x));
+      // 参考线 / 标注点：每个标签试几个候选位置，挑和柱子、折线、点、别的标签重叠最少的（并列取第一个）
+      const hitArea = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+      const segLen = (g, r) => {   // 线段落在矩形内的长度（Liang-Barsky）
+        let t0 = 0, t1 = 1; const dx = g[2] - g[0], dy = g[3] - g[1];
+        for (const [pp, qq] of [[-dx, g[0] - r[0]], [dx, r[2] - g[0]], [-dy, g[1] - r[1]], [dy, r[3] - g[1]]]) {
+          if (pp === 0) { if (qq < 0) return 0; } else { const u = qq / pp; if (pp < 0) { if (u > t1) return 0; if (u > t0) t0 = u; } else { if (u < t0) return 0; if (u < t1) t1 = u; } }
+        }
+        return Math.max(0, t1 - t0) * Math.hypot(dx, dy);
+      };
+      const bound = [X0, 0, XR, Y0];
+      const geo = marks.map(m => ({ m, mx: isNum(m.x) ? sx(m.x) : null, my: isNum(m.y) ? sy(m.y) : null }));
+      geo.forEach(g => {   // 先把所有参考线、标注点登记成障碍
+        if (g.mx != null && g.my != null) R.push([g.mx - 6, g.my - 6, g.mx + 6, g.my + 6]);
+        else if (g.my != null) S.push([X0, g.my, XR, g.my]);
+        else S.push([g.mx, top, g.mx, Y0]);
+      });
+      const placed = [];
+      geo.forEach(g => {
+        const m = g.m, c = m.color || "var(--vp-ink)", mx = g.mx, my = g.my;
+        const lab = m.label ? esc(m.label) : "", w = m.label ? mTxt(m.label) : 0, a = fsT * 0.8, d = fsT * 0.2;
+        let cands = [];   // 候选基线左端 [x, 基线y]，第一个是默认位置
         if (mx != null && my != null) {
           s += '<circle cx="' + f1(mx) + '" cy="' + f1(my) + '" r="6" class="vl-plot-mark-pt" style="stroke:' + c + '"/>';
-          if (lab) { const ty = my - 10 - fsT * 0.2 < fsT ? my + fsT + 8 : my - 10; s += '<text x="' + f1(clampX(mx - w / 2)) + '" y="' + f1(ty) + '" class="vl-plot-mark">' + lab + "</text>"; }
+          cands = [[mx - w / 2, my - 10], [mx - w / 2, my + fsT + 8], [mx + 10, my + fsT * 0.35], [mx - 10 - w, my + fsT * 0.35],
+            [mx + 8, my - 8], [mx - 8 - w, my - 8], [mx + 8, my + 8 + a], [mx - 8 - w, my + 8 + a]];
         } else if (my != null) {
           s += '<line x1="' + X0 + '" y1="' + f1(my) + '" x2="' + XR + '" y2="' + f1(my) + '" class="vl-plot-ref" style="stroke:' + c + '"/>';
-          if (lab) { const ty = my - 5 < fsT ? my + fsT + 3 : my - 5; s += '<text x="' + f1(clampX(XR - w)) + '" y="' + f1(ty) + '" class="vl-plot-mark">' + lab + "</text>"; }
+          cands = [[XR - w, my - 5], [XR - w, my + fsT + 3], [X0 + 4, my - 5], [X0 + 4, my + fsT + 3]];
         } else {
           s += '<line x1="' + f1(mx) + '" y1="' + top + '" x2="' + f1(mx) + '" y2="' + f1(Y0) + '" class="vl-plot-ref" style="stroke:' + c + '"/>';
-          if (lab) { const tx = mx + 5 + w > W - 2 ? mx - 5 - w : mx + 5; s += '<text x="' + f1(clampX(tx)) + '" y="' + f1(top + fsT * 0.4) + '" class="vl-plot-mark">' + lab + "</text>"; }
+          cands = [[mx + 5, top + fsT * 0.4], [mx - 5 - w, top + fsT * 0.4], [mx + 5, Y0 - 4], [mx - 5 - w, Y0 - 4]];
         }
+        if (!lab) return;
+        let best = null, bs = Infinity;
+        cands.forEach(cd => {
+          const x = Math.max(2, Math.min(W - 2 - w, cd[0])), y = cd[1], r = [x, y - a, x + w, y + d];
+          let sc = 0;
+          R.forEach(o => { sc += hitArea(r, o); }); placed.forEach(o => { sc += hitArea(r, o) * 3; }); V.forEach(o => { sc += hitArea(r, o.r) * 2; });
+          S.forEach(o => { sc += segLen(o, r) * 4; });
+          sc += (w * (r[3] - r[1]) - hitArea(r, bound)) * 3;   // 跑出绘图区的部分
+          if (sc < bs - 1e-6) { bs = sc; best = { x, y, r }; }
+        });
+        placed.push(best.r);
+        s += '<text x="' + f1(best.x) + '" y="' + f1(best.y) + '" class="vl-plot-mark">' + lab + "</text>";
       });
+      const mk = geo.map(g => g.mx != null && g.my != null ? [g.mx - 6, g.my - 6, g.mx + 6, g.my + 6] : g.my != null ? [X0, g.my - 1, XR, g.my + 1] : [g.mx - 1, top, g.mx + 1, Y0]);
+      V.forEach(v => { if (!placed.some(o => hitArea(v.r, o) > 0) && !mk.some(o => hitArea(v.r, o) > 0)) s += v.svg; });   // 撞上标注的数值标签让位
       // 轴线与横轴刻度
       if (!yHidden) s += '<line x1="' + X0 + '" y1="' + f1(top - 4) + '" x2="' + X0 + '" y2="' + f1(Y0) + '" class="vl-plot-axis"/>';
       s += '<line x1="' + X0 + '" y1="' + f1(yBase) + '" x2="' + XR + '" y2="' + f1(yBase) + '" class="vl-plot-axis"/>';
