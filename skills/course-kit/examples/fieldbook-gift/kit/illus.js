@@ -147,18 +147,19 @@
   /* ---------- 注册与装载 ---------- */
   const LIB = {};
   // body / extra 可以是字符串，也可以是 k => 字符串（推荐：人物换装计数会在调用前清零）
-  function add(name, alt, body, extra) {
+  // opts.vb 改画布，如竖版头像 "0 0 140 200"（默认 "0 0 200 140"）；画布变了，人物和地面坐标照新画布算
+  function add(name, alt, body, extra, opts) {
     kit.reset();
     const b = typeof body === "function" ? body(kit) : body;
     const e = typeof extra === "function" ? extra(kit) : extra;
     kit.reset();
-    LIB[name] = { alt, body: b || "", extra: e || "" };
+    LIB[name] = { alt, body: b || "", extra: e || "", vb: (opts && opts.vb) || "0 0 200 140" };
     return LIB[name];
   }
   function svg(name) {
     const it = LIB[name]; if (!it) return "";
     if (EXT.svg) return EXT.svg(it, name);
-    return '<svg viewBox="0 0 200 140" class="vl-illus-svg" role="img" aria-label="' + esc(it.alt) + '">' +
+    return '<svg viewBox="' + it.vb + '" class="vl-illus-svg" role="img" aria-label="' + esc(it.alt) + '">' +
       '<g class="vl-il-rough" stroke="' + C.ink + '" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">' + it.body + "</g>" +
       '<g class="vl-il-text">' + it.extra + "</g></svg>";
   }

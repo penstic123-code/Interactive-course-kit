@@ -1023,11 +1023,37 @@
     $$(".vl-task", scope).forEach(e => { if (!e._vlTask && e.querySelector(':scope > script[type="application/json"]')) task(e); });
     $$(".vl-review", scope).forEach(e => { if (!e._vlTask && e.querySelector(':scope > script[type="application/json"]')) review(e); });
   }
+  /* 选格子 VL.cells(容器, {n, cols, label, onPick})：一排排可点的格子（猜数、选座位、日历、棋盘）。
+     n 个格子，cols 列；label(i) 格子上的字（默认 i+1）；onPick(i, 格子) 点击或回车时调用。
+     键盘：方向键在格子间走（只有一个格子可 Tab 进入），回车 / 空格选中。
+     返回 { cells, get(i), mark(i, 类, 开关), reset() }；状态类：is-out 划掉、is-last 刚选、is-hit 命中、is-sel 选中，外观归皮肤。 */
+  function cells(root, o) {
+    o = o || {}; const n = o.n || 0, cols = o.cols || Math.ceil(Math.sqrt(n)) || 1, lab = o.label || (i => String(i + 1));
+    root.classList.add("vl-cells"); root.style.setProperty("--vl-cols", cols); root.setAttribute("role", "grid"); root.innerHTML = "";
+    const list = [];
+    for (let i = 0; i < n; i++) {
+      const b = doc.createElement("button"); b.type = "button"; b.className = "vl-cell"; b.dataset.i = i;
+      b.textContent = lab(i); b.tabIndex = i === 0 ? 0 : -1; root.appendChild(b); list.push(b);
+    }
+    const focus = j => { list.forEach(c => { c.tabIndex = -1; }); list[j].tabIndex = 0; list[j].focus(); };
+    root.addEventListener("click", e => { const c = e.target.closest(".vl-cell"); if (!c || c.disabled || !root.contains(c)) return; if (o.onPick) o.onPick(+c.dataset.i, c); });
+    root.addEventListener("keydown", e => {
+      const c = e.target.closest(".vl-cell"); if (!c) return;
+      const d = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols, Home: -1e9, End: 1e9 }[e.key]; if (d == null) return;
+      e.preventDefault(); focus(Math.max(0, Math.min(n - 1, +c.dataset.i + d)));
+    });
+    const api = {
+      cells: list, get: i => list[i],
+      mark(i, cls, on) { const c = list[i]; if (c) c.classList.toggle(cls, on !== false); return api; },
+      reset() { list.forEach(c => { c.className = "vl-cell"; c.disabled = false; }); return api; },
+    };
+    root._vlCells = api; return api;
+  }
   interact();
   VL.ready(() => interactLate());
   const oldEnhance = VL.enhance;
   Object.assign(VL, {
-    task, review, game, steps, anat, compare, flip, hot, comic, vote, philo,
+    task, review, game, steps, anat, compare, flip, hot, comic, vote, philo, cells,
     interact(scope) { interact(scope); interactLate(scope); },
     enhance(scope) { if (oldEnhance) oldEnhance(scope); interact(scope); interactLate(scope); },
     tr,

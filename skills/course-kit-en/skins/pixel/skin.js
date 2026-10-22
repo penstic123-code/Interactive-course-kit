@@ -235,7 +235,7 @@ window.VL_SKIN = {
     return {
       kit: PX,
       svg: function (it) {
-        return '<svg viewBox="0 0 200 140" class="vl-illus-svg vl-px-svg" shape-rendering="crispEdges" role="img" aria-label="' + esc(it.alt) + '">' +
+        return '<svg viewBox="' + (it.vb || "0 0 200 140") + '" class="vl-illus-svg vl-px-svg" shape-rendering="crispEdges" role="img" aria-label="' + esc(it.alt) + '">' +
           '<g class="vl-il-px" stroke="' + INK + '" stroke-width="3.5" stroke-linejoin="miter" stroke-linecap="square">' + it.body + '</g><g class="vl-il-text" shape-rendering="auto">' + it.extra + "</g></svg>";
       },
     };

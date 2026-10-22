@@ -180,9 +180,10 @@ canvas{touch-action:none}
 /* ---------- 演化链 / 时间线 ---------- */
 .vl-chain{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0;padding:0;list-style:none}
 .vl-chain > li:not(.vl-chain-ar){flex:1 1 140px;min-width:0;padding:8px 12px;position:relative}
-.vl-chain > li .vl-illus{max-width:140px;margin:0 auto 4px}
+.vl-chain > li .vl-illus,.vl-chain > li .vl-chain-img{display:block;max-width:200px;width:100%;margin:0 auto 6px} /* 节点配图：插画或照片放在节点文字上方 */
+.vl-chain > li .vl-chain-img img{width:100%;height:auto;display:block}
 .vl-chain-ar{flex:none;align-self:center}
-@media (max-width:600px){.vl-chain{flex-direction:column;flex-wrap:nowrap}.vl-chain-ar{transform:rotate(90deg)}} /* 窄屏竖排，箭头朝下 */
+@media (max-width:600px){.vl-chain{flex-direction:column;flex-wrap:nowrap}.vl-chain-ar{transform:rotate(90deg)}.vl-chain > li .vl-illus,.vl-chain > li .vl-chain-img{max-width:240px}} /* 窄屏竖排，箭头朝下 */
 .vl-guess .vl-illus,.vl-philo .vl-illus{max-width:300px} /* 小互动里的插画不撑满整栏 */
 .vl-timeline{margin:14px 0;padding-left:22px;position:relative}
 .vl-timeline .vl-ev{position:relative;padding:4px 0 16px;display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}

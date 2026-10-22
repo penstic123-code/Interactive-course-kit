@@ -172,7 +172,7 @@
 
 ```html
 <ol class="vl-chain">
-  <li><span data-illus="c03-ev1"></span>七次观测对不上一条轨道</li>
+  <li><span data-illus="c03-ev1"></span>七次观测对不上一条轨道</li>   <!-- 节点配图：插画放 data-illus，照片放 <span class="vl-chain-img"><img …></span>，最宽 200px；图里少放字 -->
   <li class="vl-chain-ar" aria-hidden="true">→</li>
   <li>……</li>
 </ol>
@@ -543,6 +543,13 @@ G2–G9 的皮肤样子都随 G1 互动台；舞台内的图形按皮肤画法�
 
 ## 八、练习与收起
 
+
+### G10 选格子
+- **功能**：一排排可点的格子，读者点格子做选择，格子随之划掉、高亮或标出命中：猜数、选座位、日历、棋盘、抽样。
+- **用 / 不用**：选项本来就排成网格、位置有意义时用；只有三五个并列选项用按钮或 chip。
+- **写法**：`VL.cells(容器, { n, cols, label, onPick })`，详见 `kit/README.md` 第七节"选格子"。正例：`examples/pixel-binary-search` 的 10×10 猜数格（页内实现，写法同理）。
+- **交互**：方向键走格、回车选中；状态类 `is-out / is-last / is-hit / is-sel`。
+- **皮肤**：结构样式在 `kit/vl-interact.css`，各皮肤可在 `interact.css` 里覆盖 `.vl-cell` 外观。
 ### P1 章末测验
 - **功能**：4–6 题检验学习目标（题数和题型要求见 content-rules.md 一A）。选择题只出现在这里。
 - **内容**：每题 `{q, opts, a, why, fixed, img}`，带解析；选项按章号 + 题号种子洗牌（`fixed:true` 不洗），洗完正确项一定不在原位；查"正确项总是最长"（skill 里没有现成脚本，交付前逐题看一遍）；题目可带图（`img`）。

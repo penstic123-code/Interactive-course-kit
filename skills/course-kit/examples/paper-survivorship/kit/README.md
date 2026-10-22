@@ -84,6 +84,8 @@ window.VL_I18N = { zh: { "cc.tag": "关键词" }, en: { "cc.tag": "Key idea" } }
 VL.illus.add("c02-hero", "alt：画面里有什么", k => k.ground() + k.person(60, 63, { arms: "hold", look: 1 }) + k.holding(60, 63, { look: 1 }, "phone"),
                                              k => k.T(150, 30, 14, "再来一局", "middle"));   // 第 4 参：文字层（滤镜组外）
 VL.illus.svg(name)   VL.illus.mount(根节点)   VL.illus.lib
+// 竖版或别的比例：第 5 参 { vb: "0 0 140 200" }（默认 "0 0 200 140"）；坐标按新画布算，地面 y 自己给 k.ground(y)
+VL.illus.add("c02-face", "alt", k => k.ground(186) + k.person(70, 123, { s: 1.3 }), "", { vb: "0 0 140 200" });
 ```
 `k`（= `VL.illus.kit`）：`person(x,y,o)`、`hands(x,y,o)`（两手坐标）、`holding(x,y,o,物件)`（物件画在两手之间）、`feetY(x,y,o)`、`ground(y=126)`、`T(x,y,字号,文字,anchor)`、`eye`、`bubble(x,y,w,h,[尾尖x,尾尖y])`、`arrow(x1,y1,x2,y2)`、`item(种类,x,y)`（book box cup phone die star coin）、`C`（配色）、`reset()`。
 `person` 参数：`s` 比例；`arms` stand none up cover point hold wave chin throw club desk；`legs` stand run walk sit wide none；`face` smile grin sad flat shout o wide closed；`look` −1/0/1；`flip`；`hat` cap beanie tophat crown wizard；`hair` `glasses` `beard` `tie` `cape` `shirt`；`outfit:false`；`chair:false`；`floor`。
@@ -389,6 +391,15 @@ notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线�
 ```
 - 一次一张：页签（立场名，`role=tablist`，←→ Home End）、◀ 上一张 / 下一张 ▶、"2 / 4"、横滑 >50px。翻到立场页时顶部回显"你选的是：X"（没投时提示第一张可以投）。打印全部展开。
 - 投票：`aria-pressed`，可改票，存 `<id>-vote-<文件名>-<data-key>`；单独用 `<div class="vl-vote" data-key="…" data-options="A|B">` 也行。事件 `vl:vote {key, i, option}`、`vl:philo {i}`。JS：`VL.vote(el, {key, options})` → `{pick, option, on(fn)}`；`VL.philo(el)` → `{go(i), vote}`。
+
+### 选格子 `VL.cells`
+猜数、选座位、日历、棋盘这类"一排排可点的格子"。结构和键盘在 kit，外观归皮肤（`.vl-cell` 及状态类，皮肤的 `interact.css` 可覆盖）。
+```js
+const g = VL.cells(document.getElementById("c03-grid"), { n: 100, cols: 10, label: i => i + 1,
+  onPick: (i, cell) => { g.mark(i, "is-last"); } });
+g.mark(41, "is-out");   g.mark(41, "is-out", false);   g.reset();   g.get(0);   g.cells
+```
+状态类：`is-out` 划掉、`is-last` 刚选、`is-hit` 命中、`is-sel` 选中。方向键在格子间走（只有一个格子可 Tab 进入），回车 / 空格选中；格子是 `<button>`，要禁用就设 `disabled`。手机上 10 列每格约 30px，低于 44px 触控标准，格子多时考虑减列。
 
 ### 事件一览
 
