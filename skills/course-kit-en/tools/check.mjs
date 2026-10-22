@@ -2,12 +2,14 @@
 // 用法：node check.mjs <课程文件夹绝对路径> [章节前缀,逗号分隔] [--fast]
 //   --fast 只跑静态检查（1–4），不开浏览器。
 // 检查项：
-//   1 语法：js/ 下每个 .js 跑 node --check；每页内联 <script> 用 new Function 试编译
-//   2 接线：JS 里用到的 vl- 类名，CSS 里有没有定义；HTML 里写的 vl- 类名，CSS 里有没有定义
-//   3 配图密度：两个视觉元素之间的正文超过 300 字就报（框里的文字也算）
+//   1 语法：课程里每个 .js / .mjs（lib/、node_modules/ 除外）跑 node --check；每页内联 <script> 用 new Function 试编译
+//   2 接线：JS 去找的 vl- 类名，页面和脚本里有没有造出来；HTML 里写的 vl- 类名没有样式也没被脚本用到时只提示
+//   2b 凸显：每张概念卡的名字，正文里要有同名起名标记 .vl-cn，所在分节的小标题要写出它
+//   3 配图密度：两个视觉元素之间的正文超过 300 字就报（框里的文字也算；默认收起的 <details> 不算；
+//     小互动 vl-guess / vl-flip / vl-philo / vl-hot 也算视觉）
 //   4 链接：href / src 指向的本地文件是否存在
 //   5 运行：调用同目录 qa.mjs，420 和 1100 宽度下点遍按钮、拖遍滑块，报 JS 错误、横向溢出、图内文字压线
-//   6 截图：每页 420、1100 各截一张整页图，打印路径——必须用 Read 打开看（脚本看不出好不好看）
+//   6 截图：每页 420、1100 各截一张整页图，存到 %TEMP%/course-check-shots/<课程文件夹名>/，打印路径——必须用 Read 打开看（脚本看不出好不好看）
 // 依赖：Node 22+、Edge 或 Chrome（同 qa.mjs，找浏览器的规则见 browser.mjs，可用环境变量 EDGE_PATH 指定）。
 import fs from "node:fs";
 import path from "node:path";
@@ -78,7 +80,7 @@ for (const p of pages) {
 
 // 3 配图密度
 console.log("3 配图密度（两个视觉之间 >300 字）");
-const VISUAL = /<(img|svg|canvas|figure|video|iframe)\b|data-illus|data-diagram|class="[^"]*\bvl-(board|dg|fig|eg|cc-fig|illus|photo|comic)\b/;
+const VISUAL = /<(img|svg|canvas|figure|video|iframe)\b|data-illus|data-diagram|class="[^"]*\bvl-(board|dg|fig|eg|cc-fig|illus|photo|comic|guess|flip|philo|hot)\b/; // 小互动（先猜后揭晓、翻牌、立场卡、热区）也算视觉
 for (const p of pages) {
   let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, ""); // 默认收起的故事框、支线由读者自选展开，不算进配图密度
   const en = /<html[^>]*lang="en/.test(read(p));
@@ -120,7 +122,7 @@ else if (!FAST) {
 
   // 6 截图
   console.log("6 截图（必须用 Read 打开看）");
-  const shotDir = path.join(process.env.TEMP || ROOT, "course-check-shots");
+  const shotDir = path.join(process.env.TEMP || process.env.TMPDIR || ROOT, "course-check-shots", path.basename(ROOT)); // 按课程分目录，并行跑多门课时不互相覆盖
   fs.mkdirSync(shotDir, { recursive: true });
   for (const p of pages) for (const w of [420, 1100]) {
     const png = path.join(shotDir, `${path.basename(path.dirname(p)) === "en" ? "en-" : ""}${path.basename(p, ".html")}-${w}.png`);

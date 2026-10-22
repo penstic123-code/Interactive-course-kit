@@ -1,0 +1,452 @@
+/* 皮肤 paper · 纸片（剪纸）。抽自数据科学课的爬塔纸片样式。
+   只定义变量和组件外观；结构在 kit/vl.css。三套配色：html[data-scheme="light|dark|sepia"]；篇章主色：body[data-part="1…5"]。
+   材质：一切"东西"都是一张剪下来的卡纸 = 白色裁边（0 0 0 Npx 的 box-shadow）+ 柔和投影 + 纤维纹；最重的互动台底下再垫一层牛皮纸。
+   层级：互动台、概念图解 = 白边 5px + 牛皮纸垫层 + 远投影；概念卡、照片、文档道具 = 白边 3–4px + 中投影；原理框、立场卡、支线 = 轻块（竖条 + 纸签，无投影）；长文直接印在正文卡纸上。
+   投影只用一种颜色 --shadow-c（原课程棕、蓝两种投影色已合并）。浅主色只做底，写字一律 --deep 或 --ink。
+   字体：标题、按钮、标签站酷快乐体（网络，开源 OFL）；正文霞鹜文楷（网络，OFL）；图中字用系统黑体加粗（skin.js 的纸片绘制工具里定）。
+   网络字体由 skin.js 声明、kit/vl-head.js 异步插入；这里不写 @import。 */
+
+/* ---------- 不随配色变的常量：篇章色、天空带、塔墙、图解色块、图板 ---------- */
+:root{
+  /* 篇章：a 主色（浅，做底）b 副色（浅，纸条、彩旗）d 深色（写字，对卡纸 ≥4.5:1） */
+  --p1a:#8fd3f4;--p1b:#a6dc7a;--p1d:#1f6a96;
+  --p2a:#9fe3c8;--p2b:#ffc49b;--p2d:#1d7457;
+  --p3a:#cbbcf2;--p3b:#fbe79a;--p3d:#5e46a3;
+  --p4a:#f9b0a8;--p4b:#cfe0f0;--p4d:#ad3f55;
+  --p5a:#f7cf8f;--p5b:#bfe3f5;--p5d:#8a4b12;
+  --pp-band-h:92px;
+  --pp-sky-1:linear-gradient(180deg,#a9dbf7 0%,#cdebfa 58%,#eef9f2 100%);
+  --pp-art-1:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 86%22 preserveAspectRatio=%22xMidYMax slice%22%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%2290%22 cy=%2228%22 rx=%2222%22 ry=%229%22/%3E%3Ccircle cx=%2281%22 cy=%2223%22 r=%229%22/%3E%3Ccircle cx=%2296%22 cy=%2220%22 r=%2211%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22330%22 cy=%2220%22 rx=%2217.6%22 ry=%227.2%22/%3E%3Ccircle cx=%22322.8%22 cy=%2216.0%22 r=%227.2%22/%3E%3Ccircle cx=%22334.8%22 cy=%2213.6%22 r=%228.8%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22560%22 cy=%2234%22 rx=%2219.8%22 ry=%228.1%22/%3E%3Ccircle cx=%22551.9%22 cy=%2229.5%22 r=%228.1%22/%3E%3Ccircle cx=%22565.4%22 cy=%2226.8%22 r=%229.9%22/%3E%3C/g%3E%3Cpath d=%22M0,86 L0,65.3 L20,66.7 L40,67.2 L60,66.6 L80,65.2 L100,63.4 L120,61.6 L140,60.1 L160,59.2 L180,58.9 L200,59.1 L220,59.5 L240,60.1 L260,60.6 L280,61.2 L300,61.8 L320,62.6 L340,63.5 L360,64.5 L380,65.4 L400,65.9 L420,65.7 L440,64.7 L460,63.0 L480,60.9 L500,58.9 L520,57.2 L540,56.5 L560,56.9 L580,58.4 L600,60.6 L620,63.1 L640,65.3 L640,86 Z%22 fill=%22%23c4e8a8%22/%3E%3Cpath d=%22M464 66 L476 66 L474 42 L466 42Z%22 fill=%22%23fbf3e2%22 stroke=%22%23ffffff%22 stroke-width=%221.2%22/%3E%3Cpath d=%22M464.5 42.5 L475.5 42.5 L470 34Z%22 fill=%22%23f08c7c%22/%3E%3Crect x=%22468%22 y=%2225%22 width=%224%22 height=%2216%22 fill=%22%23fffaf0%22 stroke=%22%23b49a7c%22 stroke-width=%22.6%22 transform=%22rotate(20 470 42)%22/%3E%3Crect x=%22468%22 y=%2225%22 width=%224%22 height=%2216%22 fill=%22%23fffaf0%22 stroke=%22%23b49a7c%22 stroke-width=%22.6%22 transform=%22rotate(110 470 42)%22/%3E%3Crect x=%22468%22 y=%2225%22 width=%224%22 height=%2216%22 fill=%22%23fffaf0%22 stroke=%22%23b49a7c%22 stroke-width=%22.6%22 transform=%22rotate(200 470 42)%22/%3E%3Crect x=%22468%22 y=%2225%22 width=%224%22 height=%2216%22 fill=%22%23fffaf0%22 stroke=%22%23b49a7c%22 stroke-width=%22.6%22 transform=%22rotate(290 470 42)%22/%3E%3Ccircle cx=%22470%22 cy=%2242%22 r=%221.8%22 fill=%22%238a6a4a%22/%3E%3Cpath d=%22M0,86 L0,75.9 L20,75.4 L40,74.6 L60,73.6 L80,72.7 L100,72.0 L120,71.6 L140,71.5 L160,71.4 L180,71.5 L200,71.6 L220,71.8 L240,72.1 L260,72.6 L280,73.2 L300,74.1 L320,74.9 L340,75.5 L360,75.8 L380,75.5 L400,74.6 L420,73.4 L440,71.9 L460,70.6 L480,69.7 L500,69.5 L520,70.0 L540,71.1 L560,72.6 L580,74.0 L600,75.2 L620,75.9 L640,75.9 L640,86 Z%22 fill=%22%23a6dc7a%22/%3E%3Ccircle cx=%228%22 cy=%2277%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%228%22 cy=%2277%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2231%22 cy=%2284%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%2231%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2254%22 cy=%2282%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%2254%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2277%22 cy=%2280%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%2277%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22100%22 cy=%2278%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22100%22 cy=%2278%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22123%22 cy=%2285%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22123%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22146%22 cy=%2283%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22146%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22169%22 cy=%2281%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22169%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22192%22 cy=%2279%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22192%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22215%22 cy=%2277%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22215%22 cy=%2277%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22238%22 cy=%2284%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22238%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22261%22 cy=%2282%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22261%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22284%22 cy=%2280%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22284%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22307%22 cy=%2278%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22307%22 cy=%2278%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22330%22 cy=%2285%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22330%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22353%22 cy=%2283%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22353%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22376%22 cy=%2281%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22376%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22399%22 cy=%2279%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22399%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22422%22 cy=%2277%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22422%22 cy=%2277%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22445%22 cy=%2284%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22445%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22468%22 cy=%2282%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22468%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22491%22 cy=%2280%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22491%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22514%22 cy=%2278%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22514%22 cy=%2278%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22537%22 cy=%2285%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22537%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22560%22 cy=%2283%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22560%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22583%22 cy=%2281%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22583%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22606%22 cy=%2279%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22606%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22629%22 cy=%2277%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22629%22 cy=%2277%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3C/svg%3E");
+  --pp-sky-2:linear-gradient(180deg,#9fe3d6 0%,#d9f4ea 58%,#ffe6cf 100%);
+  --pp-art-2:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 86%22 preserveAspectRatio=%22xMidYMax slice%22%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22520%22 cy=%2222%22 rx=%2217.6%22 ry=%227.2%22/%3E%3Ccircle cx=%22512.8%22 cy=%2218.0%22 r=%227.2%22/%3E%3Ccircle cx=%22524.8%22 cy=%2215.6%22 r=%228.8%22/%3E%3C/g%3E%3Cpath d=%22M150 66 Q170 40 168 30%22 stroke=%22%237a6a5a%22 stroke-width=%22.8%22 fill=%22none%22/%3E%3Cpath d=%22M168 12 L176 22 L168 34 L160 22Z%22 fill=%22%23ffc49b%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Cpath d=%22M300 35 q-3 8 1 18%22 stroke=%22%236b5a48%22 stroke-width=%22.6%22 fill=%22none%22/%3E%3Cellipse cx=%22300%22 cy=%2226%22 rx=%226.5%22 ry=%228%22 fill=%22%23f7a9bd%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Cpath d=%22M318 43 q-3 8 1 18%22 stroke=%22%236b5a48%22 stroke-width=%22.6%22 fill=%22none%22/%3E%3Cellipse cx=%22318%22 cy=%2234%22 rx=%226.5%22 ry=%228%22 fill=%22%23fff3a8%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Cpath d=%22M610 39 q-3 8 1 18%22 stroke=%22%236b5a48%22 stroke-width=%22.6%22 fill=%22none%22/%3E%3Cellipse cx=%22610%22 cy=%2230%22 rx=%226.5%22 ry=%228%22 fill=%22%239fe3c8%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Cpath d=%22M0,86 L0,63.1 L20,64.7 L40,65.7 L60,65.9 L80,65.4 L100,64.2 L120,62.8 L140,61.4 L160,60.3 L180,59.7 L200,59.5 L220,59.7 L240,60.2 L260,60.7 L280,61.2 L300,61.7 L320,62.1 L340,62.7 L360,63.3 L380,64.0 L400,64.5 L420,64.7 L440,64.5 L460,63.8 L480,62.5 L500,61.0 L520,59.5 L540,58.4 L560,57.9 L580,58.3 L600,59.5 L620,61.2 L640,63.1 L640,86 Z%22 fill=%22%23cfe8b8%22/%3E%3Cpath d=%22M0 68 Q160 64 320 69 T640 68 L640 72 Q480 74 320 73 T0 72Z%22 fill=%22%23a6d8ef%22/%3E%3Cpath d=%22M0,86 L0,76.2 L20,75.6 L40,75.0 L60,74.5 L80,74.2 L100,74.0 L120,73.9 L140,73.8 L160,73.7 L180,73.7 L200,73.9 L220,74.4 L240,75.0 L260,75.8 L280,76.6 L300,77.2 L320,77.4 L340,77.2 L360,76.4 L380,75.3 L400,74.1 L420,73.0 L440,72.4 L460,72.2 L480,72.7 L500,73.5 L520,74.7 L540,75.8 L560,76.6 L580,77.1 L600,77.1 L620,76.8 L640,76.2 L640,86 Z%22 fill=%22%239ad37f%22/%3E%3Ccircle cx=%228%22 cy=%2279%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%228%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2225%22 cy=%2286%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%2225%22 cy=%2286%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2242%22 cy=%2284%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%2242%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2259%22 cy=%2282%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%2259%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2276%22 cy=%2280%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%2276%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%2293%22 cy=%2287%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%2293%22 cy=%2287%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22110%22 cy=%2285%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22110%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22127%22 cy=%2283%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22127%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22144%22 cy=%2281%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22144%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22161%22 cy=%2279%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22161%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22178%22 cy=%2286%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22178%22 cy=%2286%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22195%22 cy=%2284%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22195%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22212%22 cy=%2282%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22212%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22229%22 cy=%2280%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22229%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22246%22 cy=%2287%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22246%22 cy=%2287%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22263%22 cy=%2285%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22263%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22280%22 cy=%2283%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22280%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22297%22 cy=%2281%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22297%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22314%22 cy=%2279%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22314%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22331%22 cy=%2286%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22331%22 cy=%2286%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22348%22 cy=%2284%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22348%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22365%22 cy=%2282%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22365%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22382%22 cy=%2280%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22382%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22399%22 cy=%2287%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22399%22 cy=%2287%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22416%22 cy=%2285%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22416%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22433%22 cy=%2283%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22433%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22450%22 cy=%2281%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22450%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22467%22 cy=%2279%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22467%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22484%22 cy=%2286%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22484%22 cy=%2286%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22501%22 cy=%2284%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22501%22 cy=%2284%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22518%22 cy=%2282%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22518%22 cy=%2282%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22535%22 cy=%2280%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22535%22 cy=%2280%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22552%22 cy=%2287%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22552%22 cy=%2287%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22569%22 cy=%2285%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22569%22 cy=%2285%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22586%22 cy=%2283%22 r=%222.2%22 fill=%22%23ffffff%22/%3E%3Ccircle cx=%22586%22 cy=%2283%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22603%22 cy=%2281%22 r=%222.2%22 fill=%22%23ffc49b%22/%3E%3Ccircle cx=%22603%22 cy=%2281%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22620%22 cy=%2279%22 r=%222.2%22 fill=%22%23f7a9bd%22/%3E%3Ccircle cx=%22620%22 cy=%2279%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3Ccircle cx=%22637%22 cy=%2286%22 r=%222.2%22 fill=%22%23fff3a8%22/%3E%3Ccircle cx=%22637%22 cy=%2286%22 r=%22.9%22 fill=%22%23f2bd4b%22/%3E%3C/svg%3E");
+  --pp-sky-3:linear-gradient(180deg,#b9aaec 0%,#dccdf5 55%,#ffe2bf 100%);
+  --pp-art-3:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 86%22 preserveAspectRatio=%22xMidYMax slice%22%3E%3Cpath d=%22M40 14 Q40 18 44 18 Q40 18 40 22 Q40 18 36 18 Q40 18 40 14Z%22 fill=%22%23fff6cf%22/%3E%3Cpath d=%22M120 31 Q120 34 123 34 Q120 34 120 37 Q120 34 117 34 Q120 34 120 31Z%22 fill=%22%23ffffff%22/%3E%3Cpath d=%22M200 8.4 Q200 12 203.6 12 Q200 12 200 15.6 Q200 12 196.4 12 Q200 12 200 8.4Z%22 fill=%22%23fff6cf%22/%3E%3Cpath d=%22M290 25.4 Q290 28 292.6 28 Q290 28 290 30.6 Q290 28 287.4 28 Q290 28 290 25.4Z%22 fill=%22%23ffffff%22/%3E%3Cpath d=%22M400 12 Q400 16 404 16 Q400 16 400 20 Q400 16 396 16 Q400 16 400 12Z%22 fill=%22%23fff6cf%22/%3E%3Cpath d=%22M470 35.4 Q470 38 472.6 38 Q470 38 470 40.6 Q470 38 467.4 38 Q470 38 470 35.4Z%22 fill=%22%23ffffff%22/%3E%3Cpath d=%22M590 16.6 Q590 20 593.4 20 Q590 20 590 23.4 Q590 20 586.6 20 Q590 20 590 16.6Z%22 fill=%22%23fff6cf%22/%3E%3Cpath d=%22M540 14 A10 10 0 1 0 540 34 A7.2 8 0 1 1 540 14Z%22 fill=%22%23fff1b8%22/%3E%3Cg%3E%3Cpath d=%22M228 46 L252 46 L244 54 L238 60 L232 54Z%22 fill=%22%23a796c9%22/%3E%3Cpath d=%22M226 47 Q240 40 254 47Z%22 fill=%22%238fd08a%22/%3E%3Crect x=%22243%22 y=%2234%22 width=%222%22 height=%229%22 fill=%22%239a6b45%22/%3E%3Ccircle cx=%22244%22 cy=%2232%22 r=%225%22 fill=%22%236fbf6a%22/%3E%3C/g%3E%3Cpath d=%22M0 50 C200 40 420 60 640 50%22 stroke=%22%23fff6d0%22 stroke-width=%223%22 opacity=%22.35%22 fill=%22none%22/%3E%3Cpath d=%22M0,86 L0,70.5 L20,71.0 L40,70.6 L60,69.3 L80,67.6 L100,65.9 L120,64.5 L140,63.6 L160,63.2 L180,63.2 L200,63.5 L220,63.9 L240,64.3 L260,64.8 L280,65.4 L300,66.2 L320,67.3 L340,68.4 L360,69.4 L380,70.0 L400,70.0 L420,69.1 L440,67.4 L460,65.3 L480,63.1 L500,61.4 L520,60.5 L540,60.8 L560,62.1 L580,64.3 L600,66.7 L620,68.9 L640,70.5 L640,86 Z%22 fill=%22%23c2b4ea%22/%3E%3Cpath d=%22M0,86 L0,77.3 L20,76.5 L40,75.8 L60,75.3 L80,75.0 L100,74.8 L120,74.6 L140,74.4 L160,74.3 L180,74.4 L200,74.7 L220,75.4 L240,76.3 L260,77.3 L280,78.3 L300,78.9 L320,79.0 L340,78.5 L360,77.4 L380,76.0 L400,74.5 L420,73.2 L440,72.6 L460,72.6 L480,73.4 L500,74.6 L520,76.0 L540,77.3 L560,78.2 L580,78.6 L600,78.5 L620,78.0 L640,77.3 L640,86 Z%22 fill=%22%23a99bdc%22/%3E%3C/svg%3E");
+  --pp-sky-4:linear-gradient(180deg,#f7c3bd 0%,#fde0d6 55%,#fff6ef 100%);
+  --pp-art-4:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 640 86%22 preserveAspectRatio=%22xMidYMax slice%22%3E%3Ccircle cx=%22430%22 cy=%2266%22 r=%2234%22 fill=%22%23fff3b8%22 opacity=%22.55%22/%3E%3Ccircle cx=%22430%22 cy=%2268%22 r=%2215%22 fill=%22%23ffd98a%22/%3E%3Cpath d=%22M120 14 l40 -14%22 stroke=%22%23ffffff%22 stroke-width=%222%22 stroke-linecap=%22round%22 opacity=%22.9%22/%3E%3Ccircle cx=%22120%22 cy=%2214%22 r=%222%22 fill=%22%23fffbe8%22/%3E%3Cpath d=%22M560 26 l26 -9%22 stroke=%22%23ffffff%22 stroke-width=%221.6%22 stroke-linecap=%22round%22 opacity=%22.8%22/%3E%3Crect x=%220%22 y=%2274%22 width=%22640%22 height=%2212%22 fill=%22%23fff9f7%22/%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%220%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22-9.450000000000001%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%226.300000000000001%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%2256%22 cy=%2277%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%2246.55%22 cy=%2271.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%2262.3%22 cy=%2268.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22112%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22102.55%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22118.3%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22168%22 cy=%2277%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22158.55%22 cy=%2271.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22174.3%22 cy=%2268.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22224%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22214.55%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22230.3%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22280%22 cy=%2277%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22270.55%22 cy=%2271.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22286.3%22 cy=%2268.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22336%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22326.55%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22342.3%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22392%22 cy=%2277%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22382.55%22 cy=%2271.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22398.3%22 cy=%2268.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22448%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22438.55%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22454.3%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22504%22 cy=%2277%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22494.55%22 cy=%2271.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22510.3%22 cy=%2268.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22560%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22550.55%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22566.3%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22616%22 cy=%2277%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22606.55%22 cy=%2271.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22622.3%22 cy=%2268.6%22 r=%2211.55%22/%3E%3C/g%3E%3Cg fill=%22%23ffffff%22 stroke=%22%23ffffff%22 stroke-width=%220%22%3E%3Cellipse cx=%22672%22 cy=%2274%22 rx=%2223.1%22 ry=%229.450000000000001%22/%3E%3Ccircle cx=%22662.55%22 cy=%2268.75%22 r=%229.450000000000001%22/%3E%3Ccircle cx=%22678.3%22 cy=%2265.6%22 r=%2211.55%22/%3E%3C/g%3E%3C/svg%3E");
+  --pp-wall-1:#e7eef1 url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2220%22 viewBox=%220 0 44 20%22%3E%3Crect width=%2244%22 height=%2220%22 fill=%22%23e7eef1%22/%3E%3Crect x=%221%22 y=%221%22 width=%2220.0%22 height=%228.0%22 fill=%22%23f3f7f9%22/%3E%3Cpath d=%22M0 .5 H44 M0 10.5 H44 M.5 0 V10.0 M22.5 10.0 V20%22 stroke=%22%23c3d1d9%22 stroke-width=%221%22/%3E%3C/svg%3E") 0 0/44px 20px;
+  --pp-wall-2:#f4e3c6 url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2214%22 viewBox=%220 0 32 14%22%3E%3Crect width=%2232%22 height=%2214%22 fill=%22%23f4e3c6%22/%3E%3Crect x=%221%22 y=%221%22 width=%2214.0%22 height=%225.0%22 fill=%22%23fbefdc%22/%3E%3Cpath d=%22M0 .5 H32 M0 7.5 H32 M.5 0 V7.0 M16.5 7.0 V14%22 stroke=%22%23dcc29a%22 stroke-width=%221%22/%3E%3C/svg%3E") 0 0/32px 14px;
+  --pp-wall-3:#d5caef url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2252%22 height=%2224%22 viewBox=%220 0 52 24%22%3E%3Crect width=%2252%22 height=%2224%22 fill=%22%23d5caef%22/%3E%3Crect x=%221%22 y=%221%22 width=%2224.0%22 height=%2210.0%22 fill=%22%23e3dbf7%22/%3E%3Cpath d=%22M0 .5 H52 M0 12.5 H52 M.5 0 V12.0 M26.5 12.0 V24%22 stroke=%22%23b3a4dd%22 stroke-width=%221%22/%3E%3C/svg%3E") 0 0/52px 24px;
+  --pp-wall-4:#faf6f4 url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2288%22 height=%2256%22 viewBox=%220 0 88 56%22%3E%3Crect width=%2288%22 height=%2256%22 fill=%22%23faf6f4%22/%3E%3Cpath d=%22M0 .5 H88 M0 28.5 H88 M.5 0 V28 M44.5 28 V56%22 stroke=%22%23e6dbd7%22 stroke-width=%221%22/%3E%3Cpath d=%22M8 10 q8 4 14 2 t12 8 M54 38 q8 -2 16 2 t10 1%22 stroke=%22%23efcfcb%22 stroke-width=%221%22 fill=%22none%22/%3E%3C/svg%3E") 0 0/88px 56px;
+  --pp-sky-5:linear-gradient(180deg,#ffd9a8 0%,#ffeccf 58%,#fff8ec 100%);
+  --pp-wall-5:#f6ead2;
+  --dg-c1:#8fd3f4;--dg-c2:#a6dc7a;--dg-c3:#f9b0a8;--dg-c4:#cbbcf2;--dg-c5:#fbe79a;--dg-c6:#ffc49b;
+  --dg-ink:#1f2638;--dg-ink2:#3b4358;--dg-hi:#c8364f;--dg-filter:url(#pp-cut1);--il-filter:none;
+  --q1:#2f6fd0;--q2:#c2410c;--q3:#15803d;--q4:#9333ea;--q5:#b91c1c;--q6:#0e7490;
+  --font-body:"LXGW WenKai","霞鹜文楷","KaiTi","楷体","STKaiti","Kaiti SC","PingFang SC","Microsoft YaHei",serif;
+  --font-label:"ZCOOL KuaiLe","LXGW WenKai","PingFang SC","Microsoft YaHei",sans-serif;
+  --font-hand:var(--font-label);
+  --font-display:var(--font-label);
+  --font-mono:Consolas,"Cascadia Mono",Menlo,monospace;
+  --font-fig:"Microsoft YaHei","PingFang SC","Noto Sans SC","Source Han Sans SC",sans-serif;
+  --stroke:5px;--radius:3px;--radius-alt:2px 6px 2px 2px;
+  --ease:cubic-bezier(.2,.8,.3,1);--dur-fb:.2s;--steps:none;
+  --plate:#fdfaf1;--plate-ink:#1f2638;
+  --fiber:url("img/fiber.png") 0 0/256px 256px;
+}
+body{--pa:var(--p1a);--pb:var(--p1b);--pd:var(--p1d);--psky:var(--pp-sky-1);--part:var(--pp-art-1);--pwall:var(--pp-wall-1)}
+body[data-part="2"]{--pa:var(--p2a);--pb:var(--p2b);--pd:var(--p2d);--psky:var(--pp-sky-2);--part:var(--pp-art-2);--pwall:var(--pp-wall-2)}
+body[data-part="3"]{--pa:var(--p3a);--pb:var(--p3b);--pd:var(--p3d);--psky:var(--pp-sky-3);--part:var(--pp-art-3);--pwall:var(--pp-wall-3)}
+body[data-part="4"]{--pa:var(--p4a);--pb:var(--p4b);--pd:var(--p4d);--psky:var(--pp-sky-4);--part:var(--pp-art-4);--pwall:var(--pp-wall-4)}
+body[data-part="5"]{--pa:var(--p5a);--pb:var(--p5b);--pd:var(--p5d);--psky:var(--pp-sky-5);--part:var(--pp-art-1);--pwall:var(--pp-wall-5)}
+/* 同篇各章色相微移（vl.js 写 --vl-dh：-18…+18）；不支持相对颜色的浏览器用篇色本身。深色不移，保证对比度 */
+@supports (color: hsl(from red h s l)){
+  body[data-part]{--pa2:hsl(from var(--pa) calc(h + var(--vl-dh,0)) s l);--pb2:hsl(from var(--pb) calc(h + var(--vl-dh,0)) s l)}
+}
+
+/* ---------- 亮（默认）：蓝天 + 暖白卡纸 ---------- */
+body{
+  --accent:var(--pa2,var(--pa));--accent2:var(--pb2,var(--pb));--deep:var(--pd);
+  --page:#cdeafa;--panel:#fbf6ea;--edge:#fffdf7;--sunk:#f3ecdc;--kraft:#dcc9a2;--line:#e2d6bc;
+  --ink:#1f2638;--ink2:#3b4358;--muted:#4d566c;
+  --hl:color-mix(in srgb,var(--accent) 70%,#fff);--focus:#1d4fa8;
+  --ok:#246a3a;--okbg:#d9f1c9;--no:#a8332f;--nobg:#ffdcd5;--warnbg:#fff1b8;
+  --note:#fffbe6;--egbg:var(--edge);--egbad:#fff0ea;--whybg:color-mix(in srgb,var(--accent) 16%,var(--edge));--sidebg:#f6efdf;
+  --shadow-c:rgba(40,60,90,.22);
+  --shadow-obj:0 0 0 var(--stroke) var(--edge),7px 9px 0 var(--stroke) var(--kraft),10px 16px 26px 4px var(--shadow-c);
+  --shadow-mid:0 0 0 4px var(--edge),3px 6px 12px 3px var(--shadow-c);
+  --shadow-soft:0 0 0 3px var(--edge),2px 4px 8px 2px var(--shadow-c);
+  --sky-bg:linear-gradient(180deg,#a9dbf7 0%,#cbeafb 45%,#e8f6fd 80%,#f3fbff 100%);
+}
+/* ---------- 暗：夜里的纸模型。图和插画仍在浅色图板上 ---------- */
+html[data-scheme="dark"] body{
+  --accent:color-mix(in srgb,var(--pa2,var(--pa)) 32%,#1f2a38);--accent2:color-mix(in srgb,var(--pb2,var(--pb)) 32%,#1f2a38);
+  --deep:color-mix(in srgb,var(--pa) 75%,#fff);
+  --page:#141c28;--panel:#1f2a38;--edge:#2c3848;--sunk:#18222e;--kraft:#3a3226;--line:#3a4658;
+  --ink:#ece6d6;--ink2:#d0d6e0;--muted:#b6bfcd;
+  --hl:color-mix(in srgb,var(--pa) 38%,#1f2a38);--focus:#8fb4ff;
+  --ok:#8fe0a0;--okbg:#1f3a27;--no:#ff9b94;--nobg:#45201f;--warnbg:#3b2d1c;
+  --note:#2f3324;--egbad:#3c2129;--sidebg:#243040;
+  --shadow-c:rgba(0,0,0,.55);
+  --sky-bg:linear-gradient(180deg,#0f1724 0%,#18243a 60%,#1f2c40 100%);
+}
+/* ---------- 护眼：暖米黄卡纸、深棕字、主色降饱和 ---------- */
+html[data-scheme="sepia"] body{
+  --accent:color-mix(in srgb,var(--pa2,var(--pa)) 55%,#e8dcc0);--accent2:color-mix(in srgb,var(--pb2,var(--pb)) 55%,#dccdab);
+  --deep:color-mix(in srgb,var(--pd) 60%,#3b2a14);
+  --page:#e4d6b8;--panel:#f3e9d2;--edge:#fbf4e3;--sunk:#ece0c4;--kraft:#c9b089;--line:#dccba6;
+  --ink:#3b3123;--ink2:#54473a;--muted:#5c4f3f;
+  --hl:color-mix(in srgb,var(--pa) 45%,#f3e9d2);--focus:#3a5aa8;
+  --ok:#2d5e2c;--okbg:#dbe8c4;--no:#9c2b1f;--nobg:#f2d2c4;--warnbg:#f2dfbf;
+  --note:#f5ebcc;--egbad:#f2dcd2;--sidebg:#efe3c8;
+  --shadow-c:rgba(70,50,20,.22);
+  --sky-bg:linear-gradient(180deg,#e1d2b2 0%,#e9dcc0 60%,#efe4cc 100%);--plate:#fffaf0;
+}
+/* 暗色 / 护眼下：图、插画、概念卡的图位是"一张浅色卡纸"，里面用亮色配色，内部颜色不变 */
+html:not([data-scheme="light"]) :is(.vl-fig,.vl-cc-fig,.vl-illus:not(.vl-fig .vl-illus):not(.vl-cc-fig .vl-illus)){
+  --ink:var(--plate-ink);--ink2:#3b4358;--muted:#4d566c;--edge:#fffdf7;--sunk:#f3ecdc;
+  --accent:var(--pa2,var(--pa));--accent2:var(--pb2,var(--pb));--deep:var(--pd);--hl:color-mix(in srgb,var(--pa) 70%,#fff);--focus:#1d4fa8;
+  --okbg:#d9f1c9;--nobg:#ffdcd5;
+  background-color:var(--plate);color:var(--plate-ink)}
+
+/* ---------- 底面：蓝天 + 纸云（固定）+ 视口底部纸草地；正文是一张暖白卡纸 ---------- */
+html{background:#cdeafa;scroll-padding-top:70px}
+html[data-scheme="dark"]{background:#141c28}html[data-scheme="sepia"]{background:#e4d6b8}
+body{color:var(--ink);font-family:var(--font-body);font-size:17.5px;line-height:1.85;background:var(--page)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("img/clouds.svg") center top/1600px auto no-repeat,var(--sky-bg)}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:clamp(110px,22vh,220px);z-index:-1;pointer-events:none;background:url("img/hills.svg") left bottom/auto 100% repeat-x}
+html:not([data-scheme="light"]) body::before{background:var(--sky-bg)}
+html:not([data-scheme="light"]) body::after{opacity:.35}
+main.vl-wrap{position:relative;max-width:820px;margin:30px auto 150px;padding:34px 46px 40px;border-radius:3px;
+  background:var(--panel) url("img/fiber-soft.png") 0 0/256px 256px;
+  box-shadow:0 0 0 6px var(--edge),9px 11px 0 6px var(--kraft),14px 22px 36px 6px var(--shadow-c)}
+html[data-scheme="dark"] main.vl-wrap{background-image:none}
+@media(max-width:700px){main.vl-wrap{margin:14px 16px 120px;padding:22px 16px 28px;box-shadow:0 0 0 5px var(--edge),4px 6px 0 5px var(--kraft),6px 12px 22px 4px var(--shadow-c)}}
+
+h1,h2,h3,h4{font-family:var(--font-label);font-weight:400;letter-spacing:.02em;line-height:1.35;margin:0 0 .4em;color:var(--ink)}
+h1{font-family:var(--font-display);font-size:clamp(30px,6vw,42px)}
+h2{font-size:clamp(23px,4.4vw,28px)}
+h3{font-size:21px}
+h4{font-size:18px}
+p{margin:.7em 0}
+a{color:inherit}
+main a:not([class]){color:var(--deep);text-underline-offset:.2em}
+/* 加粗：文楷粗体只略重，所以再加深色 + 波浪下划线 */
+b,strong{font-weight:700;color:var(--deep);text-decoration:underline wavy color-mix(in srgb,var(--accent) 85%,#7a9) 1.5px;text-underline-offset:.28em;text-decoration-skip-ink:none}
+:is(button,.vl-btn,.vl-chip,.vl-egtab,.vl-qopt,.vl-pager,.vl-topbar,.vl-pop,.vl-navpanel,.vl-tldr,.vl-side-t,.vl-vs,.vl-misc,.vl-key) :is(b,strong){text-decoration:none;color:inherit}
+/* 凸显概念：起名 = 荧光笔（只给概念第一次被命名处）；着重 = 着重号（中文）/ 下划线（英文） */
+.vl-cn{background:linear-gradient(transparent 50%,var(--hl) 50%);font-weight:700;padding:0 2px;font-style:normal;color:var(--ink)}
+.vl-em{font-style:normal;text-emphasis:filled dot var(--deep);-webkit-text-emphasis:filled dot var(--deep);text-emphasis-position:under right;-webkit-text-emphasis-position:under}
+html[lang^="en"] .vl-em{text-emphasis:none;-webkit-text-emphasis:none;text-decoration:underline 2px var(--deep);text-underline-offset:3px}
+code,kbd{font-family:var(--font-mono);font-size:.9em;background:var(--sunk);padding:0 .3em;border-radius:3px}
+.vl-src,.small{font-size:14.5px;font-weight:500;color:var(--muted);line-height:1.6}
+::selection{background:var(--hl)}
+hr{border:none;height:22px;margin:30px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='22'%3E%3Cpath d='M0 3 Q48 8 96 3' stroke='%237a8aa0' stroke-width='1.2' fill='none'/%3E%3Cg stroke='%23fffdf7' stroke-width='1.6' stroke-linejoin='round'%3E%3Cpath d='M4 4 L18 5.4 L11 19 Z' fill='%238fd3f4'/%3E%3Cpath d='M28 6 L42 6.4 L35 20 Z' fill='%23a6dc7a'/%3E%3Cpath d='M52 6.4 L66 6 L59 20 Z' fill='%23f9b0a8'/%3E%3Cpath d='M76 5.4 L90 4 L83 19 Z' fill='%23cbbcf2'/%3E%3C/g%3E%3C/svg%3E") center/96px 22px repeat-x}
+
+/* ---------- 共用：纸片按钮、芯片、输入 ---------- */
+.vl-btn,.vl-tb-btn,.vl-seg button,.vl-navtools button,.vl-egtab,.vl-qdot{font-family:var(--font-label);color:var(--ink);border:none}
+.vl-btn{min-height:44px;padding:6px 18px 4px;font-size:18px;line-height:1.35;border-radius:3px;background:var(--accent) var(--fiber);box-shadow:0 0 0 3px var(--edge),2px 4px 6px 2px var(--shadow-c);transition:transform .08s,box-shadow .08s}
+.vl-btn:hover:not(:disabled){transform:translateY(-1px) rotate(-.5deg);box-shadow:0 0 0 3px var(--edge),3px 6px 9px 2px var(--shadow-c)}
+.vl-btn:active:not(:disabled){transform:translateY(1px);box-shadow:0 0 0 3px var(--edge),1px 2px 3px 1px var(--shadow-c)}
+.vl-btn.alt{background-color:var(--edge)}
+.vl-btn:disabled{opacity:.55;filter:grayscale(.4);cursor:default}
+.vl-chip{min-height:44px;padding:4px 14px 2px;font-family:var(--font-label);font-size:16px;color:var(--ink);border:none;border-radius:22px;background:var(--edge);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 70%,#888),1px 2px 4px 1px var(--shadow-c)}
+.vl-chip.on,.vl-chip[aria-pressed="true"]{background:var(--accent);box-shadow:0 0 0 3px var(--deep),1px 2px 4px 1px var(--shadow-c)}
+.vl-chip.right{background:var(--okbg);box-shadow:0 0 0 2.5px var(--ok)}.vl-chip.right::before{content:"✓ ";color:var(--ok)}
+.vl-chip.wrong{background:var(--nobg);box-shadow:0 0 0 2.5px var(--no);text-decoration:line-through}.vl-chip.wrong::before{content:"✗ ";color:var(--no)}
+.vl-chip.miss{background:var(--warnbg);outline:2px dashed var(--ink2);outline-offset:2px}.vl-chip.miss::before{content:"✓ "}
+input[type=range]{accent-color:var(--deep);min-height:36px}
+.vl-ctl output{font-family:var(--font-label);font-size:1.25rem;margin-left:6px;color:var(--deep)}
+.vl-msg{font-family:var(--font-label);font-size:1.15rem}
+textarea,input[type=text]{color:var(--ink);font-family:var(--font-body)}
+
+/* ---------- 顶栏：一条白纸条 ---------- */
+.vl-topbar{background:var(--edge) var(--fiber);box-shadow:0 2px 0 var(--line),0 6px 14px var(--shadow-c)}
+.vl-tb-home{font-family:var(--font-label);font-size:19px;color:var(--ink)}
+.vl-tb-home::before{content:"";display:block;width:16px;height:24px;flex:none;border-radius:1px;
+  background:linear-gradient(var(--p4a) 0 0) 0 2px/100% 5px no-repeat,linear-gradient(var(--p3a) 0 0) 0 8px/100% 5px no-repeat,linear-gradient(var(--p2a) 0 0) 0 14px/100% 4px no-repeat,linear-gradient(var(--p1a) 0 0) 0 19px/100% 5px no-repeat;
+  box-shadow:0 0 0 2px var(--edge),1px 2px 3px 1px var(--shadow-c)}
+.vl-tb-btn{border-radius:3px;font-size:16px;background:color-mix(in srgb,var(--accent) 45%,var(--edge));box-shadow:0 0 0 2px var(--edge),1px 2px 4px 1px var(--shadow-c)}
+.vl-tb-btn:hover,.vl-tb-btn[aria-expanded="true"]{background:var(--accent)}
+/* 章节点 = 小塔的一层：篇色纸块，读懂的那层亮一扇金窗 */
+.vl-tb-dots{align-items:flex-end;gap:3px}
+.vl-tb-dots a,.vl-tb-dots span{position:relative;border-radius:2px 2px 0 0;color:#1f2638;font-family:var(--font-label);background:var(--p1a);box-shadow:0 0 0 1.5px var(--edge)}
+.vl-tb-dots [data-part="2"]{background:var(--p2a)}.vl-tb-dots [data-part="3"]{background:var(--p3a)}.vl-tb-dots [data-part="4"]{background:var(--p4a)}.vl-tb-dots [data-part="5"]{background:var(--p5a)}
+.vl-tb-dots a.done::after{content:"";position:absolute;right:2px;top:2px;width:6px;height:6px;border-radius:1px;background:#ffd25e;box-shadow:0 0 0 1px #8a6412}
+.vl-tb-dots a.cur{outline:2.5px solid var(--deep);outline-offset:1px}
+.vl-tb-dots span.off{background:#e3e1db;color:#4d566c}
+.vl-pop,.vl-navpanel{background:var(--edge) var(--fiber);color:var(--ink);border-radius:3px;box-shadow:0 0 0 4px var(--edge),4px 10px 24px 4px var(--shadow-c)}
+.vl-pop.open,.vl-navpanel.open{animation:vl-pp-pop var(--dur-fb) var(--ease)}
+@keyframes vl-pp-pop{from{transform:translateY(-6px) rotate(-.6deg);opacity:0}to{transform:none;opacity:1}}
+.vl-pop h4,.vl-navpanel h4{font-size:17px}
+.vl-pop-part{font-family:var(--font-label);color:var(--deep)}
+.vl-pop a.done::after{content:" ✓";color:var(--ok);font-weight:700}
+.vl-pop li.cur > a,.vl-navpanel a.on{background:color-mix(in srgb,var(--accent) 55%,var(--edge));box-shadow:inset 4px 0 0 var(--deep);font-weight:700}
+.vl-pop a,.vl-navpanel a{display:block;padding:3px 6px;border-radius:2px;color:var(--ink)}
+.vl-pop a:hover,.vl-navpanel a:hover{background:color-mix(in srgb,var(--accent) 35%,var(--edge))}
+.vl-seg button,.vl-navtools button{border-radius:3px;background:var(--edge);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 70%,#888)}
+.vl-seg button[aria-pressed="true"]{background:var(--accent);box-shadow:0 0 0 3px var(--deep)}
+.vl-pref-now{font-size:.9rem;color:var(--ink2);margin:0}
+.vl-tb-lang{background:var(--p2a);color:#1f2638}
+
+/* ---------- 章首：卡纸顶边一条当篇天空带（静态背景图），字和插画排在它下面 ---------- */
+.vl-hero{padding-top:calc(var(--pp-band-h) - 34px + 18px)}
+.vl-hero::before{content:"";position:absolute;z-index:0;left:-46px;right:-46px;top:-34px;height:var(--pp-band-h);pointer-events:none;border-radius:3px 3px 0 0;
+  background:var(--part) left bottom/auto 100% repeat-x,var(--psky);box-shadow:0 3px 0 var(--edge),0 6px 8px -2px var(--shadow-c)}
+.vl-hero > *{position:relative;z-index:1}
+/* 环境动画：一朵纸云在天空带里慢慢飘（只在"全开"档、只在视口内；skin.js 管暂停和 ?freeze） */
+.vl-hero::after{content:"";position:absolute;z-index:0;top:-28px;left:0;width:72px;height:30px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 72'%3E%3Cpath d='M20 70 C0 70 0 40 26 40 C28 14 66 8 80 30 C92 8 136 10 140 38 C168 34 178 70 150 70 Z' fill='%23fff' stroke='%23e6f1fb' stroke-width='3'/%3E%3C/svg%3E") center/contain no-repeat;opacity:0}
+html.vl-fx-full .vl-hero::after{opacity:.95;animation:vl-pp-drift 46s linear infinite}
+html.vl-fx-full .vl-hero.pp-out::after{animation-play-state:paused}
+html.vl-fx-full .vl-hero.pp-freeze::after{animation-play-state:paused;animation-delay:var(--pp-fz,0s)}
+@keyframes vl-pp-drift{from{transform:translateX(-90px)}to{transform:translateX(min(820px,92vw))}}
+@media(max-width:700px){.vl-hero{padding-top:calc(var(--pp-band-h) - 22px + 6px)}.vl-hero::before{left:-16px;right:-16px;top:-22px;height:calc(var(--pp-band-h) - 14px)}.vl-hero::after{top:-18px}}
+.vl-badge{font-family:var(--font-label);font-size:15px;padding:1px 12px 0;border-radius:2px;color:var(--ink);background:var(--accent) var(--fiber);box-shadow:0 0 0 2.5px var(--edge),1px 2px 4px 1px var(--shadow-c);transform:rotate(-2deg)}
+.vl-hero h1{display:block;width:fit-content;max-width:100%;text-wrap:balance;padding:0 4px;background:linear-gradient(transparent 68%,color-mix(in srgb,var(--accent2) 85%,#fff) 68% 92%,transparent 92%)}
+html[data-scheme="dark"] .vl-hero h1{background:linear-gradient(transparent 70%,var(--accent2) 70% 92%,transparent 92%)}
+.vl-hero .vl-sub{font-weight:500;color:var(--ink2);font-size:18px}
+.vl-hero .vl-illus{box-shadow:var(--shadow-mid);border-radius:2px;background:var(--plate)}
+.vl-goals{padding:18px 22px 12px;border-radius:3px;background:color-mix(in srgb,var(--accent) 22%,var(--edge)) var(--fiber);box-shadow:var(--shadow-soft)}
+.vl-goals h3{font-size:19px}
+.vl-goals .vl-time{font-family:var(--font-label);font-size:15px;padding:2px 12px;background:var(--edge);border-radius:20px;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 60%,#fff);color:var(--ink)}
+
+/* ---------- 分节：节号是钉在纸上的纸签，下面一条剪出来的彩纸条 ---------- */
+.vl-sec{position:relative;margin:46px 0 16px;padding:0 0 14px}
+.vl-sec::after{content:"";position:absolute;left:2px;right:2px;bottom:0;height:5px;background:var(--accent2);box-shadow:0 0 0 2px var(--edge),0 2px 3px 2px var(--shadow-c);
+  clip-path:polygon(0 0,18% 30%,39% 0,63% 25%,84% 0,100% 20%,100% 100%,78% 75%,55% 100%,31% 72%,12% 100%,0 80%)}
+.vl-sec .vl-n{position:relative;width:46px;height:42px;margin:6px 2px 2px;font-family:var(--font-label);font-size:21px;color:var(--ink);border-radius:2px;
+  background:var(--accent) var(--fiber);box-shadow:0 0 0 3px var(--edge),2px 4px 5px 3px var(--shadow-c);transform:rotate(-3deg)}
+.vl-sec .vl-n::before{content:"";position:absolute;top:-5px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 18%,#f39a8c 30%,#c95a4e 100%);box-shadow:0 1px 1px rgba(0,0,0,.3)}
+.vl-sec:nth-of-type(even) .vl-n{transform:rotate(2deg)}
+.vl-sec:hover h2{color:var(--deep)}
+.vl-sec .vl-caret{color:var(--muted);width:44px;height:44px;display:grid;place-items:center}
+.vl-sec-body > h3{position:relative;padding-left:20px}
+.vl-sec-body > h3::before{content:"";position:absolute;left:2px;top:.3em;width:9px;height:.95em;background:var(--accent);box-shadow:0 0 0 2px var(--edge),1px 2px 2px 1px var(--shadow-c);transform:rotate(-4deg)}
+.vl-fab{width:52px;height:52px;border:none;border-radius:50%;color:var(--ink);background:var(--accent) var(--fiber);box-shadow:0 0 0 4px var(--edge),3px 6px 12px 2px var(--shadow-c)}
+.vl-fab:hover{transform:rotate(-6deg)}
+.vl-readbar i{background:var(--deep);box-shadow:0 0 0 1px var(--edge)}
+
+/* ---------- 编号图与概念图解（主角：图板卡纸 + 白边 + 牛皮纸垫层） ---------- */
+.vl-fig{background:var(--plate);color:var(--plate-ink);border-radius:3px;box-shadow:var(--shadow-obj);margin:30px 6px}
+.vl-fig figcaption{color:var(--ink2);font-weight:500}
+.vl-fig-n{font-family:var(--font-label);font-weight:400;color:var(--deep)}
+.vl-fig.photo{background:#fff;padding:8px 8px 10px;border-radius:1px;transform:rotate(-.6deg);box-shadow:0 0 0 1px #e8e1d0,3px 6px 12px 3px var(--shadow-c);position:relative}
+.vl-fig.photo::before{content:"";position:absolute;top:-9px;left:50%;width:84px;height:22px;margin-left:-42px;z-index:1;background:color-mix(in srgb,var(--accent2) 60%,#fff);opacity:.88;transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+/* 插画：单独出现时是一张立着的小卡纸 */
+.vl-illus:not(.vl-fig .vl-illus):not(.vl-cc-fig .vl-illus):not(.vl-eg .vl-illus):not(.vl-hero .vl-illus){background:var(--plate);border-radius:2px;box-shadow:0 0 0 5px var(--edge),3px 5px 10px 5px var(--shadow-c);margin:6px}
+.vl-illus-svg text{font-family:var(--font-fig)}
+.vl-illus-svg .vl-il-rough{filter:var(--il-filter)}
+.vl-illus-miss{background:repeating-linear-gradient(45deg,#eef3f6 0 10px,#e3ecf2 10px 20px);color:#3b4358;box-shadow:0 0 0 3px var(--edge)}
+.vl-dg text{font-family:var(--font-fig)}
+.vl-dg .vl-dg-box{fill:var(--dg-c1);stroke:none;filter:var(--dg-filter)}
+.vl-dg [data-c="2"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="2"]{fill:var(--dg-c2)}
+.vl-dg [data-c="3"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="3"]{fill:var(--dg-c3)}
+.vl-dg [data-c="4"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="4"]{fill:var(--dg-c4)}
+.vl-dg [data-c="5"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="5"]{fill:var(--dg-c5)}
+.vl-dg [data-c="6"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="6"]{fill:var(--dg-c6)}
+.vl-dg-nested .vl-dg-ring[data-c="1"]{fill:#dff1fb}.vl-dg-nested .vl-dg-ring[data-c="2"]{fill:#e6f4d8}.vl-dg-nested .vl-dg-ring[data-c="3"]{fill:#fde4e0}
+.vl-dg-nested .vl-dg-ring[data-c="4"]{fill:#ece6fb}.vl-dg-nested .vl-dg-ring[data-c="5"]{fill:#fdf5d6}.vl-dg-nested .vl-dg-ring[data-c="6"]{fill:#ffeadb}
+.vl-dg .vl-dg-ring{stroke:var(--dg-ink2);stroke-width:1.5;filter:var(--dg-filter)}
+.vl-dg .vl-dg-ghost{fill:none;stroke:var(--dg-ink2);stroke-dasharray:8 6;stroke-width:2;filter:none}
+.vl-dg .vl-dg-cell{stroke:none;filter:none;opacity:.55}
+.vl-dg .vl-dg-cellbox{fill:#fffdf7;stroke:#d8ccb2;stroke-width:1.5;filter:none}
+.vl-dg .vl-dg-row:nth-child(odd) .vl-dg-cellbox{fill:#f7f0e1}
+.vl-dg .vl-dg-hbox{filter:var(--dg-filter)}
+.vl-dg [data-side="b"] > .vl-dg-hbox{fill:var(--dg-c3)}
+.vl-dg .vl-dg-ln{stroke:var(--dg-ink);stroke-width:2.6;stroke-linecap:round;filter:none}
+.vl-dg .vl-dg-lead{stroke-width:1.6}
+.vl-dg .vl-dg-spin{stroke-width:2.2}
+.vl-dg .vl-dg-mid{stroke-width:1.6;stroke-dasharray:6 6}
+.vl-dg .vl-dg-axis{stroke-width:2.4}
+.vl-dg .vl-dg-ah{fill:var(--dg-ink);stroke:var(--dg-ink);stroke-width:1.2;stroke-linejoin:round}
+.vl-dg .vl-dg-dot{fill:var(--dg-ink)}
+.vl-dg .vl-dg-badge .vl-dg-dot,.vl-dg .vl-dg-lab .vl-dg-dot{fill:#fffdf7;stroke:var(--dg-ink);stroke-width:2}
+.vl-dg .vl-dg-pt{fill:var(--dg-hi);stroke:#fffdf7;stroke-width:2.5}
+.vl-dg .vl-dg-t1{fill:var(--dg-ink);font-weight:700}
+.vl-dg .vl-dg-t2,.vl-dg .vl-dg-t3{fill:var(--dg-ink2)}
+.vl-dg .vl-dg-num,.vl-dg .vl-dg-axname,.vl-dg .vl-dg-k{fill:var(--dg-ink);font-weight:700}
+.vl-dg .vl-dg-hit{stroke:none}
+.vl-dg .is-on > .vl-dg-box,.vl-dg .vl-dg-ring.is-on{stroke:var(--dg-hi);stroke-width:4}
+.vl-dg .is-on > .vl-dg-hit{fill:#fff1b8}
+.vl-dg .vl-dg-row.is-on .vl-dg-cellbox{stroke:var(--dg-hi);stroke-width:3}
+.vl-dg [tabindex]:focus-visible > .vl-dg-box,.vl-dg [tabindex]:focus-visible .vl-dg-cellbox{stroke:#1d4fa8;stroke-width:4}
+.vl-dg [tabindex]:focus-visible > .vl-dg-hit{stroke:#1d4fa8;stroke-width:3;stroke-dasharray:6 4}
+.vl-dg-info{font-size:1rem;color:var(--ink);border-top:2px dashed #d6c7a4;padding-top:6px}
+
+/* ---------- 例子轮播：一张卡纸，上沿一排纸页签 ---------- */
+.vl-egcar{border-radius:3px;background:var(--edge) var(--fiber);box-shadow:var(--shadow-mid);padding:10px 8px 8px}
+.vl-egtab{font-size:15.5px;min-height:44px;padding:4px 14px 2px;border-radius:3px 3px 0 0;background:var(--sunk)}
+.vl-egtab:hover{background:color-mix(in srgb,var(--accent) 40%,var(--sunk))}
+.vl-egtab.on{background:var(--accent);box-shadow:inset 0 -3px 0 var(--deep)}
+.vl-egtab.bad{background:var(--egbad);outline:2px dashed var(--no);outline-offset:-4px}
+.vl-egtab.bad.on{background:#ffb9a3;color:#1f2638}
+.vl-egnav{border:none;border-radius:50%;color:var(--ink);background:color-mix(in srgb,var(--accent) 50%,var(--edge));box-shadow:0 0 0 2px var(--edge),1px 2px 4px var(--shadow-c)}
+.vl-egnav svg{width:18px;height:18px}
+.vl-egnav:hover{background:var(--accent)}
+.vl-eg{border-radius:3px;background:var(--egbg);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 50%,var(--edge))}
+.vl-egcar .vl-eg{box-shadow:none;background:transparent}
+.vl-eg.bad{background:var(--egbad);box-shadow:0 0 0 3px #ffc9b5}
+.vl-egcar .vl-eg.bad{background:var(--egbad);outline:2px dashed var(--no);outline-offset:-2px}
+.vl-egk{font-family:var(--font-label);font-size:14px;padding:0 9px;border-radius:2px;background:color-mix(in srgb,var(--accent) 60%,var(--edge));color:var(--ink)}
+.vl-eg.bad .vl-egk{background:#ffc9b5;color:#1f2638}
+.vl-egcount{color:var(--muted);font-weight:500}
+.vl-eg .vl-illus{border-radius:2px;background:var(--plate);box-shadow:var(--shadow-soft);margin:4px}
+
+/* ---------- 术语 ---------- */
+.vl-term{text-decoration:underline dotted var(--deep) 2.5px;text-underline-offset:.28em;border-radius:2px}
+.vl-term:hover,.vl-term:focus{background:color-mix(in srgb,var(--accent) 35%,transparent)}
+.vl-tip{font-size:15px;font-weight:500;color:var(--ink);background:var(--edge) var(--fiber);border-radius:3px;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 70%,var(--edge)),3px 6px 14px 2px var(--shadow-c)}
+.vl-tip b{display:block;font-family:var(--font-label);font-weight:400;text-decoration:none;color:var(--deep)}
+
+/* ---------- 概念卡：一张立着的白卡，左边一条副色厚纸条 ---------- */
+.vl-cc{background:var(--edge);color:var(--ink);border-radius:3px;border-left:9px solid var(--accent2);box-shadow:0 0 0 3px var(--edge),3px 5px 9px 3px var(--shadow-c);margin:28px 4px}
+.vl-cc-tag{background:var(--accent);color:var(--ink);font-family:var(--font-label);font-size:15px;letter-spacing:.06em;border-radius:2px;padding:1px 12px 0;box-shadow:0 0 0 2.5px var(--edge),1px 2px 4px 1px var(--shadow-c);transform:rotate(-2deg)}
+.vl-cc-name{font-family:var(--font-label);font-size:2rem;line-height:1.25}
+.vl-cc-name span{background:linear-gradient(transparent 60%,var(--hl) 60%);padding:0 4px}
+.vl-cc-en{color:var(--ink2);font-size:15px}
+.vl-cc-by{color:var(--muted);font-size:14.5px;font-weight:500}
+.vl-cc-plain{font-size:1.02rem}
+.vl-cc-def{font-size:18px;font-weight:500;line-height:1.8}
+.vl-cc-eg{font-size:15.5px;margin-top:.5em;padding-top:.45em;border-top:1.5px dashed var(--line);color:var(--ink2)}
+.vl-cc-k{font-family:var(--font-label);font-size:14px;padding:0 9px;border-radius:2px;background:color-mix(in srgb,var(--accent2) 55%,var(--edge));color:var(--ink)}
+.vl-cc-fig{border-radius:2px;padding:6px;background:var(--plate);box-shadow:0 0 0 2px var(--line)}
+.vl-cc-nofig{color:#a8332f;box-shadow:0 0 0 2px #a8332f}
+@media(max-width:700px){.vl-cc-name{font-size:1.7rem}}
+@media print{.vl-cc{box-shadow:none}}
+
+/* ---------- 原理框：轻块（左边一条主色纸条 + 纸签），无投影 ---------- */
+.vl-why{border-left:6px solid var(--accent);background:linear-gradient(90deg,var(--whybg),transparent 75%);border-radius:0 3px 3px 0}
+.vl-why-tag{font-family:var(--font-label);font-size:15px;padding:1px 12px 0;border-radius:2px;color:var(--ink);background:var(--accent);box-shadow:0 0 0 2.5px var(--edge);transform:rotate(-2deg)}
+.vl-why h3{font-size:20px}
+.vl-why .vl-src{border-top:1.5px dashed var(--line);padding-top:8px}
+.vl-why-fig .vl-illus,.vl-why-fig > svg{width:100%}
+
+/* ---------- 收起块：牛皮纸文件袋 ---------- */
+.vl-side,.vl-story{background:var(--sidebg);border-radius:3px;box-shadow:0 0 0 2px var(--line)}
+.vl-side > summary,.vl-story > summary{font-family:var(--font-label)}
+.vl-side-tag{font-size:14px;padding:1px 10px 0;border-radius:2px;color:#1f2638;background:#ffe9a8;box-shadow:0 0 0 2px var(--edge)}
+.vl-story .vl-side-tag{background:var(--p4a)}
+.vl-side[data-kind="math"] .vl-side-tag{background:var(--p1a)}
+.vl-side[data-kind="debate"] .vl-side-tag{background:var(--p3a)}
+.vl-side-t b{font-family:var(--font-label);font-weight:400;font-size:17px;line-height:1.35;color:var(--ink)}
+.vl-side-t small{font-family:var(--font-body);font-size:14.5px;font-weight:500;line-height:1.5;color:var(--muted)}
+.vl-side-btn{font-size:14px;border-radius:999px;background:var(--edge);color:var(--ink);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 60%,var(--line))}
+.vl-side > summary:hover .vl-side-btn,.vl-story > summary:hover .vl-side-btn{background:var(--accent)}
+.vl-side[open],.vl-story[open]{box-shadow:0 0 0 2px var(--line),inset 6px 0 0 var(--kraft)}
+.vl-side-body{border-top:2px dashed var(--line)}
+
+/* ---------- 演化链、时间线 ---------- */
+.vl-chain > li:not(.vl-chain-ar){background:var(--edge);border-radius:3px;box-shadow:var(--shadow-soft)}
+.vl-chain-ar{font-family:var(--font-label);font-size:1.5rem;color:var(--deep)}
+.vl-timeline{border-left:5px solid var(--kraft)}
+.vl-timeline .vl-ev::before{content:"";position:absolute;left:-32px;top:10px;width:16px;height:16px;border-radius:2px;background:var(--accent);box-shadow:0 0 0 2.5px var(--edge),1px 2px 3px 1px var(--shadow-c);transform:rotate(45deg)}
+.vl-timeline .vl-yr{font-family:var(--font-label);font-weight:400;font-size:1.15rem;color:var(--deep);text-decoration:none}
+.vl-timeline .vl-illus{box-shadow:var(--shadow-soft);background:var(--plate);border-radius:2px}
+
+/* ---------- 试试看：一张浅黄小纸片，左边一个待勾方框 ---------- */
+.vl-try{background:var(--note);border-radius:3px;box-shadow:var(--shadow-soft);transform:rotate(-.3deg)}
+.vl-try-box{background:var(--edge);border-radius:3px;box-shadow:0 0 0 2.5px #9c8a5c}
+.vl-try-k{font-family:var(--font-label);font-weight:400;color:var(--ink);text-decoration:none}
+.vl-try.done{background:var(--okbg)}
+.vl-try.done .vl-try-box{background:var(--ok);color:#fff;box-shadow:0 0 0 2.5px var(--edge)}
+.vl-try.done .vl-try-box svg{color:#fff}
+.vl-try-fb{color:var(--ok);font-weight:700}
+.vl-try.fresh-done{animation:vl-pop .35s var(--ease)}
+
+/* ---------- 先猜后揭晓 ---------- */
+.vl-guess{background:var(--edge) var(--fiber);border-radius:3px;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 55%,var(--edge)),2px 4px 8px 2px var(--shadow-c)}
+.vl-guess .vl-q{font-weight:700}
+.vl-ans{border-top:2px dashed color-mix(in srgb,var(--accent) 70%,#999);padding-top:8px}
+.vl-fb{font-size:1rem}
+.vl-g-ctl label{font-family:var(--font-label)}
+.vl-g-ctl output{font-family:var(--font-label);font-size:1.2rem;color:var(--deep)}
+.vl-g-line{background:var(--ink2)}
+.vl-g-span{background:color-mix(in srgb,var(--accent2) 70%,transparent);border-radius:2px}
+.vl-g-mk{background:var(--ink);border-radius:1px}
+.vl-g-mk.ans{background:var(--no)}
+.vl-g-mk span{font-family:var(--font-label);color:var(--ink)}
+.vl-g-mk.ans span{color:var(--no)}
+.vl-g-ends{color:var(--muted)}
+.vl-g-res{font-family:var(--font-label);font-size:1.1rem}
+
+/* ---------- 测验 ---------- */
+.vl-q:not(.vl-guess .vl-q){background:var(--edge) var(--fiber);border-radius:3px;box-shadow:0 0 0 3px var(--line),2px 4px 8px 2px var(--shadow-c)}
+.vl-qt{font-weight:700}
+.vl-qopt{color:var(--ink);background:var(--edge);border:none;border-radius:3px;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 60%,#999)}
+.vl-qopt:hover:not(:disabled){background:color-mix(in srgb,var(--accent) 25%,var(--edge))}
+.vl-qopt.ok{background:var(--okbg);box-shadow:0 0 0 2.5px var(--ok);font-weight:700}.vl-qopt.ok::before{content:"✓ ";color:var(--ok)}
+.vl-qopt.no{background:var(--nobg);box-shadow:0 0 0 2px var(--no);text-decoration:line-through;text-decoration-color:var(--no);color:var(--ink2)}.vl-qopt.no::before{content:"✗ ";color:var(--no)}
+.vl-qopt.sel{background:var(--accent);box-shadow:0 0 0 3px var(--deep)}
+.vl-qopt.drag{box-shadow:0 0 0 3px var(--edge),4px 8px 14px 3px var(--shadow-c)}
+.vl-qwhy{background:color-mix(in srgb,var(--okbg) 55%,var(--edge));border-left:4px solid var(--ok);font-size:1rem}
+.vl-qslot{border:2.5px dashed color-mix(in srgb,var(--ink2) 60%,transparent);border-radius:3px;background:var(--sunk)}
+.vl-qslot.armed,.vl-qslot.over{background:var(--accent);border-style:solid}
+.vl-qslot.ok{border-style:solid;border-color:var(--ok);background:var(--okbg)}
+.vl-qph{color:var(--muted)}
+.vl-qdot{border-radius:50%;background:var(--edge);box-shadow:0 0 0 2px #b9a97f}
+.vl-qdot.on{background:var(--accent);box-shadow:0 0 0 3px var(--deep)}
+.vl-qdot.tried{background:var(--nobg);box-shadow:0 0 0 2px var(--no)}
+.vl-qdot.ok{background:var(--okbg);box-shadow:0 0 0 2.5px var(--ok)}
+.vl-qdot.ok.on{box-shadow:0 0 0 3px var(--deep)}
+.vl-score{font-family:var(--font-label);font-size:1.3rem}
+.vl-quiz-badge{text-align:center;font-family:var(--font-label);font-size:1.5rem;color:var(--ink);background:#ffe39a var(--fiber);border-radius:3px;padding:10px;margin:20px 0;transform:rotate(-1deg);box-shadow:var(--shadow-obj);animation:vl-pop .5s var(--ease)}
+html[data-scheme="dark"] .vl-quiz-badge{background:#4a3d1a;color:var(--ink)}
+
+/* ---------- 笔记框：横线卡纸 ---------- */
+.vl-note{color:var(--ink);background-color:var(--edge);background-image:repeating-linear-gradient(transparent 0 calc(1.9em - 1px),var(--line) calc(1.9em - 1px) 1.9em);background-attachment:local;line-height:1.9;border:none;border-radius:3px;box-shadow:0 0 0 3px var(--line),inset 0 1px 3px rgba(0,0,0,.06)}
+.vl-note:focus{outline:3px solid var(--focus);outline-offset:2px}
+.vl-note-st{color:var(--muted);font-family:var(--font-label)}
+
+/* ---------- 章末翻页：两块纸牌 ---------- */
+.vl-pager a{font-family:var(--font-label);font-size:1.1rem;color:var(--ink);background:var(--edge) var(--fiber);border-radius:3px;box-shadow:var(--shadow-mid);transition:transform .12s}
+.vl-pager a:hover{transform:translateY(-3px) rotate(-.4deg)}
+.vl-pager small{font-family:var(--font-body);color:var(--ink2)}
+.vl-pager .vl-pg-next{background-color:var(--accent)}
+
+/* ---------- 互动台（主角：最重的实体感） ---------- */
+.vl-board{background:var(--edge) var(--fiber);border-radius:3px;box-shadow:var(--shadow-obj);margin:30px 6px}
+.vl-board > h3:first-child{margin-top:0}
+@media(max-width:700px){.vl-board,.vl-fig{box-shadow:0 0 0 4px var(--edge),4px 6px 0 4px var(--kraft),6px 10px 18px 3px var(--shadow-c)}}
+
+/* ---------- 收束块、两栏对比：轻一档的纸片，左上角贴纸签 ---------- */
+.vl-misc{background:var(--warnbg);border-radius:3px;box-shadow:var(--shadow-soft)}
+.vl-key{background:color-mix(in srgb,var(--accent2) 22%,var(--edge));border-radius:3px;box-shadow:var(--shadow-soft)}
+.vl-tldr{background:var(--edge);border-radius:3px;font-family:var(--font-label);font-size:1.25rem;line-height:1.55;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 60%,var(--edge)),2px 4px 8px 2px var(--shadow-c)}
+.vl-tldr b:first-child{display:inline-block;margin-right:8px;padding:0 10px;font-family:var(--font-label);font-weight:400;font-size:.8em;border-radius:2px;background:#ffe39a;color:#1f2638}
+.vl-vs > *{background:var(--edge);border-radius:3px;box-shadow:var(--shadow-soft)}
+.vl-vs > .bad{background:var(--egbad);outline:2px dashed var(--no);outline-offset:-6px}
+
+/* ---------- 目录页：一座纸塔（第 1 篇在最底层，往上爬）。只认 starter/index.html 的 #ix-parts 结构 ---------- */
+body #ix-parts{display:flex;flex-direction:column-reverse;max-width:600px;margin:34px auto 0;position:relative}
+/* 塔顶：三角屋顶 + 小旗（DOM 里最后一个 → 视觉最上面） */
+body #ix-parts::after{content:"";display:block;height:70px;margin:0 -14px;
+  background:linear-gradient(var(--p4d) 0 0) calc(50% + 0px) 0/3px 34px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 22'%3E%3Cpath d='M0 0 L40 6 L0 18 Z' fill='%23f9b0a8' stroke='%23fffdf7' stroke-width='2'/%3E%3C/svg%3E") calc(50% + 20px) 2px/38px 20px no-repeat,
+    linear-gradient(to bottom right,transparent 49.5%,#c07a5a 50%) left 32px/50% 38px no-repeat,
+    linear-gradient(to bottom left,transparent 49.5%,#c07a5a 50%) right 32px/50% 38px no-repeat;
+  filter:drop-shadow(0 0 0 #fffdf7) drop-shadow(2px 4px 4px rgba(40,60,90,.22))}
+/* 塔基：一条草地（DOM 里第一个 → 视觉最下面） */
+body #ix-parts::before{content:"";display:block;height:22px;margin:0 -40px;border-radius:12px 12px 2px 2px;background:#8fcf72 var(--fiber);box-shadow:0 0 0 3px var(--edge),2px 5px 8px 2px var(--shadow-c)}
+body #ix-parts .ix-part{margin:0;padding:16px 18px 14px;background:var(--pp-wall-1);box-shadow:-5px 0 0 var(--edge),5px 0 0 var(--edge),4px 8px 14px 2px var(--shadow-c);position:relative}
+body #ix-parts .ix-part:nth-child(2){background:var(--pp-wall-2)}
+body #ix-parts .ix-part:nth-child(3){background:var(--pp-wall-3)}
+body #ix-parts .ix-part:nth-child(4){background:var(--pp-wall-4)}
+body #ix-parts .ix-part:nth-child(5){background:var(--pp-wall-5)}
+/* 每段塔身顶上一道檐（彩纸条），篇名是挂在檐下的牌子 */
+body #ix-parts .ix-part::before{content:"";position:absolute;left:-12px;right:-12px;top:-8px;height:10px;background:var(--c);box-shadow:0 0 0 2.5px var(--edge),0 3px 4px var(--shadow-c);border-radius:2px}
+body #ix-parts .ix-part h2{display:inline-block;margin:6px 0 2px;padding:2px 14px 0;font-size:20px;color:#1f2638;background:#fffdf7;box-shadow:0 0 0 2.5px var(--c),2px 3px 5px 1px var(--shadow-c);border-radius:2px}
+body #ix-parts .ix-part > p{color:#3b4358;font-size:15px;font-weight:500;margin:6px 0 0}
+body #ix-parts .ix-chs{display:flex;flex-direction:column-reverse;gap:12px;margin-top:12px}
+/* 每章是一层楼：一扇亮着的窗（章号）+ 门牌 */
+body #ix-parts .ix-ch{border:none;border-radius:2px;background:#fffdf7 var(--fiber);color:#1f2638;box-shadow:0 0 0 3px #fffdf7,2px 4px 8px 2px rgba(40,60,90,.22)}
+body #ix-parts a.ix-ch:hover{transform:translateY(-2px) rotate(-.3deg)}
+body #ix-parts .ix-ch .ix-no{border:none;border-radius:2px 2px 0 0;width:40px;height:44px;background:var(--c);color:#1f2638;font-family:var(--font-label);font-weight:400;box-shadow:0 0 0 2.5px #fffdf7,inset 0 -6px 0 rgba(255,255,255,.35)}
+body #ix-parts .ix-ch h3{color:#1f2638;font-size:18px}
+body #ix-parts .ix-ch p,body #ix-parts .ix-ch .ix-st{color:#3b4358}
+body #ix-parts .ix-ch .ix-st{color:#2c7a46}
+body #ix-parts .ix-ch.off{background:#eeece6;box-shadow:0 0 0 3px #fffdf7;outline:2px dashed #8a8f9e;outline-offset:-6px}
+body #ix-parts .ix-ch.off .ix-no{background:#d6d4cc}
+body #ix-parts .ix-ch.off .ix-st{color:#4d566c}
+body #ix-parts .ix-ch.dim{opacity:.4}
+@media(max-width:700px){body #ix-parts::before{margin:0 -10px}body #ix-parts .ix-part{padding:14px 12px 12px}}
+@media print{body #ix-parts{display:block}body #ix-parts::before,body #ix-parts::after{display:none}}
+
+/* ---------- 英文页：正文换清晰的无衬线体，快乐体留给标题、按钮 ---------- */
+html[lang^="en"]{--font-body:"Segoe UI","Helvetica Neue",Arial,"Noto Sans",system-ui,sans-serif;--font-label:"Fredoka","ZCOOL KuaiLe","Segoe UI",sans-serif}
+html[lang^="en"] body{font-size:18px;line-height:1.75}
+
+/* ---------- 动效档位 ---------- */
+html.vl-fx-lite .vl-btn:hover,html.vl-fx-lite .vl-fab:hover,html.vl-fx-lite .vl-pager a:hover,html.vl-fx-off .vl-btn:hover,html.vl-fx-off .vl-pager a:hover,html.vl-fx-off body #ix-parts a.ix-ch:hover{transform:none}
+html.vl-fx-off .vl-pop.open,html.vl-fx-off .vl-navpanel.open{animation:none}
+@media (prefers-reduced-motion:reduce){.vl-hero::after{animation:none!important;opacity:0!important}}
+@media print{body{background:#fff}body::before,body::after,.vl-hero::before,.vl-hero::after{display:none}main.vl-wrap{box-shadow:none;margin:0;background:#fff}.vl-fig,.vl-board,.vl-cc,.vl-egcar{box-shadow:0 0 0 1px #999}.vl-hero{padding-top:0}}

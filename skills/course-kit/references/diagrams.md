@@ -130,7 +130,7 @@ kit 的写法（以模板 2 为例；其余模板同样是声明式或 `VL.diagr
 </script>
 ```
 
-生成的结构里，框 `.vl-dg-box`、线 `.vl-dg-ln` 可加皮肤滤镜（手绘抖动），文字 `.vl-dg-t1`（名字）/ `.vl-dg-t2`（例子）/ `.vl-dg-t3`（小字）、引线 `.vl-dg-lead` 不加；皮肤可用的全部类名见 `kit/README.md`"概念图解"。手写 SVG 图（kit 的 12 种模板画不了的图）照同样分层：形状组加滤镜，文字组在滤镜外，可点的块 `g[tabindex=0][role=button]`。
+生成的结构里，框 `.vl-dg-box`、线 `.vl-dg-ln` 可加皮肤滤镜（手绘抖动），文字 `.vl-dg-t1`（名字）/ `.vl-dg-t2`（例子）/ `.vl-dg-t3`（小字）、引线 `.vl-dg-lead` 不加；皮肤可用的全部类名见 `kit/README.md` 第九节"皮肤可用的类"。手写 SVG 图（kit 的 12 种模板画不了的图）照同样分层：形状组加滤镜，文字组在滤镜外，可点的块 `g[tabindex=0][role=button]`。
 
 ## 五、什么时候不画图解
 

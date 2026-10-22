@@ -1,12 +1,37 @@
 """把一章 html 转成"读者视图"纯文本：给体验 / 审读 agent 用，省得啃整页 HTML。
-用法：PYTHONIOENCODING=utf-8 python tools/readable.py <章节 html 绝对路径> [输出.txt]
-保留：标题、段落、列表、小比特台词、公式源码；图换成 [图：aria-label + 图注]，插画换成 [插画：alt]（从 js/illus-chNN.js 取），
-照片换成 [照片：alt]，实验室列出标题、白话注释和活参数，短片列出每步旁白（从 js/chNN.js 取），测验列出题目与解析。"""
+用法：python readable.py <章节 html 路径> [--out 输出.txt]      （旧写法 readable.py <html> <输出.txt> 也认）
+两个分支，按页面自动选：
+- kit 分支（页面里有 vl- 类，即用 course-kit 搭的课，中英文页都行）：逻辑在同目录 readable_kit.py。按阅读顺序输出
+  章标题、副标题、学习目标、各分节正文；概念卡 [概念卡：名字 — 定义 — 例子]；原理框、误区、要点、旁注等带类型标签；
+  收起的发明故事 / 支线写成 [收起·类型：钩子 — 介绍] 再附"展开后"的内容；图写成 [图 N：aria-label / 插画 alt — 图注]，
+  VL.diagram 图解读 data-diagram 的 JSON 或页面脚本里的配置；例子轮播每页都输出；互动写成 [互动：标题 — 试试看]；
+  动手题、小游戏、练习（VL.quiz）从脚本里读出题目、选项、解析放回原位；荧光笔 vl-cn 用【】，着重 vl-em 用「」。
+  注意：输出里标出了正确答案（正确选项带 ✓、估数题写出答案、排序题列出正确顺序），派审读 agent 时让它先闭卷自测、再看答案。
+- 老分支（作者的 AI 课等老课程）：保留：标题、段落、列表、小比特台词、公式源码；图换成 [图：aria-label + 图注]，插画换成 [插画：alt]（从 js/illus-chNN.js 取），
+  照片换成 [照片：alt]，实验室列出标题、白话注释和活参数，短片列出每步旁白（从 js/chNN.js 取），测验列出题目与解析。"""
 import re, sys, os, html
 from html.parser import HTMLParser
 
-path = sys.argv[1]
+try: sys.stdout.reconfigure(encoding="utf-8")
+except Exception: pass
+_args = sys.argv[1:]
+OUT = None
+if "--out" in _args:
+    _i = _args.index("--out"); OUT = _args[_i + 1]; del _args[_i:_i + 2]
+elif len(_args) > 1: OUT = _args[1]
+if not _args: sys.exit(__doc__)
+path = _args[0]
 src = open(path, encoding="utf-8").read()
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import readable_kit
+if readable_kit.is_kit(src):          # kit 分支
+    text = readable_kit.render(path, src)
+    if OUT: open(OUT, "w", encoding="utf-8").write(text); print(f"写入 {OUT}，{len(text)} 字符")
+    else: print(text)
+    sys.exit(0)
+
+# ======== 老分支（原逻辑，未改） ========
 root = os.path.dirname(path)
 m = re.match(r"ch(\d+)", os.path.basename(path))
 nn = m.group(1) if m else ""
@@ -109,7 +134,7 @@ if quiz:
         text += f"\n{i}. {q}\n" + "\n".join(f"   {'ABCDEF'[j]}. {o}" for j, o in enumerate(os_)) + f"\n   答案：{'ABCDEF'[int(a)] if int(a) < 6 else a}　解析：{why}\n"
 text = html.unescape(text)
 text = re.sub(r"\n{3,}", "\n\n", text)
-if len(sys.argv) > 2:
-    open(sys.argv[2], "w", encoding="utf-8").write(text); print(f"写入 {sys.argv[2]}，{len(text)} 字符")
+if OUT:
+    open(OUT, "w", encoding="utf-8").write(text); print(f"写入 {OUT}，{len(text)} 字符")
 else:
     print(text)

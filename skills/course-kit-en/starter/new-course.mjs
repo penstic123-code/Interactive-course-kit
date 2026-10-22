@@ -1,5 +1,6 @@
 // 开新课：把 kit 和所选皮肤复制进课程目录，生成配置、目录页、第 1 章骨架、项目文档。已有文件一律不覆盖。
-// 用法：node new-course.mjs <课程文件夹绝对路径> [皮肤名=notebook] [--lang en] [--update-kit]
+// 用法：node new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en] [--update-kit]
+//   皮肤名必填（notebook / paper / pixel / fieldbook），没有默认值；不写或写错时列出现有皮肤并退出。
 //   --lang en：英文课（页面模板取 starter/en/，项目文档用 course-rules.template.md）；默认中文。中英双语课的做法见 README.md 第五节。
 //   --update-kit：只把 kit/ 和 skin/ 换成 skill 里的最新版（升级用），其他文件照样不碰。
 // 说明见同目录 README.md。
@@ -49,7 +50,7 @@ function copyTree(src, dest, skip, overwrite) {   // 递归复制目录；overwr
 
 fs.mkdirSync(DEST, { recursive: true });
 // 1 kit（不带演示页）和皮肤（不带验收页：两者的引用路径按 skill 目录写，放进课程会断）
-copyTree(KIT, path.join(DEST, "kit"), ["demo.html", "demo-en.html", "demo"], UPDATE);
+copyTree(KIT, path.join(DEST, "kit"), ["demo.html", "demo-en.html", "demo-interact.html", "demo-diagrams.html", "demo", "demo-ch01.html", "demo-ch02.html", "demo-ch03.html", "demo-modules.html"], UPDATE);
 copyTree(SKINDIR, path.join(DEST, "skin"), ["gallery.html"], UPDATE);
 
 if (UPDATE) {
@@ -64,6 +65,8 @@ const extraCss = [], extraJs = [];
 // 互动组件：结构样式在皮肤之后、本课样式之前；皮肤若带 interact.css（互动组件的外观）紧跟其后
 if (exists("vl-interact.css")) extraCss.push('<link rel="stylesheet" href="kit/vl-interact.css">');
 if (fs.existsSync(path.join(DEST, "skin", "interact.css"))) extraCss.push('<link rel="stylesheet" href="skin/interact.css">');
+// 概念图解的皮肤样式（tree、spectrum 等图解靠它）和可选模块的皮肤样式
+if (fs.existsSync(path.join(DEST, "skin", "diagrams.css"))) extraCss.push('<link rel="stylesheet" href="skin/diagrams.css">');
 if (exists("vl-interact.js")) extraJs.push('<script src="kit/vl-interact.js"></script>');
 // 可选模块不自动加载：加载顺序各不相同（如 vl-concepts.js 要在 vl.js 之前），只列出来，按 kit/README.md 第八节 手动加
 if (exists("modules")) {

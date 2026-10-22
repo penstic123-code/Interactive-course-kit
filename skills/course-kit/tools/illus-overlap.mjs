@@ -1,4 +1,5 @@
 // 插画重叠检查：找出人物（illus.js 的 person()，带 class="px-person"）和其他物件、文字重叠的插画。
+// 皮肤自带的绘制工具也必须给每个人物外包 <g class="px-person">，否则这里找不到人物、什么都不报。
 // 用法：node tools/illus-overlap.mjs <章节 html 绝对路径> [更多路径…]
 // 输出"插画名 (人数): 元素@x,y#第几个人"。坐着的人和自己的桌椅、手碰到的物件属于正常重叠；其余要截图确认后改掉。
 import { spawn } from "node:child_process";

@@ -36,10 +36,9 @@
     sound: false,          // modules/sound.js 读：false = 整个模块不出现；不写或 true = 顶栏有喇叭开关，读者打开前一直静音
     related: true,         // modules/vl-concepts.js 读：章末“相关章节”（要有 js/concepts.js 概念数据）；false = 不生成
     relatedFuture: false,   // modules/vl-concepts.js 读：相关章节里列不列后面的章；false = 只列前面的章
-    // 下面三项代码暂不读（字段名以 kit/README.md 第八节 为准），先记下开课时的决定
-    reward: false,         // 阅读激励：只奖励“读懂了”（试试看完成、测验全对），外观随皮肤
-    buddy: false,          // 陪伴角色：点了才说话，台词随当前节，可关
-    graph: false,          // 概念关系图 map.html（modules/graph.js）
+    collect: false,        // modules/collect.js 读：阅读激励（集邮册等）；false = 不出现。注意：不写这一项时默认是开的
+    companion: false,      // modules/companion.js 读：陪伴角色；不写或 false = 不出现，要加时写配置对象（见 kit/README.md 第八节）
+    graph: false,          // 代码不读，只记下决定：概念关系图 map.html（modules/graph.js）要不要做
   };
 
   window.VL_COURSE = {
@@ -64,6 +63,6 @@
 
   // 篇章换色（只在 PARTS 里写了 color 时生效）：把第 i 篇的主色变量指到第 color 套
   const remap = PARTS.map((p, i) => (p.color && p.color !== i + 1 ?
-    'body[data-part="' + (i + 1) + '"],[data-part="' + (i + 1) + '"]{--pa:var(--p' + p.color + "a);--pb:var(--p" + p.color + "b);--pp:var(--p" + p.color + "p);--pl:var(--p" + p.color + "l)}" : "")).join("");
+    'body[data-part="' + (i + 1) + '"],[data-part="' + (i + 1) + '"]{' + ["a", "b", "p", "l", "d", "s"].map(k => "--p" + k + ":var(--p" + p.color + k + ")").join(";") + "}" : "")).join("");
   if (remap) { const s = document.createElement("style"); s.textContent = remap; document.head.appendChild(s); }
 })();

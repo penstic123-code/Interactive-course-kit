@@ -5,7 +5,7 @@
    内置规则（抽自游戏设计课 js/illus.js）：
    - 坐姿 legs:"sit" 自动配一把椅子（座面、靠背、椅腿），人不会悬在半空；传 chair:false 关掉（比如坐在画好的沙发上）。
    - 朝左看（look < 0）时手臂、腿自动镜像；也可以用 flip:true / false 强制。
-   - 同一张图里第 k 个人自动换装：无 → 鸭舌帽 → 长发 → 毛线帽 → 礼帽，靠服饰区分人物，不只靠颜色；显式给了 hat/hair/glasses/beard/cape/tie 的人保持原样，outfit:false 关闭。
+   - 同一张图里第 k 个人自动换装：无 → 鸭舌帽 → 长发 → 毛线帽 → 礼帽，靠服饰区分人物，不只靠颜色；作者指定的项（hat/hair/glasses 等）保留，其余仍按顺序补上，outfit:false 关闭。
    - 拿东西用 kit.hands(x, y, opts) 取两只手的坐标，把物件画在两手之间，手才是真的握住。
    - 文字（T、气泡里的字）放在 extra 里，在滤镜组外面，保持清晰。 */
 (function () {
@@ -60,8 +60,9 @@
     o = Object.assign({}, o || {});
     if (o.outfit !== false) {
       const st = STYLES[personK % STYLES.length]; personK++;
-      const marked = o.hat || o.hair || o.glasses || o.beard || o.cape || o.tie;
-      if (!marked) ["hat", "hair", "glasses"].forEach(k => { if (st[k] !== undefined) o[k] = st[k]; });
+      // 作者指定的项保留，其余照这一套补上；指定了发型就不再戴帽，指定了帽子就不再补长发（免得互相盖住）
+      const headSet = o.hat !== undefined || o.hair !== undefined;
+      ["hat", "hair", "glasses"].forEach(k => { if (st[k] !== undefined && o[k] === undefined && !((k === "hat" || k === "hair") && headSet)) o[k] = st[k]; });
     }
     const { s, hr, fl, sy, hip } = geo(x, y, o), look = (o.look || 0) * 2 * s, INK = C.ink;
     const poly = (ox, oy, pts) => "M" + f(ox) + " " + f(oy) + pts.map(p => " L" + f(ox + p[0] * s * fl) + " " + f(oy + p[1] * s)).join("");
@@ -129,19 +130,34 @@
 
   const kit = { person, hands, feetY, ground, T, eye, bubble, arrow, item, holding, C, reset: () => { personK = 0; } };
 
+  /* ---------- 皮肤换画法的钩子 ----------
+     画法不同的皮肤（剪纸、像素、彩铅）在 skin.js 里写 window.VL_SKIN.illus = function (base) { return {...}; }，
+     base = { kit, C, esc }（kit 是上面的默认工具）。返回值里每一项都可选：
+       kit:   { person, ground, item, ... }  覆盖或新增绘制函数，接口照 skin-contract 第三节；要自己计数换装就同时给 reset
+       svg:   (it, name) => 字符串            自己包外层 <svg>（it = { alt, body, extra }），不给就用默认包法
+       afterMount: (el, name) => void        插画放进页面后调用（如彩铅重画、动画）
+     skin.js 必须在 kit/illus.js 之前加载（starter 模板就是这个顺序）。 */
+  const EXT = typeof SK.illus === "function" ? (SK.illus({ kit, C, esc }) || {}) : {};
+  if (EXT.kit) {
+    Object.assign(kit, EXT.kit);
+    // tools/illus-overlap.mjs 靠 g.px-person 找人物；皮肤自己的 person 没包就在这里包上
+    if (EXT.kit.person) { const p0 = EXT.kit.person; kit.person = (...a) => { const s = p0(...a); return /class="[^"]*px-person/.test(s) ? s : '<g class="px-person">' + s + "</g>"; }; }
+  }
+
   /* ---------- 注册与装载 ---------- */
   const LIB = {};
   // body / extra 可以是字符串，也可以是 k => 字符串（推荐：人物换装计数会在调用前清零）
   function add(name, alt, body, extra) {
-    personK = 0;
+    kit.reset();
     const b = typeof body === "function" ? body(kit) : body;
     const e = typeof extra === "function" ? extra(kit) : extra;
-    personK = 0;
+    kit.reset();
     LIB[name] = { alt, body: b || "", extra: e || "" };
     return LIB[name];
   }
   function svg(name) {
     const it = LIB[name]; if (!it) return "";
+    if (EXT.svg) return EXT.svg(it, name);
     return '<svg viewBox="0 0 200 140" class="vl-illus-svg" role="img" aria-label="' + esc(it.alt) + '">' +
       '<g class="vl-il-rough" stroke="' + C.ink + '" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">' + it.body + "</g>" +
       '<g class="vl-il-text">' + it.extra + "</g></svg>";
@@ -152,7 +168,7 @@
       if (el._vlIllus === name) return;
       el.classList.add("vl-illus");
       const s = svg(name);
-      if (s) { el.innerHTML = s; el.classList.remove("vl-illus-miss"); el._vlIllus = name; }
+      if (s) { el.innerHTML = s; el.classList.remove("vl-illus-miss"); el._vlIllus = name; if (EXT.afterMount) EXT.afterMount(el, name); }
       else { el.classList.add("vl-illus-miss"); el.setAttribute("role", "img"); el.setAttribute("aria-label", name); el.textContent = name; }
     });
   }

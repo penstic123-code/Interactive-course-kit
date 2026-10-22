@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>课程名</title>
+<!-- 引入顺序见 kit/README.md 第一节：结构样式 → 皮肤 → 本课样式 → 皮肤声明 → 首屏偏好 -->
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<link rel="stylesheet" href="kit/vl-interact.css">
+<link rel="stylesheet" href="skin/interact.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* 目录页专属样式：类名一律 ix- 前缀，不重定义 vl- 类；颜色只用皮肤变量 */
+  .ix-intro{margin:10px 0 6px}
+  .ix-intro h3{margin:0 0 2px}
+  .ix-intro ul{margin:.2em 0;padding-left:1.2em}
+  .ix-meta{margin:10px 0 0;color:var(--ink2)}
+  .ix-prog{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0 6px}
+  .ix-bar{flex:1 1 220px;height:16px;border:2.5px solid var(--ink);border-radius:10px;background:var(--edge);overflow:hidden}
+  .ix-bar i{display:block;height:100%;width:0;background:var(--accent2)}
+  .ix-next{margin:4px 0 0}
+  .ix-paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0}
+  .ix-path{font:inherit;text-align:left;cursor:pointer;color:var(--ink);background:var(--edge);border:2.5px solid var(--ink);border-radius:var(--radius-alt,12px);padding:10px 14px;min-height:44px}
+  .ix-path[aria-pressed="true"]{background:var(--accent)}
+  .ix-path b{display:block;font-family:var(--font-label,inherit);font-size:1.15rem;background:none}
+  .ix-path small{display:block;color:var(--ink2);line-height:1.5}
+  .ix-part{margin:34px 0 8px}
+  .ix-part h2{margin:0;display:inline;background:linear-gradient(transparent 60%,var(--c,var(--accent)) 60%)}
+  .ix-part p{margin:4px 0 0;color:var(--ink2)}
+  .ix-chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:12px 0 0;padding:0;list-style:none}
+  .ix-ch{display:flex;gap:12px;align-items:flex-start;height:100%;padding:12px 14px;color:var(--ink);text-decoration:none;background:var(--edge);border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;box-shadow:3px 4px 0 var(--c,var(--accent))}
+  a.ix-ch:hover{transform:translateY(-2px)}
+  .ix-ch .ix-no{flex:none;width:40px;height:40px;display:grid;place-items:center;border:2.5px solid var(--ink);border-radius:50%;background:var(--c,var(--accent));color:#2b2b3a;font-family:var(--font-label,inherit);font-weight:700}
+  .ix-ch h3{margin:0;font-size:1.15rem;line-height:1.35}
+  .ix-ch p{margin:2px 0 0;font-size:.95rem;line-height:1.55;color:var(--ink2)}
+  .ix-ch .ix-st{display:inline-block;margin-top:4px;font-size:.88rem;font-weight:700;color:var(--ok)}
+  .ix-ch.off{border-style:dashed;box-shadow:none}
+  .ix-ch.off .ix-st{color:var(--ink2);font-weight:400}
+  .ix-ch.dim{opacity:.35}
+  html.vl-fx-off a.ix-ch:hover{transform:none}
+</style>
+</head>
+<body>
+<!-- 目录页不写 data-ch：顶栏只显示“显示”和语言按钮；章节表、篇章、学习路径都从 js/course.js 读，这里不手写章节 -->
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <span class="vl-badge" id="ix-badge">互动课程</span>
+      <h1 id="ix-title">礼物的人类学</h1>
+      <!-- 副标题：一句话说这门课从什么处境出发、学完能做什么（≤30 字），不写定义 -->
+      <p class="vl-sub">从一盒月饼说起，看懂礼物怎样把人连在一起。</p>
+    </div>
+    <!-- 目录页题头插画：画这门课最有代表性的一个场景，注册在下面的页面脚本里 -->
+    <span data-illus="ix-hero"></span>
+  </div>
+
+  <!-- 课程定位：直接写在纸上，不套卡片。三栏内容和 项目规则与经验.md 第一节保持一致 -->
+  <div class="vl-grid3 ix-intro">
+    <section><h3>讲什么</h3><p>人类学怎样看送礼、收礼和回礼：从太平洋上的库拉圈，到村子里的礼单和城里的份子钱。</p></section>
+    <section><h3>给谁读</h3><ul><li>高中生</li><li>好奇人情世故的成年人</li></ul><p class="vl-src">不需要任何基础。</p></section>
+    <section><h3>学完能</h3><ul><li>说清收礼为什么让人觉得欠了情</li><li>看懂身边一次回礼怎样让往来继续</li></ul></section>
+  </div>
+  <p class="ix-meta" id="ix-meta">这一章约 20 分钟。点分节标题可以收起；右下角是本章目录；进度和笔记存在你的浏览器里。</p>
+
+  <!-- 进度：只数“读懂了”的章（本章测验全对时由 VL.Progress.done 记录），不按滚动或停留 -->
+  <div class="ix-prog">
+    <div class="ix-bar" aria-hidden="true"><i id="ix-bar"></i></div>
+    <span id="ix-progtxt" aria-live="polite"></span>
+  </div>
+  <p class="ix-next" id="ix-next"></p>
+
+  <!-- 学习路径：js/course.js 的 paths 为空时整块隐藏 -->
+  <section id="ix-paths-wrap" hidden>
+    <h2>选一条路线</h2>
+    <p class="vl-src">点一条路线，下面只亮这条路线上的章；再点一次取消。</p>
+    <div class="ix-paths" id="ix-paths" role="group" aria-label="学习路径"></div>
+  </section>
+
+  <!-- 按篇分组的章节卡片：脚本按 js/course.js 生成 -->
+  <div id="ix-parts"></div>
+
+  <!-- 选了的可选功能放这里（概念关系图 map.html、术语表 glossary.html、闪卡 flashcards.html），做出来之后再加链接 -->
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/illus.js"></script>
+<script src="kit/vl-interact.js"></script>
+<!-- 可选模块（kit/modules/：collect.js、companion.js、graph.js、modules.css、sound.js、terms.js、vl-concepts.js）：开关见 js/course.js 的 modules，加载位置和顺序见 kit/README.md 第八节 -->
+<script>
+/* 目录页插画：换成这门课自己的题头画（画法见 kit/README.md“插画位”） */
+VL.illus.add("ix-hero", "两个人面对面站着，左边的人双手递出一个系着丝带的礼盒，右边的人双手捧着一篮橙子准备回赠", k => k.ground() + k.person(62, 62, { arms: "hold", face: "smile", look: 1, hat: "cap" }) + k.holding(62, 62, { look: 1 }, "box") + k.person(138, 62, { arms: "hold", face: "grin", look: -1, hair: "bob" }) + k.holding(138, 62, { look: -1 }, "basket"));
+
+(function () {
+  const C = window.VL_COURSE || {}, CH = VL.CH, PARTS = VL.PARTS, prog = VL.Progress.get();
+  const $ = id => document.getElementById(id), esc = VL.esc, en = VL.lang === "en";
+  if (C.title) { $("ix-title").textContent = C.title; document.title = C.title; }
+  $("ix-badge").textContent = VL.t("ix.badge", "互动课程 · 共 {0} 章", CH.length);
+  // 进度
+  const done = CH.filter(c => prog[c.n]).length;
+  $("ix-bar").style.width = (CH.length ? done / CH.length * 100 : 0) + "%";
+  $("ix-progtxt").textContent = VL.t("ix.prog", "已读懂 {0} / {1} 章", done, CH.length);
+  const nx = CH.find(c => c.open !== false && !prog[c.n]);
+  if (nx) $("ix-next").innerHTML = VL.t("ix.next", "接着读：") + "<a href='" + esc(nx.file) + "'>" + esc(VL.t("ch.badge", "第 {0} 章", nx.n) + " " + VL.nm(nx)) + "</a>";
+  // 篇章与章节卡片
+  const groups = PARTS.length ? PARTS.map((p, i) => ({ p, i, list: CH.filter(c => c.n >= p.from && c.n <= p.to) })) : [{ p: { zh: "" }, i: 0, list: CH }];
+  $("ix-parts").innerHTML = groups.map(({ p, i, list }) => {
+    const col = "var(--p" + (p.color || i + 1) + "a,var(--accent))";
+    return '<section class="ix-part" style="--c:' + col + '">' + (p.zh ? "<h2>" + esc(en ? p.en || p.zh : p.zh) + "</h2>" + (p.desc ? "<p>" + esc(en ? p.descEn || p.desc : p.desc) + "</p>" : "") : "") +
+      '<ul class="ix-chs">' + list.map(c => {
+        const inner = '<span class="ix-no">' + c.n + "</span><div><h3>" + esc(VL.nm(c)) + "</h3>" + (c.desc ? "<p>" + esc(en ? c.descEn || c.desc : c.desc) + "</p>" : "") +
+          (c.open === false ? '<span class="ix-st">' + esc(VL.t("ix.wip", "还在写")) + "</span>" : prog[c.n] ? '<span class="ix-st">✓ ' + esc(VL.t("ix.done", "读懂了")) + "</span>" : "") + "</div>";
+        return '<li data-n="' + c.n + '">' + (c.open === false ? '<div class="ix-ch off">' + inner + "</div>" : "<a class='ix-ch' href='" + esc(c.file) + "'>" + inner + "</a>") + "</li>";
+      }).join("") + "</ul></section>";
+  }).join("");
+  // 学习路径
+  const PATHS = C.paths || [];
+  if (PATHS.length) {
+    $("ix-paths-wrap").hidden = false;
+    $("ix-paths").innerHTML = PATHS.map((p, i) => '<button type="button" class="ix-path" data-i="' + i + '" aria-pressed="false"><b>' + esc(en ? p.nameEn || p.name : p.name) + "</b><small>" + esc(en ? p.whoEn || p.who : p.who) + " · " + esc(VL.t("ix.nch", "{0} 章", p.chs.length)) + "</small></button>").join("");
+    let on = -1;
+    $("ix-paths").addEventListener("click", e => {
+      const b = e.target.closest(".ix-path"); if (!b) return;
+      on = on === +b.dataset.i ? -1 : +b.dataset.i;
+      document.querySelectorAll(".ix-path").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.i === on)));
+      const set = on < 0 ? null : new Set(PATHS[on].chs);
+      document.querySelectorAll(".ix-chs > li").forEach(li => li.firstElementChild.classList.toggle("dim", !!set && !set.has(+li.dataset.n)));
+    });
+  }
+})();
+</script>
+</body>
+</html>

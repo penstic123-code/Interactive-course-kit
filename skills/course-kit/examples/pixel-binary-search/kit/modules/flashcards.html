@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>闪卡</title>
+<!-- 模板：复制到课程根目录后改路径（同 map.html）。只出"已读懂"的章（测验全对）的词，读者可勾选"也练还没读懂的章"。 -->
+<link rel="stylesheet" href="../vl.css">
+<link rel="stylesheet" href="modules.css">
+<link rel="stylesheet" href="../../skins/notebook/skin.css">
+<link rel="stylesheet" href="../../skins/notebook/modules.css">
+<script src="../../skins/notebook/skin.js"></script>
+<script src="../vl-head.js"></script>
+</head>
+<body>
+<main class="vl-wrap">
+  <p><a href="demo-modules.html">← 回目录</a></p>
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>闪卡</h1>
+      <p class="vl-sub">先自己想，再翻过来对答案。答对的卡片往后挪一个盒子，隔得更久才再见。</p>
+    </div>
+    <span data-illus="demo-cc-leitner"></span>
+  </div>
+  <div id="vl-fc"></div>
+</main>
+<script src="demo/course.js"></script>
+<script src="demo/concepts.js"></script>
+<script src="vl-concepts.js"></script>
+<script src="../vl.js"></script>
+<script src="../illus.js"></script>
+<script src="demo/illus-demo.js"></script>
+<script src="sound.js"></script>
+<script src="terms.js"></script>
+<script>VL.flashcards("#vl-fc");</script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 /* 皮肤 paper（纸片 / 剪纸）的脚本部分：放在 <head> 里、kit/vl-head.js 之前。
    1. window.VL_SKIN：网络字体、页面共享的 SVG 定义（剪纸白边 + 投影滤镜、纤维纹、纸面光）、插画配色。
-   2. 剪纸绘制工具：kit/illus.js 一建好 VL.illus，就把 VL.illus.kit 里的 person / ground / item / holding / hands / feetY / bubble / T / arrow
+   2. 剪纸绘制工具：通过 kit/illus.js 的换画法钩子 window.VL_SKIN.illus，把 VL.illus.kit 里的 person / ground / item / holding / hands / feetY / bubble / T / arrow
       换成剪纸画法（接口不变，见 references/skin-contract.md 第三节），另把整套纸片 API 挂在 kit.paper 上（stage、cut、rect、paperPerson……）。
-      做法：先在 window.VL 上放一个 illus 的 setter，illus.js 执行 VL.illus = {...} 时触发。页面写法不用改。
+      本文件必须在 kit/illus.js 之前加载（starter 模板就是这个顺序）。页面写法不用改。
    3. 题头环境动画：纸云出视口暂停；?freeze=秒 停在那一帧（截图用）。
    滤镜规则：文字永远不进滤镜组；剪纸白边靠 feMorphology 外扩 SourceAlpha。画法抽自数据科学课 illus-paper.js（去掉了勇士、背包等课程角色）。 */
 (function () {
@@ -220,11 +220,11 @@
     // 布景都包在 class="pp-bg" 里：tools/illus-overlap 检查人物重叠时跳过布景，只看人和物件、文字
     const back = o.back || "meadow", gk = o.ground || (back === "meadow" ? "grass" : "wood");
     const fl = gk === "grass" ? grassFloor(gy, W, H) : gk === "cobble" ? cobbleFloor(gy, W, H) : gk === "none" ? "" : floorBoards(gy, W, H);
-    let s = '<g class="pp-bg">' + backdrop(back, o.wall || PAL.wall, gy, W, H, o) + fl + (o.spot ? spot(o.spot, gy, o.spotW) : "") + "</g>";
+    let s = '<g class="pp-bg" stroke="none">' + backdrop(back, o.wall || PAL.wall, gy, W, H, o) + fl + (o.spot ? spot(o.spot, gy, o.spotW) : "") + "</g>";
     s += inner || "";
     // 幕布默认不画：原课程要蓝天草地的清爽画面，深红幕布会把画面压暗、像在室内戏台
-    if (o.curtains === true) s += '<g class="pp-bg">' + curtains(W, H) + "</g>";
-    if (o.year) s += sign(W / 2 - textW(o.year, 13) / 2 - 8, 14, textW(o.year, 13) + 16, 20, o.year, { top: 6, fill: PAL.cream, size: 13 });
+    if (o.curtains === true) s += '<g class="pp-bg" stroke="none">' + curtains(W, H) + "</g>";
+    if (o.year) s += '<g stroke="none">' + sign(W / 2 - textW(o.year, 13) / 2 - 8, 14, textW(o.year, 13) + 16, 20, o.year, { top: 6, fill: PAL.cream, size: 13 }) + "</g>";
     return s;
   }
 
@@ -468,8 +468,13 @@
     p.arms = ARM_MAP[o.arms] || o.arms || "stand";
     p.legs = o.legs || "stand";
     p.face = FACE_MAP[o.face] || o.face || "smile";
-    if (o.outfit !== false && !(o.hat || o.hair || o.glasses || o.beard || o.cape || o.tie)) Object.assign(p, STYLES[personK % STYLES.length]);
-    if (o.outfit !== false) personK++;
+    // 换装按出场顺序照常轮换；作者指定了的项（hat / hair / glasses / tie / shirt ……）覆盖这一项，其余衣着照旧换。
+    // 只指定了发型时去掉这套里的帽子，免得帽子把指定的发型盖住
+    if (o.outfit !== false) {
+      const st = Object.assign({}, STYLES[personK % STYLES.length]); personK++;
+      if (o.hair && !o.hat) { delete st.hat; delete st.hatColor; }
+      Object.assign(p, st);
+    }
     if (o.hat) { p.hat = HAT_MAP[o.hat] || o.hat; p.hatColor = o.hat === "crown" ? PAL.mustard : o.hat === "wizard" ? PAL.plum : undefined; }
     if (o.hair) p.hair = o.hair === true ? "long" : o.hair;
     if (o.glasses) p.glasses = true;
@@ -525,7 +530,7 @@
     '<linearGradient id="pp-floorsh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2a3c" stop-opacity="0"/><stop offset="1" stop-color="#1c2a3c" stop-opacity=".14"/></linearGradient>' +
     cutFilter("pp-cut1", 1.1, .7, 1.1, .8, .22) + cutFilter("pp-cut2", 1.35, 1.2, 1.9, 1.3, .3) + cutFilter("pp-cut3", 1.6, 2, 3, 2, .34) + layFilter("pp-lay", .5) + layFilter("pp-layL", -.5);
 
-  window.VL_SKIN = {
+  window.VL_SKIN = Object.assign(window.VL_SKIN || {}, {
     name: "paper",
     // 正文霞鹜文楷、标题和按钮站酷快乐体：都是 OFL 开源字体，网络加载；离线时退到楷体 / 微软雅黑。英文页标题用 Fredoka（OFL）
     fonts: [
@@ -535,21 +540,20 @@
     defs: DEFS,
     palette: { ink: INK, skin: PAL.skin, paper: PAL.cream, white: "#ffffff", yellow: PAL.lemon, pink: PAL.pink, blue: PAL.sky, green: PAL.sage, orange: PAL.peach, purple: PAL.lilac,
       red: PAL.coral, gold: PAL.mustard, wood: PAL.wood, cap: PAL.coral, beanie: PAL.teal, wizard: PAL.plum, dark: "#3a3f4f", grey: PAL.grey },
-    illusKit: Object.assign({ paper }, A),
-  };
+  });
 
-  // 换掉 kit 的画法：illus.js 执行 VL.illus = {...} 时接管（add() 闭包里用的就是同一个 kit 对象，改属性即生效）
-  const VL = window.VL = window.VL || {};
-  let IL;
-  Object.defineProperty(VL, "illus", { configurable: true, enumerable: true, get: () => IL, set: v => {
-    IL = v;
-    if (v && v.kit) {
-      Object.assign(v.kit, window.VL_SKIN.illusKit);
-      const r0 = v.kit.reset; v.kit.reset = () => { personK = 0; if (r0) r0(); };
-      const add0 = v.add; v.add = function () { personK = 0; const r = add0.apply(this, arguments); personK = 0; return r; };
-      window.illusAdd = v.add;
-    }
-  } });
+  /* ================= 接到 kit/illus.js：换画法钩子 VL_SKIN.illus（illus.js 加载时调用一次） =================
+     kit：剪纸版 person / hands / item / holding ……并入 VL.illus.kit；reset 清零换装计数（kit.add 每张图前后都会调）。
+     k.paper 的原始形状（rect、blob、cut、stage……）不带描边，但默认外层 <g> 给了 3.5px 墨线；
+     所以这里把 k.paper 里所有画东西的函数都包一层 <g stroke="none">，作者直接拼就行，不用自己包。
+     stage(o, inner) 只给布景去描边，inner 原样放：作者在 inner 里手写的线仍继承外层墨线。 */
+  const NOSTROKE = ["rect", "circle", "ellipse", "poly", "blob", "path", "strip", "cut", "lay", "T", "spot", "cloud", "tuft", "tag", "sign", "bubble", "parrow", "arrow",
+    "paperPerson", "item", "stool", "chair", "desk", "lamp", "plant", "card", "board", "cabinet"];
+  const paperK = Object.assign({}, paper);
+  NOSTROKE.forEach(n => { const fn = paper[n]; paperK[n] = function () { const r = fn.apply(this, arguments); return typeof r === "string" ? wrap(r) : r; }; });
+  window.VL_SKIN.illus = function () {
+    return { kit: Object.assign({ paper: paperK, reset: () => { personK = 0; } }, A) };
+  };
 
   /* ================= 题头环境动画：出视口暂停；?freeze= 冻结 ================= */
   function amb() {

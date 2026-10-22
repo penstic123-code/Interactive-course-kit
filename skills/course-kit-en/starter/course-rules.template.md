@@ -38,8 +38,8 @@ The only source of the chapter list is `js/course.js` (names, file names, parts,
 | Item | This course |
 |---|---|
 | Skin | [notebook] (`skin/` copied from course-kit `skins/<name>/`; user approved on: []) |
-| Part colours | [Default by part number; remaps go in `parts[].color` in `js/course.js`] |
-| Colour schemes | Light / dark / easy-on-the-eyes, switched by readers under "Display" in the top bar (comes with the skin) |
+| Part colours | [Default by part number; remaps go in `parts[].color` in `js/course.js` (variable names: see `skin/README.md`)] |
+| Colour schemes | Light / dark / easy-on-the-eyes, switched by readers under "Display" in the top bar (comes with the skin; dark has variables only and is not fully checked) |
 | Pictures | [Drawing notes; how people are told apart; this course's picture prefix `cNN-`] |
 | Real photos | [Many / few; main sources]; listed in section 8 |
 | Course styles | `css/style.css` (never edit `kit/` or `skin/`; a kit upgrade overwrites them) |
@@ -58,7 +58,7 @@ Decide each one; switches go in `modules` in `js/course.js`; how-to in course-ki
 | Companion character | [] | [Who, what tone] |
 | Sound | [] | Muted by default |
 | Concept map / related chapters | [] | `map.html` + concept data |
-| Term pop-ups / glossary / flashcards | [] | Term pop-ups come with the kit (`.vl-term`); glossary via `tools/build_glossary.py` |
+| Term pop-ups / glossary / flashcards | [] | Term pop-ups come with the kit (`.vl-term`); glossary and flashcards via `kit/modules/terms.js`, data gathered into `js/concepts.js` by `kit/modules/build-concepts.mjs --write` |
 | Final review chapter | [] | |
 | "Your thoughts" notes | [] | Built into the kit (`textarea.vl-note`) |
 
@@ -84,7 +84,7 @@ Defaults are in `content-rules.md` (content rules), single-chapter checklist; wr
 | Sample chapter | Chapter [n], approved by the user on: [] |
 | Agents in parallel | [One chapter at a time / two or three in parallel, checked by the lead] |
 | Checks | Before each chapter is delivered: `node <skill>/tools/check.mjs <absolute course path> chNN --fast` down to 0, then the full run, and look at the screenshots |
-| Reader review | After each chapter, send a review agent with no context (`tools/readable.py`) |
+| Reader review | After each chapter, send a review agent with no context (`tools/readable.py`; its output marks the correct answers, so have the agent test itself closed-book first) |
 
 ## 8. Image credits
 

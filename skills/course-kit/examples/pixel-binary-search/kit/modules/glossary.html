@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>术语表</title>
+<!-- 模板：复制到课程根目录后改路径（同 map.html）。数据：js/concepts.js 的 items + terms；terms 可用 build-concepts.mjs --write 从各章汇出。 -->
+<link rel="stylesheet" href="../vl.css">
+<link rel="stylesheet" href="modules.css">
+<link rel="stylesheet" href="../../skins/notebook/skin.css">
+<link rel="stylesheet" href="../../skins/notebook/modules.css">
+<script src="../../skins/notebook/skin.js"></script>
+<script src="../vl-head.js"></script>
+</head>
+<body>
+<main class="vl-wrap">
+  <p><a href="demo-modules.html">← 回目录</a></p>
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>术语表</h1>
+      <p class="vl-sub">全课出现过的词，按拼音排。每条后面是它第一次出现的那一章。</p>
+    </div>
+    <span data-illus="demo-cc-encode"></span>
+  </div>
+  <div id="vl-gloss"></div>
+</main>
+<script src="demo/course.js"></script>
+<script src="demo/concepts.js"></script>
+<script src="vl-concepts.js"></script>
+<script src="../vl.js"></script>
+<script src="../illus.js"></script>
+<script src="demo/illus-demo.js"></script>
+<script src="sound.js"></script>
+<script src="terms.js"></script>
+<script>VL.glossary("#vl-gloss");</script>
+</body>
+</html>

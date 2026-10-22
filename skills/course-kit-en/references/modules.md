@@ -12,7 +12,7 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 | Learning paths | on when readers start from very different places | A few routes; pick one and the rest dim |
 | Town-style contents page | only for skins with offline-rendered art | One map = whole-course progress + this chapter's contents |
 | Timeline of events | on when history carries a lot of weight | Every invention story in the course, in year order |
-| Reader colour schemes | required (dark on hold) | Light / dark / easy on the eyes; part of the skin contract; dark and easy-on-the-eyes not fully approved yet |
+| Reader colour schemes | required (dark on hold) | Light / dark / easy on the eyes; part of the skin contract; dark has variables only and is not fully approved |
 
 ---
 
@@ -136,7 +136,7 @@ The English edition needs English fields for all three; storage keys are shared 
 
 **How**
 - One speaker toggle in the top bar, saved (`<course id>-sound`); short WebAudio-synthesised sounds, no external audio files. Code in `kit/modules/sound.js`; with `modules.sound:false` the whole module is absent (see `kit/README.md` section 8).
-- The timbre belongs to the skin: the skin's CSS sets `:root{--vl-snd:paper|sine|square|triangle}`; pixel = square-wave 8-bit; paper = short sine tones; notebook = paper (pencil and paper sounds; the notebook skin sets this in `skins/notebook/modules.css`).
+- The timbre belongs to the skin: the skin's CSS sets `:root{--vl-snd:paper|sine|square|triangle}`; `kit/modules/sound.js` accepts only these four. notebook, paper and fieldbook = paper (pencil and paper sounds); the pixel skin should be square (square-wave 8-bit). Each skin sets it in its `modules.css`; with skin.css loaded but not modules.css, it falls back to sine.
 - Sound used for teaching (GD `ch12` listening bench) is part of the interaction itself; also muted by default and switchable.
 
 **Pitfalls**: GD `ch12`'s mute checkbox starts unticked, which means sound on by default — it must start ticked. Sounds on every scroll get annoying fast; tie sounds only to actions and understanding events.
@@ -170,4 +170,4 @@ The English edition needs English fields for all three; storage keys are shared 
 
 ## 9. Reader colour schemes
 
-Not optional; part of the skin contract (`skin-contract.md`): every skin provides light / dark / easy-on-the-eyes schemes, switched under "Display" in the top bar and saved (key `vl-scheme`, shared across courses). **Dark is on hold**: the switch stays, but dark and easy-on-the-eyes are not fully approved, so start courses and check screenshots in Light. **The skin is fixed when the course starts; readers only change the colour scheme**, because illustrations are drawn in the skin's style and the drawing style can't be swapped at runtime.
+Not optional; part of the skin contract (`skin-contract.md`): every skin provides light / dark / easy-on-the-eyes schemes, switched under "Display" in the top bar and saved (key `vl-scheme`, shared across courses). **Dark is on hold**: the switch stays; dark has variables only and is not fully approved. Light and easy-on-the-eyes are checked by screenshot per `skin-contract.md` section 5. **The skin is fixed when the course starts; readers only change the colour scheme**, because illustrations are drawn in the skin's style and the drawing style can't be swapped at runtime.

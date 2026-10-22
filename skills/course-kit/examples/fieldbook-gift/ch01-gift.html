@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第1章 礼物与回礼</title>
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<link rel="stylesheet" href="kit/vl-interact.css">
+<link rel="stylesheet" href="skin/interact.css">
+<link rel="stylesheet" href="skin/diagrams.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* 本章专属：类名前缀 c1-，颜色只用皮肤变量 */
+  #c1-kula svg{max-width:480px;margin:0 auto}
+  #c1-kula text{font-family:var(--font-hand)}
+  .c1-legend{display:flex;flex-wrap:wrap;gap:4px 18px;margin:4px 0 2px;font-size:.92rem;color:var(--ink2)}
+  .c1-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);vertical-align:-1px;margin-right:5px}
+  .c1-fr{display:grid;grid-template-columns:140px 1fr;gap:4px 14px;align-items:start;padding:12px 0 6px;border-top:1px dashed var(--rim2)}
+  .c1-who .vl-illus{display:block;width:140px}
+  .c1-who p{margin:0;font-size:.92rem;line-height:1.4}
+  .c1-grp{display:flex;flex-wrap:wrap;align-items:center;margin:0 0 4px}
+  .c1-lab{font-family:var(--font-label);font-size:.88rem;color:var(--ink2);min-width:5.5em}
+  .c1-strip{grid-column:1/-1;display:block;width:100%;height:134px}
+  .c1-st{grid-column:1/-1;margin:0 0 4px;min-height:2.8em}
+  .c1-st b{font-family:var(--font-label);margin-right:6px}
+  .c1-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .c1-docfig{margin:0}
+  @media (max-width:560px){
+    .c1-fr{grid-template-columns:104px 1fr}
+    .c1-who .vl-illus{width:104px}
+    .c1-lab{min-width:0;width:100%}
+  }
+</style>
+</head>
+<body data-ch="1">
+<main class="vl-wrap">
+
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>礼物与回礼</h1>
+      <p class="vl-sub">邻居白送了一盒月饼，收下的人为什么反倒觉得欠了什么？</p>
+    </div>
+    <span data-illus="c01-hero"></span>
+  </div>
+
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 20 分钟</span>
+    <ul>
+      <li>说出互惠的三道义务，并在生活里认出它们</li>
+      <li>解释当场等值还礼为什么会让往来停下</li>
+      <li>用库拉的例子说明礼物维系的是关系</li>
+    </ul>
+  </div>
+
+  <!-- ===== 1 钩子 ===== -->
+  <div class="vl-sec"><h2>一盒月饼带来的不安</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s1-scene"></span>
+    <div>
+      <p>中秋前一天傍晚，住对门的王阿姨敲开门，递过来一盒月饼。她说单位发了好几盒，家里吃不完，又叮嘱一句“别客气”，转身就回去了。门关上以后，那盒月饼摆在桌上，主人家反倒有点坐立不安。</p>
+      <p>这份不安来得奇怪。月饼没花一分钱，王阿姨也说了不用客气，按理是白得的好处。可大多数人这时想的是：家里有什么能回过去？明天要不要买点水果去敲她的门？要是什么都不回，下回在电梯里碰见，好像就有点抬不起头。</p>
+    </div>
+  </div>
+
+  <p>一样东西明明是白送的，收下的人却觉得欠了什么。假如这时候直接掏出五十块钱塞给王阿姨，这笔账算不算还清了？</p>
+
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">收下月饼之后，哪种回法最得体？先凭感觉选一个。</p>
+    <span data-illus="c01-guess-3"></span>
+    <ul class="vl-opts">
+      <li>当场塞给王阿姨五十块钱<span class="vl-fb">钱的数目也许刚好，可这像在付账。多半会被推回来，还让两家都有点尴尬。</span></li>
+      <li>第二天买一盒差不多的月饼送回去<span class="vl-fb">礼数周到，可东西几乎原样退了回去，像在说“我不想欠你”。</span></li>
+      <li>过几个星期，端一盘自己包的饺子过去<span class="vl-fb">隔了一段时间，送的又是另一样东西，看起来像一份新的心意。</span></li>
+    </ul>
+    <div class="vl-ans">三种回法花的钱也许差不多，在很多人心里分量却很不一样：五十块钱像付账，一模一样的月饼像退货，一盘饺子才像回礼。差别出在哪里，要从一百年前一位法国学者的问题说起。</div>
+  </div>
+
+  <!-- ===== 2 互惠 ===== -->
+  <div class="vl-sec"><h2>收下月饼那一刻，互惠就开始了</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s2-refuse"></span>
+    <div><p>王阿姨这盒月饼牵出了三件事。她得愿意送；对门的人得肯收；收了以后，过一段时间还得回点什么。三件事缺了哪一件，邻里之间都会别扭：从不送人东西的人显得小气，把送来的东西硬推回去像不给面子，收了不回又像占了便宜。</p></div>
+  </div>
+
+  <figure class="vl-fig" id="c1-fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[
+      {"name":"送出","eg":"端来一盒月饼","info":"<b>送出</b>：送的人看似自愿，可一个从不送人东西的邻居，会被觉得不好相处。"},
+      {"name":"收下","eg":"道谢接过","info":"<b>收下</b>：硬推回去等于说“我不想和你来往”，所以收也是一道义务。"},
+      {"name":"回赠","eg":"送去饺子","info":"<b>回赠</b>：收了不回就欠着。回赠一到，在王阿姨那边又成了一次“收下”。"}],
+      "center":"邻里往来"}</script>
+    <figcaption>回赠在对方眼里又是一次送出，所以一圈刚转完，下一圈已经开始。</figcaption>
+  </figure>
+
+  <p>三件事连成一个圈，回礼又成了下一次送礼，人类学家把这一整套来往叫作<span class="vl-cn">互惠</span>。法国学者马塞尔·莫斯在 1925 年的《礼物》里，把它拆成给予、接受、回报三道义务。<span class="vl-em">三样都叫“义务”，因为它们看似自愿，背后却压着一股谁都感觉得到的力量。</span></p>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">互惠</p>
+    <p class="vl-cc-en">Reciprocity · 给予、接受、回报三道义务</p>
+    <p class="vl-cc-by">马塞尔·莫斯 · 《礼物》 · 1925</p>
+    <p class="vl-cc-plain">收了别人的东西，总想着还回去。</p>
+    <p class="vl-cc-def">人与人之间送出、收下、回赠的往来，三步都带着义务，回赠又引出下一次送出。</p>
+    <p class="vl-cc-eg">王阿姨的那盒月饼。</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-1"></span></div>
+  </aside>
+
+  <p>这三道义务在日常生活里随处可见。下面前三张卡片里的事都是互惠，最后一张看上去也是一来一回，却算不上。</p>
+
+  <div class="vl-eg" data-t="份子钱"><span data-illus="c01-eg-wedding"></span>
+    <p><b>婚礼上的份子钱：</b>亲戚结婚，客人在门口递上红包，记账的人把名字和数目写进礼簿。礼簿会被收好，等哪天这位客人家里办喜事，主人家翻出来看当年收了多少，再带着差不多或多一点的红包去。</p>
+    <p>送、收、回三步，被一本礼簿记了下来，隔几年才走完一圈。</p></div>
+  <div class="vl-eg" data-t="轮流请奶茶"><span data-illus="c01-eg-tea"></span>
+    <p><b>轮流请奶茶：</b>周一，小周给整个组买了奶茶。没有人当场把钱转给他，可到了周四，往往就有另一位同事提着一袋奶茶进门。谁也没约定，轮流却自己转了起来。</p></div>
+  <div class="vl-eg" data-t="农忙换工"><span data-illus="c01-eg-harvest"></span>
+    <p><b>农忙时换工：</b>在不少村子里，割稻插秧要赶时节。几户人家今天一起帮张家收稻，过几天再一起去李家。帮工不算工钱，各家心里记着的是“欠了张家两天工”。</p></div>
+  <div class="vl-eg bad" data-t="便利店买水"><span data-illus="c01-eg-shop"></span>
+    <p><b>便利店买水：</b>扫码付钱，店员说声谢谢，事情就结束了。双方都不觉得欠对方什么，下次换一家店也无所谓。</p>
+    <p>钱货当场两清，没有留下要回赠的那一步。这是一桩买卖，算不上互惠。</p></div>
+
+  <div class="vl-why">
+    <h3>收了好处，人会想还回去</h3>
+    <div class="vl-why-fig"><span data-illus="c01-why-1"></span></div>
+    <p>美国社会学家阿尔文·古尔德纳在 1960 年提出，几乎每个社会都有一条“互惠规范”：别人帮过你，你就该帮回去，至少不该害他。</p>
+    <p>心理学家丹尼斯·里根在 1971 年做过一个实验。一位助手假扮成被试的同伴，中途出去带回两瓶可乐，顺手送了被试一瓶。实验快结束时，他请被试买几张自己在卖的彩票。收过可乐的人买的彩票大约是没收到那组的两倍，哪怕他们并不怎么喜欢这个人。</p>
+    <p class="vl-src">古尔德纳《互惠规范》，1960；里根的可乐实验，1971。验证：下回请同事喝一杯咖啡，留意一两周里有没有人请回来。</p>
+  </div>
+
+  <!-- ===== 3 库拉 + 发明故事 ===== -->
+  <div class="vl-sec"><h2>贝壳项链绕着群岛转圈</h2></div>
+
+  <div class="vl-withimg rev">
+    <span data-illus="c01-s3-canoe"></span>
+    <div>
+      <p>莫斯的《礼物》一开头就问：在没有商店和合同的社会里，是什么规则逼着收了礼的人必须回礼？他自己没有出远门做调查，手边是别人从各地带回的<span class="vl-term" data-def="研究者在一个地方长住，观察、记录当地人的生活之后写成的报告">民族志</span>。分量最重的一份，来自波兰裔人类学家马林诺夫斯基在太平洋上记下的“库拉”。</p>
+      <p>第一次世界大战期间，马林诺夫斯基在新几内亚东边的特罗布里恩群岛一住好几年，学会了当地话，和岛民一起过日子。他看到一种奇怪的远航：几个岛上的男人划着独木舟跨海，到另一个岛上去，为的只是送出或接回几件贝壳做的饰物。</p>
+    </div>
+  </div>
+
+  <figure class="vl-fig vl-hot" id="c1-kula" data-hint="点一下项链、臂镯或特罗布里恩群岛，看它在库拉圈里做什么。">
+    <svg viewBox="60 -14 480 358" aria-label="库拉圈示意：一圈岛屿，最上方是特罗布里恩群岛；红色虚线外圈上的箭头顺时针走，代表红贝壳项链；蓝色虚线内圈上的箭头逆时针走，代表白贝壳臂镯">
+<g data-hot="neck" data-name="红贝壳项链"><ellipse cx="300" cy="180" rx="232" ry="130" fill="none" stroke="var(--q5)" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/><path d="M436.1 80.6 L449.1 80.4 L440.9 70.3" fill="none" stroke="var(--q5)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M484.3 252.4 L477.7 263.6 L490.6 261.8" fill="none" stroke="var(--q5)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M163.9 279.4 L150.9 279.6 L159.1 289.7" fill="none" stroke="var(--q5)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M115.7 107.6 L122.3 96.4 L109.4 98.2" fill="none" stroke="var(--q5)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="166" y1="158" x2="196" y2="158" stroke="var(--q5)" stroke-width="5"/><text x="206" y="166" font-size="24" fill="var(--ink)">红贝壳项链：顺时针</text></g>
+<g data-hot="arm" data-name="白贝壳臂镯"><ellipse cx="300" cy="180" rx="162" ry="82" fill="none" stroke="var(--q1)" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/><path d="M204.4 107.4 L195.9 117.2 L208.9 117.8" fill="none" stroke="var(--q1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M437.0 128.5 L424.1 127.3 L431.2 138.2" fill="none" stroke="var(--q1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M395.6 252.6 L404.1 242.8 L391.1 242.2" fill="none" stroke="var(--q1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M163.0 231.5 L175.9 232.7 L168.8 221.8" fill="none" stroke="var(--q1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="166" y1="206" x2="196" y2="206" stroke="var(--q1)" stroke-width="5"/><text x="206" y="214" font-size="24" fill="var(--ink)">白贝壳臂镯：逆时针</text></g>
+<g aria-hidden="true"><ellipse cx="456.0" cy="114.7" rx="17" ry="9" fill="#eadbbb" stroke="var(--ink)" stroke-width="1.5"/><ellipse cx="492.1" cy="205.6" rx="17" ry="9" fill="#eadbbb" stroke="var(--ink)" stroke-width="1.5"/><ellipse cx="380.5" cy="276.8" rx="17" ry="9" fill="#eadbbb" stroke="var(--ink)" stroke-width="1.5"/><ellipse cx="207.0" cy="273.6" rx="17" ry="9" fill="#eadbbb" stroke="var(--ink)" stroke-width="1.5"/><ellipse cx="105.0" cy="198.4" rx="17" ry="9" fill="#eadbbb" stroke="var(--ink)" stroke-width="1.5"/><ellipse cx="152.9" cy="109.1" rx="17" ry="9" fill="#eadbbb" stroke="var(--ink)" stroke-width="1.5"/></g>
+<g data-hot="trob" data-name="特罗布里恩群岛"><ellipse cx="300" cy="74" rx="22" ry="11" fill="#e9cf8a" stroke="var(--ink)" stroke-width="2"/><text x="300" y="30" font-size="24" text-anchor="middle" fill="var(--ink)" font-weight="700">特罗布里恩群岛</text></g>
+    </svg>
+    <div class="vl-hot-text" data-for="neck"><b>红贝壳项链</b>：顺时针传。拿到的人保管一阵，就送给下一位伙伴。</div>
+    <div class="vl-hot-text" data-for="arm"><b>白贝壳臂镯</b>：逆时针传，和项链对着转。</div>
+    <div class="vl-hot-text" data-for="trob"><b>特罗布里恩群岛</b>：马林诺夫斯基住过的地方，库拉圈上的一站。</div>
+    <figcaption>两种饰物对着转，谁手里都留不长，伙伴之间的往来却一直不断。（示意，岛屿数目和位置不按实际）</figcaption>
+  </figure>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s3-shells"></span>
+    <div>
+      <p>拿到饰物的人并不把它锁进箱子，过一段时间就要送给圈上的下一位伙伴。名气大的饰物有自己的名字和来历，谁经手过都被人记着。饰物本身几乎派不上用场，岛民却为它们冒着风浪出海。1922 年，马林诺夫斯基把这些见闻写进了《西太平洋的航海者》。</p>
+      <p>库拉让莫斯看清，礼物换来的东西不在礼物身上。项链不会留在任何人手里，留下来的是一对对伙伴之间几十年的往来和名声。<span class="vl-em">收下和回赠，是人们答应彼此继续来往的方式；拒收或不回，就等于断了这份交情。</span></p>
+    </div>
+  </div>
+
+  <details class="vl-story">
+    <summary><b>1925 年，莫斯想弄清：礼物明明自愿，为什么人人都觉得非还不可</b><small>从特罗布里恩的独木舟到《礼物》，三个年份走出来的答案。</small></summary>
+    <ol class="vl-chain">
+      <li>礼物自愿，为何非还不可？</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>旧想法：回礼是变相的买卖</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>库拉的项链谁也留不住</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>莫斯：回礼是答应继续来往</li>
+    </ol>
+    <div class="vl-timeline">
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-1915"></span><div><b class="vl-yr">1915–1918</b> 战争把马林诺夫斯基困在了澳大利亚管辖的地界，他索性在特罗布里恩群岛长住下来，天天跟着岛民记笔记。这种住进去、学当地话的做法，后来成了人类学田野调查的样板。</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-1922"></span><div><b class="vl-yr">1922</b> 《西太平洋的航海者》出版。书里的库拉让欧洲读者看到：一套跨越许多岛屿的交换，可以完全不为了占有东西。</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-1925"></span><div><b class="vl-yr">1925</b> 莫斯把库拉、北美的夸富宴、毛利人的说法放在一起比较，写成《礼物》，提出给予、接受、回报三道义务。他借毛利人的“豪”（hau）来解释回礼的力量，说礼物里带着送礼人的一部分，总想回到原主那里。后来的人类学家大多不接受这个解释，觉得它把一种地方说法当成了通用的道理；三道义务却一直被沿用到今天。</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 4 招牌互动 ===== -->
+  <div class="vl-sec"><h2>给三位亲友安排回礼，看账本怎么变</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s4-gifts"></span>
+    <div><p>莫斯讲清了为什么要回礼，却没说怎样才算回得好。开头那三种回法分量不同，差别出在两件事上：隔多久回，回多少。下面的账本把这两件事拆开。三位亲友各送来一样东西，给每人选好回礼的时间和分量，账本立刻画出接下来一年里两边的往来。</p></div>
+  </div>
+
+  <div class="vl-board" id="c1-board">
+    <h3>回礼该多快、多重，往来才会继续？</h3>
+    <p class="vl-try" data-try="c1-settle" data-done="完成！账一旦算平，谁也不欠谁，下一次往来就没了由头。">让其中一位的往来在账刚好两清之后停下来。</p>
+    <p class="vl-try" data-try="c1-keep" data-done="完成！隔一阵、略多一点地回，账永远差着一点，往来就一直有下一回。">让三位亲友的往来都延续到年底。</p>
+    <p class="c1-legend"><span><i style="background:var(--q2)"></i>上排：对方送来</span><span><i style="background:var(--q1)"></i>下排：这边回赠</span><span>圆点越大，礼越重；虚线表示往来停了</span></p>
+    <div id="c1-friends"></div>
+    <p class="vl-msg" id="c1-msg" aria-live="polite">先给一位亲友选好什么时候回、回多少。</p>
+    <div class="c1-row"><button type="button" class="vl-btn alt" id="c1-reset">重来</button></div>
+    <p class="vl-src">往来规则是示意：真实的人情还看两家多亲、礼是什么、当地的习惯。</p>
+  </div>
+
+  <p>账本里，当天回一份差不多的，账立刻平了，那一行就断了；一直不回，对方等上半年也不再送了。能走到年底的只有一种回法：隔一阵再回，分量略重一点。</p>
+
+  <!-- ===== 5 人情往来 ===== -->
+  <div class="vl-sec"><h2>人情往来的账总差一点</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s5-ledger"></span>
+    <div>
+      <p>走到年底的那几行有同一个样子：回礼隔了一段时间，又比收到的略重一点。多出来的那一点，让对方反过来欠了一点，于是对方过些日子又会送来什么。账永远差着一点，往来就永远有下一回。</p>
+      <p>中国人管这种来来回回叫<span class="vl-cn">人情往来</span>。“人情”在这里几乎就是一笔记在心里的账，只是这笔账的用处和商店的账正好相反。</p>
+    </div>
+  </div>
+
+  <figure class="vl-fig" id="c1-fig-compare" data-diagram="compare">
+    <script type="application/json">{
+      "a":{"name":"买卖","eg":"便利店买一瓶水"},
+      "b":{"name":"人情往来","eg":"回王阿姨一盘饺子"},
+      "rows":[
+        {"k":"什么时候结","a":"当场付清","b":"隔一阵再回"},
+        {"k":"数目","a":"明码标价","b":"心里有数，不说破"},
+        {"k":"结清以后","a":"两不相欠","b":"还惦记着下一回"},
+        {"k":"拒绝","a":"不买很平常","b":"退回像是翻脸"}]}</script>
+    <figcaption>两边都在算账。买卖要把账算平，好各走各的；人情往来故意让账差着一点，好让人一直走动。</figcaption>
+  </figure>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">人情往来</p>
+    <p class="vl-cc-en">Renqing · 礼尚往来的人情账</p>
+    <p class="vl-cc-by">阎云翔 · 《礼物的流动》 · 1996</p>
+    <p class="vl-cc-plain">礼尚往来，账不算清。</p>
+    <p class="vl-cc-def">亲友之间隔一阵、略重一点地互相回赠，让彼此一直欠着一点，关系靠这笔不结清的账维持下去。</p>
+    <p class="vl-cc-eg">账本里走到年底的那几行。</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-2"></span></div>
+  </aside>
+
+  <p>“故意不还清”听上去像一种算计，在生活里却很常见。下面前三个例子都是人情往来，最后一个数目分毫不差，反倒伤了人。</p>
+
+  <div class="vl-eg" data-t="下岬村礼单">
+    <figure class="c1-docfig"><div class="vl-doc" data-kind="copy">
+      <p class="vl-doc-meta">礼单影印件（示意）</p>
+      <h4>张家嫁女 · 收礼</h4>
+      <p>李长顺　拾元<br>王桂芬　伍元<br>赵德明　拾元　被面</p>
+      <p class="vl-doc-sign">记账人　赵</p>
+    </div></figure>
+    <p><b>下岬村的礼单：</b>人类学家阎云翔在黑龙江的下岬村做调查时，翻看过村民家里保存的礼单。婚丧嫁娶时谁家送了多少，一笔笔记在上面，很多年都不扔。</p>
+    <p>主人家下回去别人家随礼，会先翻出礼单，参考当年收到的数目来定这一次送多少。</p></div>
+  <div class="vl-eg" data-t="借米多一勺"><span data-illus="c01-eg2-rice"></span>
+    <p><b>借米还米多一勺：</b>老一辈的邻居之间借一碗米，还的时候常常把碗装得冒尖。冒尖的那一勺不值什么钱，意思是“这回你又欠我一点了”。下次对方来借酱油，也就借得理直气壮。</p></div>
+  <div class="vl-eg" data-t="轮着请客"><span data-illus="c01-eg2-dinner"></span>
+    <p><b>轮着请客：</b>两个老朋友常约着吃饭，这一顿你请，下一顿我请。每顿饭都是上一顿的回礼，也是下一顿的由头，两人谁也不会掏出计算器把这些年的饭钱算一遍。</p></div>
+  <div class="vl-eg bad" data-t="当场退红包"><span data-illus="c01-eg2-refund"></span>
+    <p><b>当场退回红包：</b>过年时朋友在微信上发来一个 200 元的红包，收下后马上转回 200 元。数目一分不差，礼数看起来也周到。</p>
+    <p>朋友多半觉得被推开了。这一来一回把人情变成了一次退款，账平了，话也就没了。</p></div>
+
+  <div class="vl-why">
+    <h3>隔开的时间让礼物不像买卖</h3>
+    <div class="vl-why-fig"><span data-illus="c01-why-2"></span></div>
+    <p>法国社会学家皮埃尔·布迪厄注意到，送礼和回礼之间总要隔开一段时间。马上回一份等值的东西，等于告诉对方“我不想欠你”，礼物就被退成了一笔交易。隔开的这段日子让两次赠送看上去各自出于心意，谁也不必承认两边其实在交换。</p>
+    <p class="vl-src">布迪厄《实践理论大纲》，1972。验证：在上面的账本里，把同一位亲友的回礼从“当天”改成“过一阵”，看往来怎么变。</p>
+  </div>
+
+  <!-- ===== 6 远近 ===== -->
+  <div class="vl-sec"><h2>亲人不记账，生人算到分</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s6-family"></span>
+    <div>
+      <p>人情的账算得多细，要看两个人有多近。妈妈给孩子做了十几年饭，没有谁会记下一顿饭值多少、哪天该还；邻居和同事之间，大家心里有数，大致对等就好；到了菜市场，和不认识的摊主就一块钱一块钱地讲价。</p>
+      <p>美国人类学家马歇尔·萨林斯在 1972 年的《石器时代经济学》里，把这条规律排成了一条线。越亲近的人之间越不计较回报，他叫它“泛化互惠”；关系一般的人之间讲究大致对等、按时回礼，叫“均衡互惠”；面对陌生人，人们常常想少付多得，叫“负互惠”。</p>
+    </div>
+  </div>
+
+  <figure class="vl-fig" id="c1-fig-spec" data-diagram="spectrum">
+    <script type="application/json">{
+      "name":"关系越远，账算得越细",
+      "lo":{"name":"亲人","eg":"不记账"},
+      "hi":{"name":"陌生人","eg":"一分一厘算清"},
+      "items":[
+        {"at":0.12,"name":"泛化互惠","eg":"妈妈做的晚饭","info":"<b>泛化互惠</b>：给的时候不问回报，也不记哪天该还。"},
+        {"at":0.5,"name":"均衡互惠","eg":"月饼、份子钱","info":"<b>均衡互惠</b>：讲究大致对等、过一阵要回。人情往来就落在这一段。"},
+        {"at":0.88,"name":"负互惠","eg":"菜市场讲价","info":"<b>负互惠</b>：各自想少付多得，交易一结束，两人就散了。"}]}</script>
+    <figcaption>同一套互惠，放到远近不同的人之间，记账的细致程度跟着变；人情往来在中间那一段。</figcaption>
+  </figure>
+
+  <div class="vl-withimg rev">
+    <span data-illus="c01-s6-market"></span>
+    <div>
+      <p>人情往来落在这条线的中段。亲人之间用不着它，和陌生人又犯不上用它。开头那盒月饼正好落在中段：王阿姨不是家人，也不算生人，所以那盒月饼既不能白收，也不能拿钱打发。</p>
+    </div>
+  </div>
+
+  <!-- ===== 7 反思 ===== -->
+  <div class="vl-sec"><h2>请柬一张张寄来的时候</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-reflect"></span>
+    <div>
+      <p>互惠能把人连在一起，也能把人压住。近些年不少年轻人把婚礼请柬叫作“红色炸弹”：一个月收到几张，份子钱一笔笔加起来是不小的开销。不去像不给面子；去了要随礼，轮到自己办事时，还得把这些人请回来。</p>
+    </div>
+  </div>
+
+  <div class="vl-withimg rev">
+    <span data-illus="c01-s7-feast"></span>
+    <div>
+      <p>礼物还会被拿来压人。北美西北海岸一些原住民部落有一种盛宴，常译作“夸富宴”（potlatch）。主人大量分送、有时还当众毁掉财物，客人日后办不起同样规模的宴席，名望就矮了一截。加拿大政府在 1884 年立法禁止夸富宴，直到 1951 年才取消禁令。</p>
+      <p>在账本里一直“略重一点”地回下去，圆点会一圈比一圈大。夸富宴把这种越滚越大推到了极端，人情里的那一点“多”，在这里成了一场比赛。</p>
+    </div>
+  </div>
+
+  <div class="vl-philo" data-key="c1-philo1">
+    <div class="vl-philo-slide" data-t="问题">
+      <p class="vl-philo-q">世上有没有完全不求回报的礼物？</p>
+      <span data-illus="c01-ph-gift"></span>
+      <div class="vl-vote" data-options="有|没有|说不准"></div>
+    </div>
+    <div class="vl-philo-slide" data-t="纯粹的礼物不可能">
+      <p>只要收礼的人认出这是一份礼物，他就会觉得欠了情；送礼的人也会因为自己慷慨而心里满足。这份感激和满足已经算一种回报，所以纯粹的礼物一被认出来，就不再纯粹了。</p>
+      <p class="vl-src">法国哲学家雅克·德里达的看法，见《给予时间》，1991</p>
+    </div>
+    <div class="vl-philo-slide" data-t="心意和义务本来分不开">
+      <p>义务并不会让礼物变假。礼物从来就是自愿和义务、慷慨和算计的混合，正是这种混合让人和人之间有了长久的联系。</p>
+      <p class="vl-src">莫斯在《礼物》结尾的看法，1925</p>
+    </div>
+    <div class="vl-philo-slide" data-t="送给陌生人的礼物">
+      <span data-illus="c01-ph-blood"></span>
+      <p>献血的人不知道血会输给谁，受血的人也无从回报。这样的捐献送给的是陌生人，却能把一个社会里互不相识的人连在一起。</p>
+      <p class="vl-src">英国社会政策学者理查德·蒂特马斯研究献血后的看法，见《礼物关系》，1970</p>
+    </div>
+    <div class="vl-philo-slide" data-t="留给你">
+      <p>回想最近一次不求回报地帮了别人：心里真的什么也没期待吗？如果有一点期待，它让那次帮忙变得不真诚了吗？</p>
+      <textarea class="vl-note" data-save="philo1" placeholder="上次我帮……的时候，心里其实……"></textarea>
+    </div>
+  </div>
+
+  <!-- ===== 8 收束 + 练习 ===== -->
+  <div class="vl-sec"><h2>几个星期后，饺子端过去了</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s8-end"></span>
+    <div>
+      <div class="vl-key">
+        <p><b>要点</b></p>
+        <ul>
+          <li>互惠包含送、收、回三道义务，回赠又引出下一次送出。</li>
+          <li>库拉的项链谁也留不住，礼物维持的是关系。</li>
+          <li>人情往来隔一阵、略重一点地回，往来才有下一回。</li>
+          <li>账算多细看远近：亲人不记账，生人算到分。</li>
+        </ul>
+      </div>
+      <p class="vl-tldr"><b>一句话</b>收礼让人觉得欠了情，因为礼物送来的是一段关系；回礼故意不还清，关系才继续。</p>
+    </div>
+  </div>
+
+  <div class="vl-misc">
+    <p><b>常见误区</b></p>
+    <p><b>“回礼越贵越有面子。”</b>回得太重，对方要么回不起，要么觉得被比下去，往来反而停了。</p>
+    <p><b>“讲人情就是虚伪的交易。”</b>人情也算账，可它算账是为了让关系继续，买卖算账是为了到此为止。</p>
+  </div>
+
+  <div id="c1-quiz"></div>
+
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/diagrams.js"></script>
+<script src="kit/illus.js"></script>
+<script src="kit/vl-interact.js"></script>
+<script src="js/illus-ch01.js"></script>
+<script>
+/* ===== 招牌互动：关系账本 ===== */
+(function () {
+  const FR = [
+    { n: "王阿姨", g: "月饼", ill: "c01-fr-wang", d: "中秋送来一盒月饼" },
+    { n: "小林", g: "火锅", ill: "c01-fr-lin", d: "老同学，请吃了一顿火锅" },
+    { n: "表姐", g: "橙子", ill: "c01-fr-jie", d: "从老家寄来一箱橙子" },
+  ];
+  const WHEN = [["now", "当天"], ["later", "过一阵"], ["never", "不回"]];
+  const HOW = [["less", "少一点"], ["equal", "差不多"], ["more", "多一点"]];
+  const ST = { alive: "✓ 还在来往", settled: "＝ 两清，往来停了", pushed: "✗ 往来停了", faded: "～ 淡了", cold: "✗ 冷了" };
+  const pick = FR.map(() => ({ when: null, how: null }));
+  const host = document.getElementById("c1-friends"), msg = document.getElementById("c1-msg");
+
+  // 规则（示意）：返回 {ev:[{m, who, v}], end, state, say}
+  function sim(f, p) {
+    const ev = [{ m: 0, who: "them", v: 100 }];
+    if (!p.when) return { ev, state: null, say: "还没安排回礼。" };
+    if (p.when === "never") return { ev, end: 6, state: "cold", say: f.n + "的" + f.g + "一直没有回音。半年后，" + f.n + "不再往这边送东西了。" };
+    if (!p.how) return { ev, state: null, say: "再选一下回多少。" };
+    const r = { less: 0.7, equal: 1, more: 1.15 }[p.how];
+    const m = p.when === "now" ? 0.35 : 2;
+    ev.push({ m, who: "me", v: Math.round(100 * r) });
+    if (p.when === "now") {
+      if (p.how === "equal") return { ev, end: 12, state: "settled", say: "当天就回了一份差不多的，账立刻平了。两边谁也不欠谁，之后再没有新的往来。" };
+      if (p.how === "more") return { ev, end: 12, state: "pushed", say: "当天就回了一份更重的，像急着把人情推回去。" + f.n + "不好意思再送了。" };
+      return { ev, end: 12, state: "faded", say: "当天回了一份薄礼，像在打发人，往来就此淡了。" };
+    }
+    if (p.how === "equal") return { ev, end: 12, state: "settled", say: "隔了一阵回了一份差不多的，礼数周到，账也平了。之后两边都没了再走动的由头。" };
+    if (p.how === "less") return { ev, end: 9, state: "faded", say: "隔了一阵回了一份轻一些的，这边还欠着一点。" + f.n + "等不到下文，往来慢慢淡了。" };
+    let v = ev[1].v;
+    [[5, "them"], [8, "me"], [11, "them"]].forEach(([mm, who]) => { v = Math.round(v * 1.1); ev.push({ m: mm, who, v }); });
+    return { ev, state: "alive", say: "隔了一阵回得略重一点，这回轮到" + f.n + "欠着一点，过些日子又送来东西。一来一回，到年底还在走动。" };
+  }
+
+  function strip(svg, res) {
+    const W = Math.max(260, Math.round(svg.getBoundingClientRect().width || 600)), H = 134, L = 14, R = 16;
+    const X = m => L + (W - L - R) * m / 12, yT = 30, yB = 86, mid = 58;
+    const rad = v => Math.max(5, Math.min(15, 7 + (v - 100) / 6));
+    let s = '<line x1="' + L + '" y1="' + mid + '" x2="' + (W - R) + '" y2="' + mid + '" stroke="var(--rim2)" stroke-width="1" stroke-dasharray="3 5"/>';
+    const pts = res.ev.map(e => [X(e.m), e.who === "them" ? yT : yB]);
+    s += '<polyline points="' + pts.map(p => p.join(",")).join(" ") + '" fill="none" stroke="var(--ink)" stroke-width="2"/>';
+    const last = pts[pts.length - 1];
+    if (res.state === "alive") {
+      s += '<path d="M' + last[0] + " " + last[1] + " L" + (W - R - 4) + " " + mid + '" fill="none" stroke="var(--ink)" stroke-width="2"/>' +
+        '<path d="M' + (W - R - 12) + " " + (mid - 6) + " L" + (W - R - 3) + " " + mid + " L" + (W - R - 12) + " " + (mid + 6) + '" fill="none" stroke="var(--ink)" stroke-width="2"/>';
+    } else if (res.state) {
+      const ex = X(res.end);
+      s += '<path d="M' + last[0] + " " + last[1] + " L" + ex + " " + mid + '" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-dasharray="5 6"/>';
+      if (res.state === "settled") s += '<path d="M' + (ex - 8) + " " + (mid - 4) + " h16 M" + (ex - 8) + " " + (mid + 4) + ' h16" stroke="var(--ink)" stroke-width="2"/>';
+      else s += '<path d="M' + (ex - 6) + " " + (mid - 6) + " l12 12 M" + (ex + 6) + " " + (mid - 6) + ' l-12 12" stroke="var(--no)" stroke-width="2.4"/>';
+    }
+    res.ev.forEach((e, i) => {
+      const [x, y] = pts[i];
+      s += '<circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="' + rad(e.v).toFixed(1) + '" fill="' + (e.who === "them" ? "var(--q2)" : "var(--q1)") + '" stroke="var(--ink)" stroke-width="1.5"/>';
+    });
+    s += '<text x="' + L + '" y="' + (H - 12) + '" font-size="13" fill="var(--ink2)">收礼那天</text>' +
+      '<text x="' + X(6) + '" y="' + (H - 12) + '" font-size="13" text-anchor="middle" fill="var(--ink2)">半年</text>' +
+      '<text x="' + (W - R) + '" y="' + (H - 12) + '" font-size="13" text-anchor="end" fill="var(--ink2)">一年</text>';
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.innerHTML = s;
+  }
+
+  host.innerHTML = FR.map((f, i) =>
+    '<div class="c1-fr" data-i="' + i + '">' +
+      '<div class="c1-who"><span data-illus="' + f.ill + '"></span><p><b>' + f.n + '</b><br>' + f.d + '</p></div>' +
+      '<div>' +
+        '<div class="c1-grp" role="group" aria-label="' + f.n + '：什么时候回"><span class="c1-lab">什么时候回</span>' +
+          WHEN.map(w => '<button type="button" class="vl-chip" aria-pressed="false" data-k="when" data-v="' + w[0] + '">' + w[1] + "</button>").join("") + "</div>" +
+        '<div class="c1-grp" role="group" aria-label="' + f.n + '：回多少"><span class="c1-lab">回多少</span>' +
+          HOW.map(w => '<button type="button" class="vl-chip" aria-pressed="false" data-k="how" data-v="' + w[0] + '">' + w[1] + "</button>").join("") + "</div>" +
+      "</div>" +
+      '<svg class="c1-strip" role="img" aria-label="' + f.n + '这一年的往来"></svg>' +
+      '<p class="c1-st" aria-live="polite"></p>' +
+    "</div>").join("");
+  VL.illus.mount(host);
+  if (window.VL_SKIN && VL_SKIN.roughen) VL_SKIN.roughen(host);
+
+  const rows = Array.from(host.querySelectorAll(".c1-fr"));
+  function draw() {
+    const res = FR.map((f, i) => sim(f, pick[i]));
+    rows.forEach((row, i) => {
+      const p = pick[i], r = res[i];
+      row.querySelectorAll(".vl-chip").forEach(b => {
+        b.setAttribute("aria-pressed", String(p[b.dataset.k] === b.dataset.v));
+        if (b.dataset.k === "how") b.disabled = p.when === "never";
+      });
+      strip(row.querySelector(".c1-strip"), r);
+      row.querySelector(".c1-strip").setAttribute("aria-label", FR[i].n + "这一年的往来：" + (r.state ? ST[r.state] + "。" : "") + r.say);
+      row.querySelector(".c1-st").innerHTML = (r.state ? "<b>" + ST[r.state] + "</b>" : "") + r.say;
+    });
+    const n = s => res.filter(r => r.state === s).length, done = res.filter(r => r.state).length;
+    if (!done) msg.textContent = "先给一位亲友选好什么时候回、回多少。";
+    else msg.textContent = "已安排 " + done + " 位：还在来往 " + n("alive") + " 位，两清后停下 " + n("settled") + " 位，停了、淡了或冷了 " + (n("pushed") + n("faded") + n("cold")) + " 位。";
+    if (n("settled")) VL.tryDone("c1-settle");
+    if (n("alive") === FR.length) VL.tryDone("c1-keep");
+  }
+  host.addEventListener("click", e => {
+    const b = e.target.closest(".vl-chip"); if (!b || b.disabled) return;
+    const i = +b.closest(".c1-fr").dataset.i, p = pick[i];
+    p[b.dataset.k] = p[b.dataset.k] === b.dataset.v ? null : b.dataset.v;
+    draw();
+  });
+  document.getElementById("c1-reset").addEventListener("click", () => { pick.forEach(p => { p.when = null; p.how = null; }); draw(); });
+  let rw = 0;
+  window.addEventListener("resize", () => { clearTimeout(rw); rw = setTimeout(draw, 120); });
+  VL.ready(draw);
+})();
+
+/* ===== 练习 ===== */
+VL.quiz("#c1-quiz", [
+  { q: "莫斯在《礼物》里说的互惠，包含哪三道义务？", opts: ["请求、答应、道谢", "购买、使用、付款", "给予、接受、回报"], a: 2,
+    why: "送出、收下、回赠三步都带着义务：不送显得小气，不收像不给面子，收了不回就欠着。" },
+  { q: "朋友发来 200 元红包，马上转回 200 元。朋友为什么常常不太高兴？", opts: ["当场等值退回，像在说“我不想欠你”，把人情变成了退款", "200 元太少，朋友觉得这份心意被看轻了", "转账要收一笔手续费，朋友心疼这点钱"], a: 0,
+    why: "数目一分不差，问题出在“当场”和“等值”：账立刻平了，往来也就没了下一回。布迪厄说，送礼和回礼之间要隔开一段时间，礼物才不像买卖。" },
+  { q: "莫斯写《礼物》，最想回答的是哪个问题？", opts: ["礼物明明是自愿送的，为什么收礼的人觉得非回礼不可", "商店怎样包装礼品，才能卖得更多更快", "太平洋岛屿上的贝壳为什么是红色和白色"], a: 0,
+    why: "他在书的开头就问：在没有商店和合同的社会里，是什么规则逼着人回礼。库拉等民族志给了他答案：回礼是在答应继续来往。" },
+  { q: "库拉圈里的一串贝壳项链传了几十年，它最后留在了谁手里？", opts: ["谁手里都留不长，它一直在伙伴之间往下传", "圈上地位最高、出价最多的那位首领手里", "马林诺夫斯基手里，他把项链带回了欧洲"], a: 0,
+    why: "拿到项链的人保管一阵就要送给下一位伙伴。项链留不住，留下来的是伙伴之间的往来和名声，这正是莫斯看重的地方。" },
+  { q: "新同事请全组喝了奶茶。哪种做法最可能让往来继续下去？", opts: ["过一两周找个机会请回去，买得比上次略好一点", "当天就把奶茶钱一分不差地转给他，免得欠下人情", "从此婉拒他请的任何东西，免得以后麻烦"], a: 0,
+    why: "隔一阵、略重一点地回，账差着一点，就有了下一回。当天等值转账是“结账”，一概婉拒则是拒绝了接受的义务。" },
+]);
+</script>
+</body>
+</html>

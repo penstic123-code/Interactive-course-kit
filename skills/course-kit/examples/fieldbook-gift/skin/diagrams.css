@@ -1,0 +1,48 @@
+/* 皮肤 fieldbook · 图解补充样式：timeline / tree / venn / balance / network / spectrum / stack 七种图解的外观。
+   放在 skin.css 之后加载。结构样式（淡出、过渡）由 kit/diagrams.js 自动注入；这里只管颜色、线宽、虚线。
+   颜色只用 --dg-* 变量：结构墨色 --dg-ink，全图唯一强调色 --dg-hi，色块 --dg-c1…c6。 */
+
+/* 时间轴 */
+.vl-dg .vl-dg-trk{stroke-width:2}
+.vl-dg .vl-dg-tick{fill:var(--dg-ink);stroke:none}
+.vl-dg .vl-dg-star{fill:var(--dg-hi);stroke:var(--dg-ink);stroke-width:1.8;stroke-linejoin:round}
+.vl-dg .vl-dg-tickm{stroke:var(--dg-ink);stroke-width:2}
+.vl-dg .vl-dg-curve{stroke-width:2.9}
+.vl-dg .vl-dg-evln{stroke-width:2;stroke-dasharray:5 6;filter:none}
+.vl-dg .vl-dg-evln.is-on,.vl-dg .vl-dg-lead.is-on{stroke:var(--dg-hi);stroke-width:2.3}
+.vl-dg .vl-dg-pt.is-on{fill:#fbf2c4;stroke:var(--dg-hi);stroke-width:2}
+.vl-dg .vl-dg-badge.is-on .vl-dg-dot{fill:#fbf2c4;stroke:var(--dg-hi);stroke-width:2.3}
+
+/* 树：边上的字平时次要，选中那一枝时加粗 */
+.vl-dg .vl-dg-branch{stroke-width:2}
+.vl-dg :is(.vl-dg-elab.is-on,.vl-dg-elab.is-near) .vl-dg-et{fill:var(--dg-ink);font-weight:700}
+
+/* 维恩：半透明圈叠在一起，交集颜色自然变深；选中区域铺一层强调色 */
+.vl-dg .vl-dg-vset{fill-opacity:.42;stroke-width:2.3}
+.vl-dg .vl-dg-vset.is-on{stroke:var(--dg-hi);stroke-width:3.6}
+.vl-dg .vl-dg-vreg.is-on{fill:var(--dg-hi);fill-opacity:.3}
+.vl-dg .vl-dg-vt{fill:var(--dg-ink)}
+.vl-dg .vl-dg-vlab.is-on .vl-dg-vt{font-weight:700}
+
+/* 天平：横梁最粗；水平时支点变绿 */
+.vl-dg .vl-dg-beam{stroke-width:4.5}
+.vl-dg .vl-dg-post{stroke-width:2}
+.vl-dg .vl-dg-base{stroke-width:2.6}
+.vl-dg .vl-dg-pan{stroke-width:2}
+.vl-dg .vl-dg-wtbox{stroke-width:1.6}
+.vl-dg .vl-dg-wtt{fill:var(--dg-ink);font-weight:700}
+.vl-dg .vl-dg-fulcrum{fill:#fffdf8}
+.vl-dg.is-level .vl-dg-fulcrum{fill:var(--dg-c4)}
+.vl-dg .vl-dg-fulcrum.is-on{stroke:var(--dg-hi);stroke-width:3.3}
+
+/* 网络：实线箭头 = 导致，虚线 = 相关；中心节点描边更粗 */
+.vl-dg .vl-dg-edge{stroke-width:2}
+.vl-dg .vl-dg-weak{stroke-dasharray:9 7}
+.vl-dg .vl-dg-main > .vl-dg-box{stroke-width:3.3}
+.vl-dg .vl-dg-elist .vl-dg-et{fill:var(--dg-ink)}   /* 线上放不下、改列在图下的边标签 */
+
+/* 光谱轴、层叠 */
+.vl-dg .vl-dg-spec{stroke-width:3.9}
+.vl-dg .vl-dg-sdot{fill:#fffdf8;stroke:var(--dg-ink);stroke-width:2;filter:none}
+.vl-dg .vl-dg-sdot.is-on{fill:var(--dg-hi)}
+.vl-dg .vl-dg-brace{stroke-width:1.6;filter:none}

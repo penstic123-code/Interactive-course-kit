@@ -2,7 +2,7 @@
    做四件事：
    1. 声明 window.VL_SKIN（网络字体、墨线微抖滤镜 #vl-fb-wobble、插画配色）；
    2. 换上本皮肤的插画绘制工具（墨线 + 淡彩人物，接口照 kit/illus.js：person / hands / holding / feetY / ground / item / bubble / T / arrow）：
-      kit/illus.js 赋值 VL.illus 时，把本皮肤的函数装进 VL.illus.kit；
+      通过 kit/illus.js 的钩子 VL_SKIN.illus 并入 VL.illus.kit（本文件必须在 kit/illus.js 之前加载）；
    3. 彩铅化：同目录 rough.js（Rough.js 4.6.6，MIT）把插画 .vl-il-rough 组里的描边重画成铅笔线，大块色面叠彩铅排线；
       插画进入视口时才处理（隐藏的轮播页、收起的分节量不出尺寸）；没有 rough.js 时退回 SVG 滤镜微抖；
    4. 章节页右侧生成篇章索引签 nav.vl-fb-tabs。
@@ -47,9 +47,10 @@
   // 地面：一道铅笔线 + 淡沙色影
   function ground(y, x1, x2) {
     y = y || 126; x1 = x1 === undefined ? 6 : x1; x2 = x2 === undefined ? 194 : x2;
-    var m = (x1 + x2) / 2, q = (x1 + m) / 2;
+    var m = (x1 + x2) / 2;
     return W("M" + x1 + " " + (y + 1) + " Q" + m + " " + (y + 7) + " " + x2 + " " + (y + 2) + " L" + x2 + " " + (y + 9) + " L" + x1 + " " + (y + 9) + "Z", COL.sand, 0.8) +
-      P("M" + x1 + " " + y + " Q" + q + " " + (y - 2) + " " + m + " " + (y + 1) + " T" + x2 + " " + y, "none", 2);
+      // 一整条平滑曲线；data-one 让彩铅化只描一遍（Rough.js 默认描两遍，长线会分叉成两道）
+      P("M" + x1 + " " + y + " C" + f(x1 + (x2 - x1) * 0.35) + " " + (y - 2) + " " + f(x1 + (x2 - x1) * 0.65) + " " + (y + 2) + " " + x2 + " " + y, "none", 2).replace("<path ", '<path data-one="1" ');
   }
   function arrow(x1, y1, x2, y2, col) {
     var a = Math.atan2(y2 - y1, x2 - x1), h = 7, c = col || INK;
@@ -171,8 +172,11 @@
     }
     // 头、脖子、头发、帽子
     out += '<path d="M' + f(x) + " " + f(sh - S(1)) + " V" + f(hy + S(8)) + '" stroke="' + sk + '" stroke-width="' + f(S(4)) + '" fill="none"/>';
-    var hc = o.hairColor || INK, R = S(9.5);
-    if (o.hair === "long") out += P("M" + f(x - R - S(1)) + " " + f(hy - S(2)) + " Q" + f(x - R - S(3)) + " " + f(hy + S(16)) + " " + f(x - R + S(2)) + " " + f(hy + S(19)) + " L" + f(x + R - S(2)) + " " + f(hy + S(19)) + " Q" + f(x + R + S(3)) + " " + f(hy + S(16)) + " " + f(x + R + S(1)) + " " + f(hy - S(2)) + "Z", hc, 1.4);
+    // 长发默认栗色（墨色大块会读成胡子 / 面罩）；两绺头发从耳后垂到肩上，下巴和脖子露出来
+    var hc = o.hairColor || (o.hair === "long" ? "#8a6446" : INK), R = S(9.5);
+    if (o.hair === "long") out += P("M" + f(x - R - S(1)) + " " + f(hy - S(2)) + " Q" + f(x - R - S(3)) + " " + f(hy + S(13)) + " " + f(x - R + S(1)) + " " + f(hy + S(18)) +
+      " L" + f(x - S(5)) + " " + f(hy + S(16)) + " L" + f(x - S(4)) + " " + f(hy + S(4)) + " L" + f(x + S(4)) + " " + f(hy + S(4)) + " L" + f(x + S(5)) + " " + f(hy + S(16)) +
+      " L" + f(x + R - S(1)) + " " + f(hy + S(18)) + " Q" + f(x + R + S(3)) + " " + f(hy + S(13)) + " " + f(x + R + S(1)) + " " + f(hy - S(2)) + "Z", hc, 1.4);
     if (o.hair === "bob") out += P("M" + f(x - R - S(1.5)) + " " + f(hy - S(2)) + " L" + f(x - R - S(1)) + " " + f(hy + S(8)) + " L" + f(x + R + S(1)) + " " + f(hy + S(8)) + " L" + f(x + R + S(1.5)) + " " + f(hy - S(2)) + "Z", hc, 1.4);
     out += Ci(x, hy, R, sk, 1.8);
     if (o.hair !== "bald") {
@@ -184,7 +188,10 @@
     var hcol = o.hatColor;
     if (o.hat === "bucket") out += P("M" + f(x - S(14)) + " " + f(hy - S(4)) + " Q" + f(x) + " " + f(hy - S(9)) + " " + f(x + S(14)) + " " + f(hy - S(4)) + " L" + f(x + S(8)) + " " + f(hy - S(15)) + " L" + f(x - S(8)) + " " + f(hy - S(15)) + "Z", hcol || COL.ochre, 1.6);
     if (o.hat === "straw") out += E(x, hy - S(6), S(17), S(4), hcol || "#e9c77a", 1.5) + P("M" + f(x - S(8)) + " " + f(hy - S(7)) + " Q" + f(x) + " " + f(hy - S(19)) + " " + f(x + S(8)) + " " + f(hy - S(7)), hcol || "#e9c77a", 1.5);
-    if (o.hat === "cap") out += P("M" + f(x - S(10)) + " " + f(hy - S(3)) + " Q" + f(x) + " " + f(hy - S(16)) + " " + f(x + S(10)) + " " + f(hy - S(3)) + "Z", hcol || COL.red, 1.5) + P("M" + f(x + g.fl * S(4)) + " " + f(hy - S(3)) + " h" + f(g.fl * S(12)), "none", f(S(3)));
+    if (o.hat === "cap") out += P("M" + f(x - S(10)) + " " + f(hy - S(3)) + " Q" + f(x) + " " + f(hy - S(16)) + " " + f(x + S(10)) + " " + f(hy - S(3)) + "Z", hcol || COL.red, 1.5) +
+      // 帽檐：一片朝前伸的弯舌（填帽色，线宽固定），不用随缩放变粗的粗线
+      P("M" + f(x + g.fl * S(3)) + " " + f(hy - S(4.5)) + " Q" + f(x + g.fl * S(11)) + " " + f(hy - S(5.5)) + " " + f(x + g.fl * S(16)) + " " + f(hy - S(2.5)) +
+        " Q" + f(x + g.fl * S(10)) + " " + f(hy - S(1)) + " " + f(x + g.fl * S(3)) + " " + f(hy - S(2)) + "Z", hcol || COL.red, 1.4);
     if (o.hat === "pith") out += E(x, hy - S(4), S(15), S(3.5), hcol || "#ece0c2", 1.5) + P("M" + f(x - S(10)) + " " + f(hy - S(5)) + " Q" + f(x) + " " + f(hy - S(20)) + " " + f(x + S(10)) + " " + f(hy - S(5)), hcol || "#ece0c2", 1.5);
     if (o.hat === "scarf") out += P("M" + f(x - R - S(2)) + " " + f(hy + S(4)) + " Q" + f(x - R - S(2)) + " " + f(hy - R - S(4)) + " " + f(x) + " " + f(hy - R - S(4)) + " Q" + f(x + R + S(2)) + " " + f(hy - R - S(4)) + " " + f(x + R + S(2)) + " " + f(hy + S(4)) + " Q" + f(x) + " " + f(hy - S(4)) + " " + f(x - R - S(2)) + " " + f(hy + S(4)) + "Z", hcol || COL.plum, 1.4);
     // 脸：放进 .norough 组，彩铅化时不抖，五官清楚。眼睛两个点，嘴一条线（o / shout / wide 是张开的小口）
@@ -208,27 +215,12 @@
     reset: function () { personK = 0; } };
   window.VL_SKIN.kit = FB;
 
-  /* ---------------- 把绘制工具装进 kit/illus.js ---------------- */
-  // kit/illus.js 执行 VL.illus = {...} 时接住它：换函数、给 add 包上换装计数清零、mount 后排队彩铅化
-  var VL = window.VL = window.VL || {};
-  var illusVal;
-  Object.defineProperty(VL, "illus", {
-    configurable: true, enumerable: true,
-    get: function () { return illusVal; },
-    set: function (v) {
-      illusVal = v;
-      if (!v || !v.kit) return;
-      var C = v.kit.C;
-      Object.assign(v.kit, FB); if (C) v.kit.C = C;
-      var add0 = v.add;
-      v.add = function () { personK = 0; var r = add0.apply(this, arguments); personK = 0; return r; };
-      var mount0 = v.mount;
-      v.mount = function (scope) { var r = mount0.apply(this, arguments); watch(scope || document); return r; };
-      // illus.js 紧接着把旧名 illusAdd 指向原函数；等它跑完再换回包过的
-      setTimeout(function () { window.illusAdd = v.add; }, 0);
-      try { Promise.resolve().then(function () { window.illusAdd = v.add; }); } catch (e) {}
-    },
-  });
+  /* ---------------- 接入 kit/illus.js 的换画法钩子 ---------------- */
+  // kit/illus.js 加载时调用它：并入本皮肤的绘制函数（reset 清零换装计数，kit.add 每张图前后会调）；
+  // 插画挂进页面后排队彩铅化。外层 <svg> 用 kit 的默认包法（.vl-illus-svg > g.vl-il-rough + g.vl-il-text）。
+  window.VL_SKIN.illus = function () {
+    return { kit: FB, afterMount: function (el) { watch(el); } };
+  };
 
   /* ---------------- 彩铅化（Rough.js） ---------------- */
   var roughReady = false, queue = [];
@@ -273,7 +265,7 @@
       var size = Math.max(bb.width, bb.height), area = bb.width * bb.height;
       if (size < 9) return;
       var k = size < 30 ? 0.5 : size < 70 ? 0.85 : 1.15, pen = lum(stroke) < 0.35 ? GRAPHITE : stroke;
-      var o = { stroke: pen, strokeWidth: Math.max(0.8, sw * 0.62), roughness: k, bowing: k * 0.9, seed: seed++, preserveVertices: size < 30 };
+      var o = { stroke: pen, strokeWidth: Math.max(0.8, sw * 0.62), roughness: k, bowing: k * 0.9, seed: seed++, preserveVertices: size < 30, disableMultiStroke: el.hasAttribute("data-one") };
       var draw = function (opt) {
         if (t === "rect") return rc.rectangle(A("x"), A("y"), A("width"), A("height"), opt);
         if (t === "circle") return rc.circle(A("cx"), A("cy"), 2 * A("r"), opt);

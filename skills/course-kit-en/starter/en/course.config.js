@@ -41,10 +41,9 @@
     sound: false,          // read by modules/sound.js: false = no sound at all; true or missing = speaker toggle in the top bar, muted until the reader turns it on
     related: true,         // read by modules/vl-concepts.js: "Related chapters" at the end (needs js/concepts.js); false = none
     relatedFuture: false,   // read by modules/vl-concepts.js: whether related chapters list later chapters; false = earlier ones only
-    // Not read by any code yet (field names follow kit/README.md, section 8); this just records the decision
-    reward: false,         // reading rewards: only for real understanding (Try it done, quiz all correct); look comes from the skin
-    buddy: false,          // companion character: speaks only when tapped, lines follow the current section, can be turned off
-    graph: false,          // concept map map.html (modules/graph.js)
+    collect: false,        // read by modules/collect.js: reading rewards (stamp album etc.); false = none. Note: ON by default if this line is missing
+    companion: false,      // read by modules/companion.js: companion character; missing or false = none; to add one give a config object (kit/README.md, section 8)
+    graph: false,          // not read by code, just records the decision: build map.html (modules/graph.js) or not
   };
 
   window.VL_COURSE = {
@@ -69,6 +68,6 @@
 
   // Part colour remap (only when PARTS has a color): point part i's colour variables at set `color`
   const remap = PARTS.map((p, i) => (p.color && p.color !== i + 1 ?
-    'body[data-part="' + (i + 1) + '"],[data-part="' + (i + 1) + '"]{--pa:var(--p' + p.color + "a);--pb:var(--p" + p.color + "b);--pp:var(--p" + p.color + "p);--pl:var(--p" + p.color + "l)}" : "")).join("");
+    'body[data-part="' + (i + 1) + '"],[data-part="' + (i + 1) + '"]{' + ["a", "b", "p", "l", "d", "s"].map(k => "--p" + k + ":var(--p" + p.color + k + ")").join(";") + "}" : "")).join("");
   if (remap) { const s = document.createElement("style"); s.textContent = remap; document.head.appendChild(s); }
 })();

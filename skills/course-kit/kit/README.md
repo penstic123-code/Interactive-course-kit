@@ -35,7 +35,7 @@
 <script src="js/illus-ch02.js"></script>
 <script>/* 本章互动 */</script>
 ```
-开新课：用 `starter/new-course.mjs <课程文件夹绝对路径> notebook [--lang en]` 生成（会把 `kit/` 复制成 `课程/kit/`、皮肤复制成 `课程/skin/`），见 `starter/README.md`。演示页（引用路径按 skill 目录写）：`demo.html` 基础组件、`demo-interact.html` 互动组件、`demo-diagrams.html` 12 种图解、`demo-en.html` 英文页、`modules/demo-modules.html` 可选模块。
+开新课：用 `starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en]` 生成（皮肤名必填：notebook / paper / pixel / fieldbook）（会把 `kit/` 复制成 `课程/kit/`、皮肤复制成 `课程/skin/`），见 `starter/README.md`。演示页（引用路径按 skill 目录写）：`demo.html` 基础组件、`demo-interact.html` 互动组件、`demo-diagrams.html` 12 种图解、`demo-en.html` 英文页、`modules/demo-modules.html` 可选模块。
 
 ## 二、配置
 
@@ -88,6 +88,7 @@ VL.illus.svg(name)   VL.illus.mount(根节点)   VL.illus.lib
 `k`（= `VL.illus.kit`）：`person(x,y,o)`、`hands(x,y,o)`（两手坐标）、`holding(x,y,o,物件)`（物件画在两手之间）、`feetY(x,y,o)`、`ground(y=126)`、`T(x,y,字号,文字,anchor)`、`eye`、`bubble(x,y,w,h,[尾尖x,尾尖y])`、`arrow(x1,y1,x2,y2)`、`item(种类,x,y)`（book box cup phone die star coin）、`C`（配色）、`reset()`。
 `person` 参数：`s` 比例；`arms` stand none up cover point hold wave chin throw club desk；`legs` stand run walk sit wide none；`face` smile grin sad flat shout o wide closed；`look` −1/0/1；`flip`；`hat` cap beanie tophat crown wizard；`hair` `glasses` `beard` `tie` `cape` `shirt`；`outfit:false`；`chair:false`；`floor`。
 内置规则：坐姿自动配椅子；朝左（look<0）手臂腿自动镜像；同一张图第 k 个人依次换 无 → 鸭舌帽 → 长发 → 毛线帽 → 礼帽。旧写法 `illusAdd / illusSvg / illusKit` 仍可用。
+上面是 kit 默认（notebook）的画法。画法不同的皮肤在 `skin.js` 里写钩子 `window.VL_SKIN.illus = base => ({ kit, svg, afterMount })`，换掉或补充 `k` 里的函数，接口不变（见 `illus.js`"皮肤换画法的钩子"注释、`references/skin-contract.md` 第三节）；所以各皮肤人物的脚底不一定同高，站姿的 y 用 `k.feetY(x, y, o)` 核对或按 `y = 地面y − k.feetY(x, 0, o)` 推，别写死。
 
 ### 编号图
 `<figure class="vl-fig" id="fig-x">图<figcaption>图注</figcaption></figure>`：按出现顺序在图注前写"图 N"（不要手写）。正文里 `<a data-figref="fig-x" href="#fig-x">图</a>` 自动改成"图 N"。动态加图后调 `VL.figs()`。照片用 `.vl-fig.photo`。宽表 / 宽图包 `.vl-scroll`。
@@ -105,7 +106,7 @@ VL.diagram.compare(target, { a:{name, eg, mark:"✓"}, b:{…}, rows:[{k:"比较
 - 声明式：`<figure class="vl-fig" data-diagram="cycle"><script type="application/json">{…}</script><figcaption>…</figcaption></figure>`。
 - 节点可 Tab 聚焦，Enter / 空格选中，方向键在节点间移动；`select:false` 时整张图 `role=img`。`label` 不给就自动生成 aria-label。
 - viewBox 宽 = 显示宽度，字号即屏幕字号（名字 19/17px，例子 15/14px）；先排字量包围盒再画框（内边距 ≥9px）；字体加载完、宽度变化 >24px 自动重画。
-- 皮肤可用的类：`.vl-dg-box`（框，可加滤镜）、`.vl-dg-ln`（线，可加滤镜）、`.vl-dg-lead`（引线）、`.vl-dg-spin`、`.vl-dg-mid`、`.vl-dg-axis`、`.vl-dg-ah`（箭头）、`.vl-dg-ring`、`.vl-dg-cell`、`.vl-dg-cellbox`、`.vl-dg-hbox`、`.vl-dg-ghost`、`.vl-dg-dot`、`.vl-dg-pt`、`.vl-dg-hit`（透明点击区）、文字 `.vl-dg-t1` 名字 / `.vl-dg-t2` 例子 / `.vl-dg-t3` 小字、`.vl-dg-k`、`.vl-dg-axname`、`.vl-dg-num`；状态 `.is-on`、外层 `.vl-dg.has-on`（其余变淡）；`[data-c="1…6"]`。
+- 皮肤可用的类名、状态类见第九节"皮肤可用的类"。
 
 ### 例子轮播
 ```html
@@ -129,7 +130,7 @@ VL.diagram.compare(target, { a:{name, eg, mark:"✓"}, b:{…}, rows:[{k:"比较
   <div class="vl-cc-fig"><span data-illus="…"></span></div>   <!-- 或小 SVG，或"看图 3" -->
 </aside>
 ```
-自动补：顶边"概念卡"小签（`data-tag` 可改）、"通俗地说""例子"小签、`aria-label`。宽屏图位在右（≤240px），窄屏在名称下面。**缺 `.vl-cc-fig` 时显示红色"缺概念图"占位并 console.warn**。
+自动补：顶边"概念卡"小签（`data-tag` 可改）、"通俗地说""例子"小签、`aria-label`。宽屏图位在右（≤240px）；窄屏（≤700px）按源码顺序排，图位写在最后就在卡底。**缺 `.vl-cc-fig` 时显示红色"缺概念图"占位并 console.warn**。
 
 ### 原理框
 ```html
@@ -142,7 +143,7 @@ VL.diagram.compare(target, { a:{name, eg, mark:"✓"}, b:{…}, rows:[{k:"比较
 <details class="vl-story"><summary><b>具体问题式钩子标题</b><small>一句介绍：里面有什么</small></summary>…</details>
 <details class="vl-side" data-kind="history|math|play|debate|source|extra|more"><summary><b>…</b><small>…</small></summary>…</details>
 ```
-自动加类型签（发明故事 / 历史 / 数学 / 多玩一会儿 / 争议 / 原始文献 / 加练 / 延伸，`data-tag` 可改）和"展开 ▾ / 收起 ▴"按钮；内容收进 `.vl-side-body`。**默认收起**，记住读者的展开状态（键 `<id>-side-<文件名>-<id 或序号>`）。里面可放演化链 `ol.vl-chain > li`（箭头用 `li.vl-chain-ar`）和时间线 `.vl-timeline > .vl-ev`（`.hasimg` 带图，年份 `b.vl-yr`）。
+自动加类型签（发明故事 / 历史 / 数学 / 多玩一会儿 / 争议 / 原始文献 / 加练 / 延伸，`data-tag` 可改）和"展开 ▾ / 收起 ▴"按钮；内容收进 `.vl-side-body`。**默认收起**，记住读者的展开状态（键 `<id>-side-<文件名>-<id 或序号>`）。里面可放演化链 `ol.vl-chain > li`（箭头用 `li.vl-chain-ar`；≤600px 自动竖排、箭头朝下）和时间线 `.vl-timeline > .vl-ev`（`.hasimg` 带图，年份 `b.vl-yr`）。
 
 ### 试试看
 ```html
@@ -169,7 +170,7 @@ VL.tryDone("t1", 可选反馈)   // 达成条件写在页面 JS 里；返回 tru
 ```js
 VL.quiz("#c2-quiz", [{ q, opts:[…], a:正确下标, why:"解析", fixed:false, img:"可选 HTML" }], { mode:"pick"|"drag", progress:true, badge:"可选文字" })
 ```
-一次一题横向翻（◀ 圆点 ▶、←→）；圆点三态 `.tried`（答错过）/ `.ok`（答对）/ `.on`（当前）。选项按章号 + 题号种子打乱（`fixed:true` 不打乱）。错项划掉禁用并轻抖，对项显示解析。`mode:"drag"`：把答案卡拖进答题位，或点卡片再在答题位上按回车 / 点击。全部答对：显示徽章、`VL.Progress.done(章号)`（`progress:false` 不记）、派发 `document` 事件 `vl:quiz-perfect {ch, firstTry, n}`；每答对一题派发冒泡事件 `vl:answer {i, firstTry}`。返回 `{go(i), el}`。
+一次一题横向翻（◀ 圆点 ▶、←→）；圆点三态 `.tried`（答错过）/ `.ok`（答对）/ `.on`（当前）。选项按章号 + 题号种子打乱（`fixed:true` 不打乱），打乱后正确项一定换了位置。错项划掉禁用并轻抖，对项显示解析。`mode:"drag"`：把答案卡拖进答题位，或点卡片再在答题位上按回车 / 点击。全部答对：显示徽章、`VL.Progress.done(章号)`（`progress:false` 不记）、派发 `document` 事件 `vl:quiz-perfect {ch, firstTry, n}`；每答对一题派发冒泡事件 `vl:answer {i, firstTry}`。返回 `{go(i), el}`。
 
 ### 笔记框
 `<textarea class="vl-note" data-save="reflect" placeholder="具体的开头……"></textarea>`：输入即存，键 `<id>-note-<文件名>-<data-save 或序号>`（中英文页同名文件共用，改章号不冲突）；停手 0.5 秒显示"已保存"。
@@ -200,7 +201,7 @@ VL.quiz("#c2-quiz", [{ q, opts:[…], a:正确下标, why:"解析", fixed:false,
 - `html.vl-fx-off` 和 `prefers-reduced-motion` 下一切 animation / transition 关掉；组件里的过程动画都保证"关掉也是最终状态"。皮肤的氛围动效自己判断 `vl-fx-lite`。
 
 ## 六、配色（读者可切换）
-**暗色暂缓**：切换功能在，但暗色和护眼还没完整验收，开课和截图验收按亮色。
+**暗色暂缓**：切换功能在，暗色只给了变量、未完整验收；亮色和护眼可用。截图验收时网址加 `?scheme=dark|sepia` 临时切换（`vl-head.js` 读，不存档）。
 三套 `html[data-scheme="light|dark|sepia"]`，由皮肤用变量实现。暗色和护眼下，`.vl-fig`、`.vl-cc-fig`、单独的 `.vl-illus` 保持浅色图板（`--plate`，字 `--plate-ink`），里面的颜色不变。页面专属的 SVG / canvas 若写死了深色字，放进 `.vl-fig` 里就安全。
 
 ## 七、互动组件（vl-interact.js / vl-interact.css）
@@ -213,7 +214,7 @@ VL.quiz("#c2-quiz", [{ q, opts:[…], a:正确下标, why:"解析", fixed:false,
 <link rel="stylesheet" href="kit/vl.css">
 <link rel="stylesheet" href="skin/skin.css">
 <link rel="stylesheet" href="kit/vl-interact.css">      <!-- 结构 -->
-<link rel="stylesheet" href="skin/interact.css">        <!-- 皮肤外观（notebook 已有） -->
+<link rel="stylesheet" href="skin/interact.css">        <!-- 皮肤外观（四套皮肤都有） -->
 …
 <script src="kit/vl.js"></script>
 <script src="kit/illus.js"></script>
@@ -375,7 +376,7 @@ const g = VL.game("#c5-game", {          // 宿主里原有的内容（画布、
   <p class="vl-doc-sign">落款</p>
 </div>
 ```
-notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线；日记 = 横线纸 + 页边红线；信 = 信纸 + 手写落款；实验笔记 = 方格纸 + 装订边。
+notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线；日记 = 横线纸 + 页边红线；信 = 信纸 + 手写落款；实验笔记 = 方格纸 + 装订边。四套皮肤都画了这五种；fieldbook 另有 `ticket`（票根）、`clipping`（剪报）、`copy`（影印件）。
 
 ### K5 立场卡 `.vl-philo` + 投票 `.vl-vote`
 
@@ -415,7 +416,7 @@ notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线�
 | 文件 | 放哪 | 做什么 |
 |---|---|---|
 | `modules/modules.css` | `<head>`，vl.css 之后 | 模块的结构样式 |
-| `skins/<名>/modules.css` | skin.css 之后 | 模块外观（笔记本 = 集邮册 + 盖章） |
+| `skins/<名>/modules.css` | skin.css 之后 | 模块外观（如笔记本 = 集邮册 + 盖章；四套皮肤都有） |
 | `js/concepts.js`（课程写） | `js/course.js` 之后、**vl.js 之前** | `window.VL_CONCEPTS` |
 | `modules/vl-concepts.js` | concepts.js 之后、**vl.js 之前** | `VL.concepts`；先填好 `.vl-cc[data-concept]`，vl.js 再加小签；自动生成相关章节 |
 | `modules/sound.js` | vl.js、插图包之后 | `VL.sound`，顶栏喇叭 |
@@ -512,7 +513,7 @@ window.VL_COURSE = { …,
 ### 8.8 声音（sound.js）
 
 - 默认静音；顶栏喇叭 `.vl-tb-sound[aria-pressed]`，存档 `<id>-sound`；打开时才建 AudioContext。
-- 音：`click flip pop ok wrong coin clear stamp`，`VL.sound.play(名)`；音色由皮肤 CSS 变量 `--vl-snd`：`paper`（纸和铅笔，笔记本）、`sine`、`square`（像素）、`triangle`。
+- 音：`click flip pop ok wrong coin clear stamp`，`VL.sound.play(名)`；音色由皮肤 CSS 变量 `--vl-snd`：`paper`（纸和铅笔：notebook、paper、fieldbook）、`sine`（默认）、`square`（像素）、`triangle`，只认这四个。
 - 自动挂钩：`vl:try`、`vl:answer` → ok；答错的测验选项、`vl:guess` 猜错 → wrong；`vl:quiz-perfect` → clear；集邮册收卡 coin、盖章 stamp。不跟滚动响。
 
 ### 8.9 build-concepts.mjs
@@ -531,7 +532,7 @@ node kit/modules/build-concepts.mjs <课程文件夹绝对路径> [--write] [--c
 ```html
 <link rel="stylesheet" href="kit/vl.css">
 <link rel="stylesheet" href="skin/skin.css">
-<link rel="stylesheet" href="skin/diagrams.css">   <!-- 新七种图解的皮肤外观（notebook 已有） -->
+<link rel="stylesheet" href="skin/diagrams.css">   <!-- 新七种图解的皮肤外观（四套皮肤都有；starter 模板已自动引入） -->
 …
 <script src="kit/vl.js"></script>
 <script src="kit/diagrams.js"></script>            <!-- 放在 vl.js 之后 -->

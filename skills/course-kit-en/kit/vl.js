@@ -613,7 +613,7 @@
       const live = el("p", { class: "vl-sr", role: "status", "aria-live": "polite" });
       // 选项按章号 + 题号做种子打乱（作者常把正确答案放在同一个位置）；每次打开顺序相同
       const order = it.opts.map((_, i) => i);
-      if (!it.fixed) { const r = rng(cur * 7919 + qi * 104729 + qn * 31 + 17); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } }
+      if (!it.fixed) { const r = rng(cur * 7919 + qi * 104729 + qn * 31 + 17); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } if (order.length > 1 && order[it.a] === it.a) { const k = (it.a + 1) % order.length; [order[it.a], order[k]] = [order[k], order[it.a]]; } } // 打乱后正确项若还在原位，再挪一格
       let tried = false, solved = false, picked = null;
       const slot = mode === "drag" ? el("div", { class: "vl-qslot", tabindex: "0", role: "button", "aria-label": t("q.slot", "把答案拖到这里") }, '<span class="vl-qph">' + esc(t("q.slot", "把答案拖到这里")) + "</span>") : null;
       const tray = el("div", { class: mode === "drag" ? "vl-qtray" : "vl-qopts" });

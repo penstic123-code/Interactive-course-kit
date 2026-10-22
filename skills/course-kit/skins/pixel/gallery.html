@@ -212,7 +212,7 @@
 <script>
 /* 插画样张：站、坐、拿东西、指东西、说话，人物自动换装 */
 VL.illus.add("gl-hero", "一个人坐在椅子上捧着一本书", k => k.ground() + k.person(80, 62, { legs: "sit", arms: "hold", face: "smile", look: 1 }) + k.holding(80, 62, { look: 1 }, "book"));
-VL.illus.add("gl-scene", "两个人站着，左边的人指着右边的人手里的手机，右边的人在说话", k => k.ground() + k.person(52, 63, { arms: "point", face: "grin" }) + k.person(140, 63, { arms: "hold", face: "o", look: -1 }) + k.holding(140, 63, { look: -1 }, "phone") + k.bubble(150, 6, 46, 30, [146, 44]), k => k.T(173, 26, 13, "咦？", "middle"));
+VL.illus.add("gl-scene", "两个人站着，左边的人指着右边的人手里的手机，右边的人在说话，气泡在他右侧，尾巴朝左指向他", k => k.ground() + k.person(52, 63, { arms: "point", face: "grin" }) + k.person(140, 63, { arms: "hold", face: "o", look: -1 }) + k.holding(140, 63, { look: -1 }, "phone") + k.bubble(160, 30, 36, 28, [155, 54]), k => k.T(178, 50, 13, "咦？", "middle"));
 VL.illus.add("gl-portrait", "一个戴眼镜的人站着挥手", k => k.ground() + k.person(100, 63, { arms: "wave", glasses: true, face: "smile" }));
 VL.illus.add("gl-cc", "四段箭头首尾相连围成一个圈，中间一颗星", k => '<circle cx="100" cy="70" r="46" fill="none" stroke-dasharray="14 8" stroke-width="5"/>' + k.arrow(138, 40, 146, 56) + k.item("star", 100, 70));
 VL.illus.add("gl-eg1", "一个人站着，手里拿着一枚金币", k => k.ground() + k.person(90, 63, { arms: "hold", face: "grin", look: 1 }) + k.holding(90, 63, { look: 1 }, "coin"));

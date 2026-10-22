@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive Course Kit 演示</title>
+<style>
+:root{--ink:#2b2b3a;--ink2:#4a4a5c;--paper:#fdf8ec;--line:#e8dcc0;--accent:#f4a259;--card:#fffdf6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.8 "LXGW WenKai","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:40px 16px 64px}
+h1{font-size:34px;line-height:1.3;margin:0 0 8px}
+h1 span{background:linear-gradient(transparent 60%,#ffd97a 60%)}
+.sub{color:var(--ink2);margin:0 0 6px}
+.links{margin:0 0 32px;color:var(--ink2);font-size:15px}
+.links a{color:var(--ink)}
+h2{font-size:22px;margin:40px 0 6px}
+h2+p{color:var(--ink2);margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+a.card{display:block;background:var(--card);border:2px solid var(--ink);border-radius:10px 14px 10px 12px;padding:14px 16px;color:var(--ink);text-decoration:none;box-shadow:3px 3px 0 var(--ink);transition:transform .15s}
+a.card:hover,a.card:focus-visible{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink);outline:none}
+.card b{display:block;font-size:18px}
+.card small{display:block;color:var(--ink2);font-size:14px;line-height:1.6;margin-top:4px}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1.5px solid var(--ink)}
+footer{margin-top:48px;color:var(--ink2);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><span>Interactive Course Kit</span> 在线演示</h1>
+<p class="sub">用 Claude Code 做互动学习网页课程的工具箱。下面的页面都是 skill 里自带的文件，点开就能看，不用安装。</p>
+<p class="links"><a href="https://github.com/penstic123-code/Interactive-course-kit">GitHub 仓库</a> · <a href="https://github.com/penstic123-code/Interactive-course-kit/blob/main/README.en.md">English README</a></p>
+
+<h2>四套皮肤</h2>
+<p>每页把全部组件摆在一起。同一套组件，换一套皮肤就换一种样子。</p>
+<div class="grid">
+<a class="card" href="skills/course-kit/skins/notebook/gallery.html"><b><i class="dot" style="background:#ffd97a"></i>手绘笔记本</b><small>横线纸、墨线火柴人、色块。设计、思维、文科。</small></a>
+<a class="card" href="skills/course-kit/skins/paper/gallery.html"><b><i class="dot" style="background:#8fd0f0"></i>纸片</b><small>卡纸剪纸、白裁边、柔和投影。有故事、有角色的课。</small></a>
+<a class="card" href="skills/course-kit/skins/pixel/gallery.html"><b><i class="dot" style="background:#8bac0f"></i>掌机像素</b><small>四阶绿液晶屏、像素插画。计算、编程、游戏化。</small></a>
+<a class="card" href="skills/course-kit/skins/fieldbook/gallery.html"><b><i class="dot" style="background:#d9b38c"></i>田野手账</b><small>方格活页纸、彩铅、胶带贴的照片。人文、社科、历史。</small></a>
+</div>
+
+<h2>样板章</h2>
+<p>用 kit 做的真实内容章节，每套新皮肤一章。</p>
+<div class="grid" id="examples">
+<a class="card" href="skills/course-kit/examples/paper-survivorship/ch01-survivorship.html"><b>纸片 · 幸存者偏差</b><small>为什么"成功者的经验"会骗人。</small></a>
+<a class="card" href="skills/course-kit/examples/pixel-binary-search/ch01-binary-search.html"><b>掌机像素 · 二分查找</b><small>猜 1 到 100 的数，为什么 7 次就够。</small></a>
+<a class="card" href="skills/course-kit/examples/fieldbook-gift/ch01-gift.html"><b>田野手账 · 礼物与回礼</b><small>为什么收了礼就觉得欠了人情。</small></a>
+</div>
+
+<h2>组件演示</h2>
+<p>手绘笔记本皮肤下的组件库演示。</p>
+<div class="grid">
+<a class="card" href="skills/course-kit/kit/demo-diagrams.html"><b>12 种概念图解</b><small>循环、嵌套圈、流程、象限、时间轴、树、维恩……点图里任一块会高亮。</small></a>
+<a class="card" href="skills/course-kit/kit/demo-interact.html"><b>互动组件</b><small>漫画分镜、逐步演示、公式拆解、动手分类、分局小游戏、翻牌、热区图。</small></a>
+<a class="card" href="skills/course-kit/kit/modules/demo-ch01.html"><b>可选模块</b><small>概念卡、集邮册、关系图、术语表、闪卡如何连在一起。</small></a>
+<a class="card" href="skills/course-kit/kit/modules/map.html"><b>概念关系图</b><small>点一个概念，相连的留下，其余变淡。</small></a>
+<a class="card" href="skills/course-kit/kit/demo-en.html"><b>English page</b><small>同一套组件的英文页面。</small></a>
+</div>
+
+<h2>用这套工具做的完整课程</h2>
+<p>工具箱的规矩就是从这几门课里总结出来的。</p>
+<div class="grid">
+<a class="card" href="https://111.231.53.50/game-design-course/"><b>游戏设计</b><small>手绘笔记本</small></a>
+<a class="card" href="https://111.231.53.50/ai-course-pro/"><b>AI 入门</b><small>每篇一种复古媒介</small></a>
+<a class="card" href="https://111.231.53.50/data-science/"><b>数据科学</b><small>纸片爬塔</small></a>
+<a class="card" href="https://111.231.53.50/anthropology-course/"><b>人类学</b><small>田野手账</small></a>
+</div>
+
+<footer>MIT License · 字体与第三方库的许可见各皮肤目录</footer>
+</div>
+</body>
+</html>

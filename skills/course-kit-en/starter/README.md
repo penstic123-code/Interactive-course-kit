@@ -8,6 +8,7 @@
 node <skill>/starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en] [--update-kit]
 ```
 
+- `<皮肤名>` 必填，没有默认值：notebook / paper / pixel / fieldbook，先问用户（`SKILL.md` 第六节）。不写或写错时脚本列出现有皮肤并退出。
 - 课程文件夹不存在就新建；**已有的文件一律不覆盖**（跳过并列出来）。
 - `--lang en`：英文课（只有英文页）。页面、配置、插画包、本课样式取 `starter/en/` 下的同名模板（`<html lang="en">`，占位和注释是英文，界面文字自动走 kit 的英文表），项目文档生成 `course-rules.md`（来自 `course-rules.template.md`），不生成 `项目规则与经验.md`。不写就是中文课。中英双语课不用这个参数，见第五节。
 - `--update-kit`：只把 `kit/` 和 `skin/` 换成 skill 里的最新版（升级用），其他文件照样不碰。
@@ -17,9 +18,9 @@ node <skill>/starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [-
 
 | 课程里的路径 | 来自 | 课程里改不改 |
 |---|---|---|
-| `kit/` | skill 的 `kit/`（不含 `demo.html`、`demo-en.html` 和 `demo/` 演示） | **不改**：升级时整个覆盖 |
+| `kit/` | skill 的 `kit/`（不含任何演示页：`demo*.html`、`modules/demo-*.html`、`modules/demo/`） | **不改**：升级时整个覆盖 |
 | `skin/` | skill 的 `skins/<皮肤名>/`（不含 `gallery.html`） | **不改**：本课的调整写进 `css/style.css` |
-| `css/style.css` | `starter/style.css` | 本课共享样式（content-rules.md 第五节的“共享样式”） |
+| `css/style.css` | `starter/style.css` | 本课自己的少量样式（皮肤之外的调整，content-rules.md 第五节） |
 | `js/course.js` | `starter/course.config.js` | 章节表、篇章、开放章、语言、学习路径、模块开关 |
 | `js/illus-ch01.js` | `starter/illus-ch01.js` | 第 1 章插画包；每章一个 `js/illus-chNN.js` |
 | `index.html` | `starter/index.html` | 目录页（按篇分组的章节卡片、进度、学习路径、语言切换在顶栏） |
@@ -30,13 +31,13 @@ node <skill>/starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [-
 
 `--lang en` 时：`css/style.css`、`js/course.js`、`js/illus-ch01.js`、`index.html`、`ch01-intro.html` 改取 `starter/en/` 下的同名文件（占位写在 `[Fill in: …]` 里；`css/style.css` 多一条隐藏语言按钮的规则，因为英文页的顶栏总会显示“中文”按钮，而纯英文课没有中文页）；`项目规则与经验.md` 换成 `course-rules.md`（来自 `starter/course-rules.template.md`）；`lib/README.md` 是英文的。
 
-和 content-rules.md 第五节的对应：`css/style.css`、`js/` 下的配置与插图包、`lib/`、`en/` 都照第五节放；第五节里的 `js/common.js`（共享脚本）现在由 `kit/vl.js` 等担任，不再每门课各写一份；皮肤从 `css/style.css` 里分出来，放在 `skin/`。
+目录结构和 content-rules.md 第五节一致。不复制任何演示页：起步只有 `index.html` 和 `ch01-intro.html` 两页。
 
-kit 里有互动组件 `vl-interact.js / .css`（皮肤带 `interact.css` 时也算）时，脚本把它们的 `<link>` / `<script>` 写进模板里 `<!--VL:EXTRA-CSS-->`、`<!--VL:EXTRA-JS-->` 的位置；`kit/modules/` 里的可选模块只在注释里列出来，因为各自的加载位置不同（如 `vl-concepts.js` 要在 `vl.js` 之前），选了哪个按 `kit/README.md 第八节` 手动加。
+脚本把互动组件 `kit/vl-interact.css`、皮肤的 `skin/interact.css` 和 `skin/diagrams.css`（概念图解的皮肤外观）的 `<link>`、`kit/vl-interact.js` 的 `<script>` 写进模板里 `<!--VL:EXTRA-CSS-->`、`<!--VL:EXTRA-JS-->` 的位置；`kit/modules/` 里的可选模块只在注释里列出来，因为各自的加载位置不同（如 `vl-concepts.js` 要在 `vl.js` 之前），选了哪个按 `kit/README.md 第八节` 手动加。
 
 ## 三、开课步骤
 
-1. 和用户定主题、读者、篇章（content-rules.md 第八节第 1 步），选皮肤（`references/skin-contract.md` 末尾一览）和可选模块。
+1. 先问美术风格（选皮肤），再问读者、篇幅、语言、模块，交课程方案给用户确认（`SKILL.md` 第六节）。
 2. 跑 `new-course.mjs`。
 3. 改 `js/course.js`：`id`、`title`、`CH`（章名 / 英文名 / 文件名 / 一句话）、`OPEN`、`PARTS`、`PATHS`、`MODULES`。
 4. 填 `项目规则与经验.md` 第一、四、五、六节。
@@ -56,7 +57,8 @@ kit 里有互动组件 `vl-interact.js / .css`（皮肤带 `interact.css` 时也
 1. 在 `js/course.js` 的 `CH` 里加一项，写好的章号加进 `OPEN`。
 2. 复制样板章为 `chNN-英文短横线.html`，改 `<body data-ch="N">`、`<title>`、`js/illus-chNN.js` 的引用，页内类名前缀改成 `cN-`。
 3. 新建 `js/illus-chNN.js`，插画名前缀 `cNN-`。
-4. 跑检查。调整顺序、改编号走 content-rules.md 第五节的重映射流程。
+4. 插画里站着的人：各皮肤脚底位置不一定相同，示例里的 y 是按 notebook 写的；换皮肤时用 `k.feetY(x, y, opts)` 核对是否落在 `ground()` 上（见 `references/skin-contract.md` 第三节），别照抄数字。
+5. 跑检查。调整顺序、改编号走 content-rules.md 第五节的重映射流程。
 
 ## 五、英文课与中英双语课
 

@@ -7,7 +7,7 @@ description: Visual and component toolkit for interactive learning web courses. 
 
 These rules come from four finished courses: a game design course (hand-drawn notebook), a data science course (paper-cutout tower climb), an AI course (a different retro medium for each "world") and an anthropology course (field notebook). The user approved each rule. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
 
-Who owns what: how content is taught (the five layers, acceptance numbers) lives in `references/content-rules.md` (copy it into your project as `CLAUDE.md` if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction and motion** live here.
+Who owns what: how content is taught (the five layers, acceptance numbers) lives in `references/content-rules.md` (copy it into your project if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction and motion** live here.
 
 Length limits: the Chinese original counts characters. This edition converts them at 1 English word = 1.5 characters, the same rate `tools/check.mjs` uses (e.g. 300 characters = 200 words).
 
@@ -61,7 +61,7 @@ Secondary concepts get only the naming mark, no card. For the one sentence in a 
 
 ## 2. Visual baseline
 
-- **Only approved skins** (`skins/`); don't let the AI improvise a style. When a course starts, ask the user which one (section 6); never pick one for them. A new skin gets one sample chapter for the user to approve before it joins the library.
+- **Only approved skins** (`skins/`); don't let the AI improvise a style. When a course starts, ask the user which one (section 6); never pick one for them. A new skin gets one sample chapter for the user to approve before it joins the library (process: `skin-contract.md` section 5).
 - **A quiet ground**: long text sits directly on the ground (paper, wall, page), never on a card floating over a flat colour. Only *things* get physical presence (pictures, interaction boards, concept cards, document props), with shadows cast in one direction.
 - **Heavy borders only for the stars**: signature interactions and concept diagrams get thick strokes; everything else gets thin lines or none. No emoji as icons, no gradient text, no glow shadows.
 - **One theme colour per chapter**; chapters in the same part vary slightly in main colour, texture and header decoration, while fonts and component shapes stay the same.
@@ -89,7 +89,7 @@ Four kinds by purpose, each with its own rules (details in `interaction.md`):
 | Reading reward | Fires once, only after the reader understood something; never interrupts reading |
 | Atmosphere | Only outside the body text, light by default, one click to turn off |
 
-Respect `prefers-reduced-motion` everywhere; the top bar has a three-way motion switch: Full / Light / Off.
+Respect `prefers-reduced-motion` everywhere; the top bar's "Display" pop-up offers Auto / Full / Light / Off (three levels plus automatic choice; details in `interaction.md` section 4).
 
 ## 5. Optional modules (decide one by one when starting a course; record the choices in the project doc)
 
@@ -109,7 +109,7 @@ Respect `prefers-reduced-motion` everywhere; the top bar has a three-way motion 
 | `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses |
 | `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, fieldwork and history |
 
-If the user wants a style that isn't listed, explain that only approved skins are used; a new skin starts with one sample chapter for the user to approve (`skin-contract.md` section 5).
+If the user wants a style that isn't listed, explain that only approved skins are used; a new skin starts with one sample chapter for the user to approve (`skin-contract.md` section 5). Three sample chapters built with real content live in `../course-kit/examples/` (shipped with the Chinese edition: `paper-survivorship`, `pixel-binary-search`, `fieldbook-gift`); show them to the user or use them as the model for a sample.
 
 **The second thing to ask is the course plan.** Right after the skin, use the question tool to ask four questions at once (multiple choice, one click each):
 
@@ -130,7 +130,7 @@ Then:
 1. Write content per `references/content-rules.md`; record readers, length, language and modules in the project doc.
 2. Generate the skeleton with `starter/new-course.mjs <absolute course folder path> <skin name>` (kit, skin, config, contents page, chapter 1 template, project doc template); edit the chapter table and module switches in `js/course.js`.
 3. Make one sample chapter for the user to approve the writing, layout and pacing, then roll out.
-4. Run the checks (section 7) before delivering each chapter; never rely on the report alone.
+4. Run the checks (section 7) before delivering each chapter; never rely on the report alone. After delivery, send a reader review (`content-rules.md` section 8, step 5).
 
 ## 7. Checks (catching errors you can't see while writing)
 
@@ -146,14 +146,15 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 |---|---|---|
 | 1 Syntax | `node --check` on every .js; trial-compiles every inline script | Whole-page script not running |
 | 2 Wiring | Every `vl-` class the JS looks for actually exists in the page or scripts; every class the page uses has a style | Renames not synced, dead buttons, styles not applying |
-| 3 Picture density | More than about 300 characters between two visuals (boxes count; English converted by word count) | Long text with no pictures |
+| 2b Highlighting | Each concept card's name has a matching naming mark `.vl-cn` in the prose and appears in its section heading | One of the "three matching places" missing |
+| 3 Picture density | More than about 300 characters between two visuals (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
 | 4 Links | Local href / src exist | Wrong image or script paths |
 | 5 Run | `qa.mjs`: clicks every button and drags every slider at 420 and 1100 widths | JS errors, horizontal overflow, text in figures touching lines, overflowing or overlapping |
-| 6 Screenshots | Full-page shots of every page at 420 and 1100 | Prints paths; **you must open them with Read and look** |
+| 6 Screenshots | Full-page shots of every page at 420 and 1100, saved in `%TEMP%/course-check-shots/<course folder name>/` | Prints paths; **you must open them with Read and look** |
 
-`--fast` runs steps 1–4 only (seconds, no browser), good while writing; run the full version before delivery.
+`--fast` runs steps 1–4 only (seconds, no browser), good while writing; run the full version before delivery. Steps 5–6 need Edge or Chrome, which `tools/browser.mjs` finds on its own; if it can't, put the browser's path in the `EDGE_PATH` environment variable.
 
-**Must be checked by eye** (look at each screenshot): text in diagrams touching lines; illustrated people following the rules (feet on the ground, hands holding objects, nothing floating; `tools/illus-overlap.mjs` helps); colour contrast; whether each section's pacing follows section 1. Capture a single figure with `tools/shot.mjs <html> <png> "selector@index" 1100` and zoom in.
+**Must be checked by eye** (look at each screenshot): text in diagrams touching lines; illustrated people following the rules (feet on the ground, hands holding objects, nothing floating; `tools/illus-overlap.mjs` helps); colour contrast; whether each section's pacing follows section 1. Capture a single figure with `tools/shot.mjs <html> <png> "selector@index" 1100` and zoom in; add `?scheme=sepia` (or `dark`) after the html path for other schemes; full pages taller than 16000px are cut at 16000px with a warning, so capture the rest section by section with a selector.
 
 **The delivery report must state**: which steps ran, the results (paste the ✗ lines), which screenshots were viewed, and what was not tested. "Syntax passes" is not "tested".
 
@@ -163,4 +164,4 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 
 Turn each piece of user feedback on visuals, components or interaction into a rule and improve the existing entry in the relevant file; add a new skin to `skins/` once it is approved.
 
-**Two editions**: the Chinese skill at `../course-kit/` is the source of truth for the shared code (kit, skins, tools, starter). Change code there, then run `node tools/sync-en.mjs` from the Chinese skill to copy it here. When a rule changes (SKILL.md, references/), make the matching change in both editions.
+**Two editions**: the Chinese skill at `../course-kit/` is the source of truth for the shared code (kit, skins, tools, starter). Change code there, then run `node tools/sync-en.mjs` from the Chinese skill to copy it here (`examples/` is not synced). When a rule changes (SKILL.md, references/), make the matching change in both editions. kit/README.md has its own English translation and is not synced; update it by hand when the Chinese one changes.

@@ -18,7 +18,7 @@ Course shorthand (the source courses of these rules; the "good / bad" examples b
 | 3 | No emoji as icons; icons are small pictures from the illustration library | Bad: GD `.card.mini .ico` is full of emoji; AI removed them course-wide |
 | 4 | Motion is filed under four kinds (aids understanding / feedback / reading reward / atmosphere), details in `interaction.md`; a component plays only feedback motion itself, and for rewards it only dispatches events | Good: DS `DS.tryDone()` only ticks and saves; the confetti comes from a separate module listening for it |
 
-The "Skins" line always lists four: notebook | paper | pixel | town. W5–W8 exist only as drafts and are not listed.
+The "Skins" line describes how the source courses looked when these rules were extracted: notebook | paper | pixel | town (town = AI W4, not in the library, for reference only; W5–W8 exist only as drafts and are not listed). For the field notebook skin see `skins/fieldbook/README.md`; what each skin actually draws is defined by `skins/<name>/gallery.html`.
 
 ## 1. Overview
 
@@ -39,7 +39,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ## 2. Navigation
 
 ### N1 Top bar
-- **Job**: back to contents, course progress, jump to any chapter, preferences (colours Light / Dark / Easy on the eyes — dark and easy-on-the-eyes are not fully approved yet, so start courses and check screenshots in Light; motion Auto / Full / Light / Off; language). Sound switch and reward panel are added to the top bar by optional modules; see `kit/README.md`.
+- **Job**: back to contents, course progress, jump to any chapter, preferences (colours Light / Dark / Easy on the eyes — dark has variables only and is not fully approved, see `skin-contract.md` section 1; motion Auto / Full / Light / Off; language). Sound switch and reward panel are added to the top bar by optional modules; see `kit/README.md`.
 - **Use / don't**: on every page. vl.js builds it from the chapter table (`VL_COURSE` in `js/course.js`) and `<body data-ch>`; never hand-write chapters. vl.js also writes `data-part`. `VL_COURSE.topbar:false` turns it off.
 - **Content**: navigation and switches only, no body hints. Course progress is a pair: mini map + popover list. On phones the mini map may hide, but the popover must stay (bad: AI hides the chapter dots on phones, so you can't jump chapters).
 - **Interaction and keyboard**: all `button` / `a`; popover closes on Esc or outside click and returns focus to its button; cells in the mini map must not be both `tabindex=-1` and `aria-hidden` (bad: the DS tower strip).
@@ -115,7 +115,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
   | In plain words `.vl-cc-plain` | One plain sentence (the "In plain words" tag is added automatically) | 1 sentence |
   | Definition `.vl-cc-def` | One-sentence definition, bold in the skin | ≤40 words |
   | Example `.vl-cc-eg` | Point back to an example already told in the text; no new example, and don't retell it (the "Example" tag is added automatically) | ≤20 words |
-  | **Picture slot `.vl-cc-fig` (required)** | A small picture of the parts or mechanism (not a decorative corner icon), ≤240px; on the right on wide screens, under the name on narrow ones; if there is no dedicated picture, write "see Figure 3" with a thumbnail. If missing, vl.js shows a red "Concept picture missing" placeholder and calls console.warn | — |
+  | **Picture slot `.vl-cc-fig` (required)** | A small picture of the parts or mechanism (not a decorative corner icon), ≤240px; on the right on wide screens; on narrow screens (≤700px) it follows source order, and the template puts it last, so it sits at the bottom of the card; if there is no dedicated picture, write "see Figure 3" with a thumbnail. If missing, vl.js shows a red "Concept picture missing" placeholder and calls console.warn | — |
 
   Good: the "core loop" `cc-card` in GD `ch02-core-loop.html` has every field and uses `<aside aria-label>`. Bad: GD's 102 cards have no picture slot; AI's `.cn-prop` corner props are decoration, not explanatory pictures.
 - **Repetition rule**: the same example is not told three times in the opener, the concept card and the example card; the card has a one-line pointer only.
@@ -171,7 +171,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Use / don't**: the backbone of an invention story, state transitions; not for parallel content with no order or causation (use K2).
 - **Content**: 3–5 nodes; each node = small picture + ≤13 words. Show the first two nodes and let the reader guess the next (link to M1), then reveal.
   Good: the "problems on top, fixes below" evolution charts in AI `ch03-fitting-gradient-descent.html` and `ch06-reinforcement-learning.html`.
-- **Interaction**: optional one-at-a-time reveal ("And then?" button; not in the kit yet, currently a static chain).
+- **Interaction**: optional one-at-a-time reveal ("And then?" button; not in the kit yet, currently a static chain). Horizontal on wide screens; at ≤600px it stacks vertically with arrows pointing down.
 - **Motion**: aids understanding (nodes appear in turn; with motion off, all show at once).
 - **Skins**: notebook = handwritten arrows joining small boxes | paper = paper strips pinned together | pixel = level route | town = stops along a path.
 
@@ -246,7 +246,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ```html
 <!-- usage in kit/README.md section 7, K9; the look lives in the skin's interact.css -->
 <div class="vl-doc" data-kind="news"><h4>…</h4><p>…</p></div>
-<!-- data-kind: file | news | diary | letter | lab (notebook is an alias of lab); the notebook skin draws only these -->
+<!-- data-kind: file | news | diary | letter | lab (notebook is an alias of lab); all four skins draw these five; fieldbook adds ticket / clipping / copy (see its README) -->
 ```
 
 ### K10 Invention story box
@@ -550,7 +550,7 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 
 ### P1 End-of-chapter quiz
 - **Job**: 4–6 questions that test the learning goals (number and types of questions in section 1A of `references/content-rules.md`). Multiple choice appears only here.
-- **Content**: each question `{q, opts, a, why, fixed, img}`, with an explanation; options are shuffled with a seed from chapter number + question number (`fixed:true` means no shuffle); check that the right answer isn't always the longest (the skill has no script for this; read every question once before delivery); questions may have a picture (`img`).
+- **Content**: each question `{q, opts, a, why, fixed, img}`, with an explanation; options are shuffled with a seed from chapter number + question number (`fixed:true` means no shuffle), and after shuffling the right answer is never in its original position; check that the right answer isn't always the longest (the skill has no script for this; read every question once before delivery); questions may have a picture (`img`).
 - **Interaction and keyboard**: one question at a time, turned sideways (◀ dots ▶ / ←→; dots have three states: `.tried` answered wrong before / `.ok` answered right / `.on` current); a wrong option is struck through, disabled and shaken lightly, the right one shows the explanation. Two ways to answer: click an option (`mode:"pick"`), or drag an answer card into the answer slot (`mode:"drag"`: select a card + press Enter on the slot to place it; good: the new GD `.qz-slot`). All correct: show the badge, `VL.Progress.done(chapter number)` records "understood" (`progress:false` skips it), dispatch `vl:quiz-perfect {ch, firstTry, n}`; each correct answer dispatches `vl:answer {i, firstTry}`.
 - **Motion**: feedback (≤300ms); the all-correct celebration is handled by the reward module.
 - **Skins**: notebook = handwritten options + completion badge | paper = paper buttons | pixel = STAGE CLEAR! | town = the house is finished.

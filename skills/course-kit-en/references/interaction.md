@@ -138,7 +138,7 @@ Acceptance: `node <skill>/tools/check.mjs <absolute course path> chNN` (step 5 c
   }
   ```
   The kit's `vl.css` already includes this, plus `html.vl-fx-off *{animation:none!important;transition:none!important}`. JS-driven animation (rAF, Web Animations, particles) is not covered by these rules and must read the level itself: `if (!VL.motion()) { draw the final state; return; }` (`VL.fx()` returns full / lite / off).
-- Screenshots and tests: headless browsers default to off; add `?fx=1` to the URL so headless runs pick the normal level (already in the kit); `?freeze=seconds` stops at a given frame (the DS approach; not in the kit yet).
+- Screenshots and tests: headless browsers default to off; add `?fx=1` to the URL so headless runs pick the normal level (already in the kit); `?scheme=dark|sepia` switches the colour scheme temporarily without saving it (already in the kit); `?freeze=seconds` stops at a given frame (not in the kit yet; the paper and pixel skins support it).
 
 ### 4 What belongs to the skin
 

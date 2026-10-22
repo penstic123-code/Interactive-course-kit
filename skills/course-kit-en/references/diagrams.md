@@ -132,7 +132,7 @@ The kit way (template 2 as the example; every template works the same, declarati
 </script>
 ```
 
-In the generated structure, boxes `.vl-dg-box` and lines `.vl-dg-ln` may take the skin's filter (hand-drawn wobble); text `.vl-dg-t1` (name) / `.vl-dg-t2` (example) / `.vl-dg-t3` (small print) and leader lines `.vl-dg-lead` never do. Every class a skin can style is listed in `kit/README.md` under concept diagrams. Hand-drawn SVG (for anything the kit templates can't draw) follows the same layering: shapes in the filtered group, text outside it, clickable parts as `g[tabindex=0][role=button]`.
+In the generated structure, boxes `.vl-dg-box` and lines `.vl-dg-ln` may take the skin's filter (hand-drawn wobble); text `.vl-dg-t1` (name) / `.vl-dg-t2` (example) / `.vl-dg-t3` (small print) and leader lines `.vl-dg-lead` never do. Every class a skin can style is listed in `kit/README.md` section 9, "Classes available to skins". Hand-drawn SVG (for anything the kit templates can't draw) follows the same layering: shapes in the filtered group, text outside it, clickable parts as `g[tabindex=0][role=button]`.
 
 ## 5. When not to draw a diagram
 

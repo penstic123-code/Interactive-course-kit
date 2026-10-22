@@ -1,0 +1,199 @@
+/* course-kit · modules/modules.css —— 可选模块的结构样式（与皮肤无关）：布局、定位、显隐、减少动态、打印。
+   颜色、字体、描边、纹理在皮肤的 modules.css（如 skins/notebook/modules.css）。放在 vl.css 之后、皮肤之前。 */
+
+/* 模块里用了 display 的元素，[hidden] 仍然要藏起来 */
+:is(.vl-fc,.vl-mp-tools,.vl-gloss,.vl-glist,.vl-graph,.vl-minimap,.vl-col-dlg,.vl-col-inline,.vl-comp,.vl-mapinfo) [hidden],.vl-related[hidden],.vl-minimap[hidden]{display:none!important}
+
+/* ---------- 相关章节 ---------- */
+.vl-related{margin:28px 0 10px}
+.vl-related h3{margin:0 0 8px}
+.vl-rel-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.vl-rel-item{display:flex;flex-direction:column;gap:4px;padding:10px 12px}
+.vl-rel-item a,.vl-rel-off{display:flex;flex-direction:column;text-decoration:none;line-height:1.35}
+.vl-rel-n{font-size:.88rem}
+.vl-rel-name{font-size:1.1rem;font-weight:700}
+.vl-rel-why{font-size:.9rem;line-height:1.45}
+
+/* ---------- 关系图：HTML 节点 + 下层 SVG 连线 ---------- */
+.vl-graph{position:relative}
+.vl-gscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.vl-gstage{position:relative;min-width:100%}
+.vl-gedges{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.vl-ge-ln{fill:none;stroke-width:2.4;stroke-linecap:round}
+.vl-ge.t-explains .vl-ge-ln{stroke-dasharray:8 5}
+.vl-ge.t-contrast .vl-ge-ln{stroke-dasharray:2 6}
+.vl-ge{transition:opacity .2s}
+.vl-graph.has-on .vl-ge:not(.is-on){opacity:.12}
+.vl-graph.has-on .vl-ge.is-on .vl-ge-ln{stroke-width:3.4}
+.vl-gheads{position:absolute;left:0;top:0;right:0;height:30px;pointer-events:none}
+.vl-gh{position:absolute;top:4px;white-space:nowrap;font-size:.85rem;line-height:1.3}
+.vl-gnodes{position:absolute;inset:0}
+.vl-gn{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;min-height:36px;padding:3px 10px;font:inherit;font-size:.98rem;line-height:1.25;cursor:pointer;transition:opacity .2s,transform .15s}
+.vl-gn-ch{font-size:.75rem;min-width:1.5em;text-align:center;line-height:1.5;border-radius:10px;padding:0 4px}
+.vl-gn.is-off{cursor:default}
+.vl-graph.has-on .vl-gn:not(.is-on):not(.is-nb){opacity:.28}
+.vl-graph.has-q:not(.has-on) .vl-gn:not(.is-hit){opacity:.3}
+.vl-gn[hidden]{display:none}
+.vl-graph-mini .vl-gn{font-size:.92rem;min-height:34px}
+
+/* 本章概念小图 */
+.vl-minimap{margin:22px 0;padding:12px 14px}
+.vl-mm-cap{margin:0 0 6px;display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline}
+.vl-mm-cap small{font-size:.9rem}
+.vl-mm-info{margin-top:8px;padding-top:6px}
+.vl-mm-info p{margin:.2em 0}
+.vl-mm-more{margin:6px 0 0;font-size:.95rem}
+
+/* 关系图页面的工具条、信息栏、图例 */
+.vl-mp-tools{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:0 0 10px}
+.vl-mp-tools .vl-seg{display:inline-flex;gap:4px}
+.vl-mp-tools .vl-seg button{min-height:38px;padding:0 12px;cursor:pointer;font:inherit}
+.vl-mp-parts{display:flex;flex-wrap:wrap;gap:6px}
+.vl-mp-part{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 12px;cursor:pointer;font:inherit}
+.vl-mp-part[aria-pressed="false"]{text-decoration:line-through}
+.vl-sw{display:inline-block;width:14px;height:14px;border-radius:50%}
+.vl-mp-q{display:inline-flex;align-items:center;gap:6px}
+.vl-mp-q input{font:inherit;min-height:38px;padding:0 10px;width:min(260px,60vw)}
+.vl-mp-count{font-size:.9rem;min-width:4em}
+.vl-maplegend{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:.92rem;margin:8px 0}
+.vl-lg{display:inline-flex;align-items:center;gap:6px}
+.vl-lg svg{width:40px;height:12px;overflow:visible}
+.vl-lg-dot{display:inline-block;width:14px;height:14px;border-radius:50%}
+.vl-mapinfo{margin-top:16px}
+.vl-mapinfo .vl-cc{margin:0}
+.vl-gi-meta{margin-top:10px}
+.vl-gi-go{display:inline-block;margin:4px 0 6px;font-weight:700}
+.vl-gi-rel{margin:.35em 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.vl-gi-rel > b{margin-right:4px}
+.vl-gi-nb{display:inline-flex;gap:6px;align-items:baseline;min-height:36px;padding:2px 12px;cursor:pointer;font:inherit}
+.vl-gi-nb small{font-size:.78rem}
+
+/* 窄屏列表 */
+.vl-glist h3{margin:16px 0 4px}
+.vl-gl-ch{margin:10px 0 4px;font-size:1rem}
+.vl-gl-items{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.vl-gl-items li:has(> .vl-gl-info){flex-basis:100%}
+.vl-gl-btn{display:inline-flex;gap:8px;align-items:baseline;min-height:40px;padding:4px 12px;cursor:pointer;font:inherit;text-align:left}
+.vl-gl-btn small{font-size:.78rem}
+.vl-gl-info{margin:8px 0 6px;padding:10px 12px}
+
+/* ---------- 术语表 ---------- */
+.vl-gloss-tools{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.vl-gloss-q{display:inline-flex;align-items:center;gap:8px}
+.vl-gloss-q input{font:inherit;min-height:40px;padding:0 10px;width:min(320px,70vw)}
+.vl-gloss-n{margin:0;font-size:.92rem}
+.vl-gloss-az{display:flex;flex-wrap:wrap;gap:4px;margin:12px 0}
+.vl-gloss-az a{display:grid;place-items:center;min-width:36px;min-height:36px;text-decoration:none}
+.vl-gloss-grp{margin:14px 0}
+.vl-gloss-L{margin:0 0 4px}
+.vl-gloss-dl{margin:0}
+.vl-gloss-it{padding:8px 0 10px;scroll-margin-top:70px}
+.vl-gloss-it dt{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.vl-gloss-it dfn{font-style:normal;font-weight:700;font-size:1.15rem}
+.vl-gloss-en{font-size:.92rem}
+.vl-gloss-tag{font-size:.8rem;padding:0 8px;text-decoration:none}
+.vl-gloss-it dd{margin:2px 0 0}
+.vl-gloss-plain{display:block}
+.vl-gloss-ch{font-size:.9rem;white-space:nowrap}
+
+/* ---------- 闪卡 ---------- */
+.vl-fc-boxes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+.vl-fc-box{display:flex;flex-direction:column;align-items:center;padding:6px 4px;text-align:center;line-height:1.3}
+.vl-fc-box b{font-size:1.5rem}
+.vl-fc-box span{font-size:.8rem;display:block}
+.vl-fc-all{display:inline-flex;gap:8px;align-items:center;min-height:40px;cursor:pointer}
+.vl-fc-all input{width:20px;height:20px}
+.vl-fc-stage{perspective:1200px;margin:10px 0}
+/* 两面叠在同一个网格格子里：卡片高度 = 较高的那一面，字多也不会溢出 */
+.vl-fc-card{position:relative;display:grid;width:100%;padding:0;border:0;background:none;cursor:pointer;font:inherit;color:inherit;transform-style:preserve-3d;transition:transform .45s}
+.vl-fc-face{grid-area:1/1;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:52px 22px 20px;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.vl-fc-back{transform:rotateY(180deg)}
+.vl-fc-card.flipped{transform:rotateY(180deg)}
+.vl-fc-term{font-size:2rem;line-height:1.25}
+.vl-fc-img{display:block;width:150px}
+.vl-fc-img svg{width:100%;height:auto;display:block}
+.vl-fc-txt{display:flex;flex-direction:column;gap:4px;font-size:1.05rem;line-height:1.6;max-width:36em}
+.vl-fc-from{font-size:.88rem}
+.vl-fc-hint{font-size:.92rem;margin:4px 0}
+.vl-fc-acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.vl-fc-acts .vl-btn{min-height:44px;padding:0 16px;cursor:pointer}
+.vl-fc-st{text-align:center;margin:6px 0}
+.vl-fc-end{padding:12px 16px;margin:10px 0}
+.vl-fc-foot{margin-top:18px}
+/* 不是"全开"档就不转 3D：直接换面 */
+html:not(.vl-fx-full) .vl-fc-card{transition:none;transform:none}
+html:not(.vl-fx-full) .vl-fc-face{backface-visibility:visible;transform:none}
+html:not(.vl-fx-full) .vl-fc-card .vl-fc-back,html:not(.vl-fx-full) .vl-fc-card.flipped .vl-fc-front{visibility:hidden}
+html:not(.vl-fx-full) .vl-fc-card.flipped .vl-fc-back{visibility:visible}
+html.vl-fx-lite .vl-fc-face{transition:opacity .2s}
+
+/* ---------- 阅读激励：集邮册 / 图鉴 / 提示条 / 目录页地图 ---------- */
+.vl-col-count{font-size:.85rem;padding:0 6px;border-radius:10px;line-height:1.5}
+.vl-col-back{position:fixed;inset:0;z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:4vh 10px;overflow:auto}
+.vl-col-back[hidden]{display:none}
+.vl-col-dlg{width:min(780px,100%);padding:16px 18px 14px;position:relative}
+.vl-col-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vl-col-head h2{margin:0}
+.vl-col-x{min-width:44px;min-height:44px;font-size:1.4rem;line-height:1;cursor:pointer}
+.vl-col-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.vl-col-foot .vl-btn{min-height:42px;padding:0 12px;cursor:pointer}
+.vl-col-sum{margin:4px 0}
+.vl-col-next{margin:2px 0 8px}
+.vl-col-ptitle{margin:12px 0 6px}
+.vl-col-ch{margin:10px 0 14px}
+.vl-col-chname{margin:0 0 6px;font-weight:700}
+.vl-col-row{display:flex;gap:14px;align-items:flex-start}
+.vl-col-cells{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;flex:1;min-width:0}
+.vl-col-stamp{flex:none;position:relative;display:grid;place-items:center;width:124px;height:104px;padding:10px;cursor:pointer;font:inherit;color:inherit}
+.vl-col-cell{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:104px;padding:6px 4px;cursor:pointer;font:inherit;color:inherit;line-height:1.25}
+.vl-col-art{display:block;width:100%;pointer-events:none}
+.vl-col-art svg{display:block;width:100%;height:auto;max-height:72px}
+.vl-col-cell .vl-col-art svg{max-height:60px}
+.vl-col-name{font-size:.9rem;text-align:center}
+.vl-col-num{display:grid;place-items:center;font-size:2rem;font-weight:700;min-height:60px}
+.vl-col-q{position:absolute;inset:0;display:grid;place-items:center;font-size:2rem;font-weight:700;pointer-events:none}
+.vl-col-pm{position:absolute;right:-6px;bottom:-4px;padding:2px 8px;font-size:.8rem;font-weight:700;pointer-events:none;white-space:nowrap}
+.vl-col-tip{margin:8px 0 0;padding:6px 10px;font-size:.98rem}
+.vl-col-mark{position:absolute;right:12px;top:50%;margin-top:-30px;width:60px;height:60px;display:grid;place-items:center;font-size:.95rem;font-weight:700;pointer-events:none}
+.vl-quiz-badge{position:relative}
+.vl-col-toast{position:fixed;left:50%;bottom:18px;z-index:95;display:flex;align-items:center;gap:10px;max-width:min(420px,calc(100vw - 24px));padding:8px 14px 8px 8px;pointer-events:none;opacity:0;transform:translate(-50%,16px);transition:opacity .2s,transform .25s}
+.vl-col-toast.show{opacity:1;transform:translate(-50%,0)}
+.vl-col-tstamp{flex:none;width:64px}
+.vl-col-tstamp svg{width:100%;height:auto;display:block}
+.vl-col-tmsg{font-size:1rem;line-height:1.4}
+.vl-col-map .vl-col-mlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.vl-col-mptitle{margin:10px 0 6px;font-weight:700}
+.vl-col-mitem{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:inherit;padding:4px}
+.vl-col-mitem .vl-col-stamp{cursor:inherit}
+.vl-col-mname{display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1.35}
+.vl-col-mname small{font-size:.85rem}
+.vl-col-bm{display:inline-block;padding:4px 14px;text-decoration:none;font-weight:700}
+.vl-col-inline .vl-col-page{margin:0 0 10px}
+@media (max-width:560px){
+  .vl-col-row{flex-direction:column;align-items:stretch}
+  .vl-col-stamp{align-self:center}
+  .vl-col-cells{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
+}
+body.vl-col-open{overflow:hidden}
+
+/* ---------- 陪伴角色 ---------- */
+.vl-comp{position:fixed;left:14px;bottom:14px;z-index:60}
+.vl-comp.is-right{left:auto;right:84px}
+.vl-comp[hidden]{display:none}
+.vl-comp-btn{display:block;width:64px;height:64px;padding:4px;cursor:pointer;font:inherit}
+.vl-comp-art,.vl-comp-art svg{display:block;width:100%;height:100%}
+.vl-comp-bub{position:absolute;left:0;bottom:calc(100% + 10px);width:max-content;max-width:min(260px,calc(100vw - 32px));margin:0;padding:8px 12px;font-size:1rem;line-height:1.5;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .15s}
+.vl-comp.is-right .vl-comp-bub{left:auto;right:0}
+.vl-comp.has-bub .vl-comp-bub,.vl-comp-bub.is-on{opacity:1;visibility:visible}
+/* 正文栏两侧没有够宽的空白时，气泡插进正文流（companion.js 量过再决定），让下面的内容让开，不叠在字上 */
+.vl-comp-bub.is-flow{position:relative;left:auto;right:auto;bottom:auto;display:block;width:max-content;max-width:100%;margin:6px 0 20px}
+html.vl-comp-pad body{padding-bottom:84px}
+@media (max-width:700px){.vl-comp{left:8px;bottom:8px}.vl-comp-btn{width:50px;height:50px}html.vl-comp-pad body{padding-bottom:66px}}
+
+/* ---------- 动效档位与打印 ---------- */
+html.vl-fx-off .vl-col-toast,html.vl-fx-off .vl-comp-bub,html.vl-fx-off .vl-gn,html.vl-fx-off .vl-ge{transition:none}
+@media (prefers-reduced-motion:reduce){.vl-col-toast,.vl-comp-bub,.vl-gn,.vl-ge,.vl-fc-card{transition:none!important;animation:none!important}}
+@media print{
+  .vl-comp,.vl-col-toast,.vl-col-back,.vl-tb-col,.vl-tb-sound,.vl-mp-tools,.vl-fc-acts,.vl-fc-foot{display:none!important}
+  .vl-gscroll{overflow:visible}
+}

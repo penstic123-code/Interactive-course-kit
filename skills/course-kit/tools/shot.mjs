@@ -1,7 +1,8 @@
-// 元素截图工具：用 Edge 无头模式打开页面，等插图/脚本加载完，把指定元素（或整页）截成 PNG。
+// 元素截图工具：用 Edge / Chrome 无头模式打开页面，等插图/脚本加载完，把指定元素（或整页）截成 PNG。
 // 用法：node tools/shot.mjs <html 文件绝对路径> <输出.png> [选择器[@序号]] [视口宽度=1000] [等待毫秒=1500]
-//   选择器省略或为 "page" → 整页；"选择器@2" 取第 3 个匹配元素（从 0 开始）；例：".sec@2"、".egcar@0"、"svg@5"
-//   额外：选择器后可加 "|点击:另一个选择器" 先点击再截图，如 ".egcar@0|点击:.egtab@3"
+//   选择器省略或为 "page" → 整页（最高截到 16000px，超过会警告，下半截用选择器分段截）；
+//   "选择器@2" 取第 3 个匹配元素（从 0 开始）；例：".vl-sec-body@2"、".vl-egcar@0"、"[data-illus]@5"
+//   额外：选择器后可加 "|点击:另一个选择器" 先点击再截图，如 ".vl-egcar@0|点击:.vl-egtab@2"
 //   文件路径后可带查询参数，如 gallery.html?scheme=sepia（截不同配色）。
 // 依赖：Node 22+、Edge 或 Chrome（自动查找，或用环境变量 EDGE_PATH 指定，见 browser.mjs）。
 import { spawn } from "node:child_process";
@@ -37,7 +38,7 @@ if (clickPart) { await send("Runtime.evaluate", { expression: `(${pick(clickPart
 let clip;
 if (sel === "page") {
   const r = await send("Runtime.evaluate", { expression: "JSON.stringify({w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight})", returnByValue: true });
-  const d = JSON.parse(r.result.result.value); clip = { x: 0, y: 0, width: d.w, height: Math.min(d.h, 16000), scale: 1 };
+  const d = JSON.parse(r.result.result.value); clip = { x: 0, y: 0, width: d.w, height: Math.min(d.h, 16000), scale: 1 }; if (d.h > 16000) console.error(`⚠ 页面高 ${d.h}px，整页图只截到 16000px；下半截用选择器分段截（如 ".vl-sec@5"）`);
 } else {
   const r = await send("Runtime.evaluate", { expression: `(()=>{const e=${pick(sel)};if(!e)return null;const b=e.getBoundingClientRect();return JSON.stringify({x:b.left+scrollX,y:b.top+scrollY,w:b.width,h:b.height})})()`, returnByValue: true });
   if (!r.result.result.value) { console.error("没找到元素", sel); proc.kill(); process.exit(2); }

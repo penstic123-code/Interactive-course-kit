@@ -1,8 +1,8 @@
 /* 皮肤 pixel（掌机像素，Game Boy 风四阶绿）的脚本部分：放在 <head> 里、kit/vl-head.js 之前。
    做三件事：
    1. 声明 VL_SKIN（网络字体 VT323、插画配色）；
-   2. 把 kit/illus.js 的火柴人换成像素画法：kit/illus.js 一执行 `VL.illus = {...}`，这里的 setter 就把像素绘制工具并进 VL.illus.kit
-      （同一个对象，各章 VL.illus.add 拿到的 k 就是像素版），并换掉 svg()/mount()（像素图不要描边、要 crispEdges）。
+   2. 把 kit/illus.js 的火柴人换成像素画法：通过 kit 的换画法钩子 VL_SKIN.illus 把像素绘制工具并进 kit
+      （各章 VL.illus.add 拿到的 k 就是像素版），并换掉外层 svg 包法（像素图不要描边、要 crispEdges）。
       接口照 references/skin-contract.md 第三节：person / hands / holding / feetY / ground / item / bubble / T / arrow / eye / C / reset，
       另给像素专用的 R F L sprite icon chair desk。人物几何和 kit 火柴人一致：x,y = 头部中心，脚底 = y + 64·s，所以给笔记本写的坐标也站得住。
    3. 关卡开场 READY!（每会话每章一次、可点跳过；off 档、无头浏览器、?freeze 时不播；lite 档缩短）和题头插画出视口暂停。
@@ -184,21 +184,35 @@ window.VL_SKIN = {
   var ground = function (y) { y = y == null ? 126 : y; return R(0, y, 200, 4, INK) + rect(0, y + 4, 200, Math.max(0, 140 - y - 4), C.ground); };
   var T = function (x, y, size, txt, anchor, fill) { return '<text x="' + x + '" y="' + y + '" font-size="' + Math.max(12, size || 12) + '"' + (anchor ? ' text-anchor="' + anchor + '"' : "") + ' fill="' + (fill || INK) + '" font-weight="700" stroke="none">' + esc(txt) + "</text>"; };
   var eye = function (x, y) { return rect(x - 1, y - 1.5, 2.4, 3, INK); };
-  // 气泡：像素描边框 + 一级级台阶收窄的尾巴，尾尖对准说话人；字另用 T 写在文字层
+  // 气泡：像素描边框 + 一级级台阶收窄的尾巴，尾尖对准说话人；字另用 T 写在文字层。
+  // 尾巴从框外画起（墨块不进框内，不压最后一行字），只在接口处把边框挖开一个口。
+  // 尾尖在框下 / 框上就从底边 / 顶边伸出；尾尖在框左右两侧（说话人站在旁边）就从左 / 右边伸出，不横穿气泡。
   function bubble(x, y, w, h, tail, fill) {
     fill = fill || C.white;
     var out = F(x, y, w, h, fill);
-    if (tail && tail.length === 2) {
-      var below = tail[1] > y + h, by = below ? y + h - 3 : y + 3, bx = Math.max(x + 10, Math.min(x + w - 10, tail[0]));
-      var n = Math.max(2, Math.round(Math.abs(tail[1] - by) / 4)), ink = "", wh = "";
-      for (var i = 0; i <= n; i++) {
-        var t = i / n, cx = bx + (tail[0] - bx) * t, cy = by + (tail[1] - by) * t, ww = 10 - 7 * t;
-        ink += rect(cx - ww / 2 - 3, cy - 2, ww + 6, 4 + 2, INK);
-        if (i < n) wh += rect(cx - ww / 2, cy - 2, ww, 4, fill);
-      }
-      out += ink + wh;
+    if (!tail || tail.length !== 2) return out;
+    var x0 = g2(x), y0 = g2(y), x1 = x0 + Math.max(2, g2(w)), y1 = y0 + Math.max(2, g2(h)), tx = tail[0], ty = tail[1];
+    var side = ty >= y1 ? "b" : ty <= y0 ? "t" : tx <= x0 ? "l" : tx >= x1 ? "r" : null;
+    if (!side) return out;   // 尾尖落在框里：不画尾巴
+    var vert = side === "b" || side === "t", cl = function (v, a, z) { return Math.max(a, Math.min(z, v)); };
+    var bx = vert ? cl(tx, x0 + 10, x1 - 10) : (side === "l" ? x0 : x1);
+    var by = vert ? (side === "b" ? y1 : y0) : cl(ty, Math.min(y0 + 9, (y0 + y1) / 2), Math.max(y1 - 9, (y0 + y1) / 2));
+    // 把一块矩形裁到框外
+    var clip = function (rx, ry, rw, rh, col) {
+      var ax = rx, ay = ry, zx = rx + rw, zy = ry + rh;
+      if (side === "b") ay = Math.max(ay, y1); else if (side === "t") zy = Math.min(zy, y0);
+      else if (side === "l") zx = Math.min(zx, x0); else ax = Math.max(ax, x1);
+      return zx - ax > 0.2 && zy - ay > 0.2 ? rect(ax, ay, zx - ax, zy - ay, col) : "";
+    };
+    var n = Math.max(2, Math.round(Math.hypot(tx - bx, ty - by) / 4)), ink = "", wh = "";
+    for (var i = 0; i <= n; i++) {
+      var t = i / n, cx = bx + (tx - bx) * t, cy = by + (ty - by) * t, ww = 10 - 7 * t;
+      if (vert) { ink += clip(cx - ww / 2 - 3, cy - 3, ww + 6, 6, INK); if (i < n) wh += clip(cx - ww / 2, cy - 2, ww, 4, fill); }
+      else { ink += clip(cx - 3, cy - ww / 2 - 3, 6, ww + 6, INK); if (i < n) wh += clip(cx - 2, cy - ww / 2, 4, ww, fill); }
     }
-    return out;
+    // 接口：把边框挖开，和框内连成一片
+    var gap = side === "b" ? rect(bx - 5, y1 - 4, 10, 4, fill) : side === "t" ? rect(bx - 5, y0, 10, 4, fill) : side === "l" ? rect(x0, by - 5, 4, 10, fill) : rect(x1 - 4, by - 5, 4, 10, fill);
+    return out + ink + wh + gap;
   }
   function arrow(x1, y1, x2, y2, o) {
     o = o || {};
@@ -214,38 +228,18 @@ window.VL_SKIN = {
   var PX = { person: person, hands: hands, feetY: feetY, ground: ground, T: T, eye: eye, bubble: bubble, arrow: arrow, item: item, holding: holding, C: C,
     reset: function () { personK = 0; }, R: R, F: F, L: L, sprite: sprite, icon: icon, chair: chair, desk: desk, ICONS: ICONS, PAL: PAL, INK: INK, pixel: true };
 
-  /* ---------- 接到 kit/illus.js 上 ---------- */
-  var VL = window.VL = window.VL || {}, cur;
-  function install(v) {
-    if (!v || !v.kit || v._px) return v;
-    v._px = true;
-    Object.assign(v.kit, PX);   // add() 把同一个 kit 对象传给各章的画图函数
-    var add0 = v.add;
-    v.add = function () { personK = 0; var r = add0.apply(this, arguments); personK = 0; return r; };
-    v.svg = function (name) {
-      var it = v.lib[name]; if (!it) return "";
-      return '<svg viewBox="0 0 200 140" class="vl-illus-svg vl-px-svg" shape-rendering="crispEdges" role="img" aria-label="' + esc(it.alt) + '">' +
-        '<g class="vl-il-px" stroke="' + INK + '" stroke-width="3.5" stroke-linejoin="miter" stroke-linecap="square">' + it.body + '</g><g class="vl-il-text" shape-rendering="auto">' + it.extra + "</g></svg>";
+  /* ---------- 接到 kit/illus.js 上：用 kit 的换画法钩子 VL_SKIN.illus（kit/illus.js 加载时调用） ----------
+     kit：像素绘制工具并进 kit（add() 前后会调 kit.reset()，换装计数随之清零）；
+     svg：像素图不要描边圆角、要 crispEdges，文字层保持抗锯齿。 */
+  window.VL_SKIN.illus = function () {
+    return {
+      kit: PX,
+      svg: function (it) {
+        return '<svg viewBox="0 0 200 140" class="vl-illus-svg vl-px-svg" shape-rendering="crispEdges" role="img" aria-label="' + esc(it.alt) + '">' +
+          '<g class="vl-il-px" stroke="' + INK + '" stroke-width="3.5" stroke-linejoin="miter" stroke-linecap="square">' + it.body + '</g><g class="vl-il-text" shape-rendering="auto">' + it.extra + "</g></svg>";
+      },
     };
-    v.mount = function (scope) {
-      (scope || document).querySelectorAll("[data-illus]").forEach(function (el) {
-        var name = el.getAttribute("data-illus");
-        if (el._vlIllus === name) return;
-        el.classList.add("vl-illus");
-        var s = v.svg(name);
-        if (s) { el.innerHTML = s; el.classList.remove("vl-illus-miss"); el._vlIllus = name; }
-        else { el.classList.add("vl-illus-miss"); el.setAttribute("role", "img"); el.setAttribute("aria-label", name); el.textContent = name; }
-      });
-    };
-    return v;
-  }
-  try {
-    Object.defineProperty(VL, "illus", { configurable: true, enumerable: true, get: function () { return cur; }, set: function (v) { cur = install(v); } });
-    // kit/illus.js 末尾会把旧写法 illusAdd / illusSvg / illusKit 指回它自己的函数；这里让它们始终指向像素版
-    Object.defineProperty(window, "illusAdd", { configurable: true, get: function () { return cur && cur.add; }, set: function () {} });
-    Object.defineProperty(window, "illusSvg", { configurable: true, get: function () { return cur && cur.svg; }, set: function () {} });
-    Object.defineProperty(window, "illusKit", { configurable: true, get: function () { return cur && cur.kit; }, set: function () {} });
-  } catch (e) {}
+  };
 
   /* ---------- 专属动效：关卡开场 READY!、题头插画出视口暂停、?freeze ---------- */
   var root = document.documentElement, qs = "";

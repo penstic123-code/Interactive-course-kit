@@ -138,7 +138,7 @@
   }
   ```
   kit 的 `vl.css` 已带这条，另有 `html.vl-fx-off *{animation:none!important;transition:none!important}`。JS 驱动的动画（rAF、Web Animations、粒子）不受这两条管，要自己读档位：`if (!VL.motion()) { 画终态; return; }`（`VL.fx()` 返回 full / lite / off）。
-- 截图和测试：无头浏览器默认 off；网址加 `?fx=1` 让无头也按正常档位判定（kit 已有）；`?freeze=秒` 停在某帧（DS 的做法，kit 里暂无）。
+- 截图和测试：无头浏览器默认 off；网址加 `?fx=1` 让无头也按正常档位判定（kit 已有）；`?scheme=dark|sepia` 临时换配色、不存档（kit 已有）；`?freeze=秒` 停在某帧（kit 里暂无，paper、pixel 皮肤自带）。
 
 ### 4 哪些属于皮肤
 

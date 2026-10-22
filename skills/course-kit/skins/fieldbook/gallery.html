@@ -7,7 +7,9 @@
 <!-- 皮肤验收页（references/skin-contract.md 第二节）：kit/vl.js 现有的每个组件各摆一个，做新皮肤时复制本页、只换下面三行皮肤路径来对照。
      截三套配色：gallery.html?scheme=dark、?scheme=sepia（只在本页有效，不存档）。 -->
 <link rel="stylesheet" href="../../kit/vl.css">
+<link rel="stylesheet" href="../../kit/vl-interact.css">
 <link rel="stylesheet" href="skin.css">
+<link rel="stylesheet" href="interact.css">
 <script src="skin.js"></script>
 <script src="../../kit/vl-head.js"></script>
 <script>
@@ -145,6 +147,11 @@
   <details class="vl-side" data-kind="math"><summary><b>可变比率到底有多“可变”？</b><small>一个掷骰子的小算术，可以跳过</small></summary><p>支线内文。</p></details>
   <details class="vl-side" data-kind="debate"><summary><b>这条规律有人不同意吗？</b><small>两种立场</small></summary><p>支线内文。</p></details>
 
+  <!-- K9 文档道具：本皮肤专属的三种贴进本子的东西（票根、剪报、影印件） -->
+  <div class="vl-doc" data-kind="ticket"><h4>民俗剧场 · 夜场</h4><p class="vl-doc-meta">1987 年 3 月 14 日 · 七排 12 号</p><p>票根：两端锯齿、一道虚线撕口。</p></div>
+  <div class="vl-doc" data-kind="clipping"><h4>老街今夜挂灯</h4><p class="vl-doc-meta">本报讯（示意）</p><p>剪报：发黄的新闻纸、锯齿剪边，宽屏两栏、窄屏一栏。正文要够长，才看得出分栏。</p><p>第二段接着排，栏与栏之间留一道空。</p></div>
+  <div class="vl-doc" data-kind="copy"><p class="vl-doc-meta">礼单影印件（示意）</p><h4>张家嫁女 · 收礼</h4><p>李长顺　拾元<br>王桂芬　伍元</p><p class="vl-doc-sign">记账人　赵</p></div>
+
   <div class="vl-sec"><h2>互动台和控件</h2></div>
   <!-- G1 互动台（全课最重的实体件）+ 控件族 + M3 试试看（未完成 / 已完成两态） -->
   <div class="vl-board">
@@ -199,7 +206,7 @@
   <details class="vl-side" data-kind="more">
     <summary><b>还没摆进来的组件</b><small>代码并入 kit 后补到本页</small></summary>
     <ul class="gl-todo">
-      <li>K2 并列卡阵、K5 立场卡、K9 文档道具（至少 3 种 data-kind）、T6 漫画分镜、T7 读数条与图例、G2–G9 招牌互动骨架：见 kit/README.md 第七节。</li>
+      <li>K2 并列卡阵、K5 立场卡、T6 漫画分镜、T7 读数条与图例、G2–G9 招牌互动骨架：见 kit/README.md 第七节。</li>
       <li>其余图解模板（时间轴、树、维恩、天平、网络、光谱、层叠）：见 kit/README.md 第九节。</li>
       <li>阅读激励外观、陪伴角色、概念关系图：见 kit/README.md 第八节。</li>
       <li>目录页学习地图：见 starter/index.html。</li>

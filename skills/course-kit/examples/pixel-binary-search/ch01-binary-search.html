@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第1章 猜数字的七次机会</title>
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<link rel="stylesheet" href="skin/diagrams.css">
+<link rel="stylesheet" href="kit/vl-interact.css">
+<link rel="stylesheet" href="skin/interact.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* 本章专属样式：c1- 前缀；颜色只用皮肤变量 */
+  .c1-modes{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+  .c1-play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start;margin:10px 0}
+  @media (max-width:760px){.c1-play{grid-template-columns:minmax(0,1fr)}}
+  .c1-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}
+  .c1-cell{font:inherit;font-family:var(--font-mono);font-size:1.05rem;line-height:1;aspect-ratio:1;min-height:30px;padding:0;color:var(--ink);background:var(--edge);border:2px solid var(--ink);border-radius:0;cursor:pointer}
+  .c1-cell:hover:not(:disabled){background:var(--accent)}
+  .c1-cell:focus-visible{outline:3px dashed var(--focus);outline-offset:2px;position:relative;z-index:1}
+  .c1-cell.is-out{background:var(--sunk);color:var(--muted);border-color:var(--muted);text-decoration:line-through;cursor:default}
+  .c1-cell.is-last{background:var(--accent);box-shadow:inset 0 0 0 3px var(--ink)}
+  .c1-cell.is-hit{background:var(--okbg);box-shadow:inset 0 0 0 3px var(--ok);color:var(--ink);text-decoration:none;font-weight:700}
+  .c1-cell.is-secret{box-shadow:inset 0 0 0 3px var(--gbA,#9b2257)}
+  .c1-score{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:6px 0 0;font-size:.98rem}
+  .c1-score b{font-weight:700}
+  .c1-score span{font-family:var(--font-mono);font-size:1.1rem}
+  .c1-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+  #c1-chartfig{margin:0}
+  #c1-chart{display:block;width:100%;height:auto}
+  .c1-dbl{display:grid;grid-template-columns:7em minmax(0,1fr);gap:10px 12px;align-items:center;margin:12px 0}
+  .c1-dbl > b{font-weight:700}
+  .c1-blocks{display:flex;flex-wrap:wrap;gap:3px;min-height:22px}
+  .c1-blocks i{display:block;width:16px;height:16px;background:var(--q1);border:2px solid var(--ink)}
+  .c1-blocks i.is-new{background:var(--accent)}
+  .c1-lin{font-family:var(--font-mono);font-size:1.15rem;line-height:1.35}
+  @media (max-width:520px){.c1-dbl{grid-template-columns:minmax(0,1fr);gap:4px}}
+</style>
+</head>
+<body data-ch="1">
+<main class="vl-wrap">
+
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>猜数字的七次机会</h1>
+      <p class="vl-sub">1 到 100 里藏着一个数，为什么最多七次就能猜中？</p>
+    </div>
+    <span data-illus="c01-hero"></span>
+  </div>
+
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 18 分钟</span>
+    <ul><li>用“猜中间”在七次以内猜中 1 到 100 的数</li><li>说清二分查找为什么要先把数据排好序</li><li>估出数据翻倍时查找要多走几步</li></ul>
+  </div>
+
+  <!-- ===== 1 钩子 ===== -->
+  <div class="vl-sec"><h2>朋友心里藏着一个 1 到 100 的数</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s1-scene"></span>
+    <div>
+      <p>课间有个老游戏。一个人在纸上写下 1 到 100 之间的一个数，另一个人来猜，每猜一次，出题的人只回三句话里的一句：猜的数比答案大，就说“大了”；比答案小，就说“小了”；正好，就说“对了”。</p>
+      <p>最老实的猜法是从 1 开始往上数。运气好，第一次就中；运气差，纸上写的是 100，就得猜满一百次。玩过几轮的人很快改掉了这个习惯，开口第一句往往是“50”。</p>
+    </div>
+  </div>
+
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">要是每一次都猜得聪明，最坏要猜几次才能保证猜中？</p>
+    <ul class="vl-opts">
+      <li>大约 25 次<span class="vl-fb">还能再少。</span></li>
+      <li>大约 10 次<span class="vl-fb">接近了，还能再少。</span></li>
+      <li data-right>7 次<span class="vl-fb">对，不管写的是哪个数。</span></li>
+      <li>大约 50 次<span class="vl-fb">远远用不了这么多。</span></li>
+    </ul>
+    <div class="vl-ans">答案是 7 次。逐个猜和先猜 50 的差别，全在“大了”“小了”这两句回答里。</div>
+  </div>
+
+  <!-- ===== 2 二分查找 ===== -->
+  <div class="vl-sec"><h2>从正中间下刀的二分查找</h2></div>
+
+  <div class="vl-withimg rev">
+    <span data-illus="c01-s2-half"></span>
+    <div><p>从 1 开始数的人，每猜错一次只排除一个数。先猜 50 的人哪怕没猜中，只要听到一句“大了”，51 到 100 这五十个数就一起出局。两个人各失手一次，后者扔掉的数是前者的五十倍。</p></div>
+  </div>
+
+  <p>听到“大了”以后，剩下 1 到 49。下一次照样挑这一段的正中间，猜 25；回答是“小了”，范围又缩到 26 到 49。一路这样砍下去，一百个数先剩五十个左右，再剩二十几个、十几个、六个、三个，最后只剩一个，那就是答案。</p>
+
+  <figure class="vl-fig" id="c01-fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[
+      {"name":"挑中间","eg":"范围 1–100，猜 50","info":"<b>挑中间</b>：剩下的范围有多大，就挑它正中间的那个数。"},
+      {"name":"听回答","eg":"出题人说“大了”","info":"<b>听回答</b>：回答带着方向，告诉你答案在左半边还是右半边。"},
+      {"name":"扔一半","eg":"51–100 全部出局","info":"<b>扔一半</b>：不可能的那一半一次扔掉，一个都不用再看。"},
+      {"name":"再看剩下","eg":"只剩 1–49","info":"<b>再看剩下</b>：剩下的范围变成新的起点，回到第一步。"}],
+      "center":"剩一个就停"}</script>
+    <figcaption>每转一圈，范围缩小一半；一百个数最多转七圈，就只剩下答案。</figcaption>
+  </figure>
+
+  <p>每一步都从剩下范围的正中间下手，按回答扔掉不可能的一半，这套做法在计算机里被称为<span class="vl-cn">二分查找</span>，“二分”就是一分为二。它要成立，离不开两个条件：<span class="vl-em">数要按大小排好</span>，“大了”才意味着右边一整片都不用再看；<span class="vl-em">回答要带方向</span>，出题的人只说“不对”的话，这一刀就落不到任何一边。</p>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">二分查找</p>
+    <p class="vl-cc-en">Binary search</p>
+    <p class="vl-cc-plain">每次猜剩下那一段的正中间，猜错就扔掉一半。</p>
+    <p class="vl-cc-def">在排好序的一组东西里找目标：每次看剩余范围正中间的那个，按比较结果丢掉不可能的一半，直到找到为止。</p>
+    <p class="vl-cc-eg">开头先猜 50，听到“大了”就只看 1 到 49。</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-bs"></span></div>
+  </aside>
+
+  <p>排好了顺序、又能问出方向的地方，都能这样一刀刀砍下去。下面三个日常的例子都满足这两个条件，最后一个差了一个。</p>
+
+  <div class="vl-eg" data-t="字典"><span data-illus="c01-eg-dict"></span>
+    <p><b>查字典：</b>纸质的英文字典按字母顺序排词。要找 mango，随手翻到中间，看见那一页全是 L 开头的词，就知道 M 在后半本，前半本整个不用再翻。再翻后半本的中间，又扔掉一半。一本上千页的字典，这样翻十来次就到了要找的那一页。</p></div>
+  <div class="vl-eg" data-t="彩灯"><span data-illus="c01-eg-lights"></span>
+    <p><b>修一串彩灯：</b>老式的串联彩灯只要烧断一颗，整串都不亮，看不出是哪一颗。修灯的人用通断检测器量前半串，电流过得去，坏灯就在后半串；过不去，就在前半串。灯泡在电线上的位置就是顺序，四十八颗灯量六次就能揪出那一颗。</p></div>
+  <div class="vl-eg" data-t="录像"><span data-illus="c01-eg-video"></span>
+    <p><b>找进球时刻：</b>一场九十分钟的比赛录像，想找第一个进球。把进度条拖到正中间，比分已经是 1 比 0，进球就在前半场；还是 0 比 0，就在后半场。每拖一次扔掉一半的时间，拖七次，范围就缩到一分钟以内。</p></div>
+  <div class="vl-eg bad" data-t="乱书架"><span data-illus="c01-eg-bad"></span>
+    <p><b>乱放的书架：</b>图书馆的书要是没按编号上架，从中间抽出一本 37 号，说明不了 38 号在它左边还是右边。抽中间这个动作还在，可它扔不掉任何一半，只能一本本看过去。缺的那一项是顺序。</p></div>
+
+  <!-- ===== 3 排序与发明故事 ===== -->
+  <div class="vl-sec"><h2>电话簿为什么非要按姓氏排</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s3-book"></span>
+    <div>
+      <p>二分查找要的那份顺序，不会自己出现。一本电话簿要是按装电话的先后排，翻到中间看见一个名字，什么也推不出来。编电话簿的人把名字按姓氏排好，等于提前替每一个查号码的人做完了最费力的那一步。</p>
+      <p>两种猜法的账可以并排摆出来看。猜中间省下的是步数，付出的代价是数据得先排好；逐个猜慢，可它对数据什么都不要求。</p>
+    </div>
+  </div>
+
+  <figure class="vl-fig" id="c01-fig-compare"></figure>
+
+  <details class="vl-story c1-story">
+    <summary><b>从一堆乱卡片到一段程序：先排序、再从中间翻的老办法</b><small>一道先猜的小题、四步演化，还有一段“写对很难”的往事。</small></summary>
+    <div class="vl-guess" data-mode="pick">
+      <p class="vl-q">一本电话簿如果按号码从小到大排，要查“王芳”的号码，还能从中间翻吗？</p>
+      <ul class="vl-opts">
+        <li>能，照样翻到中间比一比<span class="vl-fb">翻到中间能看到号码，可号码的大小和“王芳”这个名字毫无关系，比不出该往哪边走。</span></li>
+        <li data-right>不能，只能一页页找<span class="vl-fb">对。顺序要按“要找的那样东西”来排，查名字就得按名字排。</span></li>
+      </ul>
+      <div class="vl-ans">顺序必须排在要查的那一项上。同一本电话簿，按姓氏排就能从中间翻着查名字，却没法用同样的办法查号码；反过来也一样。</div>
+    </div>
+    <ol class="vl-chain">
+      <li><span data-illus="c01-st-1"></span>名字写在一堆乱放的卡片上，只能一张张翻</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li><span data-illus="c01-st-2"></span>把卡片按字母排好，装订成册，贴上索引签</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li><span data-illus="c01-st-3"></span>翻到中间比一比，一次扔掉半本</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li><span data-illus="c01-st-4"></span>电子计算机在排好序的表里照样找数</li>
+    </ol>
+    <p>按字母排的词典和名录早就有，查的人自然会先翻到大概的位置，再往前后找。电子计算机出现以后，人们把同样的想法写成程序，让机器在排好序的数表里找东西：比较中间那个，扔掉一半，再比较。</p>
+    <p>这几行程序看着简单，写对却不容易。高德纳在《计算机程序设计艺术》里考证过，二分查找的想法很早就有人发表，可第一个在所有情况下都不出错的写法，过了十几年才出现。错多半出在边界上：只剩两个数时“中间”取哪一个，扔掉一半时刚比过的那个要不要一起扔。</p>
+  </details>
+
+  <!-- ===== 4 招牌互动 ===== -->
+  <div class="vl-sec"><h2>和电脑比一局猜数字</h2></div>
+
+  <p>两种猜法差多少，亲手比一局最清楚。机器心里想好一个 1 到 100 的数，旁边坐着一个只会逐个猜的电脑玩家，每猜一次，它也跟着猜一次。图上的柱子记下每猜一次之后还剩多少个数。</p>
+
+  <div class="vl-board" id="c1-board">
+    <h3>猜中间到底比逐个猜快多少？</h3>
+    <p class="vl-try" data-try="guess7" data-done="完成！每次都点剩下范围的正中间，七次之内一定能猜中；旁边逐个猜的那位，多半还在几十开外。">你来猜：在 7 次以内猜中电脑想的数。</p>
+    <p class="vl-try" data-try="cpu7" data-done="完成！电脑运气再差也只要 7 次：一百个数里有 37 个要用满 7 次，没有一个需要第 8 次。">换成电脑来猜：挑一个让它用满 7 次才猜中的数。</p>
+    <div class="c1-modes" role="group" aria-label="谁来猜">
+      <button type="button" class="vl-chip" id="c1-m-you" aria-pressed="true">你来猜</button>
+      <button type="button" class="vl-chip" id="c1-m-cpu" aria-pressed="false">电脑来猜</button>
+    </div>
+    <div class="c1-play">
+      <div>
+        <div class="c1-grid" id="c1-grid" role="group" aria-label="1 到 100 的数字格，方向键在格子之间移动"></div>
+        <div class="c1-row">
+          <button type="button" class="vl-btn" id="c1-step" hidden>电脑猜一次</button>
+          <button type="button" class="vl-btn alt" id="c1-new">换一个数重来</button>
+        </div>
+      </div>
+      <div>
+        <figure class="vl-fig" id="c1-chartfig">
+          <svg id="c1-chart" viewBox="0 0 520 256" role="img" aria-label="每猜一次之后剩下的数"></svg>
+          <figcaption>每猜一次，猜中间的柱子矮一半，逐个猜的折线只降一格。</figcaption>
+        </figure>
+        <div class="c1-score" aria-hidden="true">
+          <b>猜中间</b><span id="c1-sc-a">0 次</span>
+          <b>逐个猜</b><span id="c1-sc-b">0 次</span>
+        </div>
+      </div>
+    </div>
+    <p class="vl-msg" id="c1-msg" aria-live="polite">电脑已经想好了一个数。点一个格子开始猜。</p>
+  </div>
+
+  <p>不玩也能想象结果。每次点正中间，柱子从 100 落到 50、24、12、6、3，再一步到底；逐个猜的折线几乎是平的，七次之后还剩九十三个数。</p>
+
+  <!-- ===== 5 对数增长 ===== -->
+  <div class="vl-sec"><h2>数据翻倍只多一步的对数增长</h2></div>
+
+  <div class="vl-guess" data-mode="estimate" data-min="1" data-max="100000" data-scale="log" data-answer="20" data-unit="次">
+    <p class="vl-q">换成一百万个排好序的数，每次猜中间，最坏要猜几次？</p>
+    <div class="vl-ans">20 次。一百万比一百多了一万倍，猜的次数只从 7 次涨到 20 次。</div>
+  </div>
+
+  <p>这个数从哪来，倒过来想最清楚。只许猜一次，最多能确认 1 个数；许猜两次，第一次猜中间，第二次往左或往右，能分辨 3 个数；许猜三次，能分辨 7 个。每多猜一次，能分辨的数就翻一倍再多一个。</p>
+
+  <figure class="vl-fig" id="c01-fig-tree"></figure>
+
+  <p>照这个规律往下数，1、3、7、15、31、63、127。六次只管得了 63 个数，七次管得了 127 个，一百落在两者之间，所以要七次，也只要七次。</p>
+
+  <p>步数跟着数据量的“翻倍次数”走，这种增长方式叫<span class="vl-cn">对数增长</span>。<span class="vl-term" data-def="一个数要连续除以 2 多少次才降到 1 左右，这个次数就是它以 2 为底的对数">对数</span>正是用来数“翻了几倍”的：2 乘 7 次是 128，记作 2<sup>7</sup> = 128；倒过来写成 log<sub>2</sub>128 = 7，读作“以 2 为底 128 的对数等于 7”。<span class="vl-em">数据量乘以 2，步数只加 1。</span></p>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">对数增长</p>
+    <p class="vl-cc-en">Logarithmic growth</p>
+    <p class="vl-cc-plain">数据翻一倍，要走的步数只多一步。</p>
+    <p class="vl-cc-def">一个量跟着另一个量的“翻倍次数”增长：对方乘以 2，它只加 1。二分查找的步数就这样随数据量增长。</p>
+    <p class="vl-cc-eg">1 到 100 最多 7 次，1 到 200 最多 8 次。</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-log"></span></div>
+  </aside>
+
+  <p>只要每一步都把东西砍成两半，或者每一步都让东西翻一倍，对数增长就会出现。下面是三个这样的例子，和一个不是的。</p>
+
+  <div class="vl-eg" data-t="淘汰赛"><span data-illus="c01-eg-cup"></span>
+    <p><b>淘汰赛：</b>每轮两队一组，输的回家，队伍数减半。8 支队打 3 轮决出冠军，16 支打 4 轮，64 支打 6 轮。参赛的队伍翻一倍，赛程只多一轮。</p></div>
+  <div class="vl-eg" data-t="二十问"><span data-illus="c01-eg-20q"></span>
+    <p><b>二十个问题：</b>一个人心里想好一样东西，另一个人只能问“是不是”。要是每个问题都恰好把剩下的可能砍掉一半，二十个问题能分辨 2 的 20 次方种东西，大约一百万种。</p></div>
+  <div class="vl-eg" data-t="折纸"><span data-illus="c01-eg-fold"></span>
+    <p><b>对折一张纸：</b>一张 0.1 毫米厚的纸，对折一次两层，再折四层。按算术，对折 42 次，厚度就超过地球到月球的距离。真实的纸折不了几次就折不动了，可这笔账说明：从一张纸到月球那么远，中间只隔 42 次翻倍。</p></div>
+  <div class="vl-eg bad" data-t="点名"><span data-illus="c01-eg-roll"></span>
+    <p><b>点名：</b>老师点名就不是这样。班上多一个人，就多喊一个名字；人数翻倍，点名的时间也翻倍。这种一个对一个的增长叫<span class="vl-cn">线性增长</span>，逐个猜数就属于这一类。</p></div>
+
+  <figure class="vl-fig" id="c01-fig-spec"></figure>
+
+  <details class="vl-side" data-kind="math">
+    <summary><b>为什么是“翻一倍再多一个”？</b><small>猜 k 次最多能分辨多少个数，一个小推算。</small></summary>
+    <p>猜 k 次能分辨的数，记作 M(k)。第一次猜中间那个数，它自己算 1 个；猜错以后还剩 k − 1 次，左右两边各能分辨 M(k − 1) 个。所以 M(k) = 2 × M(k − 1) + 1。从 M(1) = 1 开始一路算，得到 1、3、7、15……，正好是 2<sup>k</sup> − 1。</p>
+    <p>要让 2<sup>k</sup> − 1 不小于 100，k 至少是 7。这就是“1 到 100 最多七次”的完整理由。</p>
+  </details>
+
+  <!-- ===== 6 原理 + 辅助互动 ===== -->
+  <div class="vl-sec"><h2>每个回答最多砍掉一半可能</h2></div>
+
+  <p>每次都挑正中间，听起来像个习惯。换一种猜法，第一次猜 10：听到“大了”很划算，范围一下缩到 1 到 9；可要是“小了”，还剩 11 到 100 整整九十个数。出题的人不会手下留情，答案总可能落在大的那一边。只有从正中间切，两边一样大，最坏的情况才最好。</p>
+
+  <div class="vl-why">
+    <h3>一个是非回答最多排除一半的可能</h3>
+    <div class="vl-why-fig"><span data-illus="c01-why-fig"></span></div>
+    <p>1948 年，贝尔实验室的克劳德·香农发表了一篇讨论通信的论文，给“信息”定下了能计量的单位。按他的定义，一个只有两种结果、两种结果又一样可能的回答，带来 1 <span class="vl-term" data-def="信息的最小单位：一个两种结果一样可能的回答带来的信息量，效果是把可能性砍掉一半">比特</span>信息，作用正是把可能性砍掉一半。</p>
+    <p>照这个算法，从 100 个数里认出 1 个，大约要 6.6 比特，而一句“大了”或“小了”至多带来 1 比特，所以六次不够，七次才够。二分查找每一刀都切在正中间，每个回答都拿满了这 1 比特。</p>
+    <p class="vl-src">香农《通信的数学理论》，1948。验证：上面的猜数台里，不管怎么点，都没法保证六次以内猜中。</p>
+  </div>
+
+  <p>同一条道理放到更大的数据上，差距会大得吓人。下面的滑块每拖一格，数据量就翻一倍。</p>
+
+  <div class="vl-board" id="c1-dbl-board">
+    <h3>数据翻一倍，猜中间要多猜几次？</h3>
+    <p class="vl-try" data-try="dbl" data-done="完成！十几亿个数，猜中间最多 31 次；逐个猜的人每秒猜一次，要猜五十多年。">把数据量拖到 10 亿以上，看猜中间最坏要几次。</p>
+    <label class="vl-ctl">数据量 <output id="c1-dbl-out">100 个</output><input type="range" id="c1-dbl-r" min="0" max="24" step="1" value="0" aria-label="数据量，每一格翻一倍"></label>
+    <div class="c1-dbl">
+      <b>猜中间</b><div><div class="c1-blocks" id="c1-dbl-blocks" aria-hidden="true"></div><span class="c1-lin" id="c1-dbl-a">最坏 7 次</span></div>
+      <b>逐个猜</b><div class="c1-lin" id="c1-dbl-b">最坏 100 次</div>
+    </div>
+    <p class="vl-msg" id="c1-dbl-msg" aria-live="polite">往右拖一格，数据翻一倍，看两行各自怎么变。</p>
+    <button type="button" class="vl-btn alt" id="c1-dbl-reset">重来</button>
+  </div>
+
+  <!-- ===== 7 反思 ===== -->
+  <div class="vl-sec"><h2>二分查找也有失灵的时候</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-reflect"></span>
+    <div>
+      <p>二分查找快，前提是有人先把数据排好，而排序本身要花工夫。一份排好的名单反复查成千上万次，排序的那点力气很快就赚回来了；一份只查一次的乱序名单，与其先排序，不如从头看到尾。</p>
+      <p>回答要带方向这一条，到了数字以外也常常落空。一个数是大是小，答案干脆利落；一样东西算不算某一类，有时连回答的人自己都犹豫，这一刀就不知道该扔哪一半。</p>
+    </div>
+  </div>
+
+  <div class="vl-misc">
+    <p><b>常见误区</b></p>
+    <p><b>“二分查找总比一个个找快。”</b>数据没排好序时它根本用不上；数据只有寥寥几个时，两种办法差不了几步，为了它专门排序反倒多花力气。</p>
+    <p><b>“必须正好切在正中间才算二分查找。”</b>范围里有偶数个数时，中间有两个，取哪个都行。切得稍偏一点照样能找到，只是最坏情况要多走几步。</p>
+  </div>
+
+  <div class="vl-philo" data-key="c1-philo">
+    <div class="vl-philo-slide" data-t="问题">
+      <div class="vl-withimg"><span data-illus="c01-philo"></span>
+        <div><p class="vl-philo-q">世上的东西，都能靠一连串“是不是”分辨出来吗？</p>
+          <div class="vl-vote" data-options="都能|有些不能|说不清"></div></div></div>
+    </div>
+    <div class="vl-philo-slide" data-t="问得好就能">
+      <div class="vl-withimg rev"><span data-illus="c01-philo-crowd"></span><div>
+      <p>按信息论的算法，地球上大约八十亿人，33 个问得好的是非问题就能把其中任何一个人单独挑出来，因为 2 的 33 次方比八十亿还多。每个问题只要把剩下的人分成一样多的两半，问题本身问的是什么并不要紧。</p>
+      <p class="vl-src">这是香农信息论的计算，1948。香农在论文开头就说明，信息论只管可能性有多少种，消息的意义不在它考虑的范围里。</p></div></div>
+    </div>
+    <div class="vl-philo-slide" data-t="有的分不开">
+      <div class="vl-withimg rev"><span data-illus="c01-philo-bird"></span><div>
+      <p>认知心理学家埃莉诺·罗施在 1970 年代研究人怎样给东西归类，发现很多类别没有清楚的边界：麻雀很像“鸟”，企鹅就没那么像。问“病毒算不算活的”，回答的人都会犹豫。是非问题要管用，每样东西得能干脆地落在某一边。</p>
+      <p class="vl-src">罗施的原型理论，1970 年代。</p></div></div>
+    </div>
+    <div class="vl-philo-slide" data-t="留给你">
+      <p>想一样很难用“是不是”问出来的东西。卡住它的，是答案本身模糊，还是问题没问对？</p>
+      <textarea class="vl-note" data-save="philo" placeholder="我想到的是……它卡在“是不是……”这个问题上"></textarea>
+    </div>
+  </div>
+
+  <div class="vl-key"><p><b>要点</b></p><ul>
+    <li>二分查找每次看剩下范围的正中间，扔掉一半。</li>
+    <li>它要两个前提：数据排好序，回答有方向。</li>
+    <li>1 到 100 最多 7 次：六次只管得了 63 个数，七次管得了 127 个。</li>
+    <li>数据翻一倍，步数只多一步，这叫对数增长。</li>
+  </ul></div>
+  <p class="vl-tldr"><b>一句话</b>每次砍掉一半，数据翻倍只多一步：一百个数七次，一百万个数二十次。</p>
+
+  <!-- ===== 8 练习 ===== -->
+  <div class="vl-sec"><h2>练习</h2></div>
+  <div id="c1-quiz"></div>
+
+  <h3>你的思考</h3>
+  <textarea class="vl-note" data-save="reflect" placeholder="我最近一次“从中间下手”找东西，是在……"></textarea>
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/diagrams.js"></script>
+<script src="kit/illus.js"></script>
+<script src="kit/vl-interact.js"></script>
+<script src="js/illus-ch01.js"></script>
+<script>
+/* ===== 概念图解 ===== */
+VL.diagram.compare("#c01-fig-compare", {
+  a: { name: "逐个猜", eg: "1、2、3……", mark: "✗" },
+  b: { name: "猜中间", eg: "50、25、37……", mark: "✓" },
+  rows: [
+    { k: "猜错一次后", a: "还剩 99 个", b: "还剩 50 个左右" },
+    { k: "最坏要猜", a: "100 次", b: "7 次" },
+    { k: "数变成 200 个", a: "最坏 200 次", b: "最坏 8 次" },
+    { k: "对数据的要求", a: "能说对不对就行", b: "排好序，回答带方向", info: "<b>对数据的要求</b>：逐个猜什么都不要求；猜中间要数据先排好、回答能分大小，这是它快的代价。" },
+  ],
+  caption: "猜中间赢在步数，代价是数据得先排好、回答得分得出大小。",
+});
+VL.diagram.tree("#c01-fig-tree", {
+  root: { name: "猜 4", eg: "范围 1–7", children: [
+    { name: "猜 2", eg: "范围 1–3", edge: "大了", children: [{ name: "猜 1", eg: "第 3 次", edge: "大了" }, { name: "猜 3", eg: "第 3 次", edge: "小了" }] },
+    { name: "猜 6", eg: "范围 5–7", edge: "小了", children: [{ name: "猜 5", eg: "第 3 次", edge: "大了" }, { name: "猜 7", eg: "第 3 次", edge: "小了" }] },
+  ] },
+  caption: "三层问题分得清七个数；树再往下长一层，底下就挂得下十五个。",
+});
+VL.diagram.spectrum("#c01-fig-spec", {
+  name: "数据量（每往右一段，多十倍）",
+  lo: { name: "100 个", eg: "最坏 7 步" }, hi: { name: "80 亿个", eg: "最坏 33 步" },
+  items: [
+    { at: 0.13, name: "一千个", eg: "10 步" },
+    { at: 0.25, name: "一万个", eg: "14 步" },
+    { at: 0.51, name: "一百万个", eg: "20 步" },
+    { at: 0.76, name: "一亿个", eg: "27 步" },
+  ],
+  caption: "从一百个数到八十亿个数，数据多了八千万倍，二分查找只多走二十六步。",
+});
+
+/* ===== 招牌互动：和电脑比一局猜数字 ===== */
+(function () {
+  const grid = document.getElementById("c1-grid"), msg = document.getElementById("c1-msg"), svg = document.getElementById("c1-chart");
+  const bStep = document.getElementById("c1-step"), bNew = document.getElementById("c1-new");
+  const mYou = document.getElementById("c1-m-you"), mCpu = document.getElementById("c1-m-cpu");
+  const scA = document.getElementById("c1-sc-a"), scB = document.getElementById("c1-sc-b");
+  const cells = [];
+  for (let n = 1; n <= 100; n++) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "c1-cell"; b.textContent = n; b.dataset.n = n; b.tabIndex = n === 50 ? 0 : -1;
+    b.setAttribute("aria-label", String(n));
+    grid.appendChild(b); cells.push(b);
+  }
+  let mode = "you", game = 0, secret = 0, lo = 1, hi = 100, hist = [], done = false;
+  const newSecret = () => 1 + Math.floor(VL.rng(20261022 + game * 97)() * 100);
+  function start(keepMode) {
+    lo = 1; hi = 100; hist = []; done = false;
+    secret = mode === "you" ? newSecret() : 0;
+    cells.forEach(c => { c.disabled = false; c.className = "c1-cell"; c.removeAttribute("aria-pressed"); c.setAttribute("aria-label", c.dataset.n); });
+    bStep.hidden = mode !== "cpu"; bStep.disabled = true;
+    msg.textContent = mode === "you" ? "电脑已经想好了一个数。点一个格子开始猜。" : "先点一个格子，替电脑想好答案；它看不见你点的是哪个。";
+    draw();
+  }
+  function cut(n, verdict) {   // verdict: "小了" = 猜小了，答案更大
+    if (verdict === "小了") lo = n + 1; else hi = n - 1;
+    cells.forEach((c, i) => {
+      const v = i + 1, out = v < lo || v > hi;
+      c.classList.toggle("is-out", out); c.classList.remove("is-last");
+      if (out && !c.classList.contains("is-secret")) { c.disabled = mode === "you"; c.setAttribute("aria-label", v + "，已排除"); }
+    });
+    cells[n - 1].classList.add("is-last");
+  }
+  function guess(n, who) {
+    const k = hist.length + 1;
+    if (n === secret) {
+      hist.push({ g: n, left: 0 }); done = true;
+      cells.forEach(c => { if (+c.dataset.n !== n) { c.classList.add("is-out"); if (mode === "you") c.disabled = true; } });
+      const hit = cells[n - 1]; hit.classList.remove("is-out", "is-last"); hit.classList.add("is-hit"); hit.setAttribute("aria-label", n + "，猜中");
+      bStep.disabled = true;
+      if (who === "you") {
+        if (k <= 7) { msg.textContent = "第 " + k + " 次猜中了 " + n + "！逐个猜的那位要猜到第 " + n + " 次才中。"; VL.tryDone("guess7"); }
+        else { msg.textContent = "第 " + k + " 次才猜中 " + n + "。下一局试试每次都点剩下范围的正中间。"; VL.shake(grid); }
+      } else {
+        if (k === 7) { msg.textContent = "电脑第 7 次才猜中 " + n + "，这已经是它最倒霉的情况。"; VL.tryDone("cpu7"); }
+        else msg.textContent = "电脑第 " + k + " 次就猜中了 " + n + "。再换一个数，找一个让它用满 7 次的。";
+      }
+    } else {
+      const verdict = n < secret ? "小了" : "大了";
+      cut(n, verdict);
+      hist.push({ g: n, left: hi - lo + 1 });
+      const bot = Math.min(k, secret), botLeft = secret <= k ? 0 : 100 - k;
+      const range = lo === hi ? "只剩 " + lo : "还剩 " + lo + "–" + hi + "，共 " + (hi - lo + 1) + " 个";
+      msg.textContent = (who === "you" ? "第 " + k + " 次：你猜 " : "电脑第 " + k + " 次猜 ") + n + "，" + verdict + "。" + range + "。" +
+        (botLeft ? "逐个猜的那位刚猜到 " + bot + "。" : "逐个猜的那位已经撞上了答案。");
+    }
+    draw();
+  }
+  function draw() {
+    const k = hist.length, bot = k ? Math.min(k, secret || k) : 0;
+    scA.textContent = k + " 次" + (done ? "，猜中" : "");
+    const botLeft = secret && k >= secret ? 0 : 100 - k;
+    scB.textContent = secret && k >= secret ? secret + " 次，猜中" : k + " 次，还剩 " + botLeft + " 个";
+    // 图：x = 第几次（0–10），y = 剩下几个数（0–100）
+    // viewBox 宽 = 实际显示宽度，字号就是屏幕字号（和 diagrams.js 同一个办法），手机上字不会缩成芝麻
+    const VW = Math.max(300, Math.round(svg.getBoundingClientRect().width || 520));
+    svg.setAttribute("viewBox", "0 0 " + VW + " 256");
+    const X0 = 44, Y0 = 200, W = VW - X0 - 8, H = 150, step = (W - 40) / 10, bw = Math.min(26, step * 0.72), sx = i => X0 + 22 + i * step, sy = v => Y0 - v / 100 * H;
+    let s = '<g style="fill:var(--plate-ink);font-size:14px">';
+    s += '<line x1="' + X0 + '" y1="' + Y0 + '" x2="' + (X0 + W) + '" y2="' + Y0 + '" stroke="#0f380f" stroke-width="2"/>';
+    s += '<line x1="' + X0 + '" y1="' + Y0 + '" x2="' + X0 + '" y2="' + (Y0 - H - 10) + '" stroke="#0f380f" stroke-width="2"/>';
+    [0, 50, 100].forEach(v => { s += '<text x="' + (X0 - 8) + '" y="' + (sy(v) + 5) + '" text-anchor="end">' + v + "</text>"; });
+    s += '<text x="8" y="22">剩下几个数</text>';
+    for (let i = 0; i <= 10; i++) s += '<text x="' + sx(i) + '" y="' + (Y0 + 20) + '" text-anchor="middle">' + i + "</text>";
+    s += '<text x="' + (X0 + W) + '" y="' + (Y0 + 42) + '" text-anchor="end">猜了几次</text>';
+    // 逐个猜：虚线折线
+    const pts = []; for (let i = 0; i <= Math.min(10, Math.max(k, 0)); i++) pts.push(sx(i) + "," + sy(secret && i >= secret ? 0 : 100 - i));
+    if (pts.length > 1) s += '<polyline points="' + pts.join(" ") + '" fill="none" stroke-dasharray="6 5" stroke-width="3" style="stroke:var(--q2)"/>';
+    // 猜中间（你或电脑）：柱子
+    const bars = [{ left: 100 }].concat(hist);
+    bars.slice(0, 11).forEach((b, i) => {
+      const h = b.left / 100 * H, x = sx(i) - bw / 2;
+      s += '<rect x="' + x + '" y="' + (Y0 - h) + '" width="' + bw + '" height="' + Math.max(h, 0) + '" style="fill:var(--q1)"/>';
+      s += '<text x="' + sx(i) + '" y="' + (Y0 - h - 8) + '" text-anchor="middle">' + b.left + "</text>";
+    });
+    const lx = X0 + W - (VW < 440 ? 150 : 210);
+    s += '<rect x="' + lx + '" y="10" width="14" height="14" style="fill:var(--q1)"/><text x="' + (lx + 20) + '" y="22">' + (mode === "you" ? "你" : "电脑") + (VW < 440 ? "" : "（猜中间）") + '</text>';
+    s += '<line x1="' + (X0 + W - 82) + '" y1="17" x2="' + (X0 + W - 58) + '" y2="17" stroke-dasharray="6 5" stroke-width="3" style="stroke:var(--q2)"/><text x="' + (X0 + W - 52) + '" y="22">逐个猜</text>';
+    svg.innerHTML = s + "</g>";
+    svg.setAttribute("aria-label", "柱状图：每猜一次之后剩下的数。" + (hist.length ? "猜中间这边依次剩 " + bars.map(b => b.left).join("、") + "；逐个猜每次只少一个。" : "还没开始猜。"));
+  }
+  grid.addEventListener("click", e => {
+    const c = e.target.closest(".c1-cell"); if (!c || c.disabled || done) return;
+    const n = +c.dataset.n;
+    if (mode === "you") { if (c.classList.contains("is-out")) return; guess(n, "you"); return; }
+    if (!secret) {
+      secret = n; c.classList.add("is-secret"); c.setAttribute("aria-label", n + "，你替电脑想的数");
+      bStep.disabled = false; msg.textContent = "你替电脑想好了 " + n + "。点“电脑猜一次”，看它怎么猜。"; draw();
+    }
+  });
+  grid.addEventListener("keydown", e => {
+    const c = e.target.closest(".c1-cell"); if (!c) return;
+    const i = +c.dataset.n - 1, d = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 10, ArrowUp: -10 }[e.key]; if (d == null) return;
+    e.preventDefault();
+    const j = Math.max(0, Math.min(99, i + d));
+    c.tabIndex = -1; cells[j].tabIndex = 0; cells[j].focus();
+  });
+  bStep.addEventListener("click", () => { if (!secret || done) return; guess(Math.floor((lo + hi) / 2), "cpu"); });
+  bNew.addEventListener("click", () => { game++; start(); });
+  const setMode = m => { mode = m; mYou.setAttribute("aria-pressed", String(m === "you")); mCpu.setAttribute("aria-pressed", String(m === "cpu")); game++; start(); };
+  mYou.addEventListener("click", () => setMode("you"));
+  mCpu.addEventListener("click", () => setMode("cpu"));
+  let rw = 0;
+  addEventListener("resize", () => { const w = svg.getBoundingClientRect().width; if (Math.abs(w - rw) > 24) { rw = w; draw(); } });
+  game = 0; start();
+})();
+
+/* ===== 辅助互动：数据翻一倍 ===== */
+(function () {
+  const r = document.getElementById("c1-dbl-r"), out = document.getElementById("c1-dbl-out"), blocks = document.getElementById("c1-dbl-blocks");
+  const a = document.getElementById("c1-dbl-a"), b = document.getElementById("c1-dbl-b"), msg = document.getElementById("c1-dbl-msg");
+  const fmtN = n => n >= 1e8 ? (n / 1e8).toFixed(n >= 1e9 ? 1 : 2).replace(/\.?0+$/, "") + " 亿" : n >= 1e4 ? (n / 1e4).toFixed(n >= 1e6 ? 0 : 1).replace(/\.0$/, "") + " 万" : String(n);
+  const fmtT = s => s < 120 ? "要 " + s + " 秒" : s < 7200 ? "大约要 " + Math.round(s / 60) + " 分钟" : s < 172800 ? "大约要 " + Math.round(s / 3600) + " 小时" : s < 2 * 365 * 86400 ? "大约要 " + Math.round(s / 86400) + " 天" : "大约要 " + Math.round(s / (365 * 86400)) + " 年";
+  let prev = 7;
+  function upd(fromUser) {
+    const j = +r.value, n = 100 * Math.pow(2, j), steps = Math.floor(Math.log2(n)) + 1;
+    out.textContent = fmtN(n) + " 个";
+    blocks.innerHTML = Array.from({ length: steps }, (_, i) => '<i class="' + (fromUser && i >= prev && steps > prev ? "is-new" : "") + '"></i>').join("");
+    a.textContent = "最坏 " + steps + " 次";
+    b.textContent = "最坏 " + fmtN(n) + " 次；每秒猜一次，" + fmtT(n);
+    if (fromUser) msg.textContent = j === 0 ? "回到 100 个数。" : "数据翻倍 " + j + " 次，到 " + fmtN(n) + " 个。猜中间只比 100 个数时多了 " + (steps - 7) + " 次，逐个猜多了 " + fmtN(n - 100) + " 次。";
+    prev = steps;
+    if (fromUser && n >= 1e9) VL.tryDone("dbl");
+  }
+  r.addEventListener("input", () => upd(true));
+  document.getElementById("c1-dbl-reset").addEventListener("click", () => { r.value = 0; prev = 7; upd(false); msg.textContent = "往右拖一格，数据翻一倍，看两行各自怎么变。"; });
+  upd(false);
+})();
+
+/* ===== 练习 ===== */
+VL.quiz("#c1-quiz", [
+  { q: "1 到 1000 之间猜一个数，每次猜中间，最坏要猜几次？", opts: ["10 次", "7 次", "100 次左右", "500 次左右"], a: 0,
+    why: "十次最多能分辨 1023 个数，刚好盖过 1000；九次只能分辨 511 个，不够。" },
+  { q: "二分查找为什么要求数据先排好序？", opts: ["排好序后，比一次就知道目标在哪一半", "排好序的数据在电脑里占的地方更少，读得也快", "数据不排序的话，就找不到正中间那个位置", "排序会删掉重复的数，要查的东西就变少了"], a: 0,
+    why: "有了顺序，“小了”才意味着左边那一整片都不可能，一次比较就能扔掉一半。乱序的数据照样有正中间，可比完它什么也扔不掉。" },
+  { q: "字典和电话簿按字母、按姓氏排好顺序，最主要是为了什么？", opts: ["翻到中间看一眼，就知道该往前还是往后翻", "按字母排的字典印刷起来更省纸，成本更低", "这样每一页上收的词正好一样多", "方便读者从第一页一直读到最后一页"], a: 0,
+    why: "排序是替查的人提前做好的工作：有了顺序，翻开任意一页都能判断目标在前还是在后，一次扔掉一大半。" },
+  { q: "一份排好序的名单从 50 万人增加到 100 万人，二分查找最坏要多查几次？", opts: ["多 1 次", "变成原来的 2 倍", "多 50 万次", "一次都不多"], a: 0,
+    why: "人数翻了一倍，第一刀先砍回 50 万人，后面和原来一样。数据翻倍，步数只多一步。" },
+  { q: "朋友想好一个 1 到 100 的数，可只肯回答“对”或“不对”。最坏要猜几次？", opts: ["将近 100 次", "7 次", "14 次", "50 次"], a: 0,
+    why: "回答没有方向，猜错一次只能排除猜的那一个数，二分查找用不上，只能逐个猜。" },
+]);
+</script>
+</body>
+</html>

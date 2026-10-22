@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第1章 被击落的飞机去哪了</title>
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<link rel="stylesheet" href="kit/vl-interact.css">
+<link rel="stylesheet" href="skin/interact.css">
+<link rel="stylesheet" href="skin/diagrams.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* 本章专属样式：类名加 c1- 前缀；颜色只用皮肤变量 */
+  .c1-svg{display:block;width:100%;height:auto;margin:8px auto 4px;touch-action:manipulation}
+  .c1-plane{max-width:620px}
+  .c1-plane .c1-z{cursor:pointer}
+  .c1-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .c1-row .c1-lab{font-family:var(--font-label);color:var(--ink2);margin-right:4px}
+  .c1-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:4px 0 8px;font-size:.95rem;color:var(--ink2)}
+  .c1-legend svg{width:18px;height:18px;vertical-align:-3px;margin-right:4px}
+  .c1-read{font-family:var(--font-label);font-size:1.15rem;margin:6px 0 0;color:var(--ink)}
+  .c1-read b{color:var(--deep);font-size:1.35rem}
+  .c1-ends{display:flex;justify-content:space-between;font-size:.92rem;color:var(--ink2);margin:-4px 0 6px}
+  .c1-bars{display:grid;grid-template-columns:auto 1fr 3.4em;gap:8px 10px;align-items:center;margin:10px 0 4px}
+  .c1-bars span{font-size:.98rem;color:var(--ink2)}
+  .c1-bar{height:16px;background:var(--sunk);border-radius:8px;overflow:hidden;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ink) 25%,transparent)}
+  .c1-bar i{display:block;height:100%;width:0;background:var(--deep);border-radius:8px;transition:width .3s var(--ease,ease)}
+  .c1-bars output{font-family:var(--font-label);font-size:1.1rem;color:var(--ink);text-align:right}
+  .c1-board .vl-ctl{display:block;margin-top:8px}
+  .c1-board .vl-ctl input{width:100%}
+</style>
+</head>
+<body data-ch="1">
+<main class="vl-wrap">
+
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>被击落的飞机去哪了</h1>
+      <p class="vl-sub">飞回来的飞机满身弹孔，哪里最该加厚？</p>
+    </div>
+    <span data-illus="c01-hero"></span>
+  </div>
+
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 18 分钟</span>
+    <ul><li>说出一份样本在到手前被什么筛过</li><li>用四格对照拆穿一条成功经验</li><li>解释瓦尔德为什么要加固没有弹孔的地方</li></ul>
+  </div>
+
+  <!-- ===== 1 ===== -->
+  <div class="vl-sec"><h2>飞回来的轰炸机该往哪里加装甲</h2></div>
+
+  <p>书店里卖得最好的，常常是成功者的经验：他每天五点起床，他大学没读完就去创业。读的人自然会想，照着做，离成功就近了一步。很少有人追问，同样五点起床、同样退学创业，最后一事无成的那些人，他们的书在哪里。</p>
+  <p>这个问题最有名的一次出场，在第二次世界大战的天空里。轰炸机每次出征，总有一些被高射炮和战斗机打下来。飞回来的飞机满身弹孔，地勤人员把弹孔的位置记下来，叠在一张图上，想知道哪里最常中弹。</p>
+
+  <div class="vl-board c1-board" id="c1-plane-board">
+    <h3>两块装甲，加在哪里？</h3>
+    <p>装甲挡得住子弹，可它很重，只能加在最要紧的几处。图上叠着一批返航飞机的弹孔，机翼和机身最密。先装好装甲，再放飞一批，看结果。</p>
+    <p class="vl-try" data-try="plane-lost" data-done="完成！没回来的飞机，弹孔大多打在引擎和驾驶舱上，也就是返航飞机身上几乎看不到弹孔的地方。">装好两块装甲放飞一次，再打开“看没回来的飞机”，找出它们的弹孔集中在哪。</p>
+    <p class="vl-try" data-try="plane-best" data-done="完成！装甲给了引擎和驾驶舱，飞回来的飞机最多：弹孔最少的地方，恰恰是中弹后最回不来的地方。">只用两块装甲，找到让飞回来的飞机最多的那两处。</p>
+    <svg class="c1-svg c1-plane" id="c1-plane" viewBox="0 0 600 360" role="img" aria-label="俯视的轰炸机，上面叠着返航飞机的弹孔"></svg>
+    <div class="c1-legend" aria-hidden="true">
+      <span><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="4" fill="#232838"/></svg>飞回来的飞机的弹孔</span>
+      <span><svg viewBox="0 0 18 18"><path d="M4 4 L14 14 M14 4 L4 14" stroke="#b13e53" stroke-width="2.6" stroke-linecap="round"/></svg>没回来的飞机的弹孔</span>
+      <span><svg viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="12" rx="2" fill="#7b8396"/><path d="M4 13 L10 5 M9 15 L15 7" stroke="#c9ced8" stroke-width="1.6"/></svg>装甲</span>
+    </div>
+    <div class="c1-row" role="group" aria-label="选择加装甲的部位（最多两处）">
+      <span class="c1-lab">装甲：</span>
+      <button type="button" class="vl-chip c1-zc" data-z="cockpit" aria-pressed="false">驾驶舱</button>
+      <button type="button" class="vl-chip c1-zc" data-z="engine" aria-pressed="false">引擎</button>
+      <button type="button" class="vl-chip c1-zc" data-z="wing" aria-pressed="false">机翼</button>
+      <button type="button" class="vl-chip c1-zc" data-z="body" aria-pressed="false">机身</button>
+      <button type="button" class="vl-chip c1-zc" data-z="tail" aria-pressed="false">尾翼</button>
+    </div>
+    <div class="c1-row">
+      <button type="button" class="vl-btn" id="c1-fly">放飞 100 架</button>
+      <button type="button" class="vl-chip" id="c1-lost" aria-pressed="false" disabled>看没回来的飞机</button>
+      <button type="button" class="vl-btn alt" id="c1-reset">重来</button>
+    </div>
+    <p class="c1-read" id="c1-read" aria-live="polite"></p>
+    <p class="vl-msg" id="c1-msg" aria-live="polite"></p>
+    <p class="vl-src">数字是示意：每架飞机挨 2 到 4 发子弹，打中引擎和驾驶舱最容易掉下来。每次放飞都用同一批子弹，方便比较不同的装法。</p>
+  </div>
+
+  <p>不动手也能看到结果。照弹孔最密的地方加固机翼和机身，飞回来的飞机只多了几架；把两块装甲给引擎和驾驶舱，飞回来的多出二十多架。打开没回来的那些飞机，弹孔的分布正好倒过来，大多落在引擎和驾驶舱上。</p>
+
+  <!-- ===== 2 ===== -->
+  <div class="vl-sec"><h2>没回来的飞机藏着幸存者偏差</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-s2-sea"></span>
+    <div>
+  <p>地勤人员那张图，只统计了飞回来的飞机。被击落的飞机掉在敌人的阵地上或者海里，没有人能去数它们身上的洞。返航的飞机已经被战场筛过一遍，筛掉的恰好是最能说明问题的那些。只看筛剩下的样本、以为看到了全部，这种错误被称为<span class="vl-cn">幸存者偏差</span>。</p>
+    </div>
+  </div>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">幸存者偏差</p>
+    <p class="vl-cc-en">Survivorship bias</p>
+    <p class="vl-cc-plain">只数活下来的，就会把“活下来的条件”当成规律。</p>
+    <p class="vl-cc-def">只根据经过淘汰后留下来的个体下结论，漏掉了被淘汰的那部分，结论因此跑偏。</p>
+    <p class="vl-cc-eg">返航飞机的引擎上几乎没有弹孔。</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-surv"></span></div>
+  </aside>
+
+  <p>要躲开它，第一步是把那道筛子画出来。从出征的全部飞机到地勤手里的弹孔图，中间隔着一道看不见的关口（见<a data-figref="c1-fig-flow" href="#c1-fig-flow">图</a>）。</p>
+
+  <figure class="vl-fig" id="c1-fig-flow" data-diagram="flow">
+    <script type="application/json">{"nodes":[
+      {"name":"全部出征","eg":"100 架挨了子弹","info":"<b>全部出征</b>：这是真正想了解的全体，每一处都有可能中弹。"},
+      {"name":"战场筛选","eg":"引擎中弹就坠毁","info":"<b>战场筛选</b>：筛子的规则是“中了要害就回不来”，没有人看得见这一步。"},
+      {"name":"飞回机场","eg":"多半伤在机翼","info":"<b>飞回机场</b>：留下来的飞机，恰好是要害没中弹的那些。"},
+      {"name":"数弹孔","eg":"机翼弹孔最多","info":"<b>数弹孔</b>：结论只用到了最后这一层，于是把筛子的规则读成了飞机的规律。"}]}</script>
+    <figcaption>结论只用到了筛子下面的那一层，筛子的规则于是被误读成了飞机的规律。</figcaption>
+  </figure>
+
+  <p>二战期间在美国哥伦比亚大学统计研究小组工作的数学家<span class="vl-em">亚伯拉罕·瓦尔德</span>，就是从这道关口想起的。流传最广的说法是，军方打算给弹孔最多的部位加装甲，瓦尔德却建议加在弹孔最少的地方，因为那些地方中弹的飞机已经回不来了。</p>
+  <p>弹孔稀少的地方最要紧，这个结论听上去古怪，道理只有一步：<span class="vl-em">筛子本身也是证据</span>。</p>
+
+  <details class="vl-story" id="c1-story">
+    <summary><b>两千年前就有人问过：淹死的人，画像在哪里</b><small>一座神庙的墙、一本哲学书、一份战时报告和一本畅销书。</small></summary>
+    <p>只看幸存者会骗人，这件事被人发现过好几次。每一次，都是有人追问了那一半没有出现的东西。</p>
+    <div class="vl-timeline">
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-cicero"></span><div><b class="vl-yr">约公元前 45 年</b> 西塞罗在《论神性》里记下一则故事：有人指着神庙里满墙的还愿画，说这些许愿后躲过海难的人证明了祈祷有用。迪亚戈拉斯反问，许了愿却淹死的人，画像在哪里？</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-bacon"></span><div><b class="vl-yr">1620 年</b> 弗朗西斯·培根在《新工具》里重讲了这个故事，用来说明人心偏爱记住应验的事，忘掉落空的事。</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-wald"></span><div><b class="vl-yr">1943 年</b> 瓦尔德写出一组报告，讲怎样从返航飞机的损伤，反推各个部位中弹后被击落的可能性。</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-taleb"></span><div><b class="vl-yr">2007 年</b> 纳西姆·塔勒布在《黑天鹅》里重提迪亚戈拉斯，把那些不出现的失败者叫作<span class="vl-cn">沉默的证据</span>。墓地里的人，不会写回忆录。</div></div>
+    </div>
+  </details>
+
+  <p>一旦认出这道筛子，它在生活里随处可见。下面四个例子，前三个都只数了活下来的，最后一个反过来做，把没活下来的也数了进去。</p>
+
+  <div class="vl-eg" data-t="老歌更好听"><span data-illus="c01-eg-songs"></span>
+    <p>人们常说以前的歌更耐听。几十年前每年也发行大量平庸的歌，它们早被忘了，电台里还在放的，是当年成千上万首里筛剩下的那几首。</p>
+    <p>拿今天的全部新歌去比过去的精选，新歌当然吃亏。</p></div>
+  <div class="vl-eg" data-t="基金的平均收益"><span data-illus="c01-eg-fund"></span>
+    <p>统计一类基金过去十年的平均收益时，数据库里往往只剩今天还在运作的基金。业绩差的基金早已清盘或被合并，从名单上消失了，剩下的平均数自然好看。</p>
+    <p>金融研究里专门讨论过这种偏差，靠谱的统计会把消失的基金也补回来。</p></div>
+  <div class="vl-eg" data-t="百岁老人的秘诀"><span data-illus="c01-eg-elder"></span>
+    <p>记者采访百岁老人，问长寿的秘诀，有人说每天喝一杯酒，有人说从来不运动。和他们习惯一样、六十岁就去世的人，记者采访不到。</p>
+    <p>秘诀只来自活到一百岁的那几位，这些习惯到底帮了忙，还是只是没拦住他们，从采访里看不出来。</p></div>
+  <div class="vl-eg bad" data-t="反例：坠机调查"><span data-illus="c01-eg-crash"></span>
+    <p>民航业调查事故的做法正好相反。每出一次事故，调查员都要找回飞行记录器、拼回残骸，弄清飞机为什么没能安全落地。</p>
+    <p>失败的那一半被一架一架数进来，从这些调查里得出的改进，才没有被筛子骗过。</p></div>
+
+  <!-- ===== 3 ===== -->
+  <div class="vl-sec"><h2>街上的老房子为什么都那么结实</h2></div>
+
+  <p>筛子不一定是战场，时间也会筛。走进一座老城，百年前的房子还稳稳立着，人们常常感叹那时候的房子盖得结实。下面这条街是示意：一百年前的同一年，街上盖起了二十四栋房子，砖房、木房和泥坯房都有。</p>
+
+  <div class="vl-board c1-board" id="c1-house-board">
+    <h3>一百年后，街上还剩下什么？</h3>
+    <p class="vl-try" data-try="house-100" data-done="完成！一百年后还站着的房子，几乎全是砖房。这条街上的“老房子都结实”，是时间筛出来的。">把时间拖到一百年，看还站着的房子里砖房占几成。</p>
+    <svg class="c1-svg" id="c1-street" viewBox="0 0 600 236" role="img" aria-label="一条街上的二十四栋房子"></svg>
+    <div class="c1-legend" aria-hidden="true">
+      <span><svg viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="11" fill="#c25b45"/><path d="M2 9 H16 M2 13 H16" stroke="#f1d6c8" stroke-width="1"/></svg>砖房</span>
+      <span><svg viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="11" fill="#c48a52"/><path d="M6 5 V16 M10 5 V16 M14 5 V16" stroke="#8a5e34" stroke-width="1"/></svg>木房</span>
+      <span><svg viewBox="0 0 18 18"><rect x="2" y="5" width="14" height="11" rx="2" fill="#d8b98c"/></svg>泥坯房</span>
+      <span><svg viewBox="0 0 18 18"><path d="M3 16 V8 L9 3 L15 8 V16" fill="none" stroke="#55607a" stroke-width="1.5" stroke-dasharray="3 2"/></svg>已经倒掉的</span>
+    </div>
+    <label class="vl-ctl">过了多少年 <output id="c1-yr">0 年</output><input type="range" id="c1-yrs" min="0" max="100" step="5" value="0"></label>
+    <div class="c1-ends" aria-hidden="true"><span>刚盖好</span><span>一百年后</span></div>
+    <div class="c1-bars">
+      <span>刚盖好时，砖房占</span><div class="c1-bar" aria-hidden="true"><i id="c1-bar0"></i></div><output id="c1-v0">25%</output>
+      <span>街上还站着的，砖房占</span><div class="c1-bar" aria-hidden="true"><i id="c1-bar1"></i></div><output id="c1-v1">25%</output>
+    </div>
+    <div class="c1-row">
+      <button type="button" class="vl-chip" id="c1-ghost" aria-pressed="true">显示已经倒掉的房子</button>
+      <button type="button" class="vl-btn alt" id="c1-hreset">重来</button>
+    </div>
+    <p class="vl-msg" id="c1-hmsg" aria-live="polite">拖动滑块，让时间往前走。</p>
+  </div>
+
+  <p>刚盖好时，砖房只占四分之一。一百年后，还站着的七栋里有六栋是砖房，像是那个年代的人只会盖结实的房子。当年的木房和泥坯房其实更多，它们早被拆掉、烧掉或者塌掉了，今天走在街上的人看不见它们，也就不会把它们算进“老房子”里。</p>
+
+  <!-- ===== 4 ===== -->
+  <div class="vl-sec"><h2>一千万张选票里的选择偏差</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-digest"></span>
+    <div>
+      <p>飞机和房子，都被“淘汰”筛过一遍。更多的时候，筛子藏在收集数据的办法里。1936 年美国总统大选之前，《文学文摘》杂志照着电话簿、汽车登记名单和自家的订户名录，寄出了约一千万张模拟选票。</p>
+      <p>收回来的两百多万张选票显示，共和党人兰登会击败在任总统罗斯福。结果罗斯福以压倒性优势连任。同一年，盖洛普只调查了几万人，却猜对了赢家。</p>
+    </div>
+  </div>
+
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">两百多万张回信，为什么输给了几万人的调查？</p>
+    <ul class="vl-opts">
+      <li>回信太多，统计时算错了<span class="vl-fb">数目没有算错。问题出在回信的是哪些人。</span></li>
+      <li data-right>名单上和回信的人，本来就和全体选民不一样<span class="vl-fb">对。名单偏向有电话、有汽车、订杂志的人，愿意回信的又是更急着表态的人。</span></li>
+      <li>很多选民在选票上故意说了反话<span class="vl-fb">盖洛普问到的人同样可能说谎，它却猜对了。</span></li>
+    </ul>
+    <div class="vl-ans"><div class="vl-withimg"><span data-illus="c01-digest-list"></span><div>1936 年正值大萧条，有电话、有汽车的家庭比一般人宽裕，更倾向兰登。后来的研究者重新分析数据，认为谁愿意回信影响更大，最不满罗斯福的人最急着把选票寄回去。两种解释都指向一点：样本到手之前已经被筛过了。</div></div></div>
+  </div>
+
+  <p>样本是怎么来的，决定了它能代表谁。名单只覆盖一部分人，或者只有一部分人愿意回答，样本就和全体悄悄错开了。这种在收集路上被一道规则筛过的偏差，统计学里叫作<span class="vl-cn">选择偏差</span>。幸存者偏差是它的一种，筛子恰好是“活下来”。</p>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">选择偏差</p>
+    <p class="vl-cc-en">Selection bias</p>
+    <p class="vl-cc-plain">问到的人不是随便挑的，答案就代表不了所有人。</p>
+    <p class="vl-cc-def">样本进入数据的方式和要研究的结果有关，样本因此代表不了全体，结论随之跑偏。</p>
+    <p class="vl-cc-eg">《文学文摘》照着名录寄出的一千万张选票。</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-sel"></span></div>
+  </aside>
+
+  <!-- ===== 5 ===== -->
+  <div class="vl-sec"><h2>筛子藏在名单、报名和门槛里</h2></div>
+
+  <p>每拿到一份数据，都值得先问一句：这些样本是怎么来到这里的？筛子的来路大致有四种（见<a data-figref="c1-fig-tree" href="#c1-fig-tree">图</a>）。前两种已经见过，后两种在日常生活里更常碰到。</p>
+
+  <figure class="vl-fig" id="c1-fig-tree" data-diagram="tree">
+    <script type="application/json">{"root":{"name":"样本怎么来的","eg":"拿到数据先问这句","children":[
+      {"name":"淘汰剩下","eg":"返航的飞机、老房子","info":"<b>淘汰剩下</b>：失败的那些已经消失了，这就是幸存者偏差。"},
+      {"name":"只问名单上","eg":"电话簿上的人","info":"<b>只问名单上</b>：名单之外的人根本没有机会被问到。"},
+      {"name":"自己报名","eg":"主动写评论的人","info":"<b>自己报名</b>：进不进样本由样本自己决定，最想说话的人说得最多。"},
+      {"name":"门槛挑选","eg":"被球队选中的人","info":"<b>门槛挑选</b>：进门的条件被误读成了进门之后的结果。"}]}}</script>
+    <figcaption>四种筛子来路不同，后果一样：样本和全体错开，结论跟着跑偏。</figcaption>
+  </figure>
+
+  <p>第三种筛子握在样本自己手里。网上的餐馆评分，来自吃完愿意花时间打分的那些人；这种由样本自己决定进不进来的筛法，叫作<span class="vl-cn">自选择</span>。第四种是一道门槛，只放符合条件的人进来，门里的人看上去就都带着那个条件。</p>
+
+  <div class="vl-eg" data-t="篮球让人长高？"><span data-illus="c01-eg2-basket"></span>
+    <p>职业篮球队员个个很高，这并不说明打篮球让人长高。球队挑人时就把个子高的挑了进去，矮个子早在选拔那一关就被筛掉了。</p>
+    <p>身高是进门的条件，被误读成了训练的结果。</p></div>
+  <div class="vl-eg" data-t="网上的评分"><span data-illus="c01-eg2-review"></span>
+    <p>一家餐馆的评分里，五星和一星特别多，三星很少。大多数吃得还行的客人吃完就走，懒得打分；愿意花时间写评论的，多是特别满意或特别生气的人。</p>
+    <p>评分反映的是这两拨人，代表不了全部客人。</p></div>
+  <div class="vl-eg bad" data-t="反例：抽签分组"><span data-illus="c01-eg2-lottery"></span>
+    <p>检验一种新药时，研究者用抽签决定谁吃药、谁吃安慰剂。病人自己选不了组，医生也挑不了人，两组人在年龄、病情上就差不多。</p>
+    <p>之后两组出现差别，才能算到药的头上。抽签拆掉的，就是那道看不见的筛子。</p></div>
+
+  <!-- ===== 6 ===== -->
+  <div class="vl-sec"><h2>辍学的富豪只占了四格中的一格</h2></div>
+
+  <p>回到书店里的那些成功经验。比尔·盖茨、史蒂夫·乔布斯、马克·扎克伯格都没读完大学，于是有人说退学创业更容易成功。把所有人按“退没退学”和“成没成功”分成四格，就能看出这条结论站在哪里（见<a data-figref="c1-fig-quad" href="#c1-fig-quad">图</a>）。</p>
+
+  <figure class="vl-fig" id="c1-fig-quad" data-diagram="quadrant">
+    <script type="application/json">{
+      "x":{"name":"读没读完大学","lo":"读完了","hi":"退学了"},
+      "y":{"name":"结果","lo":"没成功","hi":"成功了"},
+      "quads":[
+        {"name":"读完成功","eg":"少有人写","info":"<b>读完、成功</b>：人数不少，可“读完大学再创业”不算新闻。"},
+        {"name":"退学成功","eg":"盖茨、乔布斯","info":"<b>退学、成功</b>：书和新闻几乎只写这一格。"},
+        {"name":"读完失败","eg":"没人稀奇","info":"<b>读完、没成功</b>：最普通的经历，没有人会去采访。"},
+        {"name":"退学失败","eg":"没人采访","info":"<b>退学、没成功</b>：判断退学好不好，最需要这一格，可它几乎从不出现。"}]}</script>
+    <figcaption>传奇故事只填满右上一格，要比较两种选择的成败，四格都得有人数。</figcaption>
+  </figure>
+
+  <p>只看右上角，退学和成功好像形影不离。要判断退学有没有帮助，得拿退学的人里成功的比例，去比读完大学的人里成功的比例。右下那一格的人几乎从不出现在书里和新闻里，少了他们，这个比例就算不出来。</p>
+
+  <div class="vl-why">
+    <h3>被挑过的样本，会把挑选的规则说成规律</h3>
+    <div class="vl-why-fig"><span data-illus="c01-why-grid"></span></div>
+    <p>一份样本如果是按某个条件挑出来的，这个条件就会在样本里显得格外普遍。飞机按“要害没中弹”被挑了出来，于是要害显得很少中弹；房子按“足够结实”被挑了出来，于是老房子显得都很结实。看上去的规律，有一部分只是挑选的规则在说话。</p>
+    <p>经济学家詹姆斯·赫克曼研究怎样在样本被挑选过的情况下，仍然得出可靠的结论，2000 年因此获得诺贝尔经济学奖。他的办法要把“谁会进入样本”本身也写进模型，也就是把筛子画出来。</p>
+    <p class="vl-src">出处：赫克曼关于样本选择偏差的研究，2000 年诺贝尔经济学奖。验证：上面的飞机装甲台和老房子街。</p>
+  </div>
+
+  <details class="vl-side" data-kind="math">
+    <summary><b>瓦尔德怎样估计看不见的飞机？</b><small>只用面积和弹孔数的一笔小账，可以跳过。</small></summary>
+    <p>设想子弹大致均匀地打在飞机上，引擎占全机面积的八分之一，那么一百发子弹里应有十二三发打在引擎上。如果返航的飞机上只数到四发，少掉的那八九发去了哪里？它们打中的飞机没能飞回来。（数字是示意。）</p>
+    <p>瓦尔德的报告把这笔账写成了一套计算方法，能从返航飞机的弹孔，反推各个部位中弹后被击落的可能性。核心还是这一步：用“该有多少”和“实际有多少”的差，去估计看不见的那一部分。</p>
+  </details>
+
+  <!-- ===== 7 ===== -->
+  <div class="vl-sec"><h2>成功者的经验还值得听吗</h2></div>
+
+  <div class="vl-withimg">
+    <span data-illus="c01-reflect"></span>
+    <div>
+      <p>读到这里，很容易走到另一头：既然成功故事都被筛过，干脆一个也不听。幸存者偏差说的只是，单凭成功者的故事，判断不了一个做法让人成功的机会有多大。</p>
+      <p>故事里的具体技巧、走过的弯路，仍然可能有用，只是要拿失败者的经历对照着看。</p>
+    </div>
+  </div>
+
+  <div class="vl-misc">
+    <p><b>常见误区</b></p>
+    <p><b>“样本越大，偏差越小。”</b>《文学文摘》收回两百多万张选票，照样猜错。人多只能减少随机的误差，筛子造成的偏差不会因为人多而消失。</p>
+    <p><b>“幸存者偏差说明成功全靠运气。”</b>它只说明，看不到失败者时，判断不了某个做法起了多大作用。做法也许真的有用，要拿对照去查。</p>
+  </div>
+
+  <div class="vl-philo" data-key="c1-philo1">
+    <div class="vl-philo-slide" data-t="问题">
+      <p class="vl-philo-q">读一本成功者的自传，能学到东西吗？</p>
+      <div class="vl-vote" data-options="能|不能|看怎么读"></div>
+    </div>
+    <div class="vl-philo-slide" data-t="故事证明了“可能”">
+      <div class="vl-withimg"><span data-illus="c01-philo-path"></span><div>
+      <p>成功故事至少说明一件事做得到。一个从没有人走通的方向，有人走通了，这本身就是信息。持这种看法的人认为，故事给人的是可能性和方法，从来就不负责告诉人成功的概率。</p></div></div>
+      <p class="vl-src">常见于创业者和传记作者的看法</p>
+    </div>
+    <div class="vl-philo-slide" data-t="沉默的证据">
+      <p>塔勒布提醒，只读幸存者的叙述，人会高估自己成功的机会，也会把运气错当成本事。墓地里的人不会写书，他们的教训就没有人读到。</p>
+      <p class="vl-src">纳西姆·塔勒布，《黑天鹅》，2007</p>
+    </div>
+    <div class="vl-philo-slide" data-t="先补齐四格">
+      <div class="vl-withimg"><span data-illus="c01-philo-count"></span><div>
+      <p>统计学的回答是先把四格补齐：既看成功者做了什么，也去查做了同样事的人里有多少失败了。故事可以读，结论要等数完人数再下。</p></div></div>
+      <p class="vl-src">统计学里对照比较的思路，也是赫克曼等人处理选择偏差的出发点</p>
+    </div>
+    <div class="vl-philo-slide" data-t="留给你">
+      <p>想一条身边流传的成功经验。它看不见的那一半是谁？</p>
+      <textarea class="vl-note" data-save="philo1" placeholder="我听过的一条成功经验是……，它看不见的那一半是……"></textarea>
+    </div>
+  </div>
+
+  <div class="vl-key"><p><b>要点</b></p><ul>
+    <li>只看筛剩下的样本，会把筛子的规则当成规律。</li>
+    <li>返航飞机上弹孔少的地方，恰恰是中弹后回不来的地方。</li>
+    <li>样本怎么来的，决定了它能代表谁；人再多，也补不回被筛掉的那部分。</li>
+    <li>判断一个做法有没有用，要把做了、没做、成功、失败四格都数到。</li>
+  </ul></div>
+  <p class="vl-tldr"><b>一句话</b>下结论之前，先问被筛掉的那一半在哪里。</p>
+
+  <!-- ===== 8 ===== -->
+  <div class="vl-sec"><h2>练习</h2></div>
+  <div id="c1-quiz"></div>
+
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/diagrams.js"></script>
+<script src="kit/illus.js"></script>
+<script src="kit/vl-interact.js"></script>
+<script src="js/illus-ch01.js"></script>
+<script>
+/* ===== 招牌互动：两块装甲加在哪里 ===== */
+(function () {
+  const P = VL.illus.kit.paper, PL = window.c01Plane, G = PL.G;
+  const svg = document.getElementById("c1-plane"), msg = document.getElementById("c1-msg"), read = document.getElementById("c1-read");
+  const lostBtn = document.getElementById("c1-lost"), chips = Array.from(document.querySelectorAll(".c1-zc"));
+  const NAME = { cockpit: "驾驶舱", engine: "引擎", wing: "机翼", body: "机身", tail: "尾翼" };
+  const LOSS = { engine: .6, cockpit: .7, tail: .05, body: .03, wing: .02 }, ARMOR = .2, SEED = 7, N = 100;
+  // 放飞一批：同一颗种子 = 同一批子弹，只有装甲不同
+  function fly(armor) {
+    const r = VL.rng(SEED), planes = [];
+    for (let i = 0; i < N; i++) {
+      const n = 2 + Math.floor(r() * 3), hits = []; let ok = true;
+      for (let h = 0; h < n; h++) {
+        let x, y, z; do { x = 30 + r() * 540; y = 20 + r() * 320; z = G.zone(x, y); } while (!z);
+        let p = LOSS[z]; if (armor.indexOf(z) >= 0) p *= ARMOR;
+        if (r() < p) ok = false;
+        hits.push([x, y, z]);
+      }
+      planes.push({ ok, hits });
+    }
+    return planes;
+  }
+  const base = fly([]), baseBack = base.filter(p => p.ok).length;
+  let armor = [], res = null, showLost = false;
+  const W = s => '<g stroke="none">' + s + "</g>";
+  // 每个部位的形状（点击区与装甲贴片共用）
+  const capTop = "M282 104 L282 48 A18 18 0 0 1 318 48 L318 104 Z", capBody = "M282 104 L318 104 L318 288 L282 288 Z", capTail = "M282 288 L318 288 L318 312 A18 18 0 0 1 282 312 Z";
+  const poly = pts => "M" + pts.map(p => p.join(" ")).join(" L") + " Z";
+  const ell = e => "M" + (e[0] - G.erx) + " " + e[1] + " a" + G.erx + " " + G.ery + " 0 1 0 " + 2 * G.erx + " 0 a" + G.erx + " " + G.ery + " 0 1 0 " + -2 * G.erx + " 0 Z";
+  const SHAPE = { cockpit: capTop, body: capBody, tail: capTail + " " + poly(G.SL) + " " + poly(G.SR), wing: poly(G.WL) + " " + poly(G.WR), engine: ell(G.eng[0]) + " " + ell(G.eng[1]) };
+  const ORDER = ["wing", "tail", "body", "cockpit", "engine"];
+  const defs = '<defs><pattern id="c1-steel" patternUnits="userSpaceOnUse" width="14" height="14" patternTransform="rotate(40)"><rect width="14" height="14" fill="#7b8396"/><rect width="5" height="14" fill="#9aa1b1"/></pattern></defs>';
+  function draw() {
+    const planes = res || base;
+    let s = defs + W(P.rect(4, 4, 592, 352, "#e4f1f8", { r: 8, wob: 0, sheen: false })) + W(PL.planeTop(P, 300, 180, 1, { lift: 2 }));
+    armor.forEach(z => { s += '<path d="' + SHAPE[z] + '" fill="url(#c1-steel)" opacity=".92" stroke="#4b5263" stroke-width="2"/>'; });
+    planes.forEach(p => { if (p.ok) p.hits.forEach(h => { s += PL.hole(h[0], h[1], 4); }); });
+    if (showLost && res) res.forEach(p => { if (!p.ok) p.hits.forEach(h => { s += PL.cross(h[0], h[1], 5.5); }); });
+    ORDER.forEach(z => { s += '<path class="c1-z" data-z="' + z + '" d="' + SHAPE[z] + '" fill="transparent" stroke="none"/>'; });
+    svg.innerHTML = s;
+    svg.setAttribute("aria-label", "俯视的轰炸机。" + (armor.length ? "装甲加在" + armor.map(z => NAME[z]).join("、") + "。" : "还没有加装甲。") +
+      (res ? "这一批飞回来 " + res.filter(p => p.ok).length + " 架。" : "图上是上一批飞回来的 " + baseBack + " 架飞机的弹孔，机翼和机身最密，引擎和驾驶舱几乎没有。") + (showLost ? "红色叉号是没回来的飞机的弹孔，大多在引擎和驾驶舱。" : ""));
+    chips.forEach(c => c.setAttribute("aria-pressed", String(armor.indexOf(c.dataset.z) >= 0)));
+    lostBtn.disabled = !res; lostBtn.setAttribute("aria-pressed", String(showLost));
+    read.innerHTML = res ? "飞回来 <b>" + res.filter(p => p.ok).length + "</b> / 100 架" : "上一批：飞回来 <b>" + baseBack + "</b> / 100 架（没有装甲）";
+  }
+  const share = (planes, ok) => { let a = 0, b = 0; planes.forEach(p => { if (p.ok === ok) p.hits.forEach(h => { b++; if (h[2] === "engine" || h[2] === "cockpit") a++; }); }); return b ? Math.round(a / b * 100) : 0; };
+  function toggle(z) {
+    const i = armor.indexOf(z);
+    if (i >= 0) armor.splice(i, 1);
+    else if (armor.length >= 2) { msg.textContent = "装甲只有两块。先点掉一块，再换到" + NAME[z] + "。"; VL.shake(document.querySelector('.c1-zc[data-z="' + z + '"]')); return; }
+    else armor.push(z);
+    res = null; showLost = false;
+    msg.textContent = armor.length ? "装甲加在" + armor.map(n => NAME[n]).join("、") + "。点“放飞 100 架”看看这批能回来几架。" : "点下面的部位，把装甲装上去。";
+    draw();
+  }
+  chips.forEach(c => c.addEventListener("click", () => toggle(c.dataset.z)));
+  svg.addEventListener("click", e => { const t = e.target.closest(".c1-z"); if (t) toggle(t.dataset.z); });
+  document.getElementById("c1-fly").addEventListener("click", () => {
+    if (!armor.length) { msg.textContent = "先选一两处装上装甲，再放飞。"; VL.shake(document.getElementById("c1-fly")); return; }
+    res = fly(armor);
+    const back = res.filter(p => p.ok).length, d = back - baseBack;
+    const best = armor.length === 2 && armor.indexOf("engine") >= 0 && armor.indexOf("cockpit") >= 0;
+    msg.textContent = "装甲在" + armor.map(n => NAME[n]).join("、") + "：飞回来 " + back + " 架，比不加装甲" + (d > 0 ? "多 " + d + " 架" : "一样多") + "。" +
+      (best ? "两块装甲能做到的最好结果就是这样。" : "再打开“看没回来的飞机”，看看它们伤在哪里。");
+    if (best) VL.tryDone("plane-best");
+    draw();
+  });
+  lostBtn.addEventListener("click", () => {
+    if (!res) return;
+    showLost = !showLost;
+    if (showLost) {
+      msg.textContent = "没回来的飞机身上，" + share(res, false) + "% 的弹孔打在引擎和驾驶舱；飞回来的飞机身上，这个比例只有 " + share(res, true) + "%。";
+      VL.tryDone("plane-lost");
+    }
+    draw();
+  });
+  document.getElementById("c1-reset").addEventListener("click", () => { armor = []; res = null; showLost = false; msg.textContent = "点下面的部位，把装甲装上去。"; draw(); });
+  msg.textContent = "这是上一批 100 架里飞回来的 " + baseBack + " 架，弹孔叠在一张图上。点下面的部位，把两块装甲装上去。";
+  draw();
+})();
+
+/* ===== 辅助互动：时间这道筛子 ===== */
+(function () {
+  const P = VL.illus.kit.paper, svg = document.getElementById("c1-street"), yrs = document.getElementById("c1-yrs"), out = document.getElementById("c1-yr");
+  const msg = document.getElementById("c1-hmsg"), ghostBtn = document.getElementById("c1-ghost");
+  const r = VL.rng(1925), H = [];
+  for (let i = 0; i < 6; i++) H.push({ t: "brick", L: 95 + r() * 110 });
+  for (let i = 0; i < 10; i++) H.push({ t: "wood", L: 25 + r() * 80 });
+  for (let i = 0; i < 8; i++) H.push({ t: "mud", L: 15 + r() * 55 });
+  // 打乱位置（同样用种子，首屏固定）
+  const r2 = VL.rng(36); for (let i = H.length - 1; i > 0; i--) { const j = Math.floor(r2() * (i + 1)); [H[i], H[j]] = [H[j], H[i]]; }
+  const COL = { brick: "#c25b45", wood: "#c48a52", mud: "#d8b98c" }, HT = { brick: 40, wood: 34, mud: 28 };
+  let ghosts = true;
+  const W = s => '<g stroke="none">' + s + "</g>";
+  function house(h, x, gy, up) {
+    const w = 36, ht = HT[h.t], c = COL[h.t], top = gy - ht;
+    if (!up) {
+      const ghost = ghosts ? '<path d="M' + x + " " + gy + " L" + x + " " + top + " L" + (x + w / 2) + " " + (top - 16) + " L" + (x + w) + " " + top + " L" + (x + w) + " " + gy + '" fill="none" stroke="#55607a" stroke-width="1.5" stroke-dasharray="4 3"/>' : "";
+      return ghost + W(P.cut(P.blob([[x + 2, gy], [x + 8, gy - 6], [x + 18, gy - 9], [x + 28, gy - 5], [x + 34, gy]], P.shade(c, -.15), { wob: .4 }), 1));
+    }
+    let s = P.rect(x, top, w, ht, c, { wob: .2 }) + P.poly([[x - 3, top + 1], [x + w / 2, top - 16], [x + w + 3, top + 1]], P.shade(c, -.28), { wob: .2 });
+    if (h.t === "brick") s += P.strip("M" + (x + 2) + " " + (top + 10) + " L" + (x + w - 2) + " " + (top + 10) + " M" + (x + 2) + " " + (top + 20) + " L" + (x + w - 2) + " " + (top + 20) + " M" + (x + 2) + " " + (top + 30) + " L" + (x + w - 2) + " " + (top + 30), "#f1d6c8", 1, { tex: false });
+    if (h.t === "wood") s += P.strip("M" + (x + 9) + " " + (top + 2) + " L" + (x + 9) + " " + gy + " M" + (x + 18) + " " + (top + 2) + " L" + (x + 18) + " " + gy + " M" + (x + 27) + " " + (top + 2) + " L" + (x + 27) + " " + gy, P.shade(c, -.2), 1, { tex: false });
+    s += P.rect(x + 13, gy - 13, 10, 13, "#5a4030", { wob: 0, sheen: false });
+    return W(P.cut(s, 1));
+  }
+  function draw() {
+    const y = +yrs.value, up = H.map(h => h.L > y), n = up.filter(Boolean).length, b = H.filter((h, i) => up[i] && h.t === "brick").length, pc = n ? Math.round(b / n * 100) : 0;
+    let s = W(P.rect(0, 0, 600, 236, "#e4f1f8", { wob: 0, sheen: false }));
+    [104, 222].forEach(gy => { s += W(P.rect(0, gy, 600, 12, "#cfc6b4", { wob: 0, sheen: false })); });
+    H.forEach((h, i) => { const row = i < 12 ? 0 : 1, x = 13 + (i % 12) * 48.5, gy = row ? 222 : 104; s += house(h, x, gy, up[i]); });
+    svg.innerHTML = s;
+    svg.setAttribute("aria-label", "一条街上一百年前同时盖起的二十四栋房子。过了 " + y + " 年，还站着 " + n + " 栋，其中砖房 " + b + " 栋。");
+    out.textContent = y + " 年";
+    document.getElementById("c1-bar0").style.width = "25%";
+    document.getElementById("c1-bar1").style.width = pc + "%";
+    document.getElementById("c1-v1").textContent = pc + "%";
+    if (y > 0) msg.textContent = "过了 " + y + " 年：二十四栋里还站着 " + n + " 栋，砖房 " + b + " 栋。" + (y >= 100 ? "走在今天的街上，看到的几乎全是砖房。" : "");
+    if (y >= 100) VL.tryDone("house-100");
+  }
+  yrs.addEventListener("input", draw);
+  ghostBtn.addEventListener("click", () => { ghosts = !ghosts; ghostBtn.setAttribute("aria-pressed", String(ghosts)); draw(); });
+  document.getElementById("c1-hreset").addEventListener("click", () => { yrs.value = 0; ghosts = true; ghostBtn.setAttribute("aria-pressed", "true"); msg.textContent = "拖动滑块，让时间往前走。"; draw(); });
+  draw();
+})();
+
+/* ===== 练习 ===== */
+VL.quiz("#c1-quiz", [
+  { q: "一位老师说：“我教过的学生里，考上名校的都爱做错题本，所以做错题本能让人考上名校。”这个推理最大的漏洞是什么？",
+    opts: ["没去数那些也做错题本、却没考上名校的学生", "做错题本的学生人数太少，不够拿来统计", "名校每年的录取分数线都在变来变去"], a: 0,
+    why: "老师只看了考上名校的那一格。要判断错题本有没有用，得比较做错题本的人和不做的人里，各有多少考上了。" },
+  { q: "返航飞机的引擎上几乎没有弹孔，最合理的解释是哪一个？",
+    opts: ["引擎中弹的飞机，大多没能飞回来", "敌人开火时很少瞄准飞机的引擎", "引擎外壳太硬，子弹根本打不进去"], a: 0,
+    why: "子弹不会刻意避开引擎。引擎上看不到弹孔，是因为引擎中弹的飞机已经被战场筛掉了。" },
+  { q: "瓦尔德的分析为什么在当时非有不可？",
+    opts: ["装甲很重只能加几处，手头却只有返航飞机的数据", "当时的军队还没有记录弹孔位置的办法", "当时的飞机太轻，一块装甲也加不上去"], a: 0,
+    why: "装甲必须省着用，直觉会照着弹孔最密的地方去加。数据本身被筛过，不看穿这一点，装甲就会加错地方。" },
+  { q: "《文学文摘》收回两百多万张选票却猜错了，换哪种做法最能避开它的错误？",
+    opts: ["从全体选民里随机抽几千人去问", "再多寄出一千万张模拟选票", "只统计最早寄回来的那一批选票"], a: 0,
+    why: "它的问题是样本被名单和回信意愿筛过，人数再多也补不回来。随机抽样让每个选民都有同样的机会被问到。" },
+  { q: "下面哪项调查最不容易受幸存者偏差影响？",
+    opts: ["把每一起坠机的残骸都找回来分析", "采访十位百岁老人，总结长寿的秘诀", "统计今天还在运作的基金的十年收益"], a: 0,
+    why: "坠机调查专门去看失败的那一半。另外两项都只数了活下来的：长寿老人和没清盘的基金。" },
+]);
+</script>
+</body>
+</html>

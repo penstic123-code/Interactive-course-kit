@@ -1,10 +1,10 @@
 /* 皮肤 pixel · 可选模块的外观（结构在 kit/modules/modules.css）。放在 skin.css 之后。
-   阅读激励 = 卡带收藏册：章邮票换成方角像素卡片，读懂的章盖一个"CLEAR"红章；关系图节点 = 篇色像素方块；闪卡 = 液晶索引卡。声音音色 --vl-snd:chip（芯片音）。 */
+   阅读激励 = 卡带收藏册：章邮票换成方角像素卡片，读懂的章盖一个"CLEAR"红章；关系图节点 = 篇色像素方块；闪卡 = 液晶索引卡。声音音色 --vl-snd:square（方波芯片音）。 */
 /* 皮肤 notebook · 可选模块的外观（结构在 kit/modules/modules.css）。放在 skin.css 之后。
    阅读激励 = 集邮册 + 盖章：章邮票是带齿孔的小纸片，读懂的章盖一枚红色邮戳"读懂了"；图鉴格是本子上画的方格，没得的是灰剪影。
    关系图节点 = 篇色便利贴；陪伴角色 = 贴在页角的贴纸；闪卡 = 横线索引卡。声音音色 = 纸和铅笔（--vl-snd:paper）。 */
 /* --ink 定义在 body 上，所以引用它的变量也写在 body 上（写在 :root 会解析成无效值，线就不见了） */
-:root{--vl-snd:chip}
+:root{--vl-snd:square}
 body{--vl-red:#a3283f;--vl-e1:var(--ink);--vl-e2:var(--q2);--vl-e3:var(--q3);--vl-e4:var(--q5)}
 html[data-scheme="dark"] body{--vl-red:#ff9aa8;--vl-e2:#ffb070;--vl-e3:#a8e07a;--vl-e4:#ff9aa8}
 

@@ -95,7 +95,7 @@ Commons 上搜英文关键词 + 年份最快；人物先找"File:人名.jpg"，�
 
 `SKILL.md` 规定：每 1–2 段正文就有一个视觉，两个视觉之间的正文不超过约 300 字，框里的文字也算。检查方法：
 
-1. **自动扫**：`node <skill>/tools/check.mjs <课程绝对路径> --fast` 的第 3 步。它按源码顺序扫 `<main>`，累加正文字数（框里的文字也算；英文按词数 × 1.5 折成字），遇到视觉清零，两个视觉之间超过 300 字就报。算作视觉的：`img svg canvas figure video iframe` 标签、`data-illus`、`data-diagram`、类名 `vl-board vl-dg vl-fig vl-eg vl-cc-fig vl-illus vl-photo vl-comic`。默认收起的 `details`（发明故事框、支线）不计入，脚本跳过它们；但展开后的内文同样要满足“框也算正文”，靠截图展开后人眼查。脚本生成的内容（页面 JS 里拼的 HTML）它看不到，那部分靠截图人眼看。
+1. **自动扫**：`node <skill>/tools/check.mjs <课程绝对路径> --fast` 的第 3 步。它按源码顺序扫 `<main>`，累加正文字数（框里的文字也算；英文按词数 × 1.5 折成字），遇到视觉清零，两个视觉之间超过 300 字就报。算作视觉的：`img svg canvas figure video iframe` 标签、`data-illus`、`data-diagram`、类名 `vl-board vl-dg vl-fig vl-eg vl-cc-fig vl-illus vl-photo vl-comic`，以及小互动 `vl-guess vl-flip vl-philo vl-hot`（先猜后揭晓、翻牌、立场卡、热区）。默认收起的 `details`（发明故事框、支线）不计入，脚本跳过它们；但展开后的内文同样要满足“框也算正文”，靠截图展开后人眼查。脚本生成的内容（页面 JS 里拼的 HTML）它看不到，那部分靠截图人眼看。
 2. **配比**：数一章里图解、插画 / 照片 / 例子、互动各几个，大致 1/3 : 1/2 : 其余（数学多的课图解多，历史多的课照片多）。
 3. **相邻**：列出视觉序列，查有没有两张静态图解紧挨着（中间要隔插画、例子或互动）。
 4. **重复**：全课 grep `data-illus="…"` 和 `img src`，同一个名字出现两次就是重复用图。
