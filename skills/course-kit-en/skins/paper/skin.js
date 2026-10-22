@@ -491,7 +491,7 @@
     person: (x, y, o) => { const c = conv(x, y, o); return wrap(paperPerson(c.X, c.Y, c.p)); },
     hands: (x, y, o) => { const k = personK, c = conv(x, y, Object.assign({}, o, { outfit: false })); personK = k; return handPts(c); },
     feetY: (x, y, o) => y + 64 * ((o && o.s) || 1),
-    ground: (y) => { y = y || 126; let top = [[-14, 170], [-10, y]]; for (let x = -4, i = 0; x <= 206; x += 11, i++) top.push([x, y - (i % 2 ? 1.9 : 0)]); top.push([212, y], [214, 170]);
+    ground: (y) => { y = y || 126; const yb = Math.max(170, y + 30); let top = [[-14, yb], [-10, y]]; for (let x = -4, i = 0; x <= 206; x += 11, i++) top.push([x, y - (i % 2 ? 1.9 : 0)]); top.push([212, y], [214, yb]);
       return wrap('<g class="pp-bg">' + cut(blob(top, PAL.meadow, { wob: 0 }), 1) + tuft(20, y + 8, .8) + tuft(176, y + 9, .8) + "</g>"); },
     item: (kind, x, y) => wrap(cut(item(kind, x, y, 1.5), 2)),
     // 手里的东西：画物件，再把两只手压在物件两侧，手才是真的握住

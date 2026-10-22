@@ -84,8 +84,8 @@ window.VL_I18N = { zh: { "cc.tag": "关键词" }, en: { "cc.tag": "Key idea" } }
 VL.illus.add("c02-hero", "alt：画面里有什么", k => k.ground() + k.person(60, 63, { arms: "hold", look: 1 }) + k.holding(60, 63, { look: 1 }, "phone"),
                                              k => k.T(150, 30, 14, "再来一局", "middle"));   // 第 4 参：文字层（滤镜组外）
 VL.illus.svg(name)   VL.illus.mount(根节点)   VL.illus.lib
-// 竖版或别的比例：第 5 参 { vb: "0 0 140 200" }（默认 "0 0 200 140"）；坐标按新画布算，地面 y 自己给 k.ground(y)
-VL.illus.add("c02-face", "alt", k => k.ground(186) + k.person(70, 123, { s: 1.3 }), "", { vb: "0 0 140 200" });
+// 竖版或别的比例：第 5 参 { vb: "0 0 140 200" }（默认 "0 0 200 140"）；坐标按新画布算，地面 y 自己给 k.ground(y)；人物脚底 = y + 64·s，放大 s 让人占满画面
+VL.illus.add("c02-face", "alt", k => k.ground(186) + k.person(70, 58, { s: 2 }), "", { vb: "0 0 140 200" });
 ```
 `k`（= `VL.illus.kit`）：`person(x,y,o)`、`hands(x,y,o)`（两手坐标）、`holding(x,y,o,物件)`（物件画在两手之间）、`feetY(x,y,o)`、`ground(y=126)`、`T(x,y,字号,文字,anchor)`、`eye`、`bubble(x,y,w,h,[尾尖x,尾尖y])`、`arrow(x1,y1,x2,y2)`、`item(种类,x,y)`（book box cup phone die star coin）、`C`（配色）、`reset()`。
 `person` 参数：`s` 比例；`arms` stand none up cover point hold wave chin throw club desk；`legs` stand run walk sit wide none；`face` smile grin sad flat shout o wide closed；`look` −1/0/1；`flip`；`hat` cap beanie tophat crown wizard；`hair` `glasses` `beard` `tie` `cape` `shirt`；`outfit:false`；`chair:false`；`floor`。
