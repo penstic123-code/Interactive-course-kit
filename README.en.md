@@ -93,7 +93,7 @@ The skill itself comes in Chinese and English editions sharing one codebase. `ne
 
 ## Skins
 
-When a new course starts, the AI first asks which art style you want. Four approved skins ship today; every component and interaction works in all four, so switching skins doesn't touch the text:
+When a new course starts, the AI first asks which art style you want, then asks about readers, length, language and modules, and gives you a knowledge map and chapter table to approve before building anything. Four approved skins ship today; every component and interaction works in all four, so switching skins doesn't touch the text:
 
 | Skin | Look | Suits |
 |---|---|---|

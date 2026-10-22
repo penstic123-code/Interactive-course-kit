@@ -111,8 +111,23 @@ Respect `prefers-reduced-motion` everywhere; the top bar has a three-way motion 
 
 If the user wants a style that isn't listed, explain that only approved skins are used; a new skin starts with one sample chapter for the user to approve (`skin-contract.md` section 5).
 
+**The second thing to ask is the course plan.** Right after the skin, use the question tool to ask four questions at once (multiple choice, one click each):
+
+| Question | Example options |
+|---|---|
+| Who are the readers | Adult beginners / high school / middle school / some background, want depth |
+| How long | Short intro, 5–8 chapters / standard, 15–25 / full, 25+ |
+| Language | Chinese only / Chinese and English / English only |
+| Which modules (multi-select) | Concept map, glossary, flashcards, stamp album, companion (section 5) |
+
+**Then give the user a course plan to approve**; don't generate the skeleton or write chapters until they do:
+- Knowledge map: how many parts, chapters per part, what comes first;
+- Chapter table: one line per chapter on what it teaches, with its 1–3 core concepts marked;
+- What readers can do afterwards (observable).
+Structure is hard to change once rolled out (renumbering remaps the whole course), so ask one question too many rather than one too few.
+
 Then:
-1. Agree topic, readers and parts/chapters with the user (content per `references/content-rules.md`); choose optional modules (section 5).
+1. Write content per `references/content-rules.md`; record readers, length, language and modules in the project doc.
 2. Generate the skeleton with `starter/new-course.mjs <absolute course folder path> <skin name>` (kit, skin, config, contents page, chapter 1 template, project doc template); edit the chapter table and module switches in `js/course.js`.
 3. Make one sample chapter for the user to approve the writing, layout and pacing, then roll out.
 4. Run the checks (section 7) before delivering each chapter; never rely on the report alone.
