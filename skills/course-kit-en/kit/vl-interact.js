@@ -1029,7 +1029,7 @@
      返回 { cells, get(i), mark(i, 类, 开关), reset() }；状态类：is-out 划掉、is-last 刚选、is-hit 命中、is-sel 选中，外观归皮肤。 */
   function cells(root, o) {
     o = o || {}; const n = o.n || 0, cols = o.cols || Math.ceil(Math.sqrt(n)) || 1, lab = o.label || (i => String(i + 1));
-    root.classList.add("vl-cells"); root.style.setProperty("--vl-cols", cols); root.setAttribute("role", "grid"); root.innerHTML = "";
+    root.classList.add("vl-cells"); root.style.setProperty("--vl-cols", cols); root.setAttribute("role", "group"); root.innerHTML = "";
     const list = [];
     for (let i = 0; i < n; i++) {
       const b = doc.createElement("button"); b.type = "button"; b.className = "vl-cell"; b.dataset.i = i;

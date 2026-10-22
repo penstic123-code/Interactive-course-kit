@@ -1,0 +1,43 @@
+/* course-kit · vl-plot.css —— 活图 VL.plot 的样式。按需加载，和 vl-plot.js 成对引入。
+   颜色只用皮肤变量；在 .vl-fig / .vl-cc-fig 里时，皮肤在暗色、护眼配色下已把 --ink 等换成图板色，这里自动跟着走。
+   字号是固定像素（JS 读 --vp-fs / --vp-fs-txt 排版），手机上不缩小。课程要改就在页内覆盖这几个变量。 */
+.vl-plot{
+  --vp-fs:14px;--vp-fs-txt:14px;
+  --vp-ink:var(--ink);--vp-ink2:var(--ink2,var(--ink));
+  --vp-grid:color-mix(in srgb,var(--ink) 14%,transparent);
+  --vp-bg:var(--panel);--vp-hi:var(--accent);
+  --vp-font-num:var(--font-mono,ui-monospace,Consolas,monospace);
+  --vp-font-txt:var(--font-label,system-ui,sans-serif);
+  --vp-line:3px;--vp-bar-stroke:1.5px;
+  display:block;max-width:100%;margin:6px 0;color:var(--vp-ink)}
+.vl-fig .vl-plot,.vl-cc-fig .vl-plot{--vp-bg:var(--plate)}
+.vl-plot-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 16px;margin:0 0 2px;font-family:var(--vp-font-txt);font-size:var(--vp-fs-txt);line-height:1.4;color:var(--vp-ink)}
+.vl-plot-head[hidden],.vl-plot-xlab[hidden]{display:none}
+.vl-plot-ylab:not(:empty)::before{content:"↑ "}
+.vl-plot-key{display:flex;flex-wrap:wrap;gap:2px 14px;margin:0;padding:0;list-style:none}
+.vl-plot-key li{display:inline-flex;align-items:center;gap:6px;margin:0}
+.vl-plot-sw{flex:none;overflow:visible}
+.vl-plot-xlab{text-align:right;font-family:var(--vp-font-txt);font-size:var(--vp-fs-txt);line-height:1.4;color:var(--vp-ink)}
+.vl-plot-xlab:not(:empty)::after{content:" →"}
+.vl-plot-svg{display:block;width:100%;overflow:hidden}
+.vl-plot-svg text{font-family:var(--vp-font-num);font-size:var(--vp-fs);fill:var(--vp-ink2)}
+.vl-plot-svg .vl-plot-val{fill:var(--vp-ink);paint-order:stroke;stroke:var(--vp-bg);stroke-width:4px;stroke-linejoin:round}
+.vl-plot-svg .vl-plot-mark{font-family:var(--vp-font-txt);font-size:var(--vp-fs-txt);fill:var(--vp-ink);font-weight:700;paint-order:stroke;stroke:var(--vp-bg);stroke-width:4px;stroke-linejoin:round}
+.vl-plot-grid{stroke:var(--vp-grid);stroke-width:1}
+.vl-plot-axis{stroke:var(--vp-ink);stroke-width:2;stroke-linecap:square}
+.vl-plot-bar{stroke:var(--vp-ink);stroke-width:var(--vp-bar-stroke)}
+.vl-plot-bar.is-hi{stroke-width:3.5px}
+.vl-plot-hatch{stroke:var(--vp-ink);stroke-width:1.6;opacity:.55}
+.vl-plot-line{fill:none;stroke-width:var(--vp-line);stroke-linejoin:round;stroke-linecap:round}
+.vl-plot-area{opacity:.18;stroke:none}
+.vl-plot-dot{stroke:var(--vp-ink);stroke-width:1.5}
+.vl-plot-dot.is-hi{stroke-width:3}
+.vl-plot-ref{stroke-width:2;stroke-dasharray:5 4;fill:none}
+.vl-plot-mark-pt{fill:var(--vp-bg);stroke-width:3}
+/* 掌机像素：直角、不抗锯齿；VT323 字面小，数字放大一号 */
+.vl-plot[data-skin="pixel"]{--vp-fs:19px;--vp-fs-txt:15px;--vp-bar-stroke:2px}
+.vl-plot[data-skin="pixel"] .vl-plot-svg{shape-rendering:crispEdges}
+.vl-plot[data-skin="pixel"] .vl-plot-line{stroke-linejoin:miter;stroke-linecap:square}
+.vl-plot[data-skin="pixel"] .vl-plot-svg text{shape-rendering:auto}
+@media (max-width:420px){.vl-plot-head{gap:2px 10px}}
+@media print{.vl-plot-svg .vl-plot-val,.vl-plot-svg .vl-plot-mark{stroke:#fff}}

@@ -14,6 +14,7 @@
 | `vl.js` | `</main>` 之后 | 顶栏、分节、轮播、术语、各组件、测验、笔记、翻页 |
 | `diagrams.js` | vl.js 之后 | 12 种概念图解（第九节） |
 | `vl-interact.js` + `vl-interact.css` | vl.js 之后 / `<head>` | 互动组件（第七节）；皮肤外观 `skin/interact.css` |
+| `vl-plot.js` + `vl-plot.css` | vl.js 之后 / `<head>` | 活图 `VL.plot`（第七节"活图"），按需加载 |
 | `modules/*.js` + `modules/modules.css` | 见第八节（`vl-concepts.js` 要在 vl.js 之前） | 可选模块；皮肤外观 `skin/modules.css` |
 | `illus.js` | vl.js 之后 | 插画装载 + 火柴人工具 |
 | `js/illus-chNN.js` | illus.js 之后 | 本章插画包（`VL.illus.add`） |
@@ -400,6 +401,37 @@ const g = VL.cells(document.getElementById("c03-grid"), { n: 100, cols: 10, labe
 g.mark(41, "is-out");   g.mark(41, "is-out", false);   g.reset();   g.get(0);   g.cells
 ```
 状态类：`is-out` 划掉、`is-last` 刚选、`is-hit` 命中、`is-sel` 选中。方向键在格子间走（只有一个格子可 Tab 进入），回车 / 空格选中；格子是 `<button>`，要禁用就设 `disabled`。手机上 10 列每格约 30px，低于 44px 触控标准，格子多时考虑减列。
+
+### 活图 `VL.plot`
+柱状图、折线图（可混排）、分布、增长曲线、对比；滑块一拖就重画。独立模块，按需加载（不用的课不引）：
+```html
+<link rel="stylesheet" href="kit/vl-plot.css">      <!-- <head>，皮肤之后 -->
+<script src="kit/vl-plot.js"></script>              <!-- vl.js 之后、页面脚本之前 -->
+<figure class="vl-fig"><div id="c03-plot"></div><figcaption>……</figcaption></figure>
+```
+```js
+const p = VL.plot("#c03-plot", {
+  type: "bar",                                  // 默认图型 "bar" | "line"；每个系列可用 series[i].type 覆盖（柱 + 线混排）
+  height: 220,                                  // svg 像素高（不含上方纵轴名 / 图例、下方横轴名）
+  x: { label: "猜了几次", n: 11 },               // 类别轴：n 格（或 cats:["一月",…]），格名默认是下标（from: 1 从 1 数起；fmt(i) 自定）
+  y: { label: "剩下几个数", min: 0, max: 100 },   // 不给 min/max 就自动取、扩到好看的数，并含 0（zero:false 不强制含 0）
+  series: [
+    { name: "猜中间", data: [100, 50, 24], labels: true },        // labels：柱顶 / 点上写数值（可传函数格式化）；放不下整组不写
+    { name: "逐个猜", type: "line", data: [100, 99, 98] },        // 第二条线自动虚线 + 方点；dash:false|true|"4 3"，dots:true|false，fill:true 画面积
+  ],
+  marks: [{ y: 50, label: "一半" }, { x: 3, y: 12, label: "你猜的" }, { x: 7, label: "第 7 次" }],   // 横参考线 / 标注点 / 竖参考线
+  hi: 2,                                        // 高亮下标 2 的柱子（或点），也可传数组
+  aria: d => "每猜一次后剩下的数：" + d.series[0].data.join("、"),   // 每次重画都更新 svg 的 aria-label；不给就自动生成
+});
+range.addEventListener("input", () => p.set(newData));            // 数组 = 换第一个系列的数据
+p.set({ series: [{ data: a }, { data: b }], marks: [], hi: null });  // 按下标合并系列（名字、颜色保留）；x / y 也可部分改
+```
+- 返回 `{ el, svg, set(数据或部分配置), draw(), destroy(), opts }`。同一个容器再调 `VL.plot` 等于 `set`。容器是一个空 `<div>`（里面的内容会被换掉），不要传 `<svg>`。
+- 横轴：有柱子或给了 `cats` 就是**类别轴**（数据按下标一格一个，线的点在格子中间）；全是线时是**数值轴**，`data` 可写 `[y, …]`（x = 下标）或 `[[x, y], …]`，`x.min / max` 不给就取数据范围。`x.ticks` / `y.ticks` 可自定：`[0, 50, 100]` 或 `[[0, "收礼那天"], [6, "半年"]]`。`x.hidden` / `y.hidden` 不画该轴刻度。`null` 是缺口（柱不画、线断开）。
+- **手机字不缩小**：viewBox 宽 = 容器实际像素宽（ResizeObserver 跟着重画），字号固定像素（`--vp-fs` 数字、`--vp-fs-txt` 文字，默认 14px，像素皮肤 19 / 15px）；窄了自动少画刻度、类别名隔几个写一个，自定刻度撞上前一个的跳过。刻度步长取 1 / 2 / 5 × 10ⁿ。纵轴名、图例、横轴名是 HTML（在图上方 / 下方），窄屏自动换行。
+- 颜色：系列默认 `--q1…--q6`（`color` 可传任意 CSS 颜色或 `var(--…)`），轴和字用 `--ink` `--ink2`，高亮用 `--accent`（`--vp-hi`），全部可在页内覆盖 `--vp-*`。放进 `.vl-fig` 时在暗色 / 护眼下跟着图板走。颜色不是唯一信息：多系列自动出图例（`legend:false` 关，`true` 单系列也出），线有虚线 + 不同点形，第二组柱子起加斜纹，高亮柱加粗边。
+- 像素皮肤（`VL_SKIN.name === "pixel"`，容器写 `data-skin`）用 `shape-rendering:crispEdges`。没有重画过渡（拖动时直接画终态），所以不涉及"减少动态"。
+- 容器移出页面后，下一次尺寸变化时自动停掉监听；整块动态删掉时调 `destroy()` 更干净。
 
 ### 事件一览
 
