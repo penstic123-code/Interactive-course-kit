@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Course name</title>
+<!-- Load order: kit/README.md, section 1: structure → skin → course styles → skin script → first-paint preferences -->
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<!--VL:EXTRA-CSS-->
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* Contents-page styles: every class starts with ix-, never redefine vl- classes; colours from skin variables only */
+  .ix-intro{margin:10px 0 6px}
+  .ix-intro h3{margin:0 0 2px}
+  .ix-intro ul{margin:.2em 0;padding-left:1.2em}
+  .ix-meta{margin:10px 0 0;color:var(--ink2)}
+  .ix-prog{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0 6px}
+  .ix-bar{flex:1 1 220px;height:16px;border:2.5px solid var(--ink);border-radius:10px;background:var(--edge);overflow:hidden}
+  .ix-bar i{display:block;height:100%;width:0;background:var(--accent2)}
+  .ix-next{margin:4px 0 0}
+  .ix-paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0}
+  .ix-path{font:inherit;text-align:left;cursor:pointer;color:var(--ink);background:var(--edge);border:2.5px solid var(--ink);border-radius:var(--radius-alt,12px);padding:10px 14px;min-height:44px}
+  .ix-path[aria-pressed="true"]{background:var(--accent)}
+  .ix-path b{display:block;font-family:var(--font-label,inherit);font-size:1.15rem;background:none}
+  .ix-path small{display:block;color:var(--ink2);line-height:1.5}
+  .ix-part{margin:34px 0 8px}
+  .ix-part h2{margin:0;display:inline;background:linear-gradient(transparent 60%,var(--c,var(--accent)) 60%)}
+  .ix-part p{margin:4px 0 0;color:var(--ink2)}
+  .ix-chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:12px 0 0;padding:0;list-style:none}
+  .ix-ch{display:flex;gap:12px;align-items:flex-start;height:100%;padding:12px 14px;color:var(--ink);text-decoration:none;background:var(--edge);border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;box-shadow:3px 4px 0 var(--c,var(--accent))}
+  a.ix-ch:hover{transform:translateY(-2px)}
+  .ix-ch .ix-no{flex:none;width:40px;height:40px;display:grid;place-items:center;border:2.5px solid var(--ink);border-radius:50%;background:var(--c,var(--accent));color:#2b2b3a;font-family:var(--font-label,inherit);font-weight:700}
+  .ix-ch h3{margin:0;font-size:1.15rem;line-height:1.35}
+  .ix-ch p{margin:2px 0 0;font-size:.95rem;line-height:1.55;color:var(--ink2)}
+  .ix-ch .ix-st{display:inline-block;margin-top:4px;font-size:.88rem;font-weight:700;color:var(--ok)}
+  .ix-ch.off{border-style:dashed;box-shadow:none}
+  .ix-ch.off .ix-st{color:var(--ink2);font-weight:400}
+  .ix-ch.dim{opacity:.35}
+  html.vl-fx-off a.ix-ch:hover{transform:none}
+</style>
+</head>
+<body>
+<!-- No data-ch on the contents page: the top bar shows only Display (and the language button in a bilingual course). Chapters, parts and paths all come from js/course.js; do not hand-write chapters here -->
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <span class="vl-badge" id="ix-badge">Interactive course</span>
+      <h1 id="ix-title">Course name</h1>
+      <!-- Subtitle: one line on the everyday situation the course starts from and what readers can do at the end (≤ 15 words). No definitions -->
+      <p class="vl-sub">One line: the everyday situation it starts from, and what you can do at the end.</p>
+    </div>
+    <!-- Header picture: the single most typical scene of this course, registered in the page script below -->
+    <span data-illus="ix-hero"></span>
+  </div>
+
+  <!-- What the course is: written straight on the page, no card. Keep the three columns in line with course-rules.md, section 1 -->
+  <div class="vl-grid3 ix-intro">
+    <section><h3>What it covers</h3><p>Two or three sentences: the parts this field is made of, and where the course starts and ends.</p></section>
+    <section><h3>Who it is for</h3><ul><li>Reader one</li><li>Reader two</li></ul><p class="vl-src">No background needed.</p></section>
+    <section><h3>By the end you can</h3><ul><li>One thing you can see someone do</li><li>Another thing you can see someone do</li></ul></section>
+  </div>
+  <p class="ix-meta" id="ix-meta">About 30 minutes a chapter. Tap a section heading to fold it; the chapter contents sit in the bottom-right corner; your progress and notes stay in your browser.</p>
+
+  <!-- Progress: counts only chapters marked "understood" (all quiz questions right, recorded by VL.Progress.done), not scrolling or time spent -->
+  <div class="ix-prog">
+    <div class="ix-bar" aria-hidden="true"><i id="ix-bar"></i></div>
+    <span id="ix-progtxt" aria-live="polite"></span>
+  </div>
+  <p class="ix-next" id="ix-next"></p>
+
+  <!-- Learning paths: the whole block stays hidden when paths in js/course.js is empty -->
+  <section id="ix-paths-wrap" hidden>
+    <h2>Pick a route</h2>
+    <p class="vl-src">Tap a route and only its chapters stay lit below. Tap it again to clear.</p>
+    <div class="ix-paths" id="ix-paths" role="group" aria-label="Learning paths"></div>
+  </section>
+
+  <!-- Chapter cards grouped by part: built by the script from js/course.js -->
+  <div id="ix-parts"></div>
+
+  <!-- Optional features you chose go here (concept map map.html, glossary glossary.html, flashcards flashcards.html); add the links once they exist -->
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/illus.js"></script>
+<!--VL:EXTRA-JS-->
+<script>
+/* Contents-page picture: replace with this course's own header picture (how to draw: kit/README.md, "Picture slots") */
+VL.illus.add("ix-hero", "A person sitting on a chair reading an open book, with a stack of books beside them", k => k.ground() + k.person(78, 62, { legs: "sit", arms: "hold", face: "smile", look: 1 }) + k.holding(78, 62, { look: 1 }, "book") + k.item("book", 150, 120) + k.item("book", 150, 106));
+
+(function () {
+  const C = window.VL_COURSE || {}, CH = VL.CH, PARTS = VL.PARTS, prog = VL.Progress.get();
+  const $ = id => document.getElementById(id), esc = VL.esc, en = VL.lang === "en";
+  if (C.title) { $("ix-title").textContent = C.title; document.title = C.title; }
+  $("ix-badge").textContent = VL.t("ix.badge", "Interactive course · {0} chapters", CH.length);
+  // Progress
+  const done = CH.filter(c => prog[c.n]).length;
+  $("ix-bar").style.width = (CH.length ? done / CH.length * 100 : 0) + "%";
+  $("ix-progtxt").textContent = VL.t("ix.prog", "Understood {0} of {1} chapters", done, CH.length);
+  const nx = CH.find(c => c.open !== false && !prog[c.n]);
+  if (nx) $("ix-next").innerHTML = VL.t("ix.next", "Continue: ") + "<a href='" + esc(nx.file) + "'>" + esc(VL.t("ch.badge", "Chapter {0}", nx.n) + " " + VL.nm(nx)) + "</a>";
+  // Parts and chapter cards
+  const groups = PARTS.length ? PARTS.map((p, i) => ({ p, i, list: CH.filter(c => c.n >= p.from && c.n <= p.to) })) : [{ p: { zh: "" }, i: 0, list: CH }];
+  $("ix-parts").innerHTML = groups.map(({ p, i, list }) => {
+    const col = "var(--p" + (p.color || i + 1) + "a,var(--accent))";
+    return '<section class="ix-part" style="--c:' + col + '">' + (p.zh ? "<h2>" + esc(en ? p.en || p.zh : p.zh) + "</h2>" + ((p.descEn || p.desc) ? "<p>" + esc(p.descEn || p.desc || "") + "</p>" : "") : "") +
+      '<ul class="ix-chs">' + list.map(c => {
+        const inner = '<span class="ix-no">' + c.n + "</span><div><h3>" + esc(VL.nm(c)) + "</h3>" + ((c.descEn || c.desc) ? "<p>" + esc(c.descEn || c.desc || "") + "</p>" : "") +
+          (c.open === false ? '<span class="ix-st">' + esc(VL.t("ix.wip", "Still being written")) + "</span>" : prog[c.n] ? '<span class="ix-st">✓ ' + esc(VL.t("ix.done", "Understood")) + "</span>" : "") + "</div>";
+        return '<li data-n="' + c.n + '">' + (c.open === false ? '<div class="ix-ch off">' + inner + "</div>" : "<a class='ix-ch' href='" + esc(c.file) + "'>" + inner + "</a>") + "</li>";
+      }).join("") + "</ul></section>";
+  }).join("");
+  // Learning paths
+  const PATHS = C.paths || [];
+  if (PATHS.length) {
+    $("ix-paths-wrap").hidden = false;
+    $("ix-paths").innerHTML = PATHS.map((p, i) => '<button type="button" class="ix-path" data-i="' + i + '" aria-pressed="false"><b>' + esc(p.nameEn || p.name) + "</b><small>" + esc(p.whoEn || p.who) + " · " + esc(VL.t("ix.nch", "{0} chapters", p.chs.length)) + "</small></button>").join("");
+    let on = -1;
+    $("ix-paths").addEventListener("click", e => {
+      const b = e.target.closest(".ix-path"); if (!b) return;
+      on = on === +b.dataset.i ? -1 : +b.dataset.i;
+      document.querySelectorAll(".ix-path").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.i === on)));
+      const set = on < 0 ? null : new Set(PATHS[on].chs);
+      document.querySelectorAll(".ix-chs > li").forEach(li => li.firstElementChild.classList.toggle("dim", !!set && !set.has(+li.dataset.n)));
+    });
+  }
+})();
+</script>
+</body>
+</html>

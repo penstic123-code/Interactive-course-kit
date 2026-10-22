@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第2章 考一考自己（可选模块演示）</title>
+<link rel="stylesheet" href="../vl.css">
+<link rel="stylesheet" href="modules.css">
+<link rel="stylesheet" href="../../skins/notebook/skin.css">
+<link rel="stylesheet" href="../../skins/notebook/modules.css">
+<script src="../../skins/notebook/skin.js"></script>
+<script src="../vl-head.js"></script>
+<style>
+  .c2-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end;margin:12px 0}
+  .c2-col{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .c2-col i{display:block;width:70%;height:0;background:var(--accent2);border:2px solid var(--ink);border-bottom:0;border-radius:4px 4px 0 0;transition:height .3s}
+  .c2-col b{background:none;font-family:var(--font-hand);font-size:1.3rem}
+  .c2-base{border-top:3px solid var(--ink);grid-column:1/-1;margin-top:-16px}
+</style>
+</head>
+<body data-ch="2">
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>考一考自己</h1>
+      <p class="vl-sub">考前把书再读一遍，和合上书自己默一遍，哪个更管用？</p>
+    </div>
+    <span data-illus="demo-h2"></span>
+  </div>
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 5 分钟（演示）</span>
+    <ul><li>说清提取练习为什么比重读管用。</li><li>认出"读着顺"带来的错觉。</li><li>把一次复习改成一次自测。</li></ul>
+  </div>
+
+  <div class="vl-sec" data-lines="合上书的那一刻我脑子一片空白。|想不出来也算练习吗？看来算。"><h2>合上书，脑子里还剩什么</h2></div>
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">同样十分钟，一周以后哪种做法记得多？</p>
+    <ul class="vl-opts"><li>再读两遍<span class="vl-fb">读着越来越熟，但一周后剩得少。</span></li><li data-right>读一遍，再自己默一遍<span class="vl-fb">默的那一遍费劲，留下的却更多。</span></li></ul>
+    <div class="vl-ans">把东西从记忆里往外拿，这件事本身就在加固它。</div>
+  </div>
+  <aside class="vl-cc" data-concept="retrieval">
+    <p class="vl-cc-eg">合上课本，在白纸上写下刚才那一页讲了哪三件事。</p>
+  </aside>
+  <div class="vl-board">
+    <h3>两种复习，一周以后</h3>
+    <p class="vl-try" data-try="c2-both" data-concept="testing-effect" data-done="两种都看过了：自测那一列更高。">两种做法都点一下，比一比一周后剩下多少。</p>
+    <p><button type="button" class="vl-btn alt" id="c2-a">再读两遍</button> <button type="button" class="vl-btn alt" id="c2-b">读一遍 + 自测一次</button></p>
+    <div class="c2-cols" aria-hidden="true">
+      <div class="c2-col"><b id="c2-av">？</b><i id="c2-ab"></i><span>再读两遍</span></div>
+      <div class="c2-col"><b id="c2-bv">？</b><i id="c2-bb"></i><span>读一遍 + 自测</span></div>
+    </div>
+    <p class="vl-msg" id="c2-msg" aria-live="polite">示意数据，方向和罗迪格、卡尔皮克 2006 年的实验一致。</p>
+  </div>
+  <aside class="vl-cc" data-concept="testing-effect"></aside>
+
+  <div class="vl-sec" data-lines="我一直以为划了重点就算会了。"><h2>读着顺，不等于会了</h2></div>
+  <p>重读第二遍时，每句话都眼熟，这种顺畅让人觉得自己掌握了。可眼熟只是认得这一页，不是能把它想出来。考试要的是后者：没有书摆在面前时的<span class="vl-term" data-def="没有提示，自己把答案想出来。">回忆</span>，而不是看到选项时的<span class="vl-term" data-def="看到选项时认出哪个对；比回忆容易。">再认</span>。</p>
+  <aside class="vl-cc" data-concept="fluency-illusion">
+    <p class="vl-cc-eg">荧光笔划满了整页，合上书却说不出一句。</p>
+  </aside>
+
+  <div class="vl-sec"><h2>练一练</h2></div>
+  <div id="c2-quiz"></div>
+  <div class="vl-minimap" data-ch="2"></div>
+</main>
+<script src="demo/course.js"></script>
+<script src="demo/concepts.js"></script>
+<script src="vl-concepts.js"></script>
+<script src="../vl.js"></script>
+<script src="../illus.js"></script>
+<script src="demo/illus-demo.js"></script>
+<script src="sound.js"></script>
+<script src="collect.js"></script>
+<script src="companion.js"></script>
+<script src="graph.js"></script>
+<script>
+(function () {
+  const seen = new Set();
+  const show = (k, v) => {
+    document.getElementById("c2-" + k + "v").textContent = v + "%";
+    document.getElementById("c2-" + k + "b").style.height = v * 1.6 + "px";
+    seen.add(k);
+    document.getElementById("c2-msg").textContent = seen.size < 2 ? "再点另一种做法比一比。" : "自测那一列高出一截。示意数据，方向和罗迪格、卡尔皮克 2006 年的实验一致。";
+    if (seen.size === 2) VL.tryDone("c2-both");
+  };
+  document.getElementById("c2-a").onclick = () => show("a", 40);
+  document.getElementById("c2-b").onclick = () => show("b", 56);
+  VL.quiz("#c2-quiz", [
+    { q: "为什么自测一次比再读一遍记得久？", opts: ["往外拿的过程本身加固了记忆", "自测花的时间更长", "自测时更紧张"], a: 0, why: "提取练习：每把信息调出来一次，下次就更好调。" },
+    { q: "划满重点却说不出一句，是哪种情况？", opts: ["流畅错觉", "测试效应", "工作记忆满了"], a: 0, why: "读着眼熟被当成了记得牢。" },
+  ]);
+})();
+</script>
+</body>
+</html>

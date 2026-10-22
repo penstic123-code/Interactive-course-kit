@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第2章 核心循环（course-kit 演示）</title>
+<link rel="stylesheet" href="vl.css">
+<link rel="stylesheet" href="../skins/notebook/skin.css">
+<script src="../skins/notebook/skin.js"></script>
+<script src="vl-head.js"></script>
+<script>
+  // 课程配置：真实课程放在 js/course.js 里，在 vl.js 之前加载
+  window.VL_COURSE = {
+    id: "demo",
+    home: "demo.html",
+    enReady: false,
+    chapters: [
+      { zh: "什么是游戏", en: "What Is a Game", file: "demo.html" },
+      { zh: "核心循环", en: "Core Loop", file: "demo.html" },
+      { zh: "玩家动机", en: "Player Motivation", file: "demo.html", open: false },
+    ],
+    parts: [{ zh: "一、认识游戏", en: "I. Understanding Games", from: 1, to: 3 }],
+  };
+</script>
+<style>
+  .c2-stage{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+</style>
+</head>
+<body data-ch="2">
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>核心循环</h1>
+      <p class="vl-sub">凌晨一点说“最后一局”，手却点了“再来一局”：那个让人停不下来的圈。</p>
+    </div>
+    <span data-illus="demo-onemore"></span>
+  </div>
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 30 分钟</span>
+    <ul><li>用一串动词写出一个游戏的核心循环。</li><li>说清循环里拆掉一环会怎样。</li><li>分辨秒、分钟、天三层循环。</li></ul>
+  </div>
+
+  <div class="vl-sec"><h2>凌晨一点停不下来的核心循环</h2></div>
+  <div class="vl-withimg">
+    <span data-illus="demo-night"></span>
+    <div>
+      <p>上一局的结尾，悄悄递出了下一局的理由：差一点就赢了，新解锁的角色还没试。把“结尾接着开头”画出来，就是一个圈。玩家最常重复的那一串事情，叫<span class="vl-cn"><span class="vl-term" data-def="玩家在游戏里反复做的一串行动，做完回到起点">核心循环</span></span>。</p>
+      <p>这一段只是演示图文并排：宽屏两栏顶端对齐，窄屏上下排。</p>
+    </div>
+  </div>
+  <figure class="vl-fig" id="fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[{"name":"行动","eg":"点、跳、选择","info":"<b>行动</b>：玩家亲手做的事，一切从这里开始。"},{"name":"反馈","eg":"叮！血条减少"},{"name":"奖励","eg":"金币、经验"},{"name":"成长","eg":"变强、解锁"},{"name":"新目标","eg":"新关卡、新挑战"}],"center":"再来一局"}</script>
+    <figcaption>五个环节首尾相连：奖励让下一次行动更有力量。</figcaption>
+  </figure>
+  <aside class="vl-cc">
+    <p class="vl-cc-name">核心循环</p>
+    <p class="vl-cc-en">Core loop</p>
+    <p class="vl-cc-by">游戏设计行业的通用术语，没有单一的提出者</p>
+    <p class="vl-cc-plain">玩家反复做的那一串事情。</p>
+    <p class="vl-cc-def">玩家在游戏里反复做的一串事情，做完回到起点，再来一轮。</p>
+    <p class="vl-cc-eg">《吃豆人》：吃豆、躲鬼、吃大力丸、反吃鬼、清场（见<a data-figref="fig-cycle" href="#fig-cycle">图</a>）。</p>
+    <div class="vl-cc-fig"><span data-illus="demo-loop"></span></div>
+  </aside>
+
+  <div class="vl-sec"><h2>一个圈里套着三个圈</h2></div>
+  <p>每一秒都在跳、打、躲，每几分钟打完一场，每隔几天才攒够钱换一件新装备。</p>
+  <figure class="vl-fig" id="fig-nested"></figure>
+  <div class="vl-eg" data-t="吃豆人"><span data-illus="demo-pac"></span><p><b>吃豆人：</b>秒级躲鬼，分钟级清一关，几乎没有长期成长。</p></div>
+  <div class="vl-eg" data-t="手游日常"><span data-illus="demo-phone"></span><p><b>手游日常：</b>秒级点击很薄，天级的签到和养成很厚。</p></div>
+  <div class="vl-eg bad" data-t="只有成长"><span data-illus="demo-grind"></span><p><b>反例：</b>每天登录领奖励，但没有什么可“做”的：最里层是空的，外层的奖励只是在收买玩家。</p></div>
+
+  <div class="vl-sec"><h2>从按下按钮到拿到奖励</h2></div>
+  <figure class="vl-fig" id="fig-flow"></figure>
+  <div class="vl-why">
+    <h3>意料之外的奖励，比意料之中的更有劲</h3>
+    <div class="vl-why-fig"><span data-illus="demo-monkey"></span></div>
+    <p>大脑的多巴胺神经元不是对奖励本身反应，而是对“比预期好多少”反应。奖励一旦被完全预测，反应就几乎消失。（示意）</p>
+    <p class="vl-src">出处：舒尔茨等，1997，《科学》。验证：上面的先猜后看。</p>
+  </div>
+  <details class="vl-story">
+    <summary><b>斯金纳为什么要研究“奖励怎么发”？</b><small>从一只按杠杆的鸽子说起，三分钟读完</small></summary>
+    <ol class="vl-chain">
+      <li>每次都给食物</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>食物发完，鸽子很快不按了</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>改成随机给：鸽子按得更久</li>
+    </ol>
+    <div class="vl-timeline">
+      <div class="vl-ev"><div><b class="vl-yr">1938</b> 斯金纳出版《有机体的行为》。</div></div>
+      <div class="vl-ev"><div><b class="vl-yr">1957</b> 《强化程序》系统比较各种发奖方式。</div></div>
+    </div>
+  </details>
+  <details class="vl-side" data-kind="math">
+    <summary><b>可变比率到底有多“可变”？</b><small>一个掷骰子的小算术，可以跳过</small></summary>
+    <p>每次有 1/5 的机会得奖，平均五次一次，但连续十次都落空的概率约是 11%。</p>
+  </details>
+
+  <div class="vl-sec"><h2>先猜一猜</h2></div>
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">同样平均五次给一次奖励，哪种发法让人停不下来？</p>
+    <ul class="vl-opts">
+      <li>每五次准时给<span class="vl-fb">规律被摸清后，刚领完就懈怠。</span></li>
+      <li data-right>次数不固定<span class="vl-fb">每一次都可能是“那一次”。</span></li>
+      <li>差不多<span class="vl-fb">其实差很多。</span></li>
+    </ul>
+    <div class="vl-ans">可变比率最“粘人”：这正是抽卡和老虎机的发法。</div>
+  </div>
+  <div class="vl-guess" data-mode="estimate" data-min="1" data-max="1000" data-answer="60" data-scale="log" data-unit="次">
+    <p class="vl-q">鸽子在奖励停发后，还会按多少次杠杆？</p>
+    <div class="vl-ans">实验里常见几十到上百次（示意数字）。</div>
+  </div>
+  <div class="vl-guess" data-mode="think">
+    <p class="vl-q">你最常玩的游戏，最里层的循环是什么？</p>
+    <div class="vl-ans">先写下动词，再看它每秒有没有回应。</div>
+  </div>
+
+  <div class="vl-sec"><h2>拆掉一环会怎样</h2></div>
+  <div class="vl-board">
+    <h3>断环实验台</h3>
+    <p class="vl-try" data-try="t1" data-done="完成！拆掉成长，短期几乎不变，长期掉得明显。">拆掉“成长”这一环，看留存曲线怎么变。</p>
+    <div class="c2-stage">
+      <button type="button" class="vl-btn" id="c2-cut">拆掉成长</button>
+      <button type="button" class="vl-btn alt" id="c2-reset">重来</button>
+      <label class="vl-ctl">第几周 <output id="c2-wk">1</output><input type="range" id="c2-r" min="1" max="8" value="1"></label>
+    </div>
+    <p class="vl-msg" id="c2-msg" aria-live="polite">点“拆掉成长”。</p>
+  </div>
+  <figure class="vl-fig" id="fig-quad"></figure>
+  <figure class="vl-fig" id="fig-cmp"></figure>
+
+  <div class="vl-sec"><h2>练习</h2></div>
+  <div id="c2-quiz"></div>
+  <div id="c2-quiz2"></div>
+  <h3>你的思考</h3>
+  <textarea class="vl-note" data-save="reflect" placeholder="我最近停不下来的一个游戏是……"></textarea>
+</main>
+<script src="vl.js"></script>
+<script src="diagrams.js"></script>
+<script src="illus.js"></script>
+<script>
+/* 演示用插画（真实课程放在 js/illus-chNN.js） */
+VL.illus.add("demo-onemore", "火柴人坐在椅子上捧着手机，头上冒出“再来一局”", k => k.ground() + k.person(70, 62, { legs: "sit", arms: "hold", face: "grin", look: 1 }) + k.holding(70, 62, { look: 1 }, "phone") + k.bubble(108, 14, 84, 34, [96, 52]), k => k.T(150, 37, 14, "再来一局", "middle"));
+VL.illus.add("demo-night", "深夜，两个火柴人一个站着打哈欠，一个指着屏幕", k => k.ground() + k.person(50, 63, { face: "o" }) + k.person(140, 63, { arms: "point", face: "grin", look: -1 }) + '<circle cx="176" cy="24" r="12" fill="#ffe58a"/>');
+VL.illus.add("demo-loop", "四个箭头首尾相连围成一个圈", k => '<circle cx="100" cy="70" r="46" fill="none" stroke-dasharray="14 8" stroke-width="5"/>' + k.arrow(138, 40, 146, 56) + k.item("star", 100, 70));
+VL.illus.add("demo-pac", "吃豆人张嘴追着一排豆子", '<path d="M40 70 L78 46 A44 44 0 1 0 78 94 Z" fill="#ffe58a"/><circle cx="120" cy="70" r="6" fill="#2b2b3a"/><circle cx="150" cy="70" r="6" fill="#2b2b3a"/><circle cx="180" cy="70" r="6" fill="#2b2b3a"/>');
+VL.illus.add("demo-phone", "火柴人站着拿手机签到", k => k.ground() + k.person(80, 63, { arms: "hold", face: "flat", look: 1 }) + k.holding(80, 63, { look: 1 }, "phone"));
+VL.illus.add("demo-grind", "火柴人对着一堆奖励箱发呆，手里什么都没有", k => k.ground() + k.person(60, 63, { face: "sad" }) + k.item("box", 130, 116) + k.item("box", 152, 116) + k.item("box", 141, 100));
+VL.illus.add("demo-monkey", "戴眼镜的研究者拿着一杯果汁", k => k.ground() + k.person(90, 63, { arms: "hold", glasses: true, look: 1 }) + k.holding(90, 63, { look: 1 }, "cup"));
+
+VL.diagram.nested("#fig-nested", {
+  caption: "越往里转得越快；外层的奖励要靠里层的行动“喂”。",
+  spin: true,
+  layers: [
+    { name: "秒：微循环", eg: "跳一下、打一拳，每秒都有回应", info: "<b>秒：微循环。</b>这一层不好玩，外面两层的奖励都只是在收买玩家。" },
+    { name: "分钟：关卡循环", eg: "打完一场、通过一关、拿到奖励", info: "<b>分钟：关卡循环。</b>每一圈都要有一个看得见的结尾。" },
+    { name: "天 / 周：成长循环", eg: "角色养成、赛季、剧情推进", info: "<b>天 / 周：成长循环。</b>它决定玩家明天为什么还回来。" },
+  ],
+});
+VL.diagram.flow("#fig-flow", { caption: "一次行动从按下到回报的四步。", nodes: [{ name: "按下", eg: "手指点屏幕" }, { name: "判定", eg: "命中了吗" }, { name: "反馈", eg: "声音、震动" }, { name: "奖励", eg: "金币 +10" }] });
+VL.diagram.quadrant("#fig-quad", {
+  caption: "按“奖励规律”和“看次数还是看时间”分出四种发奖方式。",
+  x: { name: "看什么", lo: "看次数", hi: "看时间" }, y: { name: "规律", lo: "固定", hi: "不固定" },
+  quads: [{ name: "可变比率", eg: "抽卡、老虎机" }, { name: "可变间隔", eg: "刷新邮件" }, { name: "固定比率", eg: "集五个章换一杯" }, { name: "固定间隔", eg: "每日签到" }],
+  points: [{ x: 0.2, y: 0.62, label: "宝箱掉落" }],
+});
+VL.diagram.compare("#fig-cmp", {
+  caption: "同样平均五次一次，两种发法的差别。",
+  a: { name: "固定比率", eg: "每五次一定给", mark: "✓" }, b: { name: "可变比率", eg: "平均五次给一次", mark: "?" },
+  rows: [{ k: "能不能预测", a: "能，数得出还差几下", b: "不能，每次都可能中" }, { k: "停发之后", a: "很快放弃", b: "还会坚持很久" }],
+});
+
+/* 断环实验台：完成条件写在页面 JS 里 */
+(function () {
+  const msg = document.getElementById("c2-msg"), r = document.getElementById("c2-r"), wk = document.getElementById("c2-wk");
+  let cut = false;
+  const upd = () => { wk.textContent = r.value; if (cut) { msg.textContent = "第 " + r.value + " 周留存：" + Math.round(100 * Math.pow(0.7, r.value - 1)) + "%（示意）"; if (+r.value >= 6) VL.tryDone("t1"); } };
+  document.getElementById("c2-cut").onclick = () => { cut = true; msg.textContent = "成长被拆掉了。拖动“第几周”看看留存。"; upd(); };
+  document.getElementById("c2-reset").onclick = () => { cut = false; r.value = 1; wk.textContent = "1"; msg.textContent = "点“拆掉成长”。"; };
+  r.addEventListener("input", upd);
+})();
+
+VL.quiz("#c2-quiz", [
+  { q: "核心循环最里层的那一圈，通常按什么时间尺度转？", opts: ["秒", "分钟", "天"], a: 0, why: "最里层是每秒都有回应的微循环。" },
+  { q: "为什么要研究“奖励怎么发”？", opts: ["同样多的奖励，发法不同，人坚持的时间差很多", "为了省奖励", "为了好看"], a: 0, why: "斯金纳发现发奖方式本身就改变行为。" },
+]);
+VL.quiz("#c2-quiz2", [
+  { q: "（拖卡片作答）拆掉“成长”一环，最先受影响的是？", opts: ["长期留存", "第一秒的手感"], a: 0, why: "成长决定玩家明天还回不回来。" },
+], { mode: "drag", progress: false });
+</script>
+</body>
+</html>

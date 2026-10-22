@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 2 The Core Loop (course-kit English demo)</title>
+<!-- English demo: same components as demo.html, on a page with lang="en". Every UI label should come out in English. -->
+<link rel="stylesheet" href="vl.css">
+<link rel="stylesheet" href="../skins/notebook/skin.css">
+<link rel="stylesheet" href="../skins/notebook/diagrams.css">
+<link rel="stylesheet" href="vl-interact.css">
+<link rel="stylesheet" href="../skins/notebook/interact.css">
+<script src="../skins/notebook/skin.js"></script>
+<script src="vl-head.js"></script>
+<script>
+  // Course config: a real course keeps this in js/course.js, loaded before vl.js
+  window.VL_COURSE = {
+    id: "demo",
+    home: "demo-en.html",
+    enReady: false,
+    chapters: [
+      { zh: "什么是游戏", en: "What Is a Game", file: "demo-en.html" },
+      { zh: "核心循环", en: "The Core Loop", file: "demo-en.html" },
+      { zh: "玩家动机", en: "Player Motivation", file: "demo-en.html", open: false },
+    ],
+    parts: [{ zh: "一、认识游戏", en: "I. Understanding Games", from: 1, to: 3 }],
+  };
+</script>
+<style>
+  .c2-stage{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  /* No Chinese twin of this demo page, so hide the language button (same rule as the English-only starter's css/style.css) */
+  .vl-tb-lang{display:none !important}
+</style>
+</head>
+<body data-ch="2">
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>The Core Loop</h1>
+      <p class="vl-sub">It's 1 a.m. You say "one last game", and your thumb hits "play again" anyway.</p>
+    </div>
+    <span data-illus="demo-onemore"></span>
+  </div>
+  <div class="vl-goals">
+    <h3>By the end you can</h3><span class="vl-time">About 30 minutes</span>
+    <ul><li>Write a game's core loop as a short chain of verbs.</li><li>Say what happens when one link of the loop is removed.</li><li>Tell apart loops that turn every second, every few minutes and every few days.</li></ul>
+  </div>
+
+  <div class="vl-sec"><h2>The core loop behind "one last game" at 1 a.m.</h2></div>
+  <div class="vl-withimg">
+    <span data-illus="demo-night"></span>
+    <div>
+      <p>The end of one game quietly hands you a reason to start the next. You nearly won. The character you just unlocked is still untried. Draw "the end leads back to the start" and you get a circle. The chain of things a player repeats most often is called the <span class="vl-cn"><span class="vl-term" data-def="The set of actions a player repeats in a game, ending back where they began">core loop</span></span>.</p>
+      <p>This paragraph only shows text beside a picture: two columns on a wide screen, tops lined up, and stacked on a phone.</p>
+    </div>
+  </div>
+  <figure class="vl-fig" id="fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[{"name":"Act","eg":"tap, jump, choose","info":"<b>Act</b>: what the player does with their own hands. Everything starts here."},{"name":"Feedback","eg":"ding! health drops"},{"name":"Reward","eg":"coins, points"},{"name":"Growth","eg":"stronger, unlocks"},{"name":"New goal","eg":"new level, new test"}],"center":"Again!"}</script>
+    <figcaption>Five steps joined end to end: the reward makes the next action count for more.</figcaption>
+  </figure>
+  <aside class="vl-cc">
+    <p class="vl-cc-name">Core loop</p>
+    <p class="vl-cc-en">核心循环</p>
+    <p class="vl-cc-by">A common game design term with no single inventor</p>
+    <p class="vl-cc-plain">The few things a player does over and over.</p>
+    <p class="vl-cc-def">The chain of actions a player repeats in a game, which ends back at the start, ready for another round.</p>
+    <p class="vl-cc-eg">Pac-Man: eat dots, dodge ghosts, grab a power pellet, chase the ghosts, clear the maze (see <a data-figref="fig-cycle" href="#fig-cycle">figure</a>).</p>
+    <div class="vl-cc-fig"><span data-illus="demo-loop"></span></div>
+  </aside>
+
+  <div class="vl-sec"><h2>Three loops, one inside the other</h2></div>
+  <p>Every second you jump, hit and dodge. Every few minutes you finish a match. Every few days you have saved enough to buy new gear.</p>
+  <figure class="vl-fig" id="fig-nested"></figure>
+  <div class="vl-eg" data-t="Pac-Man"><span data-illus="demo-pac"></span><p><b>Pac-Man:</b> second by second you dodge ghosts, minute by minute you clear a maze, and there is almost no long-term growth.</p></div>
+  <div class="vl-eg" data-t="Daily phone game"><span data-illus="demo-phone"></span><p><b>Daily phone game:</b> the tapping is thin, but the daily log-in and levelling up are thick.</p></div>
+  <div class="vl-eg bad" data-t="Only growth"><span data-illus="demo-grind"></span><p><b>Counterexample:</b> you log in every day to collect a prize, but there is nothing to actually do. The inner loop is empty, so the outer rewards are just paying you to show up.</p></div>
+
+  <div class="vl-sec"><h2>From the button to the prize</h2></div>
+  <figure class="vl-fig" id="fig-flow"></figure>
+  <div class="vl-why">
+    <h3>A surprise reward hits harder than an expected one</h3>
+    <div class="vl-why-fig"><span data-illus="demo-monkey"></span></div>
+    <p>Dopamine neurons in the brain respond less to the reward itself than to how much better it was than expected. Once a reward is fully predicted, the response almost disappears. (Simplified.)</p>
+    <p class="vl-src">Source: Schultz and colleagues, 1997, <i>Science</i>. Check it: the guessing game below.</p>
+  </div>
+  <details class="vl-story">
+    <summary><b>Why did Skinner care how rewards were handed out?</b><small>It starts with a pigeon pecking a key. Three minutes.</small></summary>
+    <ol class="vl-chain">
+      <li>Food every time</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>Food stops, and the pigeon soon gives up</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>Food at random: the pigeon keeps going much longer</li>
+    </ol>
+    <div class="vl-timeline">
+      <div class="vl-ev"><div><b class="vl-yr">1938</b> Skinner publishes <i>The Behavior of Organisms</i>.</div></div>
+      <div class="vl-ev"><div><b class="vl-yr">1957</b> <i>Schedules of Reinforcement</i> compares the ways of handing out rewards.</div></div>
+    </div>
+  </details>
+  <details class="vl-side" data-kind="math">
+    <summary><b>How random is "random" here?</b><small>A bit of dice maths you can skip</small></summary>
+    <p>If each try has a 1 in 5 chance of a prize, you win once every five tries on average. Yet the chance of ten misses in a row is still about 11%.</p>
+  </details>
+
+  <!-- New diagram type: spectrum -->
+  <figure class="vl-fig" id="fig-spec"></figure>
+
+  <div class="vl-sec"><h2>Have a guess first</h2></div>
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">Both schemes give a prize once every five tries on average. Which one is harder to stop?</p>
+    <ul class="vl-opts">
+      <li>Exactly every fifth try<span class="vl-fb">Once you know the pattern, you slack off right after each prize.</span></li>
+      <li data-right>A different number each time<span class="vl-fb">Every try might be the one.</span></li>
+      <li>No real difference<span class="vl-fb">There is a big difference.</span></li>
+    </ul>
+    <div class="vl-ans">The unpredictable scheme is the sticky one. It is how loot boxes and slot machines pay out.</div>
+  </div>
+  <div class="vl-guess" data-mode="estimate" data-min="1" data-max="1000" data-answer="60" data-scale="log" data-unit=" pecks">
+    <p class="vl-q">After the food stops, how many more times will the pigeon peck?</p>
+    <div class="vl-ans">In experiments it is often dozens, sometimes over a hundred (illustrative number).</div>
+  </div>
+  <div class="vl-guess" data-mode="think">
+    <p class="vl-q">In the game you play most, what is the innermost loop?</p>
+    <div class="vl-ans">Write down the verbs first, then check whether the game answers you every second.</div>
+  </div>
+
+  <!-- vl-interact: flip cards -->
+  <div class="vl-flip">
+    <div class="vl-flip-c"><div class="vl-flip-f">"More rewards always means more fun."</div><div class="vl-flip-b">Rewards with nothing to do in between feel like a wage, not a game.</div></div>
+    <div class="vl-flip-c"><div class="vl-flip-f">"The core loop is the story."</div><div class="vl-flip-b">The loop is what your hands repeat. The story sits on top of it.</div></div>
+  </div>
+
+  <div class="vl-sec"><h2>What if you cut one link?</h2></div>
+  <div class="vl-board">
+    <h3>The broken loop bench</h3>
+    <p class="vl-try" data-try="t1" data-done="Done! Without growth, nothing changes at first, but players drift away week by week.">Cut the "Growth" link and watch what happens to the players who keep coming back.</p>
+    <div class="c2-stage">
+      <button type="button" class="vl-btn" id="c2-cut">Cut growth</button>
+      <button type="button" class="vl-btn alt" id="c2-reset">Start again</button>
+      <label class="vl-ctl">Week <output id="c2-wk">1</output><input type="range" id="c2-r" min="1" max="8" value="1"></label>
+    </div>
+    <p class="vl-msg" id="c2-msg" aria-live="polite">Press "Cut growth".</p>
+  </div>
+
+  <!-- vl-interact: hands-on task -->
+  <div class="vl-board vl-task" id="c2-task" aria-label="Sort the loops"></div>
+
+  <figure class="vl-fig" id="fig-quad"></figure>
+  <figure class="vl-fig" id="fig-cmp"></figure>
+
+  <div class="vl-sec"><h2>Practice</h2></div>
+  <div id="c2-quiz"></div>
+  <div id="c2-quiz2"></div>
+  <h3>Your thoughts</h3>
+  <textarea class="vl-note" data-save="reflect" placeholder="A game I couldn't put down lately was…"></textarea>
+</main>
+<script src="vl.js"></script>
+<script src="diagrams.js"></script>
+<script src="illus.js"></script>
+<script src="vl-interact.js"></script>
+<script>
+/* Demo pictures (a real course keeps these in js/illus-chNN.js) */
+VL.illus.add("demo-onemore", "A stick figure on a chair holding a phone, with a bubble saying Again!", k => k.ground() + k.person(70, 62, { legs: "sit", arms: "hold", face: "grin", look: 1 }) + k.holding(70, 62, { look: 1 }, "phone") + k.bubble(108, 14, 84, 34, [96, 52]), k => k.T(150, 37, 14, "Again!", "middle"));
+VL.illus.add("demo-night", "Late at night, one stick figure yawns and another points at a screen", k => k.ground() + k.person(50, 63, { face: "o" }) + k.person(140, 63, { arms: "point", face: "grin", look: -1 }) + '<circle cx="176" cy="24" r="12" fill="#ffe58a"/>');
+VL.illus.add("demo-loop", "Arrows chasing each other round a circle", k => '<circle cx="100" cy="70" r="46" fill="none" stroke-dasharray="14 8" stroke-width="5"/>' + k.arrow(138, 40, 146, 56) + k.item("star", 100, 70));
+VL.illus.add("demo-pac", "Pac-Man with its mouth open, chasing a row of dots", '<path d="M40 70 L78 46 A44 44 0 1 0 78 94 Z" fill="#ffe58a"/><circle cx="120" cy="70" r="6" fill="#2b2b3a"/><circle cx="150" cy="70" r="6" fill="#2b2b3a"/><circle cx="180" cy="70" r="6" fill="#2b2b3a"/>');
+VL.illus.add("demo-phone", "A stick figure standing, checking in on a phone", k => k.ground() + k.person(80, 63, { arms: "hold", face: "flat", look: 1 }) + k.holding(80, 63, { look: 1 }, "phone"));
+VL.illus.add("demo-grind", "A stick figure staring at a pile of prize boxes, empty-handed", k => k.ground() + k.person(60, 63, { face: "sad" }) + k.item("box", 130, 116) + k.item("box", 152, 116) + k.item("box", 141, 100));
+VL.illus.add("demo-monkey", "A researcher in glasses holding a cup of juice", k => k.ground() + k.person(90, 63, { arms: "hold", glasses: true, look: 1 }) + k.holding(90, 63, { look: 1 }, "cup"));
+
+VL.diagram.nested("#fig-nested", {
+  caption: "The further in, the faster it turns. The outer rewards have to be fed by actions in the inner loop.",
+  spin: true,
+  layers: [
+    { name: "Seconds", eg: "jump, punch: an answer every second", info: "<b>Seconds: the micro loop.</b> If this layer is no fun, the two outer layers are just paying players to stay." },
+    { name: "Minutes", eg: "finish a match, clear a level", info: "<b>Minutes: the level loop.</b> Each turn needs an ending you can see." },
+    { name: "Days / weeks", eg: "levelling up, seasons, story", info: "<b>Days and weeks: the growth loop.</b> It decides why players come back tomorrow." },
+  ],
+});
+VL.diagram.flow("#fig-flow", { caption: "Four steps from pressing a button to getting something back.", nodes: [{ name: "Press", eg: "finger taps screen" }, { name: "Judge", eg: "was it a hit?" }, { name: "Feedback", eg: "sound, buzz" }, { name: "Reward", eg: "+10 coins" }] });
+VL.diagram.spectrum("#fig-spec", {
+  caption: "Reward schemes sit on a line from fully predictable to fully random.",
+  name: "How predictable is the prize?",
+  lo: { name: "Predictable", eg: "you can count it" }, hi: { name: "Random", eg: "any try could win" },
+  items: [{ at: 0.1, name: "Daily log-in", eg: "same time, every day" }, { at: 0.45, name: "Loyalty card", eg: "fifth coffee free" }, { at: 0.9, name: "Loot box", eg: "you never know" }],
+});
+VL.diagram.quadrant("#fig-quad", {
+  caption: "Two questions split reward schemes into four kinds: is it fixed, and does it count tries or time?",
+  x: { name: "Counts", lo: "tries", hi: "time" }, y: { name: "Pattern", lo: "fixed", hi: "varies" },
+  quads: [{ name: "Variable ratio", eg: "loot box, pokies" }, { name: "Variable interval", eg: "checking email" }, { name: "Fixed ratio", eg: "5 stamps, 1 coffee" }, { name: "Fixed interval", eg: "daily log-in" }],
+  points: [{ x: 0.2, y: 0.62, label: "Chest drop" }],
+});
+VL.diagram.compare("#fig-cmp", {
+  caption: "Once every five tries on average, handed out two different ways.",
+  a: { name: "Fixed ratio", eg: "always the fifth try", mark: "✓" }, b: { name: "Variable ratio", eg: "one in five on average", mark: "?" },
+  rows: [{ k: "Can you predict it?", a: "Yes, you can count", b: "No, any try might win" }, { k: "After it stops", a: "people quit fast", b: "people keep going" }],
+});
+
+/* Broken loop bench: the finish condition lives in the page script */
+(function () {
+  const msg = document.getElementById("c2-msg"), r = document.getElementById("c2-r"), wk = document.getElementById("c2-wk");
+  let cut = false;
+  const upd = () => { wk.textContent = r.value; if (cut) { msg.textContent = "Players still coming back in week " + r.value + ": " + Math.round(100 * Math.pow(0.7, r.value - 1)) + "% (illustrative)"; if (+r.value >= 6) VL.tryDone("t1"); } };
+  document.getElementById("c2-cut").onclick = () => { cut = true; msg.textContent = "Growth is gone. Drag the week slider to see who stays."; upd(); };
+  document.getElementById("c2-reset").onclick = () => { cut = false; r.value = 1; wk.textContent = "1"; msg.textContent = "Press \"Cut growth\"."; };
+  r.addEventListener("input", upd);
+})();
+
+VL.task("#c2-task", {
+  title: "Which loop is it?",
+  rounds: [{
+    type: "sort", prompt: "Put each moment into the loop it belongs to.",
+    bins: ["Seconds", "Days"],
+    items: [{ t: "Dodge a ghost", bin: 0 }, { t: "Swing a sword", bin: 0 }, { t: "Daily log-in prize", bin: 1 }, { t: "New season starts", bin: 1 }],
+    hints: ["Ask how long you wait before it comes round again.", "A dodge happens many times a minute; a season comes once in months."],
+    ok: "The inner loop is what your hands do; the outer loops are what you come back for.",
+  }],
+});
+
+VL.quiz("#c2-quiz", [
+  { q: "The innermost loop usually turns on what time scale?", opts: ["Seconds", "Minutes", "Days"], a: 0, why: "The innermost loop is the micro loop, with an answer every second." },
+  { q: "Why study how rewards are handed out at all?", opts: ["The same rewards, given out differently, change how long people keep going", "To save on rewards", "To make the game look nicer"], a: 0, why: "Skinner found that the schedule alone changes behaviour." },
+]);
+VL.quiz("#c2-quiz2", [
+  { q: "(Drag a card to answer) Cut the growth link. What suffers first?", opts: ["Players coming back over weeks", "How the first second feels"], a: 0, why: "Growth is what brings players back tomorrow." },
+], { mode: "drag", progress: false });
+</script>
+</body>
+</html>

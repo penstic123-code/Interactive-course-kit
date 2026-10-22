@@ -1,0 +1,290 @@
+/* course-kit · vl.css —— 与皮肤无关的结构样式：布局、栅格、图文并排、轮播、折叠、浮层、打印、减少动态。
+   这里只写"在哪、多大、怎么排"，不写颜色、字体、描边、纹理（那些全在皮肤 skin.css 里，用变量）。
+   出现 var(--x, 后备值) 的后备值只为皮肤缺变量时不至于看不见，不是设计值。
+   类名一律 vl- 前缀；页面专属样式写在页内 <style>，类名加章节前缀（如 .c2-），不要重定义 vl- 类。 */
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:hidden}
+img,svg,video,canvas{max-width:100%}
+canvas{touch-action:none}
+.vl-wrap{max-width:860px;margin:0 auto;padding:0 18px 60px}
+.vl-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:where(button,[role=button],a,summary,[tabindex]):focus-visible{outline:3px solid var(--focus,#2b6cff);outline-offset:3px}
+
+/* ---------- 顶栏 ---------- */
+.vl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:6px 12px;min-height:50px}
+.vl-tb-home{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.vl-tb-dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto;min-width:0}
+.vl-tb-dots a{width:24px;height:24px;display:grid;place-items:center;text-decoration:none;line-height:1;font-size:.72rem;flex:none}
+.vl-tb-btn{display:inline-flex;align-items:center;gap:6px;min-height:40px;min-width:40px;padding:0 10px;cursor:pointer;font:inherit;white-space:nowrap}
+.vl-tb-btn svg{width:18px;height:18px;flex:none}
+.vl-tb-chap{margin-left:auto}
+.vl-tb-dots + .vl-tb-chap{margin-left:0}
+.vl-tb-lang{text-decoration:none}
+.vl-tb-lang[hidden]{display:none}
+.vl-pop{position:absolute;top:calc(100% + 6px);right:10px;z-index:70;width:min(340px,calc(100vw - 20px));max-height:72vh;overflow:auto;padding:12px 14px;display:none}
+.vl-pop.open{display:block}
+.vl-pop h4{margin:0 0 6px}
+.vl-pop ol{margin:0;padding-left:1.6em;line-height:1.45}
+.vl-pop li{margin:3px 0}
+.vl-pop .vl-pop-part{margin:8px 0 2px;font-size:.9rem}
+.vl-pop a{text-decoration:none}
+.vl-pop li.cur > a{font-weight:700}
+.vl-seg{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.vl-seg button{min-height:40px;padding:0 12px;cursor:pointer;font:inherit}
+@media (max-width:760px){.vl-tb-dots{display:none}.vl-tb-btn .vl-tb-txt{display:none}.vl-tb-chap .vl-tb-txt{display:inline}}
+@media (max-width:420px){.vl-tb-chap .vl-tb-txt{max-width:9em;overflow:hidden;text-overflow:ellipsis}}
+
+/* ---------- 章首 ---------- */
+.vl-hero{position:relative;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;padding:30px 0 8px}
+.vl-hero .vl-hero-txt{flex:1;min-width:240px}
+.vl-hero h1{margin:.2em 0 .2em}
+.vl-hero .vl-illus{width:200px;flex:none}
+.vl-badge{display:inline-block}
+.vl-goals{position:relative;margin:16px 0;padding:12px 18px}
+.vl-goals h3{margin:0 0 4px}
+.vl-goals ul{margin:.2em 0;padding-left:1.2em}
+.vl-goals .vl-time{position:absolute;right:14px;top:10px}
+@media (max-width:700px){.vl-hero .vl-illus{width:min(220px,70%)}.vl-goals .vl-time{position:static;display:block}}
+
+/* ---------- 分节 + 章内目录 + 阅读进度 ---------- */
+.vl-sec{display:flex;align-items:center;gap:12px;margin-top:2em;cursor:pointer;user-select:none;scroll-margin-top:64px}
+.vl-sec h2{margin:0;flex:1;min-width:0}
+.vl-sec .vl-n{flex:none;width:44px;height:44px;display:grid;place-items:center}
+.vl-sec .vl-caret{flex:none;margin-left:auto;transition:transform var(--dur-fb,.2s)}
+.vl-sec.folded .vl-caret{transform:rotate(-90deg)}
+.vl-sec-body.collapsed{display:none}
+.vl-fab{position:fixed;right:14px;bottom:18px;z-index:65;width:50px;height:50px;display:grid;place-items:center;cursor:pointer;padding:0}
+.vl-fab svg{width:24px;height:24px}
+.vl-navpanel{position:fixed;right:14px;bottom:78px;z-index:66;width:min(330px,calc(100vw - 28px));max-height:70vh;overflow:auto;padding:10px 14px;display:none}
+.vl-navpanel.open{display:block}
+.vl-navpanel h4{margin:0 0 4px}
+.vl-navpanel ol{margin:0;padding-left:1.5em;line-height:1.5}
+.vl-navpanel li{margin:3px 0}
+.vl-navpanel a{text-decoration:none}
+.vl-navtools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.vl-navtools button{min-height:36px;padding:0 10px;cursor:pointer;font:inherit;font-size:.9rem}
+.vl-readbar{position:fixed;left:0;top:0;right:0;height:5px;z-index:80;pointer-events:none}
+.vl-readbar i{display:block;height:100%;width:0}
+
+/* ---------- 栅格与图文并排（宽屏两栏顶端对齐、不绕排；窄屏上下排） ---------- */
+.vl-grid2,.vl-grid3,.vl-grid4{display:grid;gap:16px;margin:16px 0}
+.vl-grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.vl-grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.vl-grid4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.vl-withimg{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr);gap:22px;align-items:start;margin:14px 0}
+.vl-withimg.rev{grid-template-columns:minmax(0,1fr) minmax(0,38%)}
+.vl-withimg.rev > :first-child{order:2}
+.vl-withimg.narrow{grid-template-columns:minmax(0,26%) minmax(0,1fr)}
+.vl-withimg.rev.narrow{grid-template-columns:minmax(0,1fr) minmax(0,26%)}
+.vl-withimg > *{min-width:0}
+.vl-withimg > div > :first-child,.vl-withimg > div > p:first-child{margin-top:0}
+.vl-withimg .vl-illus,.vl-withimg > figure{width:100%;margin:0}
+@media (max-width:700px){
+  .vl-grid2,.vl-grid3,.vl-grid4{grid-template-columns:minmax(0,1fr)}
+  .vl-withimg,.vl-withimg.rev,.vl-withimg.narrow,.vl-withimg.rev.narrow{grid-template-columns:minmax(0,1fr)}
+  .vl-withimg.rev > :first-child{order:0}
+  .vl-withimg .vl-illus,.vl-withimg > figure{max-width:300px;justify-self:center}
+}
+.vl-vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.vl-vs > *{min-width:0;padding:12px 16px}
+@media (max-width:560px){.vl-vs{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- 插画位 ---------- */
+.vl-illus{display:block}
+.vl-illus > svg{display:block;width:100%;height:auto}
+.vl-illus-miss{display:grid;place-items:center;aspect-ratio:200/140;font-size:.85rem;text-align:center;padding:8px}
+
+/* ---------- 编号图 ---------- */
+.vl-fig{margin:22px 0;padding:14px 16px}
+.vl-fig > svg{display:block;width:100%;height:auto}
+.vl-fig figcaption{margin-top:8px;font-size:.95rem;line-height:1.6}
+.vl-fig-n{margin-right:.5em}
+.vl-fig-n::after{content:""}
+.vl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ---------- 概念图解（diagrams.js） ---------- */
+.vl-dg{position:relative}
+.vl-dg svg{display:block;width:100%;height:auto;overflow:visible}
+.vl-dg [data-dg-i]{cursor:pointer}
+.vl-dg [data-dg-i]:focus{outline:none}
+.vl-dg .vl-dg-node,.vl-dg .vl-dg-ring{transition:opacity var(--dur-fb,.2s),stroke-width var(--dur-fb,.2s)}
+.vl-dg.has-on .vl-dg-node:not(.is-on),.vl-dg.has-on .vl-dg-ring:not(.is-on){opacity:.4}
+.vl-dg .vl-dg-scratch{visibility:hidden}
+.vl-dg-info{min-height:1.8em;margin:8px 0 0}
+.vl-dg-measure{position:absolute;left:-9999px;top:0;width:10px;height:10px;visibility:hidden}
+
+/* ---------- 例子轮播 ---------- */
+.vl-egcar{margin:18px 0}
+.vl-egtabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.vl-egtab{flex:none;white-space:nowrap;cursor:pointer;font:inherit;min-height:38px;padding:2px 14px}
+.vl-egstage{position:relative;padding:0 44px;touch-action:pan-y}
+.vl-egnav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;cursor:pointer;z-index:2;padding:0;display:grid;place-items:center}
+.vl-egnav.prev{left:0}.vl-egnav.next{right:0}
+.vl-egcar .vl-eg{display:none;margin:0}
+.vl-egcar .vl-eg.on{display:block}
+.vl-egcar .vl-eg.hasimg.on{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);gap:20px;align-items:start}
+.vl-egcar .vl-eg .vl-illus{width:100%}
+.vl-egk{display:inline-block;margin-right:6px}
+.vl-egcount{text-align:center;font-size:.9rem;margin-top:6px}
+.vl-eg{padding:10px 14px;margin:10px 0}
+.vl-eg > .vl-egt > :first-child{margin-top:0}
+@media (max-width:700px){
+  .vl-egcar .vl-eg.hasimg.on{grid-template-columns:minmax(0,1fr)}
+  .vl-egcar .vl-eg .vl-illus{max-width:260px;justify-self:center}
+  .vl-egstage{padding:0 34px}.vl-egnav{width:32px;height:32px}
+}
+
+/* ---------- 术语释义框 ---------- */
+.vl-term{cursor:help}
+.vl-tip{position:fixed;z-index:90;max-width:min(320px,calc(100vw - 24px));padding:7px 11px;font-size:.9rem;line-height:1.55;pointer-events:none;opacity:0;visibility:hidden}
+.vl-tip.show{opacity:1;visibility:visible}
+.vl-tip b{display:block}
+
+/* ---------- 概念卡（带必有图位） ---------- */
+.vl-cn,.vl-em{font-style:normal}
+.vl-cc{position:relative;margin:30px 0 24px;padding:18px 20px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:20px;align-items:start}
+.vl-cc > *{grid-column:1;margin:.15em 0;min-width:0}
+.vl-cc > .vl-cc-fig{grid-column:2;grid-row:1 / span 9;width:min(240px,32vw);margin:0}
+.vl-cc-fig .vl-illus,.vl-cc-fig svg{width:100%;display:block}
+.vl-cc-tag{position:absolute;top:-15px;left:14px;padding:0 12px;line-height:1.6;margin:0}
+.vl-cc-k{display:inline-block;margin-right:6px}
+.vl-cc-fig.vl-cc-nofig{display:grid;place-items:center;min-height:120px;font-size:.85rem;text-align:center;padding:8px}
+@media (max-width:700px){
+  .vl-cc{grid-template-columns:minmax(0,1fr);padding:18px 14px 12px}
+  .vl-cc > .vl-cc-fig{grid-column:1;grid-row:auto;width:min(240px,100%);margin:6px 0}
+  .vl-cc > .vl-cc-tag{grid-row:auto}
+}
+
+/* ---------- 原理框（可选图位） ---------- */
+.vl-why{margin:22px 0;padding:10px 0 10px 18px;display:grid;grid-template-columns:minmax(0,1fr);column-gap:22px;align-items:start}
+.vl-why.has-fig{grid-template-columns:minmax(0,1fr) minmax(0,34%)}
+.vl-why > *{grid-column:1;min-width:0}
+.vl-why > .vl-why-fig{grid-column:2;grid-row:1 / span 9;margin:0}
+.vl-why h3{margin:.1em 0 .3em}
+.vl-why-tag{display:inline-block;margin-bottom:4px;justify-self:start}
+@media (max-width:700px){.vl-why.has-fig{grid-template-columns:minmax(0,1fr)}.vl-why > .vl-why-fig{grid-column:1;grid-row:auto;max-width:300px}}
+
+/* ---------- 收起块：发明故事框 / 选读支线（details） ---------- */
+.vl-side,.vl-story{margin:24px 0}
+.vl-side > summary,.vl-story > summary{display:flex;align-items:center;gap:12px;min-height:52px;padding:10px 16px;cursor:pointer;list-style:none}
+.vl-side > summary::-webkit-details-marker,.vl-story > summary::-webkit-details-marker{display:none}
+.vl-side-tag{flex:none;padding:0 10px}
+.vl-side-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.vl-side-t b{font-weight:inherit}
+.vl-side-btn{flex:none;padding:2px 14px;white-space:nowrap}
+.vl-side-body{padding:6px 20px 14px}
+@media (max-width:600px){.vl-side > summary,.vl-story > summary{flex-wrap:wrap}.vl-side-t{flex-basis:calc(100% - 80px)}}
+
+/* ---------- 演化链 / 时间线 ---------- */
+.vl-chain{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0;padding:0;list-style:none}
+.vl-chain > li:not(.vl-chain-ar){flex:1 1 140px;min-width:0;padding:8px 12px;position:relative}
+.vl-chain > li .vl-illus{max-width:140px;margin:0 auto 4px}
+.vl-chain-ar{flex:none;align-self:center}
+.vl-timeline{margin:14px 0;padding-left:22px;position:relative}
+.vl-timeline .vl-ev{position:relative;padding:4px 0 16px;display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.vl-timeline .vl-ev.hasimg{grid-template-columns:minmax(0,180px) minmax(0,1fr)}
+.vl-timeline .vl-ev > *{min-width:0}
+@media (max-width:600px){.vl-timeline .vl-ev.hasimg{grid-template-columns:minmax(0,1fr)}.vl-timeline .vl-ev .vl-illus{max-width:220px}}
+
+/* ---------- 试试看 ---------- */
+.vl-try{position:relative;margin:18px 0;padding:12px 16px 12px 46px}
+.vl-try-box{position:absolute;left:14px;top:15px;width:20px;height:20px;display:grid;place-items:center}
+.vl-try-box svg{width:16px;height:16px;opacity:0}
+.vl-try.done .vl-try-box svg{opacity:1}
+.vl-try-k{margin-right:4px}
+.vl-try-fb{display:block;margin-top:4px}
+.vl-try-fb:empty{display:none}
+
+/* ---------- 先猜后揭晓 ---------- */
+.vl-guess{margin:20px 0;padding:14px 18px}
+.vl-guess .vl-q{margin-top:0}
+.vl-opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;padding:0;list-style:none}
+.vl-opts > li{display:contents}
+.vl-opt{cursor:pointer;font:inherit;min-height:42px;padding:4px 14px;text-align:left}
+.vl-fb{display:block;margin:6px 0}
+.vl-fb:empty{display:none}
+.vl-ans{margin-top:10px}
+.vl-guess:not(.revealed) .vl-ans{display:none}
+.vl-g-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.vl-g-ctl input[type=range]{flex:1 1 100%;width:100%;min-height:32px}
+.vl-g-track{position:relative;height:42px;margin:6px 10px 0}
+.vl-g-line{position:absolute;left:0;right:0;top:20px;height:3px}
+.vl-g-span{position:absolute;top:16px;height:11px;width:0}
+.vl-g-mk{position:absolute;top:12px;width:4px;height:19px;margin-left:-2px;display:none}
+.vl-g-mk.you{display:block}
+.vl-guess.revealed .vl-g-mk.ans{display:block}
+.vl-g-mk span{position:absolute;white-space:nowrap;font-size:.85rem;transform:translateX(-50%);left:2px}
+.vl-g-mk.you span{top:-20px}.vl-g-mk.ans span{top:22px}
+.vl-g-mk[data-al=l] span{transform:none;left:-2px}.vl-g-mk[data-al=r] span{transform:translateX(-100%);left:6px}
+.vl-guess.revealed .vl-g-track{margin-bottom:16px}
+.vl-g-ends{display:flex;justify-content:space-between;font-size:.85rem;margin:0 0 6px}
+.vl-g-res{min-height:1.5em}
+
+/* ---------- 测验（一次一题，横向翻） ---------- */
+.vl-quiz{margin:20px 0}
+.vl-qnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 12px;flex-wrap:wrap}
+.vl-qdots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.vl-qdot{width:36px;height:36px;padding:0;cursor:pointer;font:inherit}
+.vl-q:not(.vl-guess .vl-q){padding:14px 18px}
+.vl-q[hidden]{display:none}
+.vl-q .vl-qt{margin-bottom:8px}
+.vl-qopt{display:block;width:100%;text-align:left;cursor:pointer;font:inherit;min-height:44px;padding:6px 14px;margin:7px 0}
+.vl-qwhy{margin-top:8px;padding:8px 12px}
+.vl-qwhy[hidden]{display:none}
+.vl-qslot{min-height:56px;margin:8px 0 10px;padding:8px 12px;display:flex;align-items:center;justify-content:center;text-align:center}
+.vl-qtray{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.vl-qtray .vl-qopt{margin:0;text-align:center;touch-action:none;user-select:none;-webkit-user-select:none}
+.vl-qopt.drag{position:relative;z-index:50;transition:none}
+.vl-quiz-badge[hidden]{display:none}
+.vl-score{margin-top:8px}
+@media (max-width:520px){.vl-qnav{justify-content:center}.vl-qdots{order:-1;width:100%}.vl-qtray{grid-template-columns:1fr 1fr}}
+
+/* ---------- 笔记框 ---------- */
+.vl-note{display:block;width:100%;min-height:110px;font:inherit;padding:10px 12px;resize:vertical}
+.vl-note-st{display:block;min-height:1.4em;font-size:.85rem;text-align:right}
+
+/* ---------- 章末翻页 ---------- */
+.vl-pager{display:flex;justify-content:space-between;gap:12px;margin-top:44px;flex-wrap:wrap}
+.vl-pager a,.vl-pager span.vl-pg{display:inline-flex;flex-direction:column;text-decoration:none;max-width:100%;padding:8px 16px;min-height:44px}
+.vl-pager .vl-pg-next{margin-left:auto;text-align:right}
+.vl-pager small{font-size:.85rem}
+
+/* ---------- 按钮与控件（只给结构；外观在皮肤） ---------- */
+.vl-btn[hidden],[hidden].vl-btn{display:none!important}
+.vl-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:4px 18px;margin:4px 6px 4px 0;cursor:pointer;font:inherit;text-decoration:none}
+.vl-btn:disabled{cursor:not-allowed}
+.vl-chip{display:inline-flex;align-items:center;min-height:38px;padding:2px 12px;margin:3px;cursor:pointer;font:inherit}
+.vl-ctl{display:block;margin:10px 0 2px}
+.vl-ctl input[type=range]{display:block;width:100%;min-height:32px}
+.vl-board{margin:20px 0;padding:16px 18px}
+.vl-msg{min-height:1.8em}
+
+/* ---------- 收束块（标签写在 HTML 里，不写在 CSS 的 content 里） ---------- */
+.vl-misc,.vl-key,.vl-tldr{margin:22px 0;padding:12px 18px}
+.vl-misc ul,.vl-key ul{margin:.3em 0;padding-left:1.2em}
+
+/* ---------- 抖动（失败反馈） ---------- */
+@keyframes vl-shake{0%,100%{translate:0}20%{translate:-7px}40%{translate:7px}60%{translate:-5px}80%{translate:5px}}
+.vl-shake{animation:vl-shake .28s}
+@keyframes vl-in{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.vl-enter{animation:vl-in var(--dur-fb,.25s) var(--ease,ease-out)}
+@keyframes vl-pop{0%{transform:scale(.7)}70%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+/* ---------- 动效档位：off 时一切静止；lite 时氛围动效由皮肤自己判断 ---------- */
+html.vl-fx-off *,html.vl-fx-off *::before,html.vl-fx-off *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+html:not(.vl-fx-off){scroll-behavior:smooth}
+
+/* ---------- 打印：全部展开、去掉浮层 ---------- */
+@media print{
+  .vl-topbar,.vl-fab,.vl-navpanel,.vl-readbar,.vl-caret,.vl-egnav,.vl-egtabs,.vl-qnav,.vl-tip,.vl-pop{display:none!important}
+  .vl-sec-body.collapsed{display:block!important}
+  .vl-egcar .vl-eg{display:block!important;margin:10px 0!important}
+  .vl-q[hidden]{display:block!important}
+  .vl-guess .vl-ans{display:block!important}
+  .vl-cc,.vl-fig,.vl-board{break-inside:avoid;box-shadow:none!important;transform:none!important}
+}

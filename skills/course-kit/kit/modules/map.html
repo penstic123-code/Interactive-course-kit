@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>概念关系图</title>
+<!-- 模板：复制到课程根目录后，把下面的路径改成 kit/vl.css、kit/modules/modules.css、skin/skin.css、skin/modules.css、
+     js/course.js、js/concepts.js、kit/modules/*.js、js/illus-*.js（各章插图包，概念卡的图要用）。 -->
+<link rel="stylesheet" href="../vl.css">
+<link rel="stylesheet" href="modules.css">
+<link rel="stylesheet" href="../../skins/notebook/skin.css">
+<link rel="stylesheet" href="../../skins/notebook/modules.css">
+<script src="../../skins/notebook/skin.js"></script>
+<script src="../vl-head.js"></script>
+<style>
+  .vl-wrap.mp-wide{max-width:1180px}
+</style>
+</head>
+<body>
+<main class="vl-wrap mp-wide">
+  <p><a href="demo-modules.html">← 回目录</a></p>
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>概念关系图</h1>
+      <p class="vl-sub">全课的概念怎么连在一起：先懂哪个，哪个解释哪个，用在哪里。</p>
+    </div>
+    <span data-illus="demo-cc-mix"></span>
+  </div>
+  <p>每个便利贴是一个概念，颜色是它所在的篇，右边的小数字是章号。点一个概念，和它直接相连的留下，其余变淡；下面会出现它的概念卡和"去第几章读"。用方向键可以在概念之间走，回车选中，Esc 取消。</p>
+
+  <div class="vl-board">
+    <div class="vl-mp-tools">
+      <div class="vl-seg" id="vl-mapviews" role="group" aria-label="怎么看">
+        <button type="button" data-view="graph" aria-pressed="true">关系图</button><button type="button" data-view="list" aria-pressed="false">按章列表</button>
+      </div>
+      <div class="vl-seg" id="vl-maplayouts" role="group" aria-label="排法">
+        <button type="button" data-layout="layered" aria-pressed="true">按章分列</button><button type="button" data-layout="force" aria-pressed="false">自由排布</button>
+      </div>
+      <label class="vl-mp-q">找概念 <input type="search" id="vl-mapq" placeholder="如：遗忘、Leitner" autocomplete="off"></label>
+      <span class="vl-mp-count" id="vl-mapcount" aria-live="polite"></span>
+    </div>
+    <div class="vl-mp-parts" id="vl-mapparts" role="group" aria-label="按篇筛选"></div>
+    <div class="vl-maplegend" id="vl-maplegend"></div>
+    <div id="vl-map"></div>
+    <div id="vl-maplist" hidden></div>
+  </div>
+  <div class="vl-mapinfo" id="vl-mapinfo" aria-live="polite"><p class="vl-src">点一个概念，这里会出现它的概念卡、所在章节，以及和它相连的概念。</p></div>
+</main>
+<script src="demo/course.js"></script>
+<script src="demo/concepts.js"></script>
+<script src="vl-concepts.js"></script>
+<script src="../vl.js"></script>
+<script src="../illus.js"></script>
+<script src="demo/illus-demo.js"></script>
+<script src="sound.js"></script>
+<script src="collect.js"></script>
+<script src="graph.js"></script>
+<script>VL.mapPage();</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>图解模板库（course-kit 演示）</title>
+<link rel="stylesheet" href="vl.css">
+<link rel="stylesheet" href="../skins/notebook/skin.css">
+<link rel="stylesheet" href="../skins/notebook/diagrams.css">
+<script src="../skins/notebook/skin.js"></script>
+<script src="vl-head.js"></script>
+<script>
+  window.VL_COURSE = {
+    id: "demo-dg",
+    home: "demo-diagrams.html",
+    enReady: false,
+    chapters: [{ zh: "图解模板库", en: "Diagram Templates", file: "demo-diagrams.html" }],
+    parts: [{ zh: "演示", en: "Demo", from: 1, to: 1 }],
+  };
+</script>
+</head>
+<body data-ch="1">
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>图解模板库</h1>
+      <p class="vl-sub">十二种概念图解，各一个例子。点图里任何一块，看它怎么高亮；地址后面加 <code>?sel=1</code>，每张图都预先选中第二块。</p>
+    </div>
+  </div>
+
+  <div class="vl-sec"><h2>1 循环 cycle</h2></div>
+  <p>结果又成了下一轮的起点。窄屏五个以上的节点排成两列跑道。</p>
+  <figure class="vl-fig" id="fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[{"name":"行动","eg":"点、跳、选择","info":"<b>行动</b>：玩家亲手做的事，一切从这里开始。"},{"name":"反馈","eg":"叮！血条减少"},{"name":"奖励","eg":"金币、经验"},{"name":"成长","eg":"变强、解锁"},{"name":"新目标","eg":"新关卡、新挑战"}],"center":"再来一局"}</script>
+    <figcaption>奖励让下一次行动更有力量，所以圈一旦转起来就很难停。</figcaption>
+  </figure>
+
+  <div class="vl-sec"><h2>2 嵌套圈 nested</h2></div>
+  <p>同一个模式在三个时间尺度上套在一起。左边的小弧箭头表示每一层都在转。</p>
+  <figure class="vl-fig" id="fig-nested"></figure>
+
+  <div class="vl-sec"><h2>3 流程 flow</h2></div>
+  <figure class="vl-fig" id="fig-flow"></figure>
+
+  <div class="vl-sec"><h2>4 象限 quadrant</h2></div>
+  <figure class="vl-fig" id="fig-quad"></figure>
+
+  <div class="vl-sec"><h2>5 对比 compare</h2></div>
+  <figure class="vl-fig" id="fig-cmp"></figure>
+
+  <div class="vl-sec"><h2>6 时间轴 timeline</h2></div>
+  <p>轨道画法：四种发奖规则，星号落在哪一次，就是这条规则的性格。</p>
+  <figure class="vl-fig" id="fig-tl"></figure>
+  <p>曲线画法：一关的紧张度起伏，关键时刻用竖虚线标出。</p>
+  <figure class="vl-fig" id="fig-tl2"></figure>
+
+  <div class="vl-sec"><h2>7 树 tree</h2></div>
+  <figure class="vl-fig" id="fig-tree"></figure>
+
+  <div class="vl-sec"><h2>8 维恩 venn</h2></div>
+  <figure class="vl-fig" id="fig-venn"></figure>
+
+  <div class="vl-sec"><h2>9 天平 balance</h2></div>
+  <figure class="vl-fig" id="fig-bal"></figure>
+
+  <div class="vl-sec"><h2>10 网络 network</h2></div>
+  <figure class="vl-fig" id="fig-net"></figure>
+  <p>不给位置时自动绕中心排一圈；窄屏框与框至少隔 12px，线上放不下的字改列在图下。</p>
+  <figure class="vl-fig" id="fig-net2"></figure>
+
+  <div class="vl-sec"><h2>11 光谱轴 spectrum</h2></div>
+  <figure class="vl-fig" id="fig-spec"></figure>
+
+  <div class="vl-sec"><h2>12 层叠 stack</h2></div>
+  <figure class="vl-fig" id="fig-stack"></figure>
+</main>
+<script src="vl.js"></script>
+<script src="diagrams.js"></script>
+<script>
+VL.diagram.nested("#fig-nested", {
+  caption: "越往里转得越快；外层的奖励要靠里层的行动“喂”。",
+  spin: true,
+  layers: [
+    { name: "秒：微循环", eg: "跳一下、打一拳，每秒都有回应", info: "<b>秒：微循环。</b>这一层不好玩，外面两层的奖励都只是在收买玩家。" },
+    { name: "分钟：关卡循环", eg: "打完一场、通过一关、拿到奖励", info: "<b>分钟：关卡循环。</b>每一圈都要有一个看得见的结尾。" },
+    { name: "天 / 周：成长循环", eg: "角色养成、赛季、剧情推进", info: "<b>天 / 周：成长循环。</b>它决定玩家明天为什么还回来。" },
+  ],
+});
+VL.diagram.flow("#fig-flow", { caption: "每一步都要给玩家看得见的回应，少一步手感就“空”了。", nodes: [{ name: "按下", eg: "手指点屏幕" }, { name: "判定", eg: "命中了吗" }, { name: "反馈", eg: "声音、震动" }, { name: "奖励", eg: "金币 +10" }] });
+VL.diagram.quadrant("#fig-quad", {
+  caption: "只问两个问题就能分出四种发奖方式，抽卡落在最“粘人”的左上角。",
+  x: { name: "看什么", lo: "看次数", hi: "看时间" }, y: { name: "规律", lo: "固定", hi: "不固定" },
+  quads: [{ name: "可变比率", eg: "抽卡、老虎机" }, { name: "可变间隔", eg: "刷新邮件" }, { name: "固定比率", eg: "集五个章换一杯" }, { name: "固定间隔", eg: "每日签到" }],
+  points: [{ x: 0.2, y: 0.62, label: "宝箱掉落" }],
+});
+VL.diagram.compare("#fig-cmp", {
+  caption: "平均次数一样，能不能预测决定了停发之后玩家还坚持多久。",
+  a: { name: "固定比率", eg: "每五次一定给", mark: "✓" }, b: { name: "可变比率", eg: "平均五次给一次", mark: "?" },
+  rows: [{ k: "能不能预测", a: "能，数得出还差几下", b: "不能，每次都可能中" }, { k: "停发之后", a: "很快放弃", b: "还会坚持很久" }],
+});
+VL.diagram.timeline("#fig-tl", {
+  caption: "比率型的星跟着次数走，间隔型的星跟着时间走，所以固定间隔会“快到点才猛点”。",
+  legend: "每个圆点 = 一次行动（点击、击杀）；星 = 这一次拿到奖励。上两行横向按次数排，下两行横向按时间排。",
+  x: { lo: "开始", hi: "之后", name: "次数 / 时间" },
+  tracks: [
+    { name: "固定比率", eg: "每 5 次必给", dots: 15, hits: [4, 9, 14], info: "<b>固定比率</b>：数得出还差几下，刚领完就容易懈怠。" },
+    { name: "可变比率", eg: "平均 5 次，不定", dots: 15, hits: [1, 7, 9, 14], info: "<b>可变比率</b>：每一次都可能是“那一次”，最难停下。" },
+    { name: "固定间隔", eg: "每隔固定时间", dots: [0.04, 0.18, 0.27, 0.31, 0.335, 0.45, 0.56, 0.61, 0.64, 0.665, 0.8, 0.89, 0.93, 0.96, 0.985], hits: [4, 9, 13], info: "<b>固定间隔</b>：刚领完就懒，快到点才猛点，点子越来越密。" },
+    { name: "可变间隔", eg: "间隔时间随机", dots: 15, hits: [3, 5, 11], info: "<b>可变间隔</b>：不知道什么时候到，于是隔一会儿就看一眼。" },
+  ],
+});
+VL.diagram.timeline("#fig-tl2", {
+  caption: "紧张和休息交替出现：波谷给玩家喘气，下一次波峰才显得更高。",
+  demo: true,
+  x: { name: "一关里的时间" }, y: { hi: "紧张", lo: "放松" },
+  curve: [0.15, 0.35, 0.55, 0.3, 0.2, 0.45, 0.7, 0.5, 0.25, 0.6, 0.85, 1, 0.3],
+  events: [
+    { at: 0.17, name: "第一次遇敌", eg: "小怪试探", info: "<b>第一次遇敌</b>：难度很低，只是让玩家试试手。" },
+    { at: 0.33, name: "存档点", eg: "喘口气", info: "<b>存档点</b>：放在波谷，紧张之后给一段安全时间。" },
+    { at: 0.5, name: "伏击", eg: "敌人从两边冒出" },
+    { at: 0.7, name: "补给室", eg: "回血、换装备" },
+    { at: 0.92, name: "Boss 战", eg: "全关最高点" },
+  ],
+});
+VL.diagram.tree("#fig-tree", {
+  caption: "每个选项都标出收益和代价，玩家才是在做选择，而不是在猜。",
+  root: { name: "Boss 门前", eg: "血量只剩一半", children: [
+    { name: "现在就打", eg: "赌一把", edge: "胜率 40%", children: [
+      { name: "赢了", eg: "拿到稀有剑", edge: "40%" },
+      { name: "输了", eg: "回存档点", edge: "60%" },
+    ] },
+    { name: "回城补给", eg: "多花 5 分钟", edge: "稳妥", children: [
+      { name: "满血再来", eg: "胜率升到 80%" },
+    ] },
+    { name: "绕路走", eg: "跳过这个 Boss", edge: "没有奖励" },
+  ] },
+});
+VL.diagram.venn("#fig-venn", {
+  caption: "三个圈都占到的那一小块最难做，也最值钱：好玩、有用，还让人动起来。",
+  sets: [{ name: "好玩", eg: "自己想玩" }, { name: "有用", eg: "学到东西" }, { name: "要动身体", eg: "出汗、站起来" }],
+  regions: [
+    { in: [0], eg: "消消乐" }, { in: [1], eg: "背单词" }, { in: [2], eg: "晨跑" },
+    { in: [0, 1], eg: "解谜编程游戏" }, { in: [0, 2], eg: "跳舞机" }, { in: [1, 2], eg: "体育课、广播操" },
+    { in: [0, 1, 2], eg: "健身环", name: "三样都占", info: "<b>健身环</b>：好玩、练身体，还顺带教你动作要领。三样都占的东西很少。" },
+  ],
+});
+VL.diagram.balance("#fig-bal", {
+  caption: "总强度定了，伤害多一点，速度就得少一点；平衡师找的是两边都有人选的那个点。",
+  left: { name: "伤害", eg: "一刀砍多疼", weights: ["重剑", "暴击"] },
+  right: { name: "速度", eg: "多久砍一刀", weights: ["轻弓", "连射", "闪避"] },
+  pivot: { name: "总强度不变", eg: "平衡师守住的那根线" },
+  slider: { label: "把点数从伤害挪到速度：", min: 0, max: 10, value: 4, unit: " 点" },
+});
+VL.diagram.network("#fig-net", {
+  caption: "心流不是一个开关，而是三个条件一起推出来的；技能涨了，难度也得跟着涨。",
+  nodes: [
+    { id: "flow", name: "心流", eg: "忘了时间", main: true, x: 0.5, y: 0.5, nx: 0.5, ny: 0.5 },
+    { id: "goal", name: "目标清楚", eg: "知道要去哪", x: 0, y: 0, nx: 0, ny: 0 },
+    { id: "fb", name: "反馈及时", eg: "每一下都有回应", x: 0, y: 1, nx: 1, ny: 0 },
+    { id: "diff", name: "难度刚好", eg: "够得着但要踮脚", x: 0.5, y: 0, nx: 0, ny: 1 },
+    { id: "skill", name: "技能提升", eg: "越玩越熟", x: 1, y: 0, nx: 1, ny: 1 },
+    { id: "noise", name: "被打断", eg: "弹窗、消息", x: 1, y: 1, nx: 0.5, ny: 0.16 },
+  ],
+  edges: [
+    { from: "goal", to: "flow" }, { from: "fb", to: "flow" }, { from: "diff", to: "flow" },
+    { from: "flow", to: "skill", label: "越玩越会" },
+    { from: "skill", to: "diff", kind: "both", label: "要跟着调" },
+    { from: "noise", to: "flow", kind: "link", label: "此消彼长" },
+  ],
+});
+VL.diagram.network("#fig-net2", {
+  caption: "一局游戏里的几个系统彼此牵制，改一个，其余都会动。",
+  nodes: [
+    { id: "core", name: "核心玩法", eg: "跳、打、躲", main: true },
+    { id: "eco", name: "经济", eg: "金币进出" },
+    { id: "grow", name: "成长", eg: "等级、装备" },
+    { id: "diff", name: "难度", eg: "敌人多强" },
+    { id: "lv", name: "关卡", eg: "地形和敌人" },
+    { id: "so", name: "社交", eg: "组队、排行" },
+  ],
+  edges: [
+    { from: "core", to: "eco", label: "产出金币" }, { from: "eco", to: "grow", label: "买装备" },
+    { from: "grow", to: "diff", kind: "both", label: "互相追赶" }, { from: "lv", to: "diff", label: "决定" },
+    { from: "core", to: "lv" }, { from: "so", to: "core", kind: "link", label: "一起玩更久" },
+  ],
+});
+VL.diagram.spectrum("#fig-spec", {
+  caption: "游戏不是“有规则 / 没规则”两类，大多数落在中间，规则越严越像比赛。",
+  name: "规则有多严",
+  lo: { name: "嬉戏", eg: "想怎么玩就怎么玩" }, hi: { name: "竞技", eg: "规则严密、分输赢" },
+  items: [
+    { at: 0.04, name: "堆沙堡", eg: "没有输赢" },
+    { at: 0.22, name: "过家家", eg: "规则边玩边改" },
+    { at: 0.4, name: "我的世界", eg: "创造模式" },
+    { at: 0.56, name: "捉迷藏", eg: "几条简单规则" },
+    { at: 0.74, name: "大富翁", eg: "规则写在说明书" },
+    { at: 0.97, name: "电竞比赛", eg: "有裁判、有排名" },
+  ],
+});
+VL.diagram.stack("#fig-stack", {
+  caption: "真正在“玩”的只有最底下那一层，其余时间越长，节奏越拖。",
+  unit: " 分钟", total: { name: "一局 30 分钟", eg: "四层加起来" },
+  layers: [
+    { name: "战斗", value: 12, eg: "真正在操作的时间", info: "<b>战斗 12 分钟</b>：一局里真正“玩”的部分，不到一半。" },
+    { name: "跑图", value: 8, eg: "从 A 走到 B" },
+    { name: "菜单", value: 6, eg: "整理背包、看技能" },
+    { name: "加载", value: 4, eg: "黑屏转圈" },
+  ],
+});
+// ?sel=N：每张图预先选中第 N 块，方便看高亮效果
+(function () {
+  const m = /[?&]sel=(\d+)/.exec(location.search); if (!m) return;
+  const pick = () => document.querySelectorAll(".vl-dg-fig").forEach(f => f._vlDiagram && f._vlDiagram.select(+m[1]));
+  setTimeout(pick, 300);
+})();
+</script>
+</body>
+</html>

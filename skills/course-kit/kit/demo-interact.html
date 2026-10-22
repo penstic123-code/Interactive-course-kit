@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>互动组件演示：强化程序（course-kit）</title>
+<link rel="stylesheet" href="vl.css">
+<link rel="stylesheet" href="../skins/notebook/skin.css">
+<link rel="stylesheet" href="vl-interact.css">
+<link rel="stylesheet" href="../skins/notebook/interact.css">
+<script src="../skins/notebook/skin.js"></script>
+<script src="vl-head.js"></script>
+<script>
+  window.VL_COURSE = {
+    id: "demo-i",
+    home: "demo-interact.html",
+    enReady: false,
+    chapters: [
+      { zh: "什么是游戏", en: "What Is a Game", file: "demo.html" },
+      { zh: "核心循环", en: "Core Loop", file: "demo-interact.html" },
+      { zh: "玩家动机", en: "Player Motivation", file: "demo.html", open: false },
+    ],
+    parts: [{ zh: "一、认识游戏", en: "I. Understanding Games", from: 1, to: 3 }],
+  };
+</script>
+<style>
+  /* 页面专属样式：类名加 di- 前缀，只用皮肤变量 */
+  .di-box{fill:var(--dg-c1);stroke:var(--dg-ink);stroke-width:3}
+  .di-box2{fill:var(--dg-c2);stroke:var(--dg-ink);stroke-width:3}
+  .di-box3{fill:var(--dg-c3);stroke:var(--dg-ink);stroke-width:3}
+  .di-box4{fill:var(--dg-c4);stroke:var(--dg-ink);stroke-width:3}
+  .di-t{fill:var(--dg-ink);font-family:var(--font-hand);font-weight:700;font-size:20px}
+  .di-t2{fill:var(--dg-ink2);font-family:var(--font-hand);font-size:15px}
+  .di-t3{fill:var(--dg-ink);font-family:var(--font-hand);font-weight:700;font-size:28px}
+  .di-ln{stroke:var(--dg-ink);stroke-width:3;fill:none;stroke-linecap:round}
+  .di-curve{fill:none;stroke-width:5;stroke-linecap:round}
+  .di-g-track{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 10px}
+  .di-g-track span{width:34px;height:34px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:6px;background:var(--edge);font-family:var(--font-hand);font-weight:700;font-size:.9rem}
+  .di-g-track span.now{background:var(--accent)}
+  .di-g-track span.s{background:var(--okbg)}
+  .di-g-track span.p{background:var(--warnbg);border-style:dashed}
+  .di-g-mood{height:18px;border:2px solid var(--ink);border-radius:8px;background:var(--sunk);overflow:hidden;margin:4px 0 10px}
+  .di-g-mood i{display:block;height:100%;background:var(--accent2);transition:width .3s var(--ease)}
+  .di-g-act{display:flex;flex-wrap:wrap;gap:6px}
+</style>
+</head>
+<body data-ch="2">
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>强化程序</h1>
+      <p class="vl-sub">同样多的奖励，换一种发法，人就停不下来：互动组件演示页。</p>
+    </div>
+    <span data-illus="di-hero"></span>
+  </div>
+
+  <div class="vl-sec"><h2>一只鸽子和四种发奖方式（漫画分镜）</h2></div>
+  <p>斯金纳把鸽子放进箱子：啄一下按键，有时掉一粒食物。他发现，决定鸽子啄多久的不是食物多少，而是食物怎么发。</p>
+  <div class="vl-comic" aria-label="斯金纳的鸽子：每次都给，鸽子吃饱就走；改成随机给，鸽子一直啄">
+    <div class="vl-panel"><span class="vl-bub" data-x="30">每啄一下都给！</span><span data-illus="di-c1"></span><p class="vl-cap">每次都给食物，鸽子很快就学会了。</p></div>
+    <div class="vl-panel"><span class="vl-bub" data-x="70">怎么不啄了？</span><span data-illus="di-c2"></span><p class="vl-cap">停止发食物，鸽子没过多久就不啄了。</p></div>
+    <div class="vl-panel"><span class="vl-bub" data-x="30">随机给试试</span><span data-illus="di-c3"></span><p class="vl-cap">改成次数不定，停发以后鸽子还啄了很久。</p></div>
+  </div>
+
+  <div class="vl-sec"><h2>一次强化走了哪几步（逐步演示）</h2></div>
+  <p>把鸽子啄一下到再啄一下拆开，一步一步看。可以点▶自动播，也可以一步步翻；慢放时每步停得更久。</p>
+  <div class="vl-steps vl-board" data-auto data-dur="2400" id="di-steps">
+    <div class="vl-steps-stage">
+      <svg viewBox="0 0 640 150" role="img" aria-label="四个方框排成一行：啄按键、灯亮、掉食物、再啄一下，中间用箭头连起来">
+        <g data-st-hi="1"><rect class="di-box" x="10" y="35" width="130" height="80" rx="14"/><text class="di-t" x="75" y="82" text-anchor="middle">啄按键</text></g>
+        <path class="di-ln" data-st="2" d="M145 75 H170 M162 67 L170 75 L162 83"/>
+        <g data-st="2" data-st-hi="2"><rect class="di-box2" x="175" y="35" width="130" height="80" rx="14"/><text class="di-t" x="240" y="82" text-anchor="middle">灯亮</text></g>
+        <path class="di-ln" data-st="3" d="M310 75 H335 M327 67 L335 75 L327 83"/>
+        <g data-st="3" data-st-hi="3"><rect class="di-box3" x="340" y="35" width="130" height="80" rx="14"/><text class="di-t" x="405" y="82" text-anchor="middle">掉食物</text></g>
+        <path class="di-ln" data-st="4" d="M475 75 H500 M492 67 L500 75 L492 83"/>
+        <g data-st="4" data-st-hi="4"><rect class="di-box4" x="505" y="35" width="130" height="80" rx="14"/><text class="di-t" x="570" y="82" text-anchor="middle">再啄一下</text></g>
+      </svg>
+    </div>
+    <ol class="vl-steps-list">
+      <li>鸽子啄了一下按键：这是它的行动。</li>
+      <li>灯亮了：一个信号，告诉它“这次有戏”。</li>
+      <li>食物掉下来：奖励来了，这次行动被强化。</li>
+      <li>它又啄了一下：循环回到起点，下一圈开始。</li>
+    </ol>
+  </div>
+
+  <div class="vl-sec"><h2>惊喜有多大（公式拆解）</h2></div>
+  <p>预期两粒，结果掉了五粒，鸽子的“惊喜”是三粒。把这件事写成一行，就是下面的式子。把鼠标停在一块上，或用 Tab 选中一行解释。</p>
+  <div class="vl-anat vl-board">
+    <div class="vl-anat-f"><span data-k="1">δ</span> = <span data-k="2">R</span> − <span data-k="3">V</span></div>
+    <ul class="vl-anat-key">
+      <li data-k="1"><b>δ</b>，读作“德尔塔”：惊喜有多大。例子里等于 3。</li>
+      <li data-k="2"><b>R</b>：实际拿到的奖励。例子里是 5 粒。</li>
+      <li data-k="3"><b>V</b>：事先预期的奖励。例子里是 2 粒。</li>
+    </ul>
+  </div>
+
+  <div class="vl-sec"><h2>动手分一分、排一排（动手题引擎）</h2></div>
+  <p>五道题，题型各不相同：分拣、排序、配对、调到区间、逐张判定。答错不扣分，提示按钮会一级一级帮你。</p>
+  <p class="vl-try" data-try="di-t1" data-done="完成！五种题型都走了一遍。">做完这五道动手题。</p>
+  <div class="vl-board vl-task" id="di-task" aria-label="强化程序动手题"></div>
+
+  <div class="vl-sec"><h2>当一回发奖员（分局小游戏）</h2></div>
+  <p>手里只有几份奖励，要让一个玩家撑过若干回合。正文里先说结论：出其不意的奖励更提劲；可是奖励再巧，也救不了一个本身不好玩的循环。</p>
+  <p class="vl-try" data-try="di-t2" data-done="完成！第三局你先改了玩法。">过完三局。</p>
+  <div class="vl-board" id="di-game">
+    <div class="di-g-track" aria-hidden="true"></div>
+    <div class="di-g-mood" role="img" aria-label="兴趣条"><i></i></div>
+    <div class="di-g-act">
+      <button type="button" class="vl-btn" data-di="give">给奖励（↑）</button>
+      <button type="button" class="vl-btn alt" data-di="skip">不给（→）</button>
+      <button type="button" class="vl-btn alt" data-di="fix" hidden>改玩法（F）</button>
+    </div>
+  </div>
+
+  <div class="vl-sec"><h2>改前改后（对比）</h2></div>
+  <p>同样平均五次给一次，两种发法并排看：</p>
+  <div class="vl-compare" data-mode="cols">
+    <div class="vl-cmp-a bad" data-label="固定比率"><span data-illus="di-fixed"></span><p>每五次准时给。玩家数得出还差几下，刚领完就懈怠。</p></div>
+    <div class="vl-cmp-b" data-label="可变比率"><span data-illus="di-var"></span><p>次数不固定。每一次都可能是“那一次”，停不下来。</p></div>
+  </div>
+  <p>同一个签到系统，改一处设计，一键切换看前后：</p>
+  <div class="vl-compare" data-mode="toggle">
+    <div class="vl-cmp-a" data-label="改前"><span data-illus="di-sign"></span><p>每天签到固定给 10 金币。第三天起，玩家点完就走。</p></div>
+    <div class="vl-cmp-b" data-label="改后"><span data-illus="di-chest"></span><p>签到改成开一个宝箱，里面的东西不固定。玩家会想“万一今天是好的”。</p></div>
+  </div>
+  <p>拖动分隔线，比较奖励停发后两条留存曲线（示意）：</p>
+  <figure class="vl-fig">
+    <div class="vl-compare" data-mode="slider" data-start="45">
+      <div class="vl-cmp-a" data-label="固定比率"><svg viewBox="0 0 600 200" role="img" aria-label="固定比率：停发后曲线很快掉到底"><path class="di-ln" d="M40 20 V180 H580"/><path class="di-curve" stroke="var(--q2)" d="M40 40 C150 45 180 150 260 172 S500 178 580 178"/><text class="di-t3" x="330" y="130" text-anchor="start">很快放弃</text></svg></div>
+      <div class="vl-cmp-b" data-label="可变比率"><svg viewBox="0 0 600 200" role="img" aria-label="可变比率：停发后曲线慢慢下降"><path class="di-ln" d="M40 20 V180 H580"/><path class="di-curve" stroke="var(--q1)" d="M40 40 C200 45 380 70 580 130"/><text class="di-t3" x="560" y="34" text-anchor="end">坚持很久</text></svg></div>
+    </div>
+    <figcaption>停发奖励以后，可变比率的玩家走得慢得多（示意）。</figcaption>
+  </figure>
+
+  <div class="vl-sec"><h2>你也这么想过吗（翻牌）</h2></div>
+  <p>四个关于奖励的常见想法，点一张翻过来看为什么不对。</p>
+  <div class="vl-flip">
+    <div class="vl-flip-c"><div class="vl-flip-f">奖励越多，玩家越爱玩。</div><div class="vl-flip-b">奖励一旦被完全预测，提劲的效果就几乎没了。要紧的是“比预期好多少”。</div></div>
+    <div class="vl-flip-c"><div class="vl-flip-f">随机奖励就是均匀地给。</div><div class="vl-flip-b">可变比率是“平均五次一次”，但可能连空十次，也可能连中两次。</div></div>
+    <div class="vl-flip-c"><div class="vl-flip-f">签到能留住所有人。</div><div class="vl-flip-b">签到是固定间隔：领完就走。它留住的是习惯，不是兴趣。</div></div>
+    <div class="vl-flip-c"><div class="vl-flip-f">只要奖励设计得好就行。</div><div class="vl-flip-b">奖励只是外层的圈；最里层的行动不好玩，外层再巧也是在收买玩家。</div></div>
+  </div>
+
+  <div class="vl-sec"><h2>一张游戏界面上的四种发法（热区图）</h2></div>
+  <p>同一个游戏界面上藏着四种强化程序。点一块，或用 Tab 选中后按回车。</p>
+  <figure class="vl-fig vl-hot" data-hint="先点一块，看它用的是哪种发法。">
+    <svg viewBox="0 0 600 260" role="group" aria-label="游戏界面：每日签到、宝箱、集章卡、邮箱四个区域">
+      <g data-hot="sign" data-name="每日签到"><rect class="di-box" x="20" y="20" width="270" height="100" rx="14"/><text class="di-t" x="155" y="77" text-anchor="middle">每日签到</text></g>
+      <g data-hot="chest" data-name="宝箱"><rect class="di-box2" x="310" y="20" width="270" height="100" rx="14"/><text class="di-t" x="445" y="77" text-anchor="middle">宝箱</text></g>
+      <g data-hot="stamp" data-name="集章卡"><rect class="di-box3" x="20" y="140" width="270" height="100" rx="14"/><text class="di-t" x="155" y="197" text-anchor="middle">集章卡</text></g>
+      <g data-hot="mail" data-name="邮箱"><rect class="di-box4" x="310" y="140" width="270" height="100" rx="14"/><text class="di-t" x="445" y="197" text-anchor="middle">邮箱</text></g>
+    </svg>
+    <div class="vl-hot-text" data-for="sign"><b>固定间隔</b>：每隔一天给一次，跟你做了多少无关。领完就没有理由再待着。</div>
+    <div class="vl-hot-text" data-for="chest"><b>可变比率</b>：开箱次数越多越可能出好东西，但哪一次出说不准。最“粘人”的一种。</div>
+    <div class="vl-hot-text" data-for="stamp"><b>固定比率</b>：集满五个章换一杯。快集满时最积极，刚换完会懈怠一阵。</div>
+    <div class="vl-hot-text" data-for="mail"><b>可变间隔</b>：新邮件什么时候来说不准，于是隔一会儿就想刷一下。</div>
+    <figcaption>四个区域各用一种强化程序：看次数还是看时间，固定还是不固定。</figcaption>
+  </figure>
+
+  <div class="vl-sec"><h2>夹在本子里的五张纸（文档道具）</h2></div>
+  <div class="vl-doc" data-kind="file">
+    <span class="vl-stamp">已归档</span>
+    <p class="vl-doc-meta">档案 1957-03 · 鸽子实验记录</p>
+    <h4>停发食物后的啄键次数</h4>
+    <p>固定比率组：停发后约一小时内停止。可变比率组：继续啄了数千次（数字为示意）。</p>
+  </div>
+  <div class="vl-doc" data-kind="news">
+    <p class="vl-doc-meta">晨报 · 第 3 版</p>
+    <h4>鸽子学会了“赌运气”</h4>
+    <div class="vl-withimg rev"><span data-illus="di-news"></span><div><p>研究者说，奖励不定时出现，比按时出现更能让动物坚持下去。</p></div></div>
+  </div>
+  <div class="vl-doc" data-kind="diary">
+    <p class="vl-doc-meta">3 月 12 日 晚</p>
+    <p>说好只开一个箱子，结果开到半夜。每一次都觉得下一个就是好的。</p>
+  </div>
+  <div class="vl-doc" data-kind="letter">
+    <p>亲爱的设计组：</p>
+    <div class="vl-withimg"><span data-illus="di-letter"></span><div><p>改成随机宝箱以后，留存涨了，可我女儿也开始熬夜了。这样的设计，你们想过边界吗？</p></div></div>
+    <p class="vl-doc-sign">一位玩家的妈妈</p>
+  </div>
+  <div class="vl-doc" data-kind="lab">
+    <p class="vl-doc-meta">实验笔记 · 第 4 页</p>
+    <p>把“平均五次一次”改成“每五次一次”，第二天留存掉了一截。结论：规律一旦被摸清，惊喜就没了。</p>
+  </div>
+
+  <div class="vl-sec"><h2>算不算操纵（立场卡）</h2></div>
+  <div class="vl-philo" data-key="di-philo">
+    <div class="vl-philo-slide" data-t="问题">
+      <p class="vl-philo-q">游戏用可变比率发奖励，让人停不下来，这算不算操纵玩家？</p>
+      <div class="vl-vote" data-options="算|不算|看情况"></div>
+    </div>
+    <div class="vl-philo-slide" data-t="工具无罪">
+      <div class="vl-withimg rev"><span data-illus="di-tool"></span><div><p>可变比率只是一种节奏，钓鱼、集邮、看连载都是这个节奏。问题不在节奏，在拿它换什么。</p></div></div>
+      <p class="vl-src">这是不少游戏设计者的看法。</p>
+    </div>
+    <div class="vl-philo-slide" data-t="利用弱点就是操纵">
+      <p>设计者明知人对“下一次可能中”难以抗拒，还专门放大这一点，就是在利用弱点，尤其对孩子。</p>
+      <p class="vl-src">这是一些研究者和消费者组织的看法。</p>
+    </div>
+    <div class="vl-philo-slide" data-t="留给你">
+      <p>如果是你设计，你会在哪里画线？</p>
+      <textarea class="vl-note" data-save="di-philo" placeholder="我会画的线是……"></textarea>
+    </div>
+  </div>
+
+  <div class="vl-sec"><h2>本篇复习（篇末综合关）</h2></div>
+  <div class="vl-review" id="di-review">
+    <script type="application/json">{
+      "title": "本篇复习页：划掉三条错误论断",
+      "intro": "每做对一题，就用红笔划掉一条错的说法。",
+      "can": ["为什么抽卡比签到更“粘人”", "一个游戏外层的奖励能撑多久"],
+      "rounds": [
+        { "type": "sort", "claim": "随机奖励和固定奖励差不多。", "prompt": "把发奖方式分进“固定”和“不固定”两个框。",
+          "bins": ["固定", "不固定"],
+          "items": [ { "t": "每日签到", "bin": 0, "why": "每天一次，时间固定。" }, { "t": "抽卡", "bin": 1, "why": "抽几次才出货说不准。" }, { "t": "集五个章换一杯", "bin": 0, "why": "次数固定是五。" }, { "t": "刷新邮件", "bin": 1, "why": "邮件什么时候来说不准。" } ],
+          "hints": ["看奖励来的时间或次数能不能事先数出来。", "能数出来的就是固定。"], "ok": "固定和不固定，留人的效果差很多。" },
+        { "type": "order", "claim": "奖励就是循环的起点。", "prompt": "按一圈核心循环的顺序排好。",
+          "items": [ { "t": "行动", "why": "一切从玩家亲手做的事开始。" }, { "t": "反馈", "why": "行动之后先有回应。" }, { "t": "奖励", "why": "奖励跟在反馈后面。" }, { "t": "新目标", "why": "奖励引出下一圈的目标。" } ],
+          "hints": ["起点是玩家自己做的事。", "奖励在中间，不在开头。"], "ok": "循环的起点是行动，不是奖励。" },
+        { "type": "judge", "claim": "有奖励就有核心循环。", "prompt": "逐张判断：这是不是一个完整的核心循环？",
+          "verdicts": ["是", "不是"],
+          "cards": [ { "t": "俄罗斯方块：摆方块、消行、加速、再摆。", "a": 0, "why": "行动、反馈、新挑战首尾相连。" }, { "t": "每天登录领金币，但没什么可做。", "a": 1, "why": "只有奖励，没有行动，最里层是空的。", "hint": "想想玩家在里面“做”了什么。" } ],
+          "hints": ["找一找玩家亲手做的那个动作。", "没有行动的奖励，只是在收买玩家。"], "ok": "奖励不能代替行动本身。" }
+      ]
+    }</script>
+  </div>
+</main>
+<script src="vl.js"></script>
+<script src="illus.js"></script>
+<script src="vl-interact.js"></script>
+<script>
+/* 演示用插画（真实课程放在 js/illus-chNN.js） */
+VL.illus.add("di-hero", "戴眼镜的研究者站着，双手捧着一个小盒子", k => k.ground() + k.person(80, 63, { arms: "hold", glasses: true, look: 1 }) + k.holding(80, 63, { look: 1 }, "box"));
+VL.illus.add("di-c1", "研究者站着递出一杯食物，旁边是一个箱子", k => k.ground() + k.person(60, 63, { arms: "hold", look: 1, face: "grin" }) + k.holding(60, 63, { look: 1 }, "cup") + k.item("box", 150, 116));
+VL.illus.add("di-c2", "研究者站在箱子旁，手托下巴发愁", k => k.ground() + k.item("box", 50, 116) + k.person(130, 63, { arms: "chin", face: "flat", look: -1 }));
+VL.illus.add("di-c3", "研究者手里拿着一颗骰子，箱子在旁边", k => k.ground() + k.person(60, 63, { arms: "hold", look: 1, face: "smile" }) + k.holding(60, 63, { look: 1 }, "die") + k.item("box", 150, 116));
+VL.illus.add("di-fixed", "一排五个格子，第五个格子里有一颗星", k => [0, 1, 2, 3, 4].map(i => '<rect x="' + (22 + i * 32) + '" y="56" width="26" height="26" rx="4" fill="#fffdf3" stroke-width="3"/>').join("") + k.item("star", 163, 69));
+VL.illus.add("di-var", "一排五个格子，星星散在第二和第五个格子里", k => [0, 1, 2, 3, 4].map(i => '<rect x="' + (22 + i * 32) + '" y="56" width="26" height="26" rx="4" fill="#fffdf3" stroke-width="3"/>').join("") + k.item("star", 67, 69) + k.item("star", 163, 69));
+VL.illus.add("di-sign", "火柴人站着拿手机签到，表情平淡", k => k.ground() + k.person(80, 63, { arms: "hold", face: "flat", look: 1 }) + k.holding(80, 63, { look: 1 }, "phone"));
+VL.illus.add("di-chest", "火柴人站着，面前一个宝箱，脸上带笑", k => k.ground() + k.person(60, 63, { arms: "point", face: "grin", look: 1 }) + k.item("box", 140, 116));
+VL.illus.add("di-news", "火柴人站着，双手捧着一份报纸在读", k => k.ground() + k.person(90, 63, { arms: "hold", face: "o", look: 1 }) + k.holding(90, 63, { look: 1 }, "book"));
+VL.illus.add("di-letter", "火柴人坐在椅子上看手机", k => k.ground() + k.person(90, 63, { legs: "sit", arms: "hold", face: "sad", look: 1 }) + k.holding(90, 63, { look: 1 }, "phone"));
+VL.illus.add("di-tool", "火柴人站着，手里拿一本书", k => k.ground() + k.person(90, 63, { arms: "hold", face: "smile", look: 1 }) + k.holding(90, 63, { look: 1 }, "book"));
+
+/* G6：五种题型串成一个动手题（调到区间那一题带随滑块变的小图，所以用 JS 写配置） */
+VL.task("#di-task", {
+  tryId: "di-t1",
+  rounds: [
+    { type: "sort", prompt: "把这些发奖方式分进“看次数”和“看时间”两个框。", bins: ["看次数", "看时间"],
+      items: [ { t: "抽卡", bin: 0, why: "抽得越多越可能出货，看的是次数。" }, { t: "每日签到", bin: 1, why: "一天一次，看的是时间。" }, { t: "集五个章换一杯", bin: 0, why: "数够五次才换，看次数。" }, { t: "刷新邮件", bin: 1, why: "邮件什么时候来，和刷几次无关。" } ],
+      hints: ["问一问：多做几次，奖励会来得更快吗？", "会更快的看次数；只能等的看时间。"], ok: "看次数叫“比率”，看时间叫“间隔”。" },
+    { type: "order", prompt: "把一圈核心循环排好顺序。", items: [ { t: "行动：点、跳、选择", why: "循环从玩家亲手做的事开始。" }, { t: "反馈：叮！血条变化", why: "行动之后马上有回应。" }, { t: "奖励：金币、经验", why: "奖励跟在反馈之后。" }, { t: "成长：变强、解锁", why: "奖励攒起来才变成成长。" } ],
+      hints: ["第一步是玩家自己做的事。", "成长要靠奖励一点点攒出来，所以在最后。"], ok: "行动 → 反馈 → 奖励 → 成长，然后再来一圈。" },
+    { type: "pair", prompt: "把四种强化程序和例子配成对：先点左边，再点右边。", pairs: [ { l: "固定比率", r: "集五个章换一杯", why: "次数固定。" }, { l: "可变比率", r: "抽卡", why: "次数不固定。" }, { l: "固定间隔", r: "每日签到", why: "时间固定。" }, { l: "可变间隔", r: "刷新邮件", why: "时间不固定。" } ],
+      hints: ["先分清“比率”看次数、“间隔”看时间。", "再看“固定”还是“可变”。"], ok: "四种发法，两个维度：次数还是时间，固定还是不固定。" },
+    { type: "range", prompt: "调出“平均五次中一次”的中奖概率。", label: "每次的中奖概率", min: 0, max: 100, step: 1, value: 60, target: [18, 22], unit: "%",
+      ends: ["几乎不中", "次次都中"], low: "调小了：平均要按很多次才中一次。", high: "调大了：平均不到五次就中一次。",
+      view: v => (v > 0 ? "平均每 " + (100 / v).toFixed(1) + " 次中一次" : "永远不中"),
+      hints: ["“平均五次一次”就是五次里中一次。", "一除以五，是百分之二十。"], ok: "20% 的概率，平均五次一次；可哪一次中，没人说得准。" },
+    { type: "judge", prompt: "逐张判断：这个设计用的是“可变比率”吗？", verdicts: ["是", "不是"],
+      cards: [ { t: "扭蛋机：投一枚币，出什么不知道。", a: 0, why: "每投一次都可能出好东西，次数不固定。" }, { t: "地铁每十分钟一班。", a: 1, why: "时间固定，是固定间隔。", hint: "它看的是次数还是时间？" }, { t: "钓鱼：甩竿几次才上钩说不准。", a: 0, why: "多甩几次就多几次机会，次数不固定。" } ],
+      hints: ["先问是看次数还是看时间。", "看次数、又说不准第几次，才是可变比率。"], ok: "扭蛋和钓鱼都是可变比率；地铁是固定间隔。" },
+  ],
+});
+
+/* G7：发奖员小游戏。每回合兴趣 -1；给奖励时，和上次间隔一样（被猜到）只 +1，否则 +3（惊喜）。第三局可以先改玩法，让兴趣掉得慢一半 */
+(function () {
+  const host = document.getElementById("di-game");
+  const track = host.querySelector(".di-g-track"), mood = host.querySelector(".di-g-mood i");
+  // 机器的打法：每 3 回合准时给一次（固定比率）；算它能留住玩家几个回合
+  const bot = r => { let I = r.I0, K = r.K, last = null, since = 0; for (let t = 1; t <= r.T; t++) { since++; if (since === 3 && K > 0) { K--; I += last === 3 ? 1 : 3; last = 3; since = 0; } I -= 1; if (I <= 0) return t - 1; } return r.T; };
+  const g = VL.game(host, {
+    title: "发奖员：让玩家撑下去",
+    fold: { t: "多玩一会儿：当一回发奖员", d: "三局，约 4 分钟，可以跳过" },
+    tryId: "di-t2", vs: "机器",
+    rules: "每回合玩家的兴趣掉 1。给奖励时，和上一次隔得一样久，玩家早猜到了，只加 1；隔得不一样，是惊喜，加 3。兴趣掉到 0，玩家就走了。",
+    hud: [["turn", "回合"], ["tok", "奖励剩"], ["mood", "兴趣"]],
+    rounds: [
+      { name: "短局", goal: "让玩家撑过 8 回合，手里 2 份奖励。", T: 8, I0: 4, K: 2 },
+      { name: "长一点", goal: "撑过 12 回合，奖励只有 3 份。", T: 12, I0: 4, K: 3 },
+      { name: "空循环", goal: "撑过 16 回合，还是 3 份奖励。", T: 16, I0: 4, K: 3, fix: true },
+    ],
+    init: r => ({ t: 0, I: r.I0, K: r.K, last: null, since: 0, log: [], fixed: false, preds: 0 }),
+    move(s, a, g) {
+      s.since++;
+      let txt;
+      if (a === "fix") {
+        if (!g.r.fix || s.fixed) { s.since--; return { msg: "这一局不能改玩法。", cost: 0 }; }
+        s.fixed = true; s.log.push("改"); txt = "行动本身变好玩了：之后兴趣掉得慢一半。";
+      } else if (a === "give" && s.K > 0) {
+        s.K--; const pred = s.last !== null && s.since === s.last;
+        s.I += pred ? 1 : 3; if (pred) s.preds++; s.last = s.since; s.since = 0;
+        s.log.push(pred ? "+1" : "+3"); txt = pred ? "和上次隔得一样久，玩家早猜到了：只 +1。" : "没想到！兴趣 +3。";
+      } else { s.log.push("·"); txt = a === "give" ? "奖励用完了，这一回合什么也没给。" : "这一回合不给。"; }
+      s.I -= s.fixed ? 0.5 : 1; s.t++;
+      return txt;
+    },
+    judge(s, g) {
+      const b = bot(g.r);
+      if (s.I <= 0) return { lose: true, msg: "兴趣掉到 0，玩家走了。", you: s.t - 1, bot: b };
+      if (s.t >= g.r.T) return { win: true, stars: s.preds === 0 ? 3 : s.preds === 1 ? 2 : 1, msg: "玩家撑完了 " + g.r.T + " 回合。", you: g.r.T, bot: b };
+      return null;
+    },
+    diagnose(s, g) {
+      if (s.K === g.r.K) return "<p>一份奖励都没给，兴趣只会一路往下掉。</p>";
+      if (g.r.fix && !s.fixed) return "<p>三份奖励最多加 9，十六个回合要掉 16：光靠发奖励，怎么排都撑不住。这一局要先“改玩法”，让行动本身好玩起来。</p>";
+      if (s.preds > 0) return "<p>有 " + s.preds + " 次奖励和上一次隔得一样久，玩家猜到了，只加了 1。把间隔错开试试。</p>";
+      if (s.K > 0) return "<p>手里还剩 " + s.K + " 份奖励没用：给得太晚，兴趣已经见底了。</p>";
+      return "<p>奖励用完以后，剩下的回合太多。早一点、错开一点给。</p>";
+    },
+    review: () => "<p>前两局里，同样一份奖励，出其不意时比按时按点更提劲：大脑在意的是“比预期好多少”。第三局里，奖励再巧也撑不住，非得先让行动本身好玩。外层的奖励只能放大一个好循环，代替不了它。</p>",
+    keys: { ArrowUp: "give", ArrowRight: "skip", f: "fix", F: "fix" }, keysLabel: "游戏区：↑ 给奖励，→ 不给，F 改玩法",
+    pad: true, padLabels: { ArrowUp: "给", ArrowRight: "不给" },
+    render(s, g) {
+      const r = g.r;
+      track.innerHTML = Array.from({ length: r.T }, (_, i) => '<span class="' + (i === s.t ? "now" : s.log[i] === "+3" ? "s" : s.log[i] === "+1" ? "p" : "") + '">' + (s.log[i] || i + 1) + "</span>").join("");
+      mood.style.width = Math.max(0, Math.min(100, s.I / 12 * 100)) + "%";
+      host.querySelector('[data-di="fix"]').hidden = !r.fix || s.fixed;
+      g.set("turn", s.t + " / " + r.T); g.set("tok", s.K); g.set("mood", s.I);
+    },
+  });
+  host.querySelectorAll("[data-di]").forEach(b => b.addEventListener("click", () => g.act(b.dataset.di)));
+})();
+</script>
+</body>
+</html>

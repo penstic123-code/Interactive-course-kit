@@ -1,0 +1,265 @@
+/* course-kit · vl-interact.css —— vl-interact.js 各组件的结构样式：在哪、多大、怎么排、状态怎么切换。
+   不写颜色、字体、描边、纹理（那些在皮肤的 interact.css 里，用变量）；var(--x) 的后备值只为皮肤缺变量时不至于看不见。
+   放在 vl.css 和皮肤 skin.css 之后、皮肤 interact.css 之前。 */
+
+/* ---------- 共用 ---------- */
+.vl-task,.vl-review,.vl-game,.vl-steps,.vl-anat,.vl-compare,.vl-flip,.vl-comic,.vl-philo{margin:20px 0}
+.vl-task-stage > :first-child,.vl-review-h > :first-child{margin-top:0}
+/* 组件里用 hidden 藏起的按钮：.vl-btn 自带 display，要显式压住 */
+:where(.vl-task,.vl-review,.vl-game,.vl-steps,.vl-philo,.vl-compare,.vl-hot) [hidden]{display:none!important}
+
+/* ---------- G6 动手题引擎 ---------- */
+.vl-task-title{margin:0 0 6px}
+.vl-task-prog{margin:0 0 4px;font-size:.92rem}
+.vl-task-prog:empty{display:none}
+.vl-task-q{margin:4px 0 12px}
+.vl-task-q:focus{outline:none}
+.vl-task-body{margin:8px 0}
+.vl-task-ctl{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;margin-top:12px}
+.vl-task-ctl .vl-btn{margin:0}
+.vl-task-ctl [hidden]{display:none}
+.vl-task-fb{min-height:1.6em;margin:8px 0 0}
+.vl-task-fb:empty{min-height:0}
+.vl-task-end{margin-top:12px;padding:10px 14px}
+.vl-task-end[hidden]{display:none}
+.vl-task-end-t{margin:0 0 6px}
+.vl-task-end-t:focus{outline:none}
+.vl-tk-tag{display:inline-block;margin-right:8px;padding:0 8px;line-height:1.6}
+.vl-tk-card{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 12px;margin:4px;cursor:pointer;font:inherit;text-align:left;max-width:100%;user-select:none;-webkit-user-select:none}
+.vl-tk-card:disabled{cursor:default}
+.vl-tk-drag{touch-action:none}
+.vl-tk-lift{opacity:.4}
+.vl-tk-ghost{position:fixed;left:0;top:0;z-index:95;pointer-events:none;margin:0}
+.vl-tk-x,.vl-tk-ok{flex:none;font-weight:700}
+.vl-tk-num{flex:none;min-width:1.6em;text-align:center}
+.vl-tk-empty{display:block;padding:6px 4px;font-size:.92rem}
+/* 分拣 */
+.vl-tk-pool{min-height:62px;padding:6px;margin-bottom:12px;display:flex;flex-wrap:wrap;align-content:flex-start}
+.vl-tk-bins{display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:12px}
+.vl-tk-bin{min-height:110px;padding:6px;display:flex;flex-direction:column;align-items:stretch}
+.vl-tk-bin > .vl-tk-card{margin:4px 2px}
+.vl-tk-bin-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 8px;padding:2px 4px 6px}
+.vl-tk-bin-h b{min-width:0}
+.vl-tk-put{min-height:36px;padding:2px 12px;margin:0;font-size:.95rem}
+.vl-tk-put:disabled{visibility:hidden}
+@media (max-width:560px){.vl-tk-bins{grid-template-columns:minmax(0,1fr)}.vl-tk-bin{min-height:70px}}
+/* 排序 */
+.vl-tk-order{list-style:none;margin:0;padding:0}
+.vl-tk-oi{display:flex;align-items:center;gap:6px;margin:6px 0}
+.vl-tk-oi > .vl-tk-card{flex:1;margin:0}
+.vl-tk-ud{display:flex;gap:4px;flex:none}
+.vl-tk-mv{width:44px;height:44px;padding:0;cursor:pointer;font:inherit;font-size:1.1rem;font-weight:700}
+.vl-tk-mv:disabled{cursor:default;opacity:.35}
+/* 配对 */
+.vl-tk-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 18px}
+.vl-tk-pcol{display:flex;flex-direction:column}
+.vl-tk-pcol > .vl-tk-card{margin:4px 0;width:100%}
+@media (max-width:480px){.vl-tk-pair{gap:8px}.vl-tk-pcol > .vl-tk-card{padding:6px 8px}}
+/* 调到区间 */
+.vl-tk-range{padding:6px 2px}
+.vl-tk-rrow{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
+.vl-tk-range input[type=range]{display:block;width:100%;min-height:36px;margin:6px 0 0}
+.vl-tk-ends{display:flex;justify-content:space-between;gap:12px;font-size:.92rem}
+.vl-tk-ends span:last-child{text-align:right}
+.vl-tk-track{position:relative;height:14px;margin:8px 10px 4px}
+.vl-tk-target{position:absolute;top:0;bottom:0}
+.vl-tk-you{position:absolute;top:-4px;bottom:-4px;width:4px;margin-left:-2px}
+.vl-tk-view{margin-top:10px}
+/* 逐条判定 */
+.vl-tk-jn{margin:0 0 4px;font-size:.92rem}
+.vl-tk-case{padding:12px 16px;margin:4px 0 10px}
+.vl-tk-verdicts{display:flex;flex-wrap:wrap;gap:8px}
+.vl-tk-verdict{min-height:44px;padding:4px 18px;margin:0}
+.vl-tk-why{margin:10px 0 6px;padding:8px 12px}
+.vl-tk-jnext{margin:4px 0 0}
+.vl-tk-jlist{margin:0;padding:0;list-style:none}
+.vl-tk-jlist li{margin:8px 0;padding:8px 12px}
+.vl-tk-jt{display:block;margin-bottom:2px}
+
+/* ---------- P2 篇末综合关 ---------- */
+.vl-review-h{margin-bottom:12px}
+.vl-review-title{margin:0 0 4px}
+.vl-review-can{margin:10px 0;padding:8px 14px}
+.vl-review-can h4{margin:0 0 2px}
+.vl-review-can ul{margin:0;padding-left:1.2em}
+.vl-review-ck{margin:10px 0 2px;font-size:.92rem}
+.vl-review-claims{margin:0;padding-left:1.6em}
+.vl-review-claim{margin:4px 0;position:relative}
+.vl-review-now{display:inline}
+
+/* ---------- G7 分局小游戏 ---------- */
+.vl-game{position:relative}
+.vl-game-title{margin:0 0 6px}
+.vl-game-hud{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-bottom:8px}
+.vl-game-stat{white-space:nowrap}
+.vl-game-lvls{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.vl-game-lv{margin:0}
+.vl-game-lv:disabled{cursor:not-allowed;opacity:.5}
+.vl-game-rules,.vl-game-goal{margin:4px 0}
+.vl-game-stage{margin:10px 0;position:relative}
+.vl-game-stage:focus{outline:none}
+.vl-game-stage:focus-visible{outline:3px solid var(--focus,#2b6cff);outline-offset:4px}
+.vl-game-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.vl-game-row [hidden]{display:none}
+.vl-game-msg{min-height:1.8em;margin:8px 0 0}
+.vl-game-stars{letter-spacing:2px}
+.vl-game-diag,.vl-game-review{margin-top:10px;padding:10px 14px}
+.vl-game-diag[hidden],.vl-game-review[hidden]{display:none}
+.vl-game-dh,.vl-game-rh{margin:0 0 4px}
+.vl-game-fold > .vl-side-body{padding-top:10px}
+/* 屏幕方向键：只在窄屏 / 触屏出现；键盘读者用方向键 */
+.vl-pad{display:none;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(3,56px);gap:6px;justify-content:center;margin:10px auto}
+.vl-pad-b{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;cursor:pointer;font:inherit;font-size:1.3rem;line-height:1.1;min-width:44px;min-height:44px}
+.vl-pad-b small{font-size:.68rem;line-height:1.1;margin-top:2px}
+@media (max-width:700px),(pointer:coarse){.vl-pad{display:grid}}
+
+/* ---------- G8 逐步演示 ---------- */
+.vl-steps{position:relative;--vl-st-dur:350ms}
+.vl-steps:focus{outline:none}
+.vl-steps:focus-visible{outline:3px solid var(--focus,#2b6cff);outline-offset:4px}
+.vl-steps-stage{position:relative}
+.vl-steps-stage > svg{display:block;width:100%;height:auto}
+.vl-steps [data-st],.vl-steps [data-st-hi]{transition:opacity var(--vl-st-dur) var(--ease,ease-out)}
+.vl-steps .vl-st-off{opacity:0;visibility:hidden}
+.vl-steps-list{margin:0;padding:0;list-style:none}
+.vl-steps-list > li{display:none}
+.vl-steps-say{min-height:3.4em;margin:10px 0 6px}
+.vl-steps-k{margin-right:6px}
+.vl-steps-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.vl-steps-bar .vl-btn{margin:0;min-width:44px;padding:4px 10px}
+.vl-steps-bar .vl-btn svg{width:18px;height:18px}
+.vl-st-prog{flex:1 1 160px;display:flex;gap:4px;height:26px;align-items:center;cursor:pointer;min-width:120px}
+.vl-st-prog > i{flex:1;height:10px;position:relative;overflow:hidden}
+.vl-st-prog > i > b{position:absolute;left:0;top:0;bottom:0;width:0}
+.vl-st-n{min-width:3.4em;text-align:center;font-size:.95rem}
+.vl-st-slow{margin:0}
+/* ---------- G9 公式拆解 ---------- */
+.vl-anat{--vk:var(--ink,currentColor)}
+.vl-anat [data-k="1"]{--vk:var(--var-1,var(--q1))}.vl-anat [data-k="2"]{--vk:var(--var-2,var(--q2))}.vl-anat [data-k="3"]{--vk:var(--var-3,var(--q3))}
+.vl-anat [data-k="4"]{--vk:var(--var-4,var(--q4))}.vl-anat [data-k="5"]{--vk:var(--var-5,var(--q5))}.vl-anat [data-k="6"]{--vk:var(--var-6,var(--q6))}
+.vl-v1{--vk:var(--var-1,var(--q1))}.vl-v2{--vk:var(--var-2,var(--q2))}.vl-v3{--vk:var(--var-3,var(--q3))}.vl-v4{--vk:var(--var-4,var(--q4))}.vl-v5{--vk:var(--var-5,var(--q5))}.vl-v6{--vk:var(--var-6,var(--q6))}
+:where(.vl-v1,.vl-v2,.vl-v3,.vl-v4,.vl-v5,.vl-v6){color:var(--vk);font-weight:700}
+.vl-anat-f{text-align:center;padding:14px 8px;overflow-x:auto;line-height:1.6}
+.vl-anat-part{display:inline-block;cursor:pointer;padding:0 4px;transition:opacity var(--dur-fb,.15s)}
+.vl-anat-key{margin:8px 0 0;padding:0;list-style:none}
+.vl-anat-key li{position:relative;margin:6px 0;padding:6px 10px 6px 18px;cursor:pointer;transition:opacity var(--dur-fb,.15s)}
+.vl-anat-key li::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:5px;background:var(--vk)}
+.vl-anat.has-on .vl-anat-part:not(.on),.vl-anat.has-on .vl-anat-key li:not(.on){opacity:.35}
+
+/* ---------- E2 对比 ---------- */
+.vl-cmp-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.vl-cmp-cols > *{min-width:0;padding:12px 16px}
+@media (max-width:560px){.vl-cmp-cols{grid-template-columns:minmax(0,1fr)}}
+.vl-cmp-lab{margin:0 0 6px}
+.vl-compare .vl-illus{max-width:240px;margin:0 auto}
+.vl-cmp-seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.vl-cmp-sw{margin:0;min-height:42px}
+.vl-cmp-toggle .vl-cmp-view{display:grid}
+.vl-cmp-toggle .vl-cmp-view > *{grid-area:1/1;min-width:0;padding:12px 16px;opacity:0;visibility:hidden;transition:opacity var(--dur-fb,.25s),visibility 0s linear var(--dur-fb,.25s)}
+.vl-cmp-toggle .vl-cmp-view > .on{opacity:1;visibility:visible;transition:opacity var(--dur-fb,.25s)}
+.vl-cmp-hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.vl-cmp-tip{font-size:.88rem}
+.vl-cmp-slider .vl-cmp-view{position:relative;display:grid;touch-action:none;user-select:none;-webkit-user-select:none;cursor:ew-resize;--pos:50%}
+.vl-cmp-slider .vl-cmp-view > .vl-cmp-a,.vl-cmp-slider .vl-cmp-view > .vl-cmp-b{grid-area:1/1;min-width:0}
+.vl-cmp-slider .vl-cmp-b{clip-path:inset(0 0 0 var(--pos))}
+.vl-cmp-slider .vl-cmp-a{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.vl-cmp-h{position:absolute;top:0;bottom:0;left:var(--pos);width:44px;margin-left:-22px;display:flex;justify-content:center;z-index:2}
+.vl-cmp-h i{display:block;width:4px;height:100%}
+.vl-cmp-h::after{content:"";position:absolute;top:50%;left:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%}
+@keyframes vl-cmp-wig{0%,100%{translate:0}25%{translate:-14px}75%{translate:14px}}
+.vl-cmp-wiggle{animation:vl-cmp-wig .6s var(--ease,ease-in-out) 2}
+
+/* ---------- M1 翻牌 ---------- */
+.vl-flip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.vl-flip-c{perspective:900px;cursor:pointer;min-height:120px}
+.vl-flip-in{display:grid;height:100%;transition:transform .4s var(--ease,ease);transform-style:preserve-3d}
+.vl-flip-f,.vl-flip-b{grid-area:1/1;padding:14px 16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;min-width:0}
+.vl-flip-b{transform:rotateY(180deg)}
+.vl-flip-c.flipped .vl-flip-in{transform:rotateY(180deg)}
+.vl-flip-all{margin-top:4px}
+/* 动效关：不转，直接换面（信息照样在） */
+html.vl-fx-off .vl-flip-in{transform:none!important}
+html.vl-fx-off .vl-flip-b{transform:none;visibility:hidden}
+html.vl-fx-off .vl-flip-c.flipped .vl-flip-b{visibility:visible}
+html.vl-fx-off .vl-flip-c.flipped .vl-flip-f{visibility:hidden}
+@media (prefers-reduced-motion:reduce){
+  .vl-flip-in{transform:none!important}.vl-flip-b{transform:none;visibility:hidden}
+  .vl-flip-c.flipped .vl-flip-b{visibility:visible}.vl-flip-c.flipped .vl-flip-f{visibility:hidden}
+}
+
+/* ---------- M2 热区图 ---------- */
+.vl-hot svg{display:block;width:100%;height:auto}
+.vl-hot .vl-hot-a{cursor:pointer;transition:opacity var(--dur-fb,.2s)}
+.vl-hot svg .vl-hot-a:focus{outline:none}
+.vl-hot.has-on svg .vl-hot-a:not(.is-on){opacity:.55}
+.vl-hot-pic{position:relative}
+.vl-hot-pic > img{display:block;width:100%;height:auto}
+.vl-hot-pin{position:absolute;transform:translate(-50%,-50%);min-width:44px;min-height:44px;padding:0 8px;cursor:pointer;font:inherit;font-weight:700}
+.vl-hot-n{display:block;text-align:right;font-size:.88rem;margin-top:6px}
+.vl-hot-info{min-height:3.2em;margin:4px 0 0;padding:8px 12px}
+.vl-hot-info > p:first-child{margin-top:0}
+.vl-hot-info > :last-child{margin-bottom:0}
+.vl-hot-text[hidden]{display:none}
+
+/* ---------- T6 漫画分镜 ---------- */
+.vl-comic{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px}
+.vl-panel{position:relative;display:flex;flex-direction:column;min-width:0;padding:8px 8px 10px}
+.vl-panel .vl-illus{width:100%}
+.vl-cap{margin:6px 2px 0;line-height:1.55}
+.vl-pn{display:inline-grid;place-items:center;min-width:1.6em;height:1.6em;margin-right:6px;font-size:.85rem}
+/* 气泡排在插画上方的流里（不压人物），尾巴朝下指向说话的人：data-x="30" 尾巴在 30% 处 */
+.vl-bub{position:relative;align-self:flex-start;max-width:92%;margin:0 0 12px;padding:3px 10px;line-height:1.45;font-size:.95rem;--tail:24%}
+.vl-bub::after{content:"";position:absolute;top:100%;left:var(--tail);width:12px;height:12px;margin-left:-6px;transform:translateY(-6px) rotate(45deg)}
+@media (max-width:600px){
+  .vl-comic{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+  .vl-comic > .vl-panel{flex:0 0 78%;scroll-snap-align:start}
+}
+@keyframes vl-panel-in{from{opacity:.15}to{opacity:1}}
+.vl-comic.vl-armed > .vl-panel{opacity:.15}
+.vl-comic.vl-play > .vl-panel{animation:vl-panel-in .35s var(--ease,ease-out) both;animation-delay:calc(var(--i,0) * 280ms)}
+
+/* ---------- K9 文档道具（纯 CSS；外形在皮肤） ---------- */
+.vl-doc{position:relative;margin:24px auto;padding:18px 22px 16px;max-width:640px}
+.vl-doc > :first-child{margin-top:0}
+.vl-doc > :last-child{margin-bottom:0}
+.vl-doc h4{margin:.1em 0 .4em}
+.vl-doc-meta{margin:0 0 6px;font-size:.88rem}
+.vl-doc-sign{text-align:right;margin-top:10px}
+.vl-doc-cols{columns:2 220px;column-gap:24px}
+.vl-doc-cols > p:first-child{margin-top:0}
+/* 印章：浮在右上，正文绕开它，不会压字 */
+.vl-stamp{float:right;margin:0 0 8px 14px;padding:2px 12px;line-height:1.5;white-space:nowrap}
+@media (max-width:480px){.vl-doc{padding:16px 14px 14px}}
+
+/* ---------- K5 立场卡 + 投票 ---------- */
+.vl-philo-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.vl-philo-tab{flex:none;white-space:nowrap;cursor:pointer;font:inherit;min-height:40px;padding:2px 14px}
+.vl-philo-stage{touch-action:pan-y}
+.vl-philo-slide{padding:12px 18px}
+.vl-philo-slide[hidden]{display:none}
+.vl-philo-slide > :first-child{margin-top:0}
+.vl-philo-you{margin:0 0 8px;font-size:.92rem}
+.vl-philo-q{margin:0 0 8px}
+.vl-philo-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.vl-philo-nav .vl-btn{margin:0}
+.vl-philo-nav .vl-btn svg{width:16px;height:16px}
+.vl-philo-n{font-size:.92rem}
+.vl-vote-opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.vl-vote-opt{margin:0;min-height:44px;padding:4px 16px}
+.vl-vote-st{min-height:1.5em;margin:4px 0 0;font-size:.95rem}
+
+/* ---------- 打印：全部展开 ---------- */
+@media print{
+  .vl-task-ctl,.vl-steps-bar,.vl-philo-tabs,.vl-philo-nav,.vl-flip-all,.vl-cmp-seg,.vl-cmp-h,.vl-pad,.vl-game-row,.vl-game-lvls{display:none!important}
+  .vl-steps-list > li{display:list-item}
+  .vl-steps .vl-st-off{opacity:1;visibility:visible}
+  .vl-philo-slide[hidden]{display:block!important}
+  .vl-flip-in{transform:none!important}
+  .vl-flip-b{transform:none!important;visibility:visible!important;border-top:1px dashed}
+  .vl-flip-f{visibility:visible!important}
+  .vl-flip-f,.vl-flip-b{grid-area:auto}
+  .vl-cmp-toggle .vl-cmp-view > *{opacity:1;visibility:visible;grid-area:auto}
+  .vl-cmp-slider .vl-cmp-a,.vl-cmp-slider .vl-cmp-b{clip-path:none;grid-area:auto}
+  .vl-comic > .vl-panel{opacity:1!important;animation:none!important}
+  .vl-hot-text[hidden]{display:block!important}
+}

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- <title> = “第N章 章名”；改编号时脚本一并重映射（content-rules.md 第五节） -->
+<title>第1章 章名</title>
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<!--VL:EXTRA-CSS-->
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* 本章专属样式：类名加章节前缀 c1-，不重定义 vl- 类（会覆盖共享样式）；颜色只用皮肤变量 */
+  .c1-stage{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+</style>
+</head>
+<!-- data-ch = 章号；vl.js 据此写 data-part（第几篇）、data-pat（纸纹）、--vl-dh（同篇色相微移），并生成顶栏、徽记、翻页 -->
+<body data-ch="1">
+<main class="vl-wrap">
+
+  <!-- ===== 章首：标题 + 一句副标题 + 题头插画。徽记“第 N 章”自动补，不用写 ===== -->
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>章名</h1>
+      <!-- 副标题：≤30 字，从处境或反直觉问题出发，不写定义 -->
+      <p class="vl-sub">【填：一句从处境出发的副标题】</p>
+    </div>
+    <!-- 题头插画：画开场的那个处境（注册在 js/illus-ch01.js） -->
+    <span data-illus="c01-hero"></span>
+  </div>
+
+  <!-- ===== 学习目标：3 条“读完你能……”（各 ≤25 字，可观察）+ 用时 ===== -->
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 30 分钟</span>
+    <ul><li>【填：目标一】</li><li>【填：目标二】</li><li>【填：目标三】</li></ul>
+  </div>
+
+  <!-- ===== 分节 1。小标题用具体场景或具体问题（≤16 字），整组句式错开，不挂“是什么 / 发明故事”层级标签。
+       分节必须是 <main> 的直接子元素：它和下一个分节之间的内容会自动收进可折叠的 .vl-sec-body ===== -->
+  <div class="vl-sec"><h2>【填：写出本节的概念名 + 处境，如“凌晨一点停不下来的核心循环”】</h2></div>
+
+  <!-- 处境插画开场：宽屏图左文右、顶端对齐；窄屏上下排。一节的开头放有温度的图（插画、照片、例子），图解放中间 -->
+  <div class="vl-withimg">
+    <span data-illus="c01-s1-scene"></span>
+    <div>
+      <p>【填：从读者熟悉的处境讲起，抛出一个麻烦或反直觉的问题。每段 ≤4 行；1–2 段正文就要有一个视觉。】</p>
+      <p>【填：新术语第一次出现时当场说清，例如 <span class="vl-term" data-def="一句话释义，不重复术语名">术语</span>。核心概念第一次起名时套荧光笔：<span class="vl-cn">概念名</span>（和下面概念卡的名字一致）。】</p>
+    </div>
+  </div>
+
+  <!-- 概念图解：这段话里有“结构”（循环、层级、流程、对比、坐标）才画。五种模板见 kit/README.md“概念图解”。
+       每个节点 = 名字（≤6 字）+ 一行具体例子（≤14 字）；图注写“为什么”（这张图说明了什么），不复述图里的字 -->
+  <figure class="vl-fig" id="c01-fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[{"name":"第一步","eg":"一行具体例子","info":"<b>第一步</b>：点中后显示的一句解释。"},{"name":"第二步","eg":"一行具体例子"},{"name":"第三步","eg":"一行具体例子"},{"name":"第四步","eg":"一行具体例子"}],"center":"中心词"}</script>
+    <figcaption>【填：这张图说明了什么，≤40 字】</figcaption>
+  </figure>
+
+  <p>【填：读者已经见过处境和图之后，再给概念起名字（见<a data-figref="c01-fig-cycle" href="#c01-fig-cycle">图</a>）。】</p>
+
+  <!-- 概念卡：每个核心概念一张，放在概念第一次被命名处。字段固定，卡内不写第二段；图位 .vl-cc-fig 必有（缺了会显示红色“缺概念图”） -->
+  <aside class="vl-cc">
+    <p class="vl-cc-name">【概念名 ≤10 字】</p>
+    <p class="vl-cc-en">English name</p>
+    <p class="vl-cc-by">出处：一个人 · 一本书或论文 · 年份（可省）</p>
+    <p class="vl-cc-plain">【通俗地说的一句】</p>
+    <p class="vl-cc-def">【一句定义，≤60 字】</p>
+    <p class="vl-cc-eg">【回指正文里已经讲过的那个例子，≤30 字，不新开例子】</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-1"></span></div>
+  </aside>
+
+  <!-- 例子轮播：连续 ≥2 个 .vl-eg 自动合成页签轮播。≥3 个例子，含 1 个反例（.bad）；每个都配插画，反例画出缺的那一项 -->
+  <div class="vl-eg" data-t="例子一"><span data-illus="c01-eg-1"></span><p><b>例子一：</b>【填：具体到能想象画面，≤2 段】</p></div>
+  <div class="vl-eg" data-t="例子二"><span data-illus="c01-eg-2"></span><p><b>例子二：</b>【填：换一个领域或日常场景】</p></div>
+  <div class="vl-eg bad" data-t="差一点"><span data-illus="c01-eg-bad"></span><p><b>反例：</b>【填：差一点就对的那个，说清缺了哪一项】</p></div>
+
+  <!-- 原理框：讲“为什么成立”。标题是一句原理（≤20 字，不写“原理”二字）；正文 ≤2 段；出处 + “验证：上面的××” -->
+  <div class="vl-why">
+    <h3>【填：一句原理】</h3>
+    <div class="vl-why-fig"><span data-illus="c01-why-1"></span></div>
+    <p>【填：底层原理，≤2 段；有争议时一句“也有人不同意：……（某某）”】</p>
+    <p class="vl-src">出处：谁 · 哪项研究 · 年份。验证：上面的××。</p>
+  </div>
+
+  <!-- 发明故事框（默认收起）：正文主线里先留一两句关键洞察，细节、时间线、人物进框。
+       钩子标题是具体问题（✓“1898 年，一只猫被关进笼子：奖励规律是怎么被发现的”），一句介绍说清里面有什么 -->
+  <details class="vl-story">
+    <summary><b>【填：具体问题式的钩子标题】</b><small>【填：一句介绍，≤30 字】</small></summary>
+    <!-- 演化链：问题 → 方案 → 新问题；先给前两个让读者猜下一个 -->
+    <ol class="vl-chain">
+      <li>【问题】</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>【早期尝试，为什么不行】</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>【关键洞察】</li>
+    </ol>
+    <!-- 带图时间线：3–5 个节点，每个配够大的小图（.hasimg） -->
+    <div class="vl-timeline">
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-1"></span><div><b class="vl-yr">年份</b> 【填：≤2 句】</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-2"></span><div><b class="vl-yr">年份</b> 【填：≤2 句】</div></div>
+    </div>
+  </details>
+
+  <!-- 选读支线（默认收起）：data-kind = history | math | play | debate | source | extra | more。每章 2–4 个，主线内容不放进来 -->
+  <details class="vl-side" data-kind="math">
+    <summary><b>【填：具体问题式标题，≤26 字】</b><small>【填：一句介绍，可以跳过】</small></summary>
+    <p>【填：推导、数学或延伸内容。框里超过 2 段就配图或拆成“图 + 短文”。】</p>
+  </details>
+
+  <!-- ===== 分节 2：同样的节奏，换一套组件（这里用流程图解 + 先猜后揭晓），每章不必长得一样 ===== -->
+  <div class="vl-sec"><h2>【填：写出第二个概念名的处境或问题】</h2></div>
+
+  <div class="vl-withimg rev">
+    <span data-illus="c01-s2-scene"></span>
+    <div>
+      <p>【填：接住上一节留下的问题，换一个处境。】</p>
+    </div>
+  </div>
+
+  <!-- 先猜后揭晓（微互动）：think 看想法 / pick 选一个（data-right 标正确项，每项各自的反馈 .vl-fb）/ estimate 滑块估数 -->
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">【填：问题 ≤40 字】</p>
+    <ul class="vl-opts">
+      <li>【选项一】<span class="vl-fb">【这一项的反馈】</span></li>
+      <li data-right>【选项二】<span class="vl-fb">【为什么对】</span></li>
+      <li>【选项三】<span class="vl-fb">【这一项的反馈】</span></li>
+    </ul>
+    <div class="vl-ans">【填：揭晓，说“为什么”，不只给对错】</div>
+  </div>
+
+  <figure class="vl-fig" id="c01-fig-flow" data-diagram="flow">
+    <script type="application/json">{"nodes":[{"name":"输入","eg":"一行具体例子"},{"name":"处理","eg":"一行具体例子"},{"name":"输出","eg":"一行具体例子"}]}</script>
+    <figcaption>【填：这张流程图说明了什么】</figcaption>
+  </figure>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">【第二个概念】</p>
+    <p class="vl-cc-en">English name</p>
+    <p class="vl-cc-plain">【通俗地说】</p>
+    <p class="vl-cc-def">【一句定义】</p>
+    <p class="vl-cc-eg">【回指上面的例子】</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-2"></span></div>
+  </aside>
+
+  <div class="vl-eg" data-t="例子一"><span data-illus="c01-eg2-1"></span><p><b>例子一：</b>【填】</p></div>
+  <div class="vl-eg" data-t="例子二"><span data-illus="c01-eg2-2"></span><p><b>例子二：</b>【填】</p></div>
+  <div class="vl-eg bad" data-t="反例"><span data-illus="c01-eg2-bad"></span><p><b>反例：</b>【填】</p></div>
+
+  <div class="vl-why">
+    <h3>【填：一句原理】</h3>
+    <p>【填：≤2 段】</p>
+    <p class="vl-src">出处：……。验证：下面的互动台。</p>
+  </div>
+
+  <details class="vl-story">
+    <summary><b>【填：第二个概念的发明故事钩子】</b><small>【填：一句介绍】</small></summary>
+    <div class="vl-withimg"><span data-illus="c01-story2"></span><div><p>【填：问题 → 早期尝试 → 关键洞察 → 演化】</p></div></div>
+  </details>
+
+  <details class="vl-side" data-kind="history">
+    <summary><b>【填：一段可以跳过的历史】</b><small>【填：一句介绍】</small></summary>
+    <p>【填】</p>
+  </details>
+
+  <!-- ===== 招牌互动：读者亲手拆、拼、拖、调，立刻看到概念的后果。出场前一句话说清它回答什么问题；
+       控件 ≤3 组、3 秒内知道怎么玩；先预测再看结果；必须能重来。一章大互动合计 ≤5 ===== -->
+  <div class="vl-sec"><h2>【填：动手的处境，如“拆掉一环会怎样”】</h2></div>
+
+  <!-- 设计前先写三行：它回答的问题 / 读者的动作 / 读者会看到的后果说明了什么（references/interaction.md 第二节） -->
+  <p>【填：这个互动回答的问题，一句话，例如“拆掉成长这一环，玩家还会回来吗？”】</p>
+  <div class="vl-board" id="c01-board">
+    <h3>【填：互动台标题 = 它要回答的问题】</h3>
+    <!-- 试试看：写可观察的目标；“试试看：”和小方框自动加，不用写。完成条件写在下面的页面脚本里，达成时调 VL.tryDone("t1") -->
+    <p class="vl-try" data-try="t1" data-done="完成！【填：你看到了什么，这说明了什么】">【填：可检查的目标，如“把滑块拖到 6 以上”】</p>
+    <div class="c1-stage">
+      <button type="button" class="vl-btn" id="c1-act">【主操作】</button>
+      <button type="button" class="vl-btn alt" id="c1-reset">重来</button>
+    </div>
+    <label class="vl-ctl">【参数名】<output id="c1-out">1</output><input type="range" id="c1-r" min="1" max="8" value="1"></label>
+    <p class="vl-msg" id="c1-msg" aria-live="polite">【初始提示：先做什么】</p>
+  </div>
+  <p>【填：给不玩的读者讲清“玩了会看到什么”：互动不能是唯一的讲解。】</p>
+
+  <!-- ===== 反思：常见误区 → 局限与争议 → 哲学时刻（2–3 种立场并标明是谁的观点，不给标准答案，留开放问题） ===== -->
+  <div class="vl-sec"><h2>【填：反思这一节的小标题】</h2></div>
+  <div class="vl-withimg">
+    <span data-illus="c01-reflect"></span>
+    <div><p>【填：局限、争议；有复制争议的研究如实说明。】</p></div>
+  </div>
+  <!-- 收束块：标签文字写在 HTML 里（如 <b>常见误区</b>），不写在 CSS content 里 -->
+  <div class="vl-misc"><p><b>常见误区</b></p><p><b>“【错想法原句】”</b>——【为什么错，1–2 句】</p></div>
+  <!-- 哲学时刻：先表态再看想法。立场卡组件见 kit/README.md 第七节；没有之前用 think 模式 -->
+  <div class="vl-guess" data-mode="think">
+    <p class="vl-q">【填：一个真正值得想的问题】</p>
+    <div class="vl-ans">【填：两三种立场，各标明是谁的观点；最后留一个开放问题】</div>
+  </div>
+  <div class="vl-key"><p><b>要点</b></p><ul><li>【要点一，≤40 字】</li><li>【要点二】</li><li>【要点三】</li></ul></div>
+  <p class="vl-tldr"><b>一句话</b>【填：≤40 字】</p>
+
+  <!-- ===== 练习：4–6 题带解析；≥1 题考“为什么”，≥1 题考“为什么被发明”。选择题只放在这里。全对时自动记“读懂了” ===== -->
+  <div class="vl-sec"><h2>练习</h2></div>
+  <div id="c1-quiz"></div>
+
+  <!-- ===== 你的思考（可选）：自动保存，键 = <课程id>-note-<文件名>-<data-save> ===== -->
+  <h3>你的思考</h3>
+  <textarea class="vl-note" data-save="reflect" placeholder="【填：一个具体的开头，如“我最近停不下来的一件事是……”】"></textarea>
+
+  <!-- ===== 章末导航：上一章 / 下一章由 vl.js 自动生成，不用写 ===== -->
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/diagrams.js"></script>
+<script src="kit/illus.js"></script>
+<!--VL:EXTRA-JS-->
+<script src="js/illus-ch01.js"></script>
+<script>
+/* ===== 本章互动：完成条件写在这里，达成时 VL.tryDone(id) ===== */
+(function () {
+  const r = document.getElementById("c1-r"), out = document.getElementById("c1-out"), msg = document.getElementById("c1-msg");
+  let on = false;
+  const upd = () => {
+    out.textContent = r.value;
+    if (!on) return;
+    msg.textContent = "【填：读数或一句话后果】" + r.value;   // 输出画成图或一句话，不吐一串数字
+    if (+r.value >= 6) VL.tryDone("t1");                   // 默认状态下不能不动就达成
+  };
+  document.getElementById("c1-act").onclick = () => { on = true; msg.textContent = "【填：操作后的第一句反馈】"; upd(); };
+  document.getElementById("c1-reset").onclick = () => { on = false; r.value = 1; out.textContent = "1"; msg.textContent = "【初始提示：先做什么】"; };
+  r.addEventListener("input", upd);
+})();
+
+/* ===== 练习：a = 正确选项下标（选项会按章号 + 题号自动打乱）；why = 解析 ===== */
+VL.quiz("#c1-quiz", [
+  { q: "【填：考“是什么”的题】", opts: ["【正确项】", "【错项】", "【错项】"], a: 0, why: "【解析】" },
+  { q: "【填：考“为什么成立”的题】", opts: ["【正确项】", "【错项】", "【错项】"], a: 0, why: "【解析】" },
+  { q: "【填：考“为什么被发明”的题】", opts: ["【正确项】", "【错项】", "【错项】"], a: 0, why: "【解析】" },
+  { q: "【填：考“怎么用”的题】", opts: ["【正确项】", "【错项】", "【错项】"], a: 0, why: "【解析】" },
+]);
+</script>
+</body>
+</html>

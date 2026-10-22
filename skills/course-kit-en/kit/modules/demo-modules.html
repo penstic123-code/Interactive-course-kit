@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>怎样记住东西（可选模块演示）</title>
+<!-- 可选模块的演示首页：一门三章的假数据小课（demo/course.js、demo/concepts.js）。
+     演示：阅读激励（集邮册、目录页点亮、下一步书签）、陪伴角色、声音、关系图 / 术语表 / 闪卡入口。章节页另有概念卡由数据生成、本章概念小图、相关章节。 -->
+<link rel="stylesheet" href="../vl.css">
+<link rel="stylesheet" href="modules.css">
+<link rel="stylesheet" href="../../skins/notebook/skin.css">
+<link rel="stylesheet" href="../../skins/notebook/modules.css">
+<script src="../../skins/notebook/skin.js"></script>
+<script src="../vl-head.js"></script>
+<style>
+  .dm-links{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+  .dm-links a{display:inline-block;text-decoration:none}
+  .dm-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+</style>
+</head>
+<body>
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>怎样记住东西</h1>
+      <p class="vl-sub">三章小课的假数据，用来演示 course-kit 的可选模块。</p>
+    </div>
+    <span data-illus="demo-home"></span>
+  </div>
+
+  <div class="vl-sec"><h2>全课地图：读懂一章，盖一枚邮票</h2></div>
+  <p>每章的测验全部答对，这一章的格子就盖上"读懂了"。滚到页底、停留多久都不算。</p>
+  <div data-vl-collect="map"></div>
+  <p data-vl-collect="next"></p>
+  <div class="vl-board">
+    <h3>演示用的按钮</h3>
+    <p>真实课程里没有这些按钮：邮票只能靠答对测验拿到。这里为了截图和试玩，可以假装读懂一章。</p>
+    <div class="dm-row">
+      <button type="button" class="vl-btn alt" id="dm-ch1">假装读懂第 1 章</button>
+      <button type="button" class="vl-btn alt" id="dm-try">假装完成一个试试看</button>
+      <button type="button" class="vl-btn alt" id="dm-open">打开集邮册</button>
+      <button type="button" class="vl-btn alt" id="dm-reset">清空演示进度</button>
+    </div>
+  </div>
+
+  <div class="vl-sec"><h2>集邮册摊开在这一页</h2></div>
+  <p>上面一枚是章邮票，后面一排是本章的概念格；没拿到的是灰剪影，点一下看看怎样才能拿到。顶栏右边的"集邮册"按钮打开的是同一本，按页翻。</p>
+  <div data-vl-collect="album"></div>
+
+  <div class="vl-sec"><h2>查概念、查词、练卡片</h2></div>
+  <p>三页共用一份概念数据：关系图看概念怎么连，术语表按拼音查词，闪卡按莱特纳盒子安排复习。</p>
+  <div class="vl-withimg">
+    <span data-illus="demo-buddy"></span>
+    <div>
+      <div class="dm-links">
+        <a class="vl-btn" href="map.html">概念关系图</a>
+        <a class="vl-btn alt" href="glossary.html">术语表</a>
+        <a class="vl-btn alt" href="flashcards.html">闪卡</a>
+      </div>
+      <p>左下角的小格是陪伴角色：点一下，它说一句和当前这一节有关的话；这一节没写台词，它就不说。顶栏"显示"里可以把它藏起来。</p>
+    </div>
+  </div>
+
+  <div class="vl-sec" data-lines="声音默认是关着的，要在顶栏自己打开。"><h2>声音默认关着</h2></div>
+  <p>顶栏的喇叭按钮打开声音后，试试看完成、答对、盖章时会有很轻的纸声。下面几个按钮可以试听。</p>
+  <div class="vl-board">
+    <div class="dm-row" id="dm-snd"></div>
+    <p class="vl-msg" id="dm-sndmsg" aria-live="polite"></p>
+  </div>
+  <p>三章：<a href="demo-ch01.html">忘掉的速度</a>、<a href="demo-ch02.html">考一考自己</a>、<a href="demo-ch03.html">隔几天再看</a>。</p>
+</main>
+<script src="demo/course.js"></script>
+<script src="demo/concepts.js"></script>
+<script src="vl-concepts.js"></script>
+<script src="../vl.js"></script>
+<script src="../illus.js"></script>
+<script src="demo/illus-demo.js"></script>
+<script src="sound.js"></script>
+<script src="collect.js"></script>
+<script src="companion.js"></script>
+<script src="graph.js"></script>
+<script>
+(function () {
+  document.getElementById("dm-ch1").onclick = () => { VL.Progress.done(1); document.dispatchEvent(new CustomEvent("vl:quiz-perfect", { detail: { ch: 1, firstTry: 2, n: 2 } })); };
+  // "假装完成一个试试看"：真实课程里由 VL.tryDone 派 vl:try，collect.js 把关联的概念收进图鉴；这里直接收"编码"
+  document.getElementById("dm-try").onclick = () => VL.collect.add(["encoding"], "try");
+  document.getElementById("dm-open").onclick = () => VL.collect.open();
+  document.getElementById("dm-reset").onclick = () => { VL.store.setJSON("progress", {}); VL.store.setJSON("try", []); VL.store.setJSON("flash", {}); VL.collect.reset(); };
+  const names = { click: "笔尖一点", flip: "翻一页", pop: "冒出来", ok: "答对", wrong: "答错", coin: "收进图鉴", clear: "全对", stamp: "盖章" };
+  const box = document.getElementById("dm-snd"), msg = document.getElementById("dm-sndmsg");
+  VL.sound.names.forEach(n => { const b = VL.el("button", { type: "button", class: "vl-chip" }, names[n] || n); b.onclick = () => { VL.sound.play(n); msg.textContent = VL.sound.on() ? "播放：" + (names[n] || n) : "现在是静音：先点顶栏的喇叭打开声音。"; }; box.appendChild(b); });
+})();
+</script>
+</body>
+</html>

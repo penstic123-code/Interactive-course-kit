@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第1章 忘掉的速度（可选模块演示）</title>
+<!-- 演示页的路径按 skill 目录写。真实课程：kit/vl.css、kit/modules/modules.css、skin/skin.css、skin/modules.css …… -->
+<link rel="stylesheet" href="../vl.css">
+<link rel="stylesheet" href="modules.css">
+<link rel="stylesheet" href="../../skins/notebook/skin.css">
+<link rel="stylesheet" href="../../skins/notebook/modules.css">
+<script src="../../skins/notebook/skin.js"></script>
+<script src="../vl-head.js"></script>
+<style>
+  .c1-bar{display:flex;align-items:flex-end;gap:6px;height:150px;margin:10px 0 4px}
+  .c1-bar i{flex:1;display:block;background:var(--accent2);border:2px solid var(--ink);border-bottom:0;border-radius:4px 4px 0 0;transition:height .25s}
+  .c1-days{display:flex;justify-content:space-between;font-size:.85rem;color:var(--ink2)}
+  .c1-digits{font-family:var(--font-mono);font-size:1.6rem;letter-spacing:.1em;margin:6px 0}
+</style>
+</head>
+<body data-ch="1">
+<main class="vl-wrap">
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>忘掉的速度</h1>
+      <p class="vl-sub">昨晚背了二十个单词，今早还想得起几个？</p>
+    </div>
+    <span data-illus="demo-h1"></span>
+  </div>
+  <div class="vl-goals">
+    <h3>读完你能</h3><span class="vl-time">约 5 分钟（演示）</span>
+    <ul><li>说出遗忘最快的是哪一段时间。</li><li>分清"记住"和"理解后记住"的差别。</li><li>解释为什么一次只能在脑子里摆几样东西。</li></ul>
+  </div>
+
+  <div class="vl-sec" data-lines="我昨天背了二十个，今天只想得起七个。|原来忘得最快的是头一天，不是后来。"><h2>一夜之后，单词还剩几个</h2></div>
+  <p>1885 年，德国心理学家艾宾浩斯拿自己做实验。他背的不是单词，而是 DAX、BUP 这样的<span class="vl-term" data-def="像 DAX、BUP 这样没有意思的字母组合，用来排除已有知识的干扰。">无意义音节</span>，因为它们和已有的知识挂不上钩，记住多少就是多少。隔几小时、几天再测，他发现忘掉的速度并不均匀。</p>
+  <aside class="vl-cc" data-concept="forgetting-curve">
+    <p class="vl-cc-eg">背完单词的第二天早上，最先溜走的是那些只看过一眼的。</p>
+  </aside>
+  <div class="vl-board">
+    <h3>拖一拖：过了几天，还剩多少</h3>
+    <p class="vl-try" data-try="c1-days" data-concept="forgetting-curve" data-say="头一天掉得最多，后面几乎不动了。" data-done="对：头一两天掉得最多，后面的曲线几乎是平的。">把天数拖到 3 天以上，看看哪一天掉得最多。</p>
+    <label class="vl-ctl">过了 <output id="c1-out">0 天</output><input type="range" id="c1-day" min="0" max="6" step="1" value="0"></label>
+    <div class="c1-bar" id="c1-bar" aria-hidden="true"></div>
+    <div class="c1-days" aria-hidden="true"><span>当天</span><span>1 天</span><span>2 天</span><span>3 天</span><span>4 天</span><span>5 天</span><span>6 天</span></div>
+    <p class="vl-msg" id="c1-msg" aria-live="polite">还记得 100%（示意数据）。</p>
+  </div>
+
+  <div class="vl-sec" data-lines="怪不得光抄一遍没用，我抄的时候在发呆。"><h2>想明白的那部分，掉得慢</h2></div>
+  <p>同样一段话，抄一遍和讲给别人听一遍，第二天剩下的不一样多。信息进入记忆的那一步叫编码，理解得越深，编码越牢，曲线也就往下掉得越慢。</p>
+  <aside class="vl-cc" data-concept="encoding">
+    <p class="vl-cc-eg">讲给同桌听过的那道题，期末还记得怎么做。</p>
+  </aside>
+  <p>可是理解要先在脑子里把几样东西摆在一起，而那块地方很小。</p>
+  <aside class="vl-cc" data-concept="working-memory"></aside>
+  <div class="vl-board">
+    <p class="vl-try" data-try="c1-chunk" data-concept="working-memory" data-done="分成三段以后，一眼就能记下来。">把这串数字分成三段，再试着闭眼复述。</p>
+    <p class="c1-digits" id="c1-digits">4719382506</p>
+    <button type="button" class="vl-btn" id="c1-split">分成三段</button>
+  </div>
+
+  <div class="vl-sec"><h2>练一练</h2></div>
+  <div id="c1-quiz"></div>
+  <div class="vl-minimap" data-ch="1"></div>
+</main>
+<script src="demo/course.js"></script>
+<script src="demo/concepts.js"></script>
+<script src="vl-concepts.js"></script>
+<script src="../vl.js"></script>
+<script src="../illus.js"></script>
+<script src="demo/illus-demo.js"></script>
+<script src="sound.js"></script>
+<script src="collect.js"></script>
+<script src="companion.js"></script>
+<script src="graph.js"></script>
+<script>
+(function () {
+  // 示意数据：记住的比例随天数下降（不是艾宾浩斯的原始数字）
+  const R = [100, 45, 36, 32, 30, 28, 27];
+  const bar = document.getElementById("c1-bar"), inp = document.getElementById("c1-day"), out = document.getElementById("c1-out"), msg = document.getElementById("c1-msg");
+  bar.innerHTML = R.map(() => "<i></i>").join("");
+  const draw = () => {
+    const d = +inp.value;
+    [...bar.children].forEach((b, i) => { b.style.height = (i <= d ? R[i] : 0) * 1.4 + "px"; });
+    out.textContent = d === 0 ? "0 天" : d + " 天";
+    msg.textContent = "还记得 " + R[d] + "%（示意数据）。" + (d >= 1 ? "第一天掉了 " + (R[0] - R[1]) + " 个百分点，之后每天只掉几个。" : "");
+    if (d >= 3) VL.tryDone("c1-days");
+  };
+  inp.addEventListener("input", draw); draw();
+  document.getElementById("c1-split").addEventListener("click", () => { document.getElementById("c1-digits").textContent = "471 · 938 · 2506"; VL.tryDone("c1-chunk"); });
+  VL.quiz("#c1-quiz", [
+    { q: "背完一组单词，哪一段时间忘得最多？", opts: ["头一两天", "第五到第六天", "每天差不多"], a: 0, why: "遗忘曲线前陡后平：头一两天掉得最快。" },
+    { q: "为什么艾宾浩斯要用 DAX、BUP 这样的音节？", opts: ["让已有的知识帮不上忙", "因为它们好记", "因为当时没有字典"], a: 0, why: "无意义音节和已有知识挂不上钩，测出来的才是纯粹的记忆。" },
+  ]);
+})();
+</script>
+</body>
+</html>

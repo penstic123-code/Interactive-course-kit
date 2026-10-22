@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- <title> = "Chapter N Name"; renumbering scripts remap it too (content-rules.md, section 5) -->
+<title>Chapter 1 Chapter name</title>
+<link rel="stylesheet" href="kit/vl.css">
+<link rel="stylesheet" href="skin/skin.css">
+<!--VL:EXTRA-CSS-->
+<link rel="stylesheet" href="css/style.css">
+<script src="skin/skin.js"></script>
+<script src="kit/vl-head.js"></script>
+<style>
+  /* Chapter-only styles: prefix classes with c1-, never redefine vl- classes (that would override shared styles); colours from skin variables only */
+  .c1-stage{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+</style>
+</head>
+<!-- data-ch = chapter number. vl.js uses it to set data-part (which part), data-pat (paper pattern), --vl-dh (small hue shift within a part), and builds the top bar, chapter badge and page turner -->
+<body data-ch="1">
+<main class="vl-wrap">
+
+  <!-- ===== Chapter header: title + one-line subtitle + header picture. The "Chapter N" badge is added automatically ===== -->
+  <div class="vl-hero">
+    <div class="vl-hero-txt">
+      <h1>Chapter name</h1>
+      <!-- Subtitle: ≤ 15 words, starting from a situation or a surprising question, not a definition -->
+      <p class="vl-sub">[Fill in: a one-line subtitle that starts from a situation]</p>
+    </div>
+    <!-- Header picture: draw the opening situation (registered in js/illus-ch01.js) -->
+    <span data-illus="c01-hero"></span>
+  </div>
+
+  <!-- ===== Learning goals: 3 "By the end you can…" items (≤ 12 words each, observable) + time ===== -->
+  <div class="vl-goals">
+    <h3>By the end you can</h3><span class="vl-time">About 30 minutes</span>
+    <ul><li>[Fill in: goal one]</li><li>[Fill in: goal two]</li><li>[Fill in: goal three]</li></ul>
+  </div>
+
+  <!-- ===== Section 1. Headings name a concrete scene or question (≤ 8 words); vary their shape across the chapter; no "What it is / Invention story" level labels.
+       Sections must be direct children of <main>: everything up to the next section is folded into a collapsible .vl-sec-body automatically ===== -->
+  <div class="vl-sec"><h2>[Fill in: name this section's concept + the scene, e.g. "The core loop behind one last game at 1 a.m."]</h2></div>
+
+  <!-- Opening picture: picture left, text right on wide screens, tops aligned; stacked on phones. Start a section with something warm (a drawing, a photo, an example); diagrams go in the middle -->
+  <div class="vl-withimg">
+    <span data-illus="c01-s1-scene"></span>
+    <div>
+      <p>[Fill in: start from a situation the reader knows and raise a problem or a surprising question. ≤ 4 lines a paragraph; a visual every 1–2 paragraphs.]</p>
+      <p>[Fill in: explain a new term the first time it appears, e.g. <span class="vl-term" data-def="A one-line meaning that does not repeat the term">term</span>. When a core concept is first named, mark it: <span class="vl-cn">concept name</span> (same name as the concept card below).]</p>
+    </div>
+  </div>
+
+  <!-- Concept diagram: draw one only when the text has a structure (cycle, layers, flow, comparison, axes). Templates: kit/README.md, "Concept diagrams".
+       Each node = a name (≤ 3 words) + one concrete example (≤ 6 words); the caption says WHY (what the picture shows), not a repeat of its labels -->
+  <figure class="vl-fig" id="c01-fig-cycle" data-diagram="cycle">
+    <script type="application/json">{"nodes":[{"name":"Step one","eg":"a concrete example","info":"<b>Step one</b>: one sentence shown when this part is tapped."},{"name":"Step two","eg":"a concrete example"},{"name":"Step three","eg":"a concrete example"},{"name":"Step four","eg":"a concrete example"}],"center":"Centre word"}</script>
+    <figcaption>[Fill in: what this picture shows, ≤ 20 words]</figcaption>
+  </figure>
+
+  <p>[Fill in: once the reader has seen the situation and the picture, give the concept its name (see <a data-figref="c01-fig-cycle" href="#c01-fig-cycle">figure</a>).]</p>
+
+  <!-- Concept card: one per core concept, placed where the concept is first named. Fixed fields, no second paragraph inside. The picture slot .vl-cc-fig is required (without it a red "Concept picture missing" shows) -->
+  <aside class="vl-cc">
+    <p class="vl-cc-name">[Concept name, ≤ 4 words]</p>
+    <p class="vl-cc-en">Name in the other language (optional)</p>
+    <p class="vl-cc-by">Source: a person · a book or paper · year (optional)</p>
+    <p class="vl-cc-plain">[One sentence in plain words]</p>
+    <p class="vl-cc-def">[A one-sentence definition, ≤ 30 words]</p>
+    <p class="vl-cc-eg">[Point back to an example already given in the text, ≤ 15 words; no new example]</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-1"></span></div>
+  </aside>
+
+  <!-- Example carousel: 2 or more .vl-eg in a row become tabs automatically. ≥ 3 examples including 1 counterexample (.bad); each has a picture, and the counterexample shows what is missing -->
+  <div class="vl-eg" data-t="Example one"><span data-illus="c01-eg-1"></span><p><b>Example one:</b> [Fill in: concrete enough to picture, ≤ 2 paragraphs]</p></div>
+  <div class="vl-eg" data-t="Example two"><span data-illus="c01-eg-2"></span><p><b>Example two:</b> [Fill in: a different field or an everyday scene]</p></div>
+  <div class="vl-eg bad" data-t="Nearly"><span data-illus="c01-eg-bad"></span><p><b>Counterexample:</b> [Fill in: the one that is nearly right; say which piece is missing]</p></div>
+
+  <!-- "Why it works" box. The heading is the principle in one sentence (≤ 10 words, not the word "principle"); ≤ 2 paragraphs; source + "Check it: the … above" -->
+  <div class="vl-why">
+    <h3>[Fill in: the principle in one sentence]</h3>
+    <div class="vl-why-fig"><span data-illus="c01-why-1"></span></div>
+    <p>[Fill in: the underlying reason, ≤ 2 paragraphs. If it is disputed, one sentence: "Not everyone agrees: … (who)".]</p>
+    <p class="vl-src">Source: who · which study · year. Check it: the … above.</p>
+  </div>
+
+  <!-- Invention story (folded by default): keep one or two sentences of the key insight in the main text; details, timeline and people go in here.
+       The hook title is a concrete question (e.g. "1898, a cat in a box: how was the law of reward found?"), and one line says what is inside -->
+  <details class="vl-story">
+    <summary><b>[Fill in: a hook title phrased as a concrete question]</b><small>[Fill in: one line on what is inside, ≤ 15 words]</small></summary>
+    <!-- Chain: problem → attempt → new problem; show the first two and let the reader guess the next -->
+    <ol class="vl-chain">
+      <li>[Problem]</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>[Early attempt, and why it failed]</li><li class="vl-chain-ar" aria-hidden="true">→</li>
+      <li>[Key insight]</li>
+    </ol>
+    <!-- Timeline with pictures: 3–5 points, each with a picture big enough to read (.hasimg) -->
+    <div class="vl-timeline">
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-1"></span><div><b class="vl-yr">Year</b> [Fill in: ≤ 2 sentences]</div></div>
+      <div class="vl-ev hasimg"><span data-illus="c01-tl-2"></span><div><b class="vl-yr">Year</b> [Fill in: ≤ 2 sentences]</div></div>
+    </div>
+  </details>
+
+  <!-- Side path (folded by default): data-kind = history | math | play | debate | source | extra | more. 2–4 per chapter; nothing from the main line goes in here -->
+  <details class="vl-side" data-kind="math">
+    <summary><b>[Fill in: a concrete question as the title, ≤ 12 words]</b><small>[Fill in: one line; it is fine to skip]</small></summary>
+    <p>[Fill in: derivation, maths or a further look. More than 2 paragraphs in a box: add a picture or split into "picture + short text".]</p>
+  </details>
+
+  <!-- ===== Section 2: same rhythm with a different set of components (here a flow diagram + guess first). Chapters need not look alike ===== -->
+  <div class="vl-sec"><h2>[Fill in: a situation or question that names the second concept]</h2></div>
+
+  <div class="vl-withimg rev">
+    <span data-illus="c01-s2-scene"></span>
+    <div>
+      <p>[Fill in: pick up the question the last section left open, in a new situation.]</p>
+    </div>
+  </div>
+
+  <!-- Guess first, then reveal (micro-interaction): think = see an answer / pick = choose one (data-right marks the right one; each option has its own .vl-fb) / estimate = slider guess -->
+  <div class="vl-guess" data-mode="pick">
+    <p class="vl-q">[Fill in: the question, ≤ 20 words]</p>
+    <ul class="vl-opts">
+      <li>[Option one]<span class="vl-fb">[Feedback for this option]</span></li>
+      <li data-right>[Option two]<span class="vl-fb">[Why it is right]</span></li>
+      <li>[Option three]<span class="vl-fb">[Feedback for this option]</span></li>
+    </ul>
+    <div class="vl-ans">[Fill in: the reveal. Say why, not just right or wrong]</div>
+  </div>
+
+  <figure class="vl-fig" id="c01-fig-flow" data-diagram="flow">
+    <script type="application/json">{"nodes":[{"name":"Input","eg":"a concrete example"},{"name":"Process","eg":"a concrete example"},{"name":"Output","eg":"a concrete example"}]}</script>
+    <figcaption>[Fill in: what this flow shows]</figcaption>
+  </figure>
+
+  <aside class="vl-cc">
+    <p class="vl-cc-name">[Second concept]</p>
+    <p class="vl-cc-en">Name in the other language (optional)</p>
+    <p class="vl-cc-plain">[In plain words]</p>
+    <p class="vl-cc-def">[One-sentence definition]</p>
+    <p class="vl-cc-eg">[Point back to an example above]</p>
+    <div class="vl-cc-fig"><span data-illus="c01-cc-2"></span></div>
+  </aside>
+
+  <div class="vl-eg" data-t="Example one"><span data-illus="c01-eg2-1"></span><p><b>Example one:</b> [Fill in]</p></div>
+  <div class="vl-eg" data-t="Example two"><span data-illus="c01-eg2-2"></span><p><b>Example two:</b> [Fill in]</p></div>
+  <div class="vl-eg bad" data-t="Counterexample"><span data-illus="c01-eg2-bad"></span><p><b>Counterexample:</b> [Fill in]</p></div>
+
+  <div class="vl-why">
+    <h3>[Fill in: the principle in one sentence]</h3>
+    <p>[Fill in: ≤ 2 paragraphs]</p>
+    <p class="vl-src">Source: …. Check it: the bench below.</p>
+  </div>
+
+  <details class="vl-story">
+    <summary><b>[Fill in: the hook for the second concept's invention story]</b><small>[Fill in: one line]</small></summary>
+    <div class="vl-withimg"><span data-illus="c01-story2"></span><div><p>[Fill in: problem → early attempt → key insight → how it grew]</p></div></div>
+  </details>
+
+  <details class="vl-side" data-kind="history">
+    <summary><b>[Fill in: a piece of history you can skip]</b><small>[Fill in: one line]</small></summary>
+    <p>[Fill in]</p>
+  </details>
+
+  <!-- ===== Signature interaction: the reader takes apart, builds, drags or tunes something and sees the concept's consequences at once. Say in one sentence what question it answers before it appears;
+       ≤ 3 groups of controls, clear within 3 seconds; predict first, then see; always resettable. ≤ 5 big interactions per chapter ===== -->
+  <div class="vl-sec"><h2>[Fill in: the hands-on situation, e.g. "What if you cut one link?"]</h2></div>
+
+  <!-- Before building it, write three lines: the question it answers / what the reader does / what the result they see means (references/interaction.md, section 2) -->
+  <p>[Fill in: the question this interaction answers, in one sentence, e.g. "Cut the growth link: do players still come back?"]</p>
+  <div class="vl-board" id="c01-board">
+    <h3>[Fill in: bench title = the question it answers]</h3>
+    <!-- Try it: an observable goal. "Try it:" and the tick box are added automatically. The finish condition lives in the page script below: call VL.tryDone("t1") when it is met -->
+    <p class="vl-try" data-try="t1" data-done="Done! [Fill in: what you saw, and what it means]">[Fill in: a checkable goal, e.g. "Drag the slider above 6"]</p>
+    <div class="c1-stage">
+      <button type="button" class="vl-btn" id="c1-act">[Main action]</button>
+      <button type="button" class="vl-btn alt" id="c1-reset">Start again</button>
+    </div>
+    <label class="vl-ctl">[Setting name]<output id="c1-out">1</output><input type="range" id="c1-r" min="1" max="8" value="1"></label>
+    <p class="vl-msg" id="c1-msg" aria-live="polite">[First hint: what to do first]</p>
+  </div>
+  <p>[Fill in: for readers who skip the bench, say what they would have seen. The interaction must never be the only explanation.]</p>
+
+  <!-- ===== Reflection: common mistakes → limits and debates → a philosophy moment (2–3 positions, each with whose view it is; no model answer; end on an open question) ===== -->
+  <div class="vl-sec"><h2>[Fill in: a heading for the reflection section]</h2></div>
+  <div class="vl-withimg">
+    <span data-illus="c01-reflect"></span>
+    <div><p>[Fill in: limits and debates; say so honestly if a study has failed to replicate.]</p></div>
+  </div>
+  <!-- Wrap-up blocks: label text goes in the HTML (e.g. <b>Common mistakes</b>), not in CSS content -->
+  <div class="vl-misc"><p><b>Common mistakes</b></p><p><b>"[The wrong idea, as people say it]"</b> [Why it is wrong, 1–2 sentences]</p></div>
+  <!-- Philosophy moment: take a side first, then read the views. Position cards: kit/README.md, section 7; until then use think mode -->
+  <div class="vl-guess" data-mode="think">
+    <p class="vl-q">[Fill in: a question genuinely worth thinking about]</p>
+    <div class="vl-ans">[Fill in: two or three positions, each with whose view it is; end with an open question]</div>
+  </div>
+  <div class="vl-key"><p><b>Key points</b></p><ul><li>[Point one, ≤ 20 words]</li><li>[Point two]</li><li>[Point three]</li></ul></div>
+  <p class="vl-tldr"><b>In one line</b> [Fill in: ≤ 20 words]</p>
+
+  <!-- ===== Practice: 4–6 questions with explanations; ≥ 1 asks "why", ≥ 1 asks "why was it invented". Multiple choice lives only here. All correct = the chapter is marked "understood" ===== -->
+  <div class="vl-sec"><h2>Practice</h2></div>
+  <div id="c1-quiz"></div>
+
+  <!-- ===== Your thoughts (optional): saved as you type; key = <course id>-note-<file name>-<data-save> ===== -->
+  <h3>Your thoughts</h3>
+  <textarea class="vl-note" data-save="reflect" placeholder="[Fill in: a concrete opening, e.g. &quot;Lately I can't stop…&quot;]"></textarea>
+
+  <!-- ===== End of chapter: previous / next links are generated by vl.js ===== -->
+</main>
+<script src="js/course.js"></script>
+<script src="kit/vl.js"></script>
+<script src="kit/diagrams.js"></script>
+<script src="kit/illus.js"></script>
+<!--VL:EXTRA-JS-->
+<script src="js/illus-ch01.js"></script>
+<script>
+/* ===== Chapter interactions: finish conditions live here; call VL.tryDone(id) when met ===== */
+(function () {
+  const r = document.getElementById("c1-r"), out = document.getElementById("c1-out"), msg = document.getElementById("c1-msg");
+  let on = false;
+  const upd = () => {
+    out.textContent = r.value;
+    if (!on) return;
+    msg.textContent = "[Fill in: a reading or a one-line consequence] " + r.value;   // show the result as a picture or a sentence, not a string of numbers
+    if (+r.value >= 6) VL.tryDone("t1");                                      // must not be met in the starting state
+  };
+  document.getElementById("c1-act").onclick = () => { on = true; msg.textContent = "[Fill in: the first feedback after the action]"; upd(); };
+  document.getElementById("c1-reset").onclick = () => { on = false; r.value = 1; out.textContent = "1"; msg.textContent = "[First hint: what to do first]"; };
+  r.addEventListener("input", upd);
+})();
+
+/* ===== Practice: a = index of the right option (options are shuffled by chapter + question number); why = explanation ===== */
+VL.quiz("#c1-quiz", [
+  { q: "[Fill in: a question on what it is]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
+  { q: "[Fill in: a question on why it works]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
+  { q: "[Fill in: a question on why it was invented]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
+  { q: "[Fill in: a question on how to use it]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
+]);
+</script>
+</body>
+</html>

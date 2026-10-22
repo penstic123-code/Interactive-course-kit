@@ -1,0 +1,9 @@
+/* Shared styles for this course (starter template, English course). new-course.mjs --lang en copies it to course/css/style.css, after skin/skin.css.
+   kit/ and skin/ are copied from course-kit and never edited inside the course (an upgrade overwrites them). Course tweaks go here:
+   - part colour remaps, course-specific picture or board tweaks;
+   - small components shared by several chapters but not part of the kit: give them a course prefix (e.g. .mc-), never redefine vl- classes.
+   Chapter-only styles go in each page's <style>, with a chapter prefix (.c1-). Use skin variables for colours, never fixed values. */
+
+/* English-only course: there are no Chinese pages, so hide the language button (on lang="en" pages vl.js always shows it,
+   pointing at ../same-file.html). Delete this rule if the course gets a Chinese edition (see starter/README.md, bilingual courses). */
+.vl-tb-lang{display:none !important}
