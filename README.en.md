@@ -2,6 +2,8 @@
 
 **Claude Code skills for building interactive learning web courses that are comfortable to read, easy to understand and fun.** [中文](README.md)
 
+**Live demo**: [the four skin galleries, three sample chapters and the component demo pages](https://penstic123-code.github.io/Interactive-course-kit/)
+
 ![Game design course, chapter 2](docs/images/gd.jpg)
 
 ## Background

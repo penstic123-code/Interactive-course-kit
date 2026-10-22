@@ -3,6 +3,8 @@
 **用 Claude Code 做"读起来舒服、看得懂、有趣"的互动学习网页课程。**
 A set of Claude Code skills for building interactive, illustrated learning web courses. [English](README.en.md)
 
+**在线演示**：[四套皮肤图库、三个样板章、组件演示页](https://penstic123-code.github.io/Interactive-course-kit/)
+
 ![游戏设计课第 2 章](docs/images/gd.jpg)
 
 ## 背景
