@@ -9,8 +9,8 @@
 | 文件 | 内容 |
 |---|---|
 | `skin.css` | 变量（三套配色 + 六篇主色）+ 组件外观 + 纸面、装订孔、页边线、索引签 |
-| `skin.js` | `window.VL_SKIN`：网络字体、墨线微抖滤镜 `#vl-fb-wobble`、插画配色、**本皮肤的绘制工具**（装进 `VL.illus.kit`）、Rough.js 彩铅化、篇章索引签 |
-| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、七种图解的外观（由 notebook 版改成 1px 纸边 + 浅投影 + 小圆角） |
+| `skin.js` | `window.VL_SKIN`：网络字体、墨线微抖滤镜 `#vl-fb-wobble`、插画配色、**本皮肤的绘制工具**（经 kit 的换画法钩子 `VL_SKIN.illus` 装进 `VL.illus.kit`，`skin.js` 须在 `kit/illus.js` 之前加载）、Rough.js 彩铅化、篇章索引签 |
+| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（由 notebook 版改成 1px 纸边 + 浅投影 + 小圆角） |
 | `rough.js` | Rough.js 4.6.6（MIT，Copyright (c) 2019 Preet Shihn），本地，离线可用 |
 | `tex/` | 纸纹、牛皮纸、档案纸、哑光颗粒纹理（人类学课用脚本生成，无第三方版权） |
 | `gallery.html` | 验收页 |
@@ -74,7 +74,6 @@
 ## 已知问题
 
 - 暗色只给了变量，未逐组件精调（用户暂缓暗色）。
-- 绘制工具通过拦截 `VL.illus` 赋值装进 kit（kit/illus.js 没有皮肤换工具的钩子）；若 kit 改了装载方式要跟着改。
 - Rough.js 每张插画首次进入视口时重画，插画很多的页面滚动时首帧会略卡。
 - 站姿 / 坐姿身高与 kit 火柴人一致，但宽一些；kit 坐标写成的旧插画搬过来时，物件可能要挪几个像素。
 - 用户尚未就“抽成皮肤后的样子”验收（来源课程的风格已于 2026-10-22 验收：“全课统一笔记本风格、加强质感与和谐感”）。

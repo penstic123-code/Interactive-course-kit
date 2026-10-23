@@ -36,7 +36,7 @@
 <script src="js/illus-ch02.js"></script>
 <script>/* 本章互动 */</script>
 ```
-开新课：用 `starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en]` 生成（皮肤名必填：notebook / paper / pixel / fieldbook）（会把 `kit/` 复制成 `课程/kit/`、皮肤复制成 `课程/skin/`），见 `starter/README.md`。演示页（引用路径按 skill 目录写）：`demo.html` 基础组件、`demo-interact.html` 互动组件、`demo-diagrams.html` 12 种图解、`demo-en.html` 英文页、`modules/demo-modules.html` 可选模块。
+开新课：用 `starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en]` 生成（皮肤名必填；会把 `kit/` 复制成 `课程/kit/`、皮肤复制成 `课程/skin/`，都不带演示页），见 `starter/README.md`。演示页只在 skill 里看（引用路径按 skill 目录写）：`demo.html` 基础组件、`demo-interact.html` 互动组件、`demo-diagrams.html` 12 种图解、`demo-en.html` 英文页、`modules/demo-modules.html` 可选模块。
 
 ## 二、配置
 
@@ -57,7 +57,7 @@ window.VL_I18N = { zh: { "cc.tag": "关键词" }, en: { "cc.tag": "Key idea" } }
 ```
 - 章节页写 `<body data-ch="N">`（不写时按文件名在章节表里找）。vl.js 会写 `body[data-part]`（第几篇）、`body[data-pat]`（章号 % 4，皮肤用来换纸纹）、`--vl-dh`（同篇色相微移 −18…+18）、`--vl-chnum`（两位章号，皮肤可做角标）。
 - 语言：`<html lang="en">` 的页面用英文表（vl.js 里的 `EN`）。所有界面文字走 `VL.t(键, 中文默认, …参数)`，模板里 `{0}{1}` 换参数。章节表、目录页的英文字段用 `en` / `nameEn` / `descEn` / `whoEn`。
-- 英文页的顶栏总有"中文"按钮，指向 `../同名文件`。纯英文课（`--lang en` 生成）在 `css/style.css` 里把它藏起来；中英双语课删掉这条规则。双语课的英文页放 `en/`，文件名、id、`data-save`、`data-try` 与中文页一致（进度和笔记两种语言共用）。
+- 英文页的顶栏总有"中文"按钮，指向 `../同名文件`。纯英文课怎么藏它、双语课的 `en/` 页怎么放（文件名、id、`data-save`、`data-try` 与中文页一致）见 `starter/README.md` 第五节。
 - 读者偏好不带课程前缀，跨课通用：`vl-scheme`（light / dark / sepia）、`vl-fx`（auto / full / lite / off）。写在 `<html data-scheme>` 和 `html.vl-fx-full|lite|off`。
 
 ## 三、组件写法
@@ -97,19 +97,7 @@ VL.illus.add("c02-face", "alt", k => k.ground(186) + k.person(70, 58, { s: 2 }),
 `<figure class="vl-fig" id="fig-x">图<figcaption>图注</figcaption></figure>`：按出现顺序在图注前写"图 N"（不要手写）。正文里 `<a data-figref="fig-x" href="#fig-x">图</a>` 自动改成"图 N"。动态加图后调 `VL.figs()`。照片用 `.vl-fig.photo`。宽表 / 宽图包 `.vl-scroll`。
 
 ### 概念图解（diagrams.js）
-共 12 种（全部参数见第九节），这里列最常用的五种；参数里 `nodes / layers / quads / rows` 的每项可带 `info`（点中后信息行显示的 HTML）和 `c`（色号 1–6）。
-```js
-VL.diagram.cycle(target, { nodes:[{name, eg, info}], center:"再来一局", numbered:true, caption, label, hint, select:true, onSelect(i, item) })
-VL.diagram.nested(target, { layers:[从里到外], spin:true, caption })          // 宽屏右侧引线标签；窄屏编号对照
-VL.diagram.flow(target, { nodes:[…], dir:"auto|row|column", numbered:false })  // 放得下一行就横排，否则竖排
-VL.diagram.quadrant(target, { x:{name, lo, hi}, y:{name, lo, hi}, quads:[左上, 右上, 左下, 右下], points:[{x:0–1, y:0–1, label}] })
-VL.diagram.compare(target, { a:{name, eg, mark:"✓"}, b:{…}, rows:[{k:"比较维度", a:"…", b:"…", info}] })
-```
-- `target`：`figure.vl-fig`（或选择器）；不是 figure 时在里面新建一个。`caption` 只在没有 `<figcaption>` 时用。返回 `{el, svg, redraw(), select(i), selected}`；点中派发 `vl:dgselect {i}`（再点一次取消，i = −1）。
-- 声明式：`<figure class="vl-fig" data-diagram="cycle"><script type="application/json">{…}</script><figcaption>…</figcaption></figure>`。
-- 节点可 Tab 聚焦，Enter / 空格选中，方向键在节点间移动；`select:false` 时整张图 `role=img`。`label` 不给就自动生成 aria-label。
-- viewBox 宽 = 显示宽度，字号即屏幕字号（名字 19/17px，例子 15/14px）；先排字量包围盒再画框（内边距 ≥9px）；字体加载完、宽度变化 >24px 自动重画。
-- 皮肤可用的类名、状态类见第九节"皮肤可用的类"。
+共 12 种，`VL.diagram.<名>(target, 配置)` 或 `<figure class="vl-fig" data-diagram="名">` 声明式；全部写法、参数、返回值、键盘、皮肤类名见第九节。
 
 ### 例子轮播
 ```html
@@ -146,7 +134,7 @@ VL.diagram.compare(target, { a:{name, eg, mark:"✓"}, b:{…}, rows:[{k:"比较
 <details class="vl-story"><summary><b>具体问题式钩子标题</b><small>一句介绍：里面有什么</small></summary>…</details>
 <details class="vl-side" data-kind="history|math|play|debate|source|extra|more"><summary><b>…</b><small>…</small></summary>…</details>
 ```
-自动加类型签（发明故事 / 历史 / 数学 / 多玩一会儿 / 争议 / 原始文献 / 加练 / 延伸，`data-tag` 可改）和"展开 ▾ / 收起 ▴"按钮；内容收进 `.vl-side-body`。**默认收起**，记住读者的展开状态（键 `<id>-side-<文件名>-<id 或序号>`）。里面可放演化链 `ol.vl-chain > li`（箭头用 `li.vl-chain-ar`；≤600px 自动竖排、箭头朝下）和时间线 `.vl-timeline > .vl-ev`（`.hasimg` 带图，年份 `b.vl-yr`）。
+自动加类型签（发明故事 / 历史 / 数学 / 多玩一会儿 / 争议 / 原始文献 / 加练 / 延伸，`data-tag` 可改）和"展开 ▾ / 收起 ▴"按钮；内容收进 `.vl-side-body`。**默认收起**，记住读者的展开状态（键 `<id>-side-<文件名>-<id 或序号>`）。里面可放演化链 `ol.vl-chain > li`（箭头用 `li.vl-chain-ar`；≤600px 自动竖排、箭头朝下；节点配图：插画位 `data-illus` 或 `<span class="vl-chain-img"><img …></span>` 放在节点文字前，最宽 200px，窄屏 240px）和时间线 `.vl-timeline > .vl-ev`（`.hasimg` 带图，年份 `b.vl-yr`）。
 
 ### 试试看
 ```html
@@ -209,7 +197,7 @@ VL.quiz("#c2-quiz", [{ q, opts:[…], a:正确下标, why:"解析", fixed:false,
 
 ## 七、互动组件（vl-interact.js / vl-interact.css）
 
-用途：G6 动手题、P2 篇末综合关、G7 分局小游戏、G8 逐步演示、G9 公式拆解、E2 对比、M1 翻牌、M2 热区图、T6 漫画分镜、K9 文档道具、K5 立场卡 + 投票的 HTML 写法和 JS API。演示页 `kit/demo-interact.html`（主题：强化程序）。
+用途：G6 动手题、P2 篇末综合关、G7 分局小游戏、G8 逐步演示、G9 公式拆解、E2 对比、M1 翻牌、M2 热区图、T6 漫画分镜、K9 文档道具、K5 立场卡 + 投票、G10 选格子、G11 活图的 HTML 写法和 JS API（前十项在 `vl-interact.js`，活图在 `vl-plot.js`）。演示页 `kit/demo-interact.html`（主题：强化程序）。
 
 ### 引入
 
@@ -393,16 +381,16 @@ notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线�
 - 一次一张：页签（立场名，`role=tablist`，←→ Home End）、◀ 上一张 / 下一张 ▶、"2 / 4"、横滑 >50px。翻到立场页时顶部回显"你选的是：X"（没投时提示第一张可以投）。打印全部展开。
 - 投票：`aria-pressed`，可改票，存 `<id>-vote-<文件名>-<data-key>`；单独用 `<div class="vl-vote" data-key="…" data-options="A|B">` 也行。事件 `vl:vote {key, i, option}`、`vl:philo {i}`。JS：`VL.vote(el, {key, options})` → `{pick, option, on(fn)}`；`VL.philo(el)` → `{go(i), vote}`。
 
-### 选格子 `VL.cells`
-猜数、选座位、日历、棋盘这类"一排排可点的格子"。结构和键盘在 kit，外观归皮肤（`.vl-cell` 及状态类，皮肤的 `interact.css` 可覆盖）。
+### G10 选格子 `VL.cells`
+猜数、选座位、日历、棋盘这类"一排排可点的格子"。结构和键盘在 kit，外观归皮肤（`.vl-cell` 及状态类，皮肤的 `interact.css` 可覆盖）。容器会被加上 `.vl-cells` 和 `role="group"`，`aria-label` 由页面自己写在容器上。
 ```js
 const g = VL.cells(document.getElementById("c03-grid"), { n: 100, cols: 10, label: i => i + 1,
   onPick: (i, cell) => { g.mark(i, "is-last"); } });
 g.mark(41, "is-out");   g.mark(41, "is-out", false);   g.reset();   g.get(0);   g.cells
 ```
-状态类：`is-out` 划掉、`is-last` 刚选、`is-hit` 命中、`is-sel` 选中。方向键在格子间走（只有一个格子可 Tab 进入），回车 / 空格选中；格子是 `<button>`，要禁用就设 `disabled`。手机上 10 列每格约 30px，低于 44px 触控标准，格子多时考虑减列。
+状态类：`is-out` 划掉、`is-last` 刚选、`is-hit` 命中、`is-sel` 选中；`reset()` 清掉全部状态类并解除禁用。方向键 / Home / End 在格子间走（只有一个格子可 Tab 进入），回车 / 空格选中；格子是 `<button>`，要禁用就设 `disabled`。手机上 10 列每格约 30px，低于 44px 触控标准，格子多时考虑减列。
 
-### 活图 `VL.plot`
+### G11 活图 `VL.plot`
 柱状图、折线图（可混排）、分布、增长曲线、对比；滑块一拖就重画。独立模块，按需加载（不用的课不引）：
 ```html
 <link rel="stylesheet" href="kit/vl-plot.css">      <!-- <head>，皮肤之后 -->
@@ -419,7 +407,7 @@ const p = VL.plot("#c03-plot", {
     { name: "猜中间", data: [100, 50, 24], labels: true },        // labels：柱顶 / 点上写数值（可传函数格式化）；放不下整组不写
     { name: "逐个猜", type: "line", data: [100, 99, 98] },        // 第二条线自动虚线 + 方点；dash:false|true|"4 3"，dots:true|false，fill:true 画面积
   ],
-  marks: [{ y: 50, label: "一半" }, { x: 3, y: 12, label: "你猜的" }, { x: 7, label: "第 7 次" }],   // 横参考线 / 标注点 / 竖参考线
+  marks: [{ y: 50, label: "一半" }, { x: 3, y: 12, label: "你猜的" }, { x: 7, label: "第 7 次" }],   // 横参考线 / 标注点 / 竖参考线（color 可改色）
   hi: 2,                                        // 高亮下标 2 的柱子（或点），也可传数组
   aria: d => "每猜一次后剩下的数：" + d.series[0].data.join("、"),   // 每次重画都更新 svg 的 aria-label；不给就自动生成
 });
@@ -431,7 +419,7 @@ p.set({ series: [{ data: a }, { data: b }], marks: [], hi: null });  // 按下�
 - 横轴：有柱子或给了 `cats` 就是**类别轴**（数据按下标一格一个，线的点在格子中间）；全是线时是**数值轴**，`data` 可写 `[y, …]`（x = 下标）或 `[[x, y], …]`，`x.min / max` 不给就取数据范围。`x.ticks` / `y.ticks` 可自定：`[0, 50, 100]` 或 `[[0, "收礼那天"], [6, "半年"]]`。`x.hidden` / `y.hidden` 不画该轴刻度。`null` 是缺口（柱不画、线断开）。
 - **手机字不缩小**：viewBox 宽 = 容器实际像素宽（ResizeObserver 跟着重画），字号固定像素（`--vp-fs` 数字、`--vp-fs-txt` 文字，默认 14px，像素皮肤 19 / 15px）；窄了自动少画刻度、类别名隔几个写一个，自定刻度撞上前一个的跳过。刻度步长取 1 / 2 / 5 × 10ⁿ。纵轴名、图例、横轴名是 HTML（在图上方 / 下方），窄屏自动换行。
 - 颜色：系列默认 `--q1…--q6`（`color` 可传任意 CSS 颜色或 `var(--…)`），轴和字用 `--ink` `--ink2`，高亮用 `--accent`（`--vp-hi`），全部可在页内覆盖 `--vp-*`。放进 `.vl-fig` 时在暗色 / 护眼下跟着图板走。颜色不是唯一信息：多系列自动出图例（`legend:false` 关，`true` 单系列也出），线有虚线 + 不同点形，第二组柱子起加斜纹，高亮柱加粗边。
-- 像素皮肤（`VL_SKIN.name === "pixel"`，容器写 `data-skin`）用 `shape-rendering:crispEdges`。没有重画过渡（拖动时直接画终态），所以不涉及"减少动态"。
+- 像素皮肤（`VL_SKIN.name === "pixel"`，容器的 `data-skin` 由脚本自动写）用 `shape-rendering:crispEdges`。没有重画过渡（拖动时直接画终态），所以不涉及"减少动态"。
 - 容器移出页面后，下一次尺寸变化时自动停掉监听；整块动态删掉时调 `destroy()` 更干净。
 
 ### 事件一览
@@ -576,7 +564,7 @@ node kit/modules/build-concepts.mjs <课程文件夹绝对路径> [--write] [--c
 ```html
 <link rel="stylesheet" href="kit/vl.css">
 <link rel="stylesheet" href="skin/skin.css">
-<link rel="stylesheet" href="skin/diagrams.css">   <!-- 新七种图解的皮肤外观（四套皮肤都有；starter 模板已自动引入） -->
+<link rel="stylesheet" href="skin/diagrams.css">   <!-- 后七种图解（第 6–12 种）的皮肤外观（四套皮肤都有；new-course.mjs 已自动引入） -->
 …
 <script src="kit/vl.js"></script>
 <script src="kit/diagrams.js"></script>            <!-- 放在 vl.js 之后 -->
@@ -746,11 +734,11 @@ VL.diagram.stack(t, {
 文字：`.vl-dg-t1` 名字 / `.vl-dg-t2` 例子 / `.vl-dg-t3` 小字、`.vl-dg-k`、`.vl-dg-axname`、`.vl-dg-num`。
 状态：`.is-on`（选中）、`.is-near`（网络的邻居、树的路径）、外层 `.vl-dg.has-on`（其余变淡）、`.vl-dg.is-level`（天平水平）；`[data-c="1…6"]`。
 
-新皮肤要给新七种图解写一份 `diagrams.css`（参照 `skins/notebook/diagrams.css`）。不写也能看：形状带了 `fill="none" stroke="currentColor"` 兜底，淡出、过渡等结构样式由 diagrams.js 自动注入（`<style id="vl-dg-css">`，用 `:where()` 压低优先级，皮肤总能覆盖）。
+新皮肤要给后七种图解写一份 `diagrams.css`（参照 `skins/notebook/diagrams.css`）。不写也能看：形状带了 `fill="none" stroke="currentColor"` 兜底，淡出、过渡等结构样式由 diagrams.js 自动注入（`<style id="vl-dg-css">`，用 `:where()` 压低优先级，皮肤总能覆盖）。
 
 ### 实现上要知道的
 
-- viewBox 宽度 = 图的实际显示宽度，SVG 里的字号就是屏幕字号；容器宽度变化超过 24px、字体加载完都会重画，选中状态保留。
-- 文字先排好、量包围盒，再按包围盒画框或找位置，所以字离线 ≥ 4px 不靠猜。
+- viewBox 宽度 = 图的实际显示宽度，SVG 里的字号就是屏幕字号（名字 19/17px，例子 15/14px）；容器宽度变化超过 24px、字体加载完都会重画，选中状态保留。
+- 文字先排好、量包围盒，再按包围盒画框（内边距 ≥9px）或找位置，所以字离线 ≥ 4px 不靠猜。
 - 皮肤的抖动滤镜按元素包围盒算区域，纯水平 / 竖直的线包围盒高度为 0 会被整条裁掉（旧版象限图的坐标轴、窄屏循环图的横箭头就是这样消失的）。diagrams.js 画完后给每个带滤镜的形状复制一份以自身坐标为准、四周留 14px 的滤镜。
 

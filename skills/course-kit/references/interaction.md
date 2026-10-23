@@ -1,6 +1,6 @@
 # 交互与动效
 
-用途：有哪些交互方式可选、互动怎么设计才好玩又不难、键盘和触屏怎么做、动效四类的时长和开关细则。底线在 `SKILL.md` 第三、四节；各组件的结构在 `components.md`。**API 以 `kit/README.md` 为准**；表里 G6–G9、M1 的翻牌（`.vl-flip`）、M2 热区、K5 投票、E2 拖线、`.vl-pad` 的代码在 `kit/vl-interact.js`，写法见 kit/README.md 第七节；G1–G5 只有外壳 `.vl-board` 和控件类，舞台由章节自写；M1 的 draw、then-run kit 里暂无。
+用途：有哪些交互方式可选、互动怎么设计才好玩又不难、键盘和触屏怎么做、动效四类的时长和开关细则。底线在 `SKILL.md` 第三、四节；各组件的结构在 `components.md`。**API 以 `kit/README.md` 为准**；表里 G6–G10、M1 的翻牌（`.vl-flip`）、M2 热区、K5 投票、E2 拖线、`.vl-pad` 的代码在 `kit/vl-interact.js`，G11 活图在 `kit/vl-plot.js`，写法见 kit/README.md 第七节；G1–G5 只有外壳 `.vl-board` 和控件类，舞台由章节自写；M1 的 draw、then-run kit 里暂无。
 
 ## 一、交互方式总表
 
@@ -12,6 +12,7 @@
 | 拖滑块调参 | 拖 / 方向键 → 活图即时变 | G2 | GD `ch05`、DS `ch05`、AI `ch08` | 原生 |
 | 分段切换 / 开关 | 点 → 换视图、开关效果 | G1 | GD `ch05`、DS `ch01` 名单 / 地图切换 | `aria-pressed` |
 | 拖到坐标区 / 拖图里的点 | 拖 → 落点、参考圈、读数 | G4 | GD `ch06` 心流、DS `ch03` 工资点 | 方向键（必补） |
+| 点格子 | 点 → 划掉 / 命中 / 高亮 | G10 | 样板章 `pixel-binary-search` | 方向键走格 + 回车 |
 | 拆 / 拼 / 槽位 | 点零件再点槽位 → 整体后果 | G5 | GD `ch01` 拆房子、`ch02` 拆环、`ch24` 槽位 | 点选 |
 | 分拣 / 排序 / 配对 / 判定 | 拖或点选 → 对错 + 理由 + 分级提示 | G6 | DS boss、GD `ch21` 判定 | 点选、↑↓ |
 | 先想 / 先选 / 估数 / 画预期 / 翻牌 / 先猜再跑 | 先表态 → 揭晓 + 差距 | M1 | AI `.guess`、`ch03` 画板、DS `ch04` | 见 M1 |

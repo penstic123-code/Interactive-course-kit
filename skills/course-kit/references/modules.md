@@ -12,7 +12,7 @@
 | 学习路径 | 读者起点差别大时加 | 几条路线，点一条其余变暗 |
 | 小镇式目录 | 只在有离线出图的皮肤 | 一张地图 = 全课进度 + 本章目录 |
 | 大事年表 | 历史分量大时加 | 全课发明故事按年份串起 |
-| 读者换配色 | 必做（暗色暂缓） | 亮 / 暗 / 护眼，属皮肤契约；暗色只给了变量、未完整验收 |
+| 读者换配色 | 必做（暗色暂缓） | 亮 / 暗 / 护眼，属皮肤契约，见第九节 |
 
 ---
 
@@ -91,24 +91,15 @@
 
 **一份概念数据，三处用**：
 
-```js
-// 示意。现行写法：课程的 js/concepts.js 写 window.VL_CONCEPTS = {items, links, terms}，
-// 由 kit/modules/vl-concepts.js 读成 VL.concepts；字段见 kit/README.md 第八节
-VL.concepts = [
-  { id:'core-loop', ch:2, zh:'核心循环', en:'Core loop',
-    def:'玩家一遍遍重复的那组动作……',    // = 概念卡"通俗地说" = 徽章释义
-    illus:'cc-core-loop',                 // = 概念卡图位 = 图鉴里的小图
-    links:[{to:'flow', type:'explains'}, {to:'feedback', type:'prereq'}] }
-];
-```
+课程的 `js/concepts.js` 写 `window.VL_CONCEPTS = {items, links, terms}`，由 `kit/modules/vl-concepts.js` 读成 `VL.concepts`；字段和边类型见 `kit/modules/concepts-schema.md`，API 见 kit/README.md 第八节。
 
 | 用在哪 | 取哪些字段 |
 |---|---|
-| 概念卡 K1 | zh、en、def、illus（卡片 HTML 可由数据生成，避免两处不一致） |
-| 关系图 `map.html` | 全部；边类型：先修、解释、应用、对照 |
-| 章末"相关章节" N5 | links 推出的章节 |
-| 图鉴 / 背包（激励） | zh、def、illus |
-| 术语表 | 可合并进术语数据 |
+| 概念卡 K1 | `zh en def plain illus`（卡片 HTML 可由数据生成，避免两处不一致） |
+| 关系图 `map.html` | 全部；边类型：前置、解释、应用、对照 |
+| 章末"相关章节" N5 | `links` 推出的章节 |
+| 图鉴 / 背包（激励） | `zh plain illus` |
+| 术语表 | `terms` |
 
 **怎么做**：节点 = 概念名 + 章号；点节点亮它的邻居、旁边显示 def 和"去第 N 章"；按篇着色并加文字图例；世界观原理也登记成节点（content-rules.md 一D）。
 
@@ -170,4 +161,4 @@ VL.concepts = [
 
 ## 九、读者换配色
 
-不是可选项，是皮肤契约的一部分（`skin-contract.md`）：每套皮肤给亮 / 暗 / 护眼三套配色，顶栏"显示"里切换，存档（键 `vl-scheme`，跨课共用）。**暗色暂缓**：切换功能保留，暗色只给了变量、未完整验收；亮色和护眼按 `skin-contract.md` 第五节截图验收。**皮肤在开课时定，读者只换配色**，因为插画是按皮肤画法画的，运行时换不了画法。
+不是可选项，是皮肤契约的一部分（`skin-contract.md`）：每套皮肤给亮 / 暗 / 护眼三套配色，顶栏"显示"里切换（存档键和配色细则见 `skin-contract.md` 第一节）。**暗色暂缓**：切换功能保留，暗色只给了变量、未完整验收；亮色和护眼按 `skin-contract.md` 第五节截图验收。**皮肤在开课时定，读者只换配色**，因为插画是按皮肤画法画的，运行时换不了画法。

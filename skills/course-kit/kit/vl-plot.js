@@ -244,8 +244,11 @@
         const room = band ? (isBar ? Math.max(bw, step / Math.max(1, bars.length)) : step) : 1e9;
         if (ls.some(l => mNum(l.t) > room * 0.98)) return;
         ls.forEach(l => {
-          const by = l.neg ? l.y + fs + 4 : l.y - 6, hw = mNum(l.t) / 2;
-          V.push({ r: [l.x - hw, by - fs * 0.8, l.x + hw, by + fs * 0.2], svg: '<text x="' + f1(l.x) + '" y="' + f1(by) + '" text-anchor="middle" class="vl-plot-val">' + esc(l.t) + "</text>" });
+          const hw = mNum(l.t) / 2, up = l.y - 6, dn = l.y + fs + 4, by = l.neg ? dn : up, ty = l.y + fs * 0.35;
+          // 候选 [中心x, 基线y]，第一个是默认位置
+          const cs = isBar ? [[l.x, by], [l.x - hw * 0.6, by], [l.x + hw * 0.6, by], [l.x - hw - 4, by], [l.x + hw + 4, by], [l.x, by + (l.neg ? 1 : -1) * (fs + 2)]]
+            : [[l.x, by], [l.x, l.neg ? up : dn], [l.x + hw + 7, ty], [l.x - hw - 7, ty]];
+          V.push({ hw, cs, svg: l.t, r: [l.x - hw, by - fs * 0.8, l.x + hw, by + fs * 0.2] });
         });
       });
       // 参考线 / 标注点：每个标签试几个候选位置，挑和柱子、折线、点、别的标签重叠最少的（并列取第一个）
@@ -294,7 +297,23 @@
         s += '<text x="' + f1(best.x) + '" y="' + f1(best.y) + '" class="vl-plot-mark">' + lab + "</text>";
       });
       const mk = geo.map(g => g.mx != null && g.my != null ? [g.mx - 6, g.my - 6, g.mx + 6, g.my + 6] : g.my != null ? [X0, g.my - 1, XR, g.my + 1] : [g.mx - 1, top, g.mx + 1, Y0]);
-      V.forEach(v => { if (!placed.some(o => hitArea(v.r, o) > 0) && !mk.some(o => hitArea(v.r, o) > 0)) s += v.svg; });   // 撞上标注的数值标签让位
+      // 数值标签：每个试几个候选位置（默认在先），挑撞柱、线、点、参考线、标注、别的数值最少的；实在躲不开参考线 / 标注才不写
+      const accepted = [], bnd = [X0, 0, XR, Y0 + 2];
+      V.forEach(v => {
+        let best = null, bs = Infinity;
+        v.cs.forEach(cd => {
+          const r = [cd[0] - v.hw, cd[1] - fs * 0.8, cd[0] + v.hw, cd[1] + fs * 0.2];
+          let sc = 0;
+          R.forEach(o => { sc += hitArea(r, o); }); S.forEach(o => { sc += segLen(o, r) * 4; });
+          placed.forEach(o => { sc += hitArea(r, o) * 6; }); accepted.forEach(o => { sc += hitArea(r, o) * 6; });
+          sc += ((r[2] - r[0]) * (r[3] - r[1]) - hitArea(r, bnd)) * 3;
+          if (sc < bs - 1e-6) { bs = sc; best = { cd, r }; }
+        });
+        const bad = placed.some(o => hitArea(best.r, o) > 0) || mk.some(o => hitArea(best.r, o) > 0) || accepted.some(o => hitArea(best.r, o) > 0);
+        if (bad) return;
+        accepted.push(best.r);
+        s += '<text x="' + f1(best.cd[0]) + '" y="' + f1(best.cd[1]) + '" text-anchor="middle" class="vl-plot-val">' + esc(v.svg) + "</text>";
+      });
       // 轴线与横轴刻度
       if (!yHidden) s += '<line x1="' + X0 + '" y1="' + f1(top - 4) + '" x2="' + X0 + '" y2="' + f1(Y0) + '" class="vl-plot-axis"/>';
       s += '<line x1="' + X0 + '" y1="' + f1(yBase) + '" x2="' + XR + '" y2="' + f1(yBase) + '" class="vl-plot-axis"/>';

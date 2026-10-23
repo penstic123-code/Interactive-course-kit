@@ -42,7 +42,7 @@
 
 ## 二、必须画出样子的组件
 
-同一个功能，每套皮肤一个样子。`skins/<名>/gallery.html` 把下面每一项都摆出来，作为验收页（`skins/notebook/gallery.html` 已摆好 kit/vl.js 现有的全部组件，做新皮肤时复制它、只换皮肤路径；网址加 `?scheme=dark|sepia` 截三套配色）。互动组件、可选模块、12 种图解的演示分别在 `kit/demo-interact.html`、`kit/modules/demo-modules.html`、`kit/demo-diagrams.html`，做新皮肤时一并对照。K9 文档道具、K5 立场卡在 `kit/vl-interact.js` 里，notebook、paper、pixel 的 gallery 还没摆（fieldbook 的摆了），做下一套皮肤时补上。
+同一个功能，每套皮肤一个样子。`skins/<名>/gallery.html` 把下面每一项都摆出来，作为验收页（`skins/notebook/gallery.html` 已摆好 kit/vl.js 现有的全部组件，做新皮肤时复制它、只换皮肤路径；网址加 `?scheme=dark|sepia` 截三套配色）。互动组件、可选模块、12 种图解的演示分别在 `kit/demo-interact.html`、`kit/modules/demo-modules.html`、`kit/demo-diagrams.html`，做新皮肤时一并对照。K9 文档道具只有 fieldbook 的 gallery 摆了；K5 立场卡、G10 选格子、G11 活图四套 gallery 都还没摆，做下一套皮肤时补上。
 
 | 类 | 组件（编号见 `components.md`） |
 |---|---|
@@ -71,7 +71,7 @@
 | `kit.arrow(x1, y1, x2, y2)` | 尖端正好落在终点 |
 | 椅子 / 桌子 | 防悬空：kit 的坐姿自带椅子，`arms:'desk'` 是伏案姿势；单独的 `chair / desk` 物件 kit 里暂无 |
 
-- 画布默认 viewBox 200×140；人物缩放 ≥0.9，别画太小。
+- 画布默认 viewBox 200×140（竖版用 `add()` 的选项 `{vb}`，见 `kit/README.md`"插画位"）；人物缩放 ≥0.9，别画太小。
 - 文字放在滤镜组外；滤镜写 `in="SourceGraphic"`。
 - 规则写进函数比事后逐张改省事（GD 经验：坐姿自动配椅子、脸朝左手臂自动镜像）。
 - 交付时附：一页人物样张（6 个不同人物站、坐、拿东西、指东西、说话）+ 物件样张；`tools/illus-overlap.mjs` 通过；用 `tools/shot.mjs` 逐张截单个插画人眼看过。

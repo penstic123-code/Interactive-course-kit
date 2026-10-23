@@ -10,7 +10,7 @@
 |---|---|
 | `skin.css` | 变量（三套配色 + 五篇主色、天空带、塔墙）+ 组件外观 + 目录页纸塔 + 题头天空带 |
 | `skin.js` | `window.VL_SKIN`（网络字体、剪纸滤镜 `#pp-cut1…3`、纤维纹 `#pp-fiber`、插画配色）+ 剪纸绘制工具（经 kit 的换画法钩子 `VL_SKIN.illus` 换掉 `VL.illus.kit` 的画法）+ 题头动画暂停 / 冻结 |
-| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、七种图解的外观（由 notebook 同名文件改成卡纸画法） |
+| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（由 notebook 同名文件改成卡纸画法） |
 | `img/` | 纤维纹 `fiber.png` `fiber-soft.png`、背景纸云 `clouds.svg`、草地 `hills.svg`（原课程自绘） |
 | `gallery.html` | 验收页 |
 

@@ -10,6 +10,8 @@
 |---|---|
 | `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 |
 | `skin.js` | `window.VL_SKIN`：网络字体地址、手绘抖动滤镜 `#vl-rough`、插画配色 |
+| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（其余三套皮肤由它们改画法而来） |
+| `gallery.html` | 验收页 |
 | `fonts/PatrickHand-Regular.ttf` | Patrick Hand（字母数字手写体），本地，离线可用 |
 | `fonts/OFL.txt` | 字体授权（SIL OFL 1.1） |
 

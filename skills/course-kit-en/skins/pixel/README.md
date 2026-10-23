@@ -10,7 +10,7 @@
 |---|---|
 | `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 + 机身外壳 + 目录页选关样式 + 开场样式 |
 | `skin.js` | `window.VL_SKIN`（VT323 网络字体、插画配色）；像素绘制工具（接到 `VL.illus.kit` 上）；关卡开场 READY! 与题头动画暂停 |
-| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、七种补充图解的外观（方角、整格投影） |
+| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（方角、整格投影） |
 | `img/gb-dpad.svg` `img/gb-ab.svg` | 机身上的十字键和 A/B 键（宽屏两侧，AI 课自绘） |
 | `fonts/fusion-pixel-12px-zh_hans.woff2` | 缝合像素 Fusion Pixel 12px 比例版 v2026.10.16 简中全量（约 0.9MB），本地 |
 | `fonts/OFL.txt` `fonts/LICENSES/` | 字体授权（SIL OFL 1.1；含其上游 Ark Pixel、Cubic 11、Galmuri 的授权） |
@@ -84,7 +84,7 @@
 
 - 暗色只给了变量，未精调（用户暂缓暗色）；暗色下机身框和液晶对比偏低。
 - 目录页只把章节卡改成"关卡方块 + 点阵分隔线"，没有画成真正的选关地图路线。
-- Fusion Pixel 简中全量约 0.9MB；整课只在 h1 用，可以按全课用字裁剪（`tools/subset_fonts.py` 的做法）。
+- Fusion Pixel 简中全量约 0.9MB；整课只在 h1 用，可以按全课用字裁剪（做法见 `skin-contract.md` 第一节"字体规则"）。
 - VT323 是网络字体，离线时数字退到 Consolas。
 - `tools/illus-overlap.mjs` 会把"拿在手里的物件压在人物身前"报成重叠（像素画法里物件画在躯干前面是故意的），这类可以忽略。
 - 像素人眼睛只有一格宽，`glasses` 的细框在小尺寸下略挤；需要清楚的眼镜人物时把 `s` 设到 1.2 以上。
