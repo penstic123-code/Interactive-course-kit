@@ -68,8 +68,15 @@ Three adjustments get you most of the way to "plain but refined":
 
 ## Narrative and structure (long pieces, course chapters)
 
-- **The opening sets up cause and context.** Don't drop the reader into a scene. Start from something familiar, say why we are going somewhere and what we want to find out, then go in. ✓ "Today 'AI' seems to mean chatbots like ChatGPT and Gemini: type some text, and something that looks like thinking types back. Is that all the word means?"
-- **One guiding question runs through the piece.** Each section answers part of it, and the ending returns to the opening.
+- **The opening sets up cause and context** (required). Don't drop the reader into a scene, and don't start from a mechanism or a metaphor. Start from an experience or question the reader already has, and say what is to be solved and what is in hand; metaphors grow out of that problem and never come before it. After the opening, the reader can say what is being done and why. If you use a scene, the concept must be readable from it; it is not there to set the mood. Pick one way in, to suit the topic:
+
+  | Way in | Suits | How |
+  |---|---|---|
+  | Everyday scene | The concept has a ready instance in daily life | A small, complete scene the reader has lived through, down to people, actions and outcome, with no new term; end with a sentence saying it already contains the parts of X, then name it (hide-and-seek has goal, rules, feedback, voluntariness) |
+  | Same-structure analogy | Technical topic, no everyday instance | A lived scene with the same structure (adjusting a shower: error, direction, step size, overshoot, which is gradient descent) |
+  | Lay out the task | There is data to work with | Put the task and its data on the page and work one calculation by hand (five carts and their loss) |
+  | A question | The concept is counter-intuitive | The first sentence is the reader's own question (✓ "Today 'AI' seems to mean chatbots like ChatGPT and Gemini… Is that all the word means?") |
+- **Build around one theme.** Each section picks up the question the last one left. A single guiding question that runs through and returns at the end is one option, not a requirement.
 - **Situation, then solution, then name.** Let the reader feel the need, show how people came up with the idea, and name it last.
 - **Write meaning, not figures.** Before drafting, give each paragraph one line covering what the reader will understand, how it connects to the previous paragraph, and what question carries them on. Write around that line. Numbers and dates are evidence, so delete any the reader doesn't need.
 - **Concepts come first.** Stories, history, games and philosophy are vehicles for understanding the concept and must not outweigh it. When a course has a story, keep it in the background: the prose's subject is the concept itself, and a story character or prop never stands in for a concept's name. Deletion test: if this sentence went, would the reader understand the core concept less well? If not, cut it. Material that doesn't help understanding but is a pity to lose goes into a collapsible side note.

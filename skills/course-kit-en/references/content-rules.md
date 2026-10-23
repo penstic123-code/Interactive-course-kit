@@ -62,7 +62,7 @@ The numbers in the table are reference values. Adjust them to the course's aims 
 |---|---|
 | Core concepts | 1–3, each with definition + intuitive example + diagram |
 | Required modules | Every part of the section 4 structure, plus 1–2 philosophy moments |
-| Hook | Within the first screen, catch the reader with a small story or a counterintuitive question; never open with a definition |
+| Hook | Within the first screen, state the concrete task (a small example with its data), then raise the question the reader now wants to ask; never open with a definition, nor with a story or metaphor that has no concept behind it |
 | Concept diagrams | ≥3, at least one relationship/flow/cycle diagram and one comparison or coordinate chart; each addresses one point that is hard to understand; each has an `aria-label` |
 | Pictures | Every one or two paragraphs have a visual beside or right after them: illustration, diagram, real photo, comic panel or small interaction. Examples and counterexamples are both illustrated. Each timeline item gets a picture large enough to read. Each picture shows the key mechanism or distinction (arrows, labels, contrasting positions) and is never pure decoration. Each picture is used only once in the whole course |
 | Examples | See section 1, item 2; multiple examples switch sideways in a carousel or tabs |
@@ -102,6 +102,8 @@ Body prose style (sentences, paragraphs, banned words, headings, dialogue, empha
 The writing requirements below sit outside the skill and come from the course structure:
 
 - **No meta-language**: the body never says "this chapter", "this course", "the next section covers" or "chapter N explains this in detail". Natural back-references are fine ("remember the hide-and-seek example?"), and links between chapters are left to "related chapters".
+- **Open with the task, then bring in the concept**: the required cause-and-context opening and the four optional ways in (everyday scene, same-structure analogy, lay out the task, a question) are in `en-teaching-prose`. One course-specific rule on top: a reference to an earlier chapter takes one sentence, and the data, definitions and worked numbers a chapter uses are shown in that chapter, so it can be read without the last one.
+- **One causal chain**: the question a section ends on is answered by the next, and headings state a section's conclusion or core concept, never a metaphor. Before drafting, write the chain (one line per section: what it answers, what it picks up); if it reads like an outline, rewrite.
 - **Concepts take the stage, the story stays behind** (courses with a background story or characters): the story appears only in the short opening briefing, the header picture and an occasional line from the companion. The prose is about the concept itself, with examples from real situations in the field, and interactive tasks use the concept's own terms ("get the loss below 0.5 within 6 steps"). Never replace a concept's name with a story stand-in, such as calling loss "enemy HP"; readers could not recognise it in the real world afterwards.
 - **Concepts lead, maths supports** (courses with maths; the user's words: "no big blocks of isolated maths", "I don't want it to feel like a stiff textbook"):
   - Every formula belongs to a concept and appears right next to that concept's diagram or interaction. The reader understands the concept first, and the formula then arrives as shorthand.
