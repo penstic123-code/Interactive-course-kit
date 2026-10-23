@@ -75,8 +75,8 @@ Readers drag, tweak, build and sort, and see the consequence immediately: comic 
 
 ![Interaction demo page](docs/images/interact.jpg)
 
-### Approved skins only
-The AI is not allowed to improvise a style; a new course starts by asking you which skin to use (see [Skins](#skins)). Readers can switch colour scheme (light / easy-on-the-eyes) and motion level (full, light, off) from the top bar, and the system's reduced-motion setting is respected.
+### Skins are approved before they are used
+A new course starts by asking you which skin to use (see [Skins](#skins)), and the AI never improvises styling inside a course page. Want a different look? Design a new skin with the AI: talk through the feel and references, build a gallery page and one sample chapter, and once you approve it, it joins the library for every later course. Readers can switch colour scheme (light / easy-on-the-eyes) and motion level (full, light, off) from the top bar, and the system's reduced-motion setting is respected.
 
 ### Optional modules
 A concept map (sharing one dataset with the concept cards), glossary, flashcards, stamp-album reading rewards (one stamp per chapter understood), a companion character who speaks only when clicked, and sound (muted by default).
