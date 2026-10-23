@@ -125,7 +125,7 @@ for (const p of pages) {
 console.log("3 配图密度（两个视觉之间 >220 字；单段 >160 字）");
 const VISUAL = /<(img|svg|canvas|figure|video|iframe)\b|data-illus|data-diagram|class="[^"]*\bvl-(board|dg|fig|eg|cc-fig|illus|photo|comic|guess|flip|philo|hot|plot)\b/; // 小互动（先猜后揭晓、翻牌、立场卡、热区）也算视觉
 for (const p of pages) {
-  let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, ""); // 默认收起的故事框、支线由读者自选展开，不算进配图密度
+  let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, "").replace(/<div class="vl-goals"[\s\S]*?<\/ul>\s*<\/div>/g, ""); // 默认收起的故事框、支线由读者自选展开；学习目标属于题头：都不算进配图密度
   const en = /<html[^>]*lang="en/.test(read(p));
   const m = html.match(/<main[\s\S]*<\/main>/); if (m) html = m[0];
   let run = 0, from = "";

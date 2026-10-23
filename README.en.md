@@ -25,6 +25,16 @@ While building them, every piece of feedback on visuals, components, interaction
 |---|---|---|
 | ![](docs/images/ds.jpg) | ![](docs/images/ai.jpg) | ![](docs/images/an.jpg) |
 
+## Making a course with AI, together
+
+These skills can't produce a perfect course in one click. The limit isn't the tooling: a good textbook has to be judged by people who read it.
+
+- AI has no body. It has never told itself "one last game" at 1 a.m. or been stuck on a problem, so it can't reliably pick the example that makes something click.
+- AI doesn't know who your readers are or where they get lost. It understands things differently from people: a paragraph can read smoothly to it while a person lost the thread long ago.
+- Whether a page is easy and enjoyable to read only shows when a person reads it.
+
+So the skills put you at a few key points: choosing the look, agreeing the course plan, reading chapter outlines, reading the sample chapter, and spot-checking one chapter per part. AI lays out the content, draws, builds the interactions and runs the checks; you say "I didn't follow this", "this example is far from my life", "this part is too long". The courses above were all made this way, round after round.
+
 ## What's inside
 
 | Skill | Purpose |
@@ -36,7 +46,7 @@ While building them, every piece of feedback on visuals, components, interaction
 ## Features
 
 ### One topic, told unhurriedly
-Each chapter starts from a situation the reader knows, and each paragraph picks up the question the last one left. Difficulty stays moderate. Invention stories, derivations, maths and research detail start collapsed, showing only a concrete question-style title and one line of introduction; readers who want depth open them.
+Each chapter is outlined before it is written: it answers one question, and each section answers the question the last one raised. Concept difficulty decides how many concepts a chapter holds and how much room each gets, and a paragraph brings in one new thing at a time. Chapters start from a situation the reader knows: experience first, then the name. Difficulty stays moderate. Invention stories, derivations, maths and research detail start collapsed, showing only a concrete question-style title and one line of introduction; readers who want depth open them.
 
 ![Collapsed drawers for an invention story, maths and a controversy](docs/images/drawers.jpg)
 
@@ -108,7 +118,9 @@ When a new course starts, the AI first asks which art style you want, then asks 
 
 Each skin's approval page is `skins/<name>/gallery.html`, with every component on one page; double-click to open. For a new style, follow `references/skin-contract.md`: a sample chapter first, then approval.
 
-## Install
+## How to use
+
+### 1. Install
 
 Copy the four folders in `skills/` into Claude Code's skills folder:
 
@@ -119,14 +131,31 @@ cp -r skills/* ~/.claude/skills/
 Copy-Item -Recurse skills\* $HOME\.claude\skills\
 ```
 
-Then ask Claude Code to "make an interactive course about …" and it will pick up the skills. You can also generate a skeleton by hand:
+### 2. Start a course
+
+Ask Claude Code to "make an interactive course about …". Then:
+
+| Step | AI does | You do |
+|---|---|---|
+| Look | Suggests the four skins and what each suits | Pick one |
+| Plan | Asks about readers, length, language and modules; drafts a knowledge map and chapter list | Approve or change it |
+| Chapter outline | One page per chapter: the question it answers, how each section follows the last, concept difficulty, what each example and interaction is for; a context-free agent then checks the logic | Read the sample chapter's and each part's first outline closely, skim the rest |
+| Sample chapter | Writes chapter 1 from the outline, runs checks and screenshots | Read it through and say where you got lost or what felt off |
+| Roll out | Writes chapter by chapter; each passes the scripts and a context-free reader review | Read one chapter per part |
+| Finish | Whole-course audit, optional modules, English edition | Final sign-off |
+
+Specific feedback works best: "section 3 suddenly uses 'loss' before explaining it" helps far more than "a bit hard to follow".
+
+### 3. Commands by hand
+
+You can also generate a skeleton and run the checks yourself:
 
 ```bash
 node ~/.claude/skills/course-kit/starter/new-course.mjs <absolute course folder path> <skin> --lang en
 node ~/.claude/skills/course-kit/tools/check.mjs <absolute course folder path> --fast
 ```
 
-Content rules (how each concept is taught, chapter and course acceptance criteria, workflow) live in `course-kit-en/references/content-rules.md`. You can copy the whole file into your project as `CLAUDE.md`.
+Content rules (eight teaching principles, chapter outlines and difficulty budget, acceptance criteria, production workflow) live in `course-kit-en/references/content-rules.md`. You can copy the whole file into your project as `CLAUDE.md`.
 
 ## Requirements and limits
 
