@@ -40,7 +40,7 @@ Three adjustments get you most of the way to "plain but refined":
 - **Watch the curse of knowledge.** The writer already understands, so the step the reader is missing is the easiest one to skip. Spell out acronyms and jargon, and fill in whatever hides behind "obviously" or "clearly", for someone hearing it for the first time. Give a concrete example before an abstract statement.
 - **Metaphors** should come from things the reader has actually seen. Carry one metaphor through instead of switching, and say once where it breaks down. Skip the worn ones ("black box", "double-edged sword", "tip of the iceberg", "a perfect storm").
 - **Use "you" and "we" sparingly.** The prose stays on the explaining; its subjects are the concepts, people, objects, data and events themselves. Use "you" only to invite the reader to try something, guess, or recall their own experience, or to open with an everyday scene. An authorial "I" appears only when the opening sets up why the piece exists.
-- Paragraphs run 4 lines or fewer on screen, and each one gives the reader a new fact or a new "why". Known information comes first and new information last.
+- Paragraphs run 4 lines or fewer on screen, and each one gives the reader a new fact or a new "why" and introduces at most one new concept or symbol. Known information comes first and new information last, and a term used in an interaction, task or exercise has been explained in the prose before.
 - No meta-language ("in this chapter", "the next section will cover", "as mentioned above") and no previews of what comes later.
 
 ## Banned (each with a fix)
@@ -80,7 +80,7 @@ Three adjustments get you most of the way to "plain but refined":
 - **Situation, then solution, then name.** Let the reader feel the need, show how people came up with the idea, and name it last.
 - **Write meaning, not figures.** Before drafting, give each paragraph one line covering what the reader will understand, how it connects to the previous paragraph, and what question carries them on. Write around that line. Numbers and dates are evidence, so delete any the reader doesn't need.
 - **Concepts come first.** Stories, history, games and philosophy are vehicles for understanding the concept and must not outweigh it. When a course has a story, keep it in the background: the prose's subject is the concept itself, and a story character or prop never stands in for a concept's name. Deletion test: if this sentence went, would the reader understand the core concept less well? If not, cut it. Material that doesn't help understanding but is a pity to lose goes into a collapsible side note.
-- **Enough examples.** Each core concept gets at least three concrete examples, including one counterexample or near miss.
+- **Enough examples.** Each core concept gets at least three concrete examples, including one counterexample or near miss. For academic or maths-heavy material the examples can be classic worked problems, real data or experiments from papers; there is no need to force everyday scenes.
 - **Chapter titles and headings** say concretely what the chapter or section is about: a chapter title names the chapter's core concept or topic, a heading names the section's core object or conclusion. The concept named for the first time in the section appears in its heading, with a touch of concrete image if possible. Vary the syntax across the set. No slogan or metaphor-only headings, no "X: Y" colon headings, no "Why X Matters", no title-case slogans ("Unlocking The Power Of Rules"). Use sentence case and at most one question heading per chapter.
   ✗ "The Magic Circle: Where Play Begins" ✓ "Huizinga draws a magic circle around play"
 - **Dialogue** (character lines, speech bubbles) appears only when it brings a question, a mistake, a discovery or a feeling. It should sound like someone muttering beside you, with half-sentences and corrections allowed. No cuteness, no characters reciting definitions for the author, no neat question-and-answer pairs.
@@ -97,7 +97,7 @@ Three adjustments get you most of the way to "plain but refined":
 
 ## Emphasis in long web paragraphs
 
-The three marks each have one job, with at most two per paragraph and no bold in running prose. The highlighter marks the first naming of a core concept. The emphasis mark (dots or the skin's equivalent) goes on a name, role or keyword the reader should remember, at its first appearance. Underline marks the one conclusion or turn that matters most in the paragraph. Use the same CSS classes as the Chinese edition.
+The two marks each have one job, with at most two of each per paragraph and no bold in running prose. The highlighter marks the first naming of a concept. The emphasis mark (dots or underline, depending on the skin) goes on the one sentence in a paragraph, a conclusion or turn, that the reader should remember. Use the same CSS classes as the Chinese edition.
 
 ## Writing the English edition of a Chinese course
 

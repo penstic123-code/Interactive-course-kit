@@ -74,7 +74,7 @@ Secondary concepts get only the naming mark, no card. For the one sentence in a 
 ## 3. Interaction baseline
 
 - Before an interaction, one sentence says what question it answers; the "Try it" task says what to do and gives feedback when done.
-- Few controls: the reader knows how to play within 3 seconds; ideally predict first, then see the result; undo and restart are always possible.
+- Few controls: the reader knows how to play within 3 seconds; at key points, predict first, then see the result; undo and restart are always possible.
 - Hard modes go into the advanced drawer. Multiple choice only appears in the exercises.
 - Works with the keyboard; touch targets are big enough.
 - Details in `interaction.md`.
