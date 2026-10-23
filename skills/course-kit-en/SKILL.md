@@ -63,7 +63,7 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 
 ## 2. Visual baseline
 
-- **Only approved skins** (`skins/`); don't let the AI improvise a style. When a course starts, ask the user which one (section 6); never pick one for them. A new skin gets one sample chapter for the user to approve before it joins the library (process: `skin-contract.md` section 5).
+- **Courses use approved skins only** (`skins/`); never improvise styling inside a course page. When a course starts, ask the user which one (section 6); never pick one for them. For a new look, design a new skin together with the user: build its gallery page and one sample chapter, and use it once the user has approved it and it joins the library (process: `skin-contract.md` section 5).
 - **A quiet ground**: long text sits directly on the ground (paper, wall, page), never on a card floating over a flat colour. Only *things* get physical presence (pictures, interaction boards, concept cards, document props), with shadows cast in one direction.
 - **Heavy borders only for the stars**: signature interactions and concept diagrams get thick strokes; everything else gets thin lines or none. No emoji as icons, no gradient text, no glow shadows.
 - **One theme colour per chapter**; chapters in the same part vary slightly in main colour, texture and header decoration, while fonts and component shapes stay the same.
@@ -102,7 +102,7 @@ Respect `prefers-reduced-motion` everywhere; the top bar's "Display" pop-up offe
 
 ## 6. Starting a new course
 
-**The first thing to ask is the art style.** When the user says "make a course", use the question tool (AskUserQuestion; otherwise just ask) to let them pick a skin. Don't default and don't improvise a style. Give each option one line on what it suits, plus the path to its approval page `skins/<name>/gallery.html`:
+**The first thing to ask is the art style.** When the user says "make a course", use the question tool (AskUserQuestion; otherwise just ask) to let them pick a skin, or choose "design a new skin with the AI". Don't default and don't improvise a style. Give each option one line on what it suits, plus the path to its approval page `skins/<name>/gallery.html`:
 
 | Skin | In one line | Suits |
 |---|---|---|
@@ -111,7 +111,7 @@ Respect `prefers-reduced-motion` everywhere; the top bar's "Display" pop-up offe
 | `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses |
 | `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, fieldwork and history |
 
-If the user wants a style that isn't listed, explain that only approved skins are used; a new skin starts with one sample chapter for the user to approve (`skin-contract.md` section 5). Three sample chapters built with real content live in `../course-kit/examples/` (shipped with the Chinese edition: `paper-survivorship`, `pixel-binary-search`, `fieldbook-gift`); show them to the user or use them as the model for a sample.
+If the user wants a style that isn't listed, or chose to design a new skin: first talk through the feel they want, references they like and who the readers are, and offer two or three directions to pick from; then build the gallery page and one sample chapter following `skin-contract.md` section 5, and start the course once the user has approved it and it has joined the library. Three sample chapters built with real content live in `../course-kit/examples/` (shipped with the Chinese edition: `paper-survivorship`, `pixel-binary-search`, `fieldbook-gift`); show them to the user or use them as the model for a sample.
 
 **The second thing to ask is the course plan.** Right after the skin, use the question tool to ask four questions at once (multiple choice, one click each):
 
