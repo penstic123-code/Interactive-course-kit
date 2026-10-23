@@ -24,6 +24,12 @@ The only source of the chapter list is `js/course.js` (names, file names, parts,
 |---|---|---|---|
 | I. [Part name] | 1–[n] | [One line] | Chapter [n] |
 
+One row per chapter: estimate the driving question and the difficulty total once at the course-plan stage (method in `content-rules.md` 1A) and split chapters that do not fit.
+
+| Chapter | Name | Driving question | Difficulty total |
+|---|---|---|---|
+| 1 | [Say the topic outright] | [One line, in the reader's words] | [About N] |
+
 - What practitioners meet every day (check for gaps): [list 5–10]
 - Advanced chapters: [numbers, marked "Advanced"]
 
@@ -64,17 +70,16 @@ Decide each one; switches go in `modules` in `js/course.js`; how-to in course-ki
 
 ## 6. This course's numbers
 
-Defaults are in `content-rules.md` (content rules), single-chapter checklist; write only what differs, and once written this table wins.
+Defaults, and what each protects, are in `content-rules.md` (content rules), single-chapter checklist; write only what differs, and once written this table wins. The numbers are defaults, not quotas.
 
 | Item | This course |
 |---|---|
 | Time per chapter | [About 30 minutes] |
-| Sections | [8–12] |
-| Core concepts / concept cards | [1–3 per chapter, one card each] |
-| Concept diagrams | [≥ 3] |
-| Examples | [≥ 3 per concept, including 1 counterexample] |
-| Signature / supporting interactions | [1–2 / 0–2; ≤ 5 big interactions in total] |
-| Practice | [4–6 questions] |
+| Difficulty warning line per chapter | [≤ 8 points (default; keeps a chapter within one sitting); adjust after reader review] |
+| Heavy concepts | [At most 2 concepts of ≥ 3 points per chapter (default)] |
+| Examples | [By default ≥ 3 per core concept, including 1 counterexample that marks the edge] |
+| Big interactions | [Default ≤ 5 per chapter] |
+| Practice | [Default 4–6 questions] |
 | Writing specific to this course | [e.g. no direct quotations, go easy on "you", give the original term the first time] |
 
 ## 7. Workflow
@@ -82,9 +87,10 @@ Defaults are in `content-rules.md` (content rules), single-chapter checklist; wr
 | Item | This course |
 |---|---|
 | Sample chapter | Chapter [n], approved by the user on: [] |
+| Chapter outlines | Which outlines the user approves: [sample chapter, first chapter of each part]; the rest are skimmed by part. Outlines live in `章纲/chNN.md` and pass logic review before the prose is written (`content-rules.md` section 8) |
 | Agents in parallel | [One chapter at a time / two or three in parallel, checked by the lead] |
 | Checks | Before each chapter is delivered: `node <skill>/tools/check.mjs <absolute course path> chNN --fast` down to 0, then the full run, and look at the screenshots |
-| Reader review | After each chapter, send a review agent with no context (`tools/readable.py`; its output marks the correct answers, so have the agent test itself closed-book first) |
+| Reader review | After each chapter, send a review agent with no context (`tools/readable.py`; its output marks the correct answers, so have the agent test itself closed-book first; it logs section by section and rebuilds the question chain from memory) |
 
 ## 8. Image credits
 

@@ -70,12 +70,12 @@
     <div class="vl-cc-fig"><span data-illus="c01-cc-1"></span></div>
   </aside>
 
-  <!-- Example carousel: 2 or more .vl-eg in a row become tabs automatically. ≥ 3 examples including 1 counterexample (.bad); each has a picture, and the counterexample shows what is missing -->
+  <!-- Example carousel: 2 or more .vl-eg in a row become tabs automatically. by default ≥ 3 examples (with only one, readers mistake the example for the concept), including 1 counterexample (.bad) that marks the edge; each has a picture, and the counterexample shows what is missing -->
   <div class="vl-eg" data-t="Example one"><span data-illus="c01-eg-1"></span><p><b>Example one:</b> [Fill in: concrete enough to picture, ≤ 2 paragraphs]</p></div>
   <div class="vl-eg" data-t="Example two"><span data-illus="c01-eg-2"></span><p><b>Example two:</b> [Fill in: a different field or an everyday scene]</p></div>
   <div class="vl-eg bad" data-t="Nearly"><span data-illus="c01-eg-bad"></span><p><b>Counterexample:</b> [Fill in: the one that is nearly right; say which piece is missing]</p></div>
 
-  <!-- "Why it works" box. The heading is the principle in one sentence (≤ 10 words, not the word "principle"); ≤ 2 paragraphs; source + "Check it: the … above" -->
+  <!-- "Why it works" box. The heading is the principle in one sentence (≤ 10 words, not the word "principle"); ≤ 2 paragraphs; the source is required, and "Check it: the … above" only when readers can really check it by hand -->
   <div class="vl-why">
     <h3>[Fill in: the principle in one sentence]</h3>
     <div class="vl-why-fig"><span data-illus="c01-why-1"></span></div>
@@ -87,7 +87,7 @@
        The hook title is a concrete question (e.g. "1898, a cat in a box: how was the law of reward found?"), and one line says what is inside -->
   <details class="vl-story">
     <summary><b>[Fill in: a hook title phrased as a concrete question]</b><small>[Fill in: one line on what is inside, ≤ 15 words]</small></summary>
-    <!-- Chain: problem → attempt → new problem; show the first two and let the reader guess the next -->
+    <!-- Chain: problem → attempt → new problem; when readers can guess, show the first two and let them guess the next -->
     <ol class="vl-chain">
       <li>[Problem]</li><li class="vl-chain-ar" aria-hidden="true">→</li>
       <li>[Early attempt, and why it failed]</li><li class="vl-chain-ar" aria-hidden="true">→</li>
@@ -100,7 +100,7 @@
     </div>
   </details>
 
-  <!-- Side path (folded by default): data-kind = history | math | play | debate | source | extra | more. 2–4 per chapter; nothing from the main line goes in here -->
+  <!-- Side path (folded by default): data-kind = history | math | play | debate | source | extra | more. as many as the content calls for; nothing from the main line goes in here -->
   <details class="vl-side" data-kind="math">
     <summary><b>[Fill in: a concrete question as the title, ≤ 12 words]</b><small>[Fill in: one line; it is fine to skip]</small></summary>
     <p>[Fill in: derivation, maths or a further look. More than 2 paragraphs in a box: add a picture or split into "picture + short text".]</p>
@@ -162,7 +162,7 @@
   </details>
 
   <!-- ===== Signature interaction: the reader takes apart, builds, drags or tunes something and sees the concept's consequences at once. Say in one sentence what question it answers before it appears;
-       ≤ 3 groups of controls, clear within 3 seconds; predict first, then see; always resettable. ≤ 5 big interactions per chapter ===== -->
+       by default ≤ 3 groups of controls, clear within 3 seconds; at key moments predict first, then see; always resettable. By default ≤ 5 big interactions per chapter, because more tires readers ===== -->
   <div class="vl-sec"><h2>[Fill in: the hands-on situation, e.g. "What if you cut one link?"]</h2></div>
 
   <!-- Before building it, write three lines: the question it answers / what the reader does / what the result they see means (references/interaction.md, section 2) -->
@@ -196,7 +196,7 @@
   <div class="vl-key"><p><b>Key points</b></p><ul><li>[Point one, ≤ 20 words]</li><li>[Point two]</li><li>[Point three]</li></ul></div>
   <p class="vl-tldr"><b>In one line</b> [Fill in: ≤ 20 words]</p>
 
-  <!-- ===== Practice: 4–6 questions with explanations; ≥ 1 asks "why", ≥ 1 asks "why was it invented". Multiple choice lives only here. All correct = the chapter is marked "understood" ===== -->
+  <!-- ===== Practice: 4–6 questions with explanations by default; at least one asks "why" (knowing a definition is not knowing the reason); each core concept has one question where the reader uses it. Multiple choice lives only here. All correct = the chapter is marked "understood" ===== -->
   <div class="vl-sec"><h2>Practice</h2></div>
   <div id="c1-quiz"></div>
 
@@ -232,7 +232,7 @@
 VL.quiz("#c1-quiz", [
   { q: "[Fill in: a question on what it is]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
   { q: "[Fill in: a question on why it works]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
-  { q: "[Fill in: a question on why it was invented]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
+  { q: "[Fill in: a question on what trouble it solves]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
   { q: "[Fill in: a question on how to use it]", opts: ["[Right option]", "[Wrong option]", "[Wrong option]"], a: 0, why: "[Explanation]" },
 ]);
 </script>

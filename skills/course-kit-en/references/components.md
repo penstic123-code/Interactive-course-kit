@@ -1,6 +1,6 @@
 # Component library
 
-Purpose: what each core component does, when to use it, how to write its content, and how it behaves and looks in each skin. Check them one by one when laying out a chapter or choosing components. The general rules (pacing, visual baseline, interaction baseline) are in `SKILL.md` and are not repeated here.
+Purpose: what each core component does, when to use it, how to write its content, and how it behaves and looks in each skin. Check them one by one when laying out a chapter or choosing components. The general rules (pacing, visual baseline, interaction baseline) are in `SKILL.md` and are not repeated here. **A component is a container for an answer**: first write, in the chapter outline's element table, which question or which reading experience it serves (content-rules section 4), and only then choose it here; don't place components by running down the list. The numbers below are defaults a course may change.
 
 - Class prefix `vl-`, JS namespace `VL`. The HTML below follows the kit's current code (`kit/vl.js`, `kit/vl-interact.js`, `kit/README.md`). Anything marked "not in the kit yet" is not coded yet; its markup is only a sketch.
 - **`kit/README.md` is the API authority.** If it disagrees with this file, the code wins.
@@ -69,15 +69,15 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ```
 
 ### N3 Sections
-- **Job**: cut a chapter into 8–12 "one thing each" sections that can fold.
+- **Job**: cut a chapter into sections that can fold, each answering one question of the question chain (the number of sections follows the chain).
 - **Use / don't**: every chapter. **Headings carry no layer labels ("what it is / invention story…")**; the five layers are only a writing self-check (layer tags such as `.tag.what/.why` do not belong in the library).
-- **Content**: h2 is a concrete scene or concrete question, ≤11 words, sentence patterns varied across the set; **not a summary sentence** (✗ "Selection bias filters data before you get it"; ✓ "The *Literary Digest* mailed ten million postcards"). Each section opens with a question or situation.
+- **Content**: how to write an h2 is set once in `en-teaching-prose` (chapter titles and headings): the reader can tell what the section covers from the heading alone, which states its core object or conclusion; by default about 10 words or fewer (a longer one has probably packed in two concepts); sentence patterns varied across the set. ✗ "The aim of tuning is the lowest loss, and loss is a score for a set of parameters" (too long, two concepts); ✓ "The *Literary Digest* poll lost to selection bias". Each section opens with a situation or the question the last one left.
 - **Interaction and keyboard**: click the heading / Enter / Space to fold; `role=button aria-expanded`; everything expands before printing.
 - **Motion**: feedback (arrow ≤200ms; no height animation when content shows or hides).
 - **Skins**: notebook = accent2 round number at -5° | paper = main-colour paper tag + red pin | pixel = level block | town = clay disc + sandy path.
 
 ```html
-<div class="vl-sec"><h2>The Literary Digest mailed ten million postcards</h2></div>
+<div class="vl-sec"><h2>The Literary Digest poll lost to selection bias</h2></div>
 <p>…the section content follows directly…</p>
 <!-- .vl-sec must be a direct child of <main>; everything up to the next .vl-sec or .vl-pager is moved into .vl-sec-body by vl.js, and the section number .vl-n is added automatically -->
 ```
@@ -102,7 +102,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ## 3. Explaining concepts
 
 ### K1 Concept card
-- **Job**: make the chapter's 1–3 core concepts "stand up", so the reader sees at a glance what the chapter is about. One of the user's most valued components.
+- **Job**: make the chapter's core concepts (how many follows the difficulty points, content-rules 1A) "stand up", so the reader sees at a glance what the chapter is about. One of the user's most valued components.
 - **Use / don't**: one card per core concept, placed **where the concept is first named** (after the reader has seen the situation and examples). Secondary concepts get no card; use K7 naming marks.
 - **Content** (fixed fields; never a second paragraph inside the card):
 
@@ -113,7 +113,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
   | Source `.vl-cc-by` | One person · one book or paper · year; **one name only**, no pile of scholars | 1 line, optional |
   | In plain words `.vl-cc-plain` | One plain sentence (the "In plain words" tag is added automatically) | 1 sentence |
   | Definition `.vl-cc-def` | One-sentence definition, bold in the skin | ≤40 words |
-  | Example `.vl-cc-eg` | Point back to an example already told in the text; no new example, and don't retell it (the "Example" tag is added automatically) | ≤20 words |
+  | Example `.vl-cc-eg` | Point back to an example already told in the text (it may be the main example running through the chapter), in one line; no new example, and don't retell it (the "Example" tag is added automatically) | ≤20 words |
   | **Picture slot `.vl-cc-fig` (required)** | A small picture of the parts or mechanism (not a decorative corner icon), ≤240px; on the right on wide screens; on narrow screens (≤700px) it follows source order, and the template puts it last, so it sits at the bottom of the card; if there is no dedicated picture, write "see Figure 3" with a thumbnail. If missing, vl.js shows a red "Concept picture missing" placeholder and calls console.warn | — |
 
   Good: every field filled in, using `<aside aria-label>`. Bad: cards with no picture slot; corner props that are decoration, not explanatory pictures.
@@ -150,7 +150,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K3 Why-it-works box
 - **Job**: explain why something holds: one principle + its source + an experiment the reader can verify themselves, plus one line of dispute if needed.
-- **Use / don't**: ≥1 per chapter, placed after a concrete phenomenon; no definitions (those go in K1).
+- **Use / don't**: when there is a "why" worth its own box and with a citable source (a core concept of difficulty ≥ 2 must be taught to this layer, though not always in a box), placed after a concrete phenomenon; no definitions (those go in K1).
 - **Content**: the title is the principle as a sentence (≤13 words, without the word "principle"); **body ≤2 paragraphs (about 130 words); beyond that add a picture or split into picture + short text**; **picture slot required** (`.vl-why-fig`: diagram, real photo, or a thumbnail of the interaction above; the code doesn't enforce it and won't error, so check step 3, picture density, is the backstop); the "Why it works" tag is added automatically; source line = who · which study · year + "Check it: the … above"; dispute in one line: "Not everyone agrees: … (so-and-so)".
   Good: the source line says "Check it: the simulator above". Bad: a long flat card with a shadow, breaking "no PPT cards".
 - **Shape**: a light block (margin rule + small tag), not a floating card.
@@ -184,7 +184,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K5 Stance cards (philosophy moment / dispute)
 - **Job**: a question genuinely worth thinking about: the reader takes a position, flips through 2–3 stances (each attributed), and ends on an open question.
-- **Use / don't**: 1–2 per chapter; not for questions with a correct answer.
+- **Use / don't**: when the chapter's concepts raise a question really worth thinking about (frequency: content-rules section 1, item 12 — aim for one per chapter, at least one per part); not for questions with a correct answer.
 - **Content**: first card = question + vote buttons; each middle card = one stance, ≤2 paragraphs, may have a picture, the stance is named by its view not its author ("rules come before the game"), the person goes in the source line; last card = open question, can lead into P3.
 - **Interaction and keyboard**: votes use `aria-pressed` and can be changed; stance cards echo "You chose: …"; ◀▶ / ←→ / swipe / dots labelled with stance names; all expanded in print.
   Bad: AI wrote the vote separately in 13 chapters; in the library it is one component (`.vl-philo` / `.vl-vote`, see `kit/README.md`).
@@ -236,7 +236,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K9 Document props
 - **Job**: turn a stretch of narrative into "an object" (case file, report, diary, newspaper, lab notebook, slip, letter, notice), so long text has physical presence without being a flat card.
-- **Use / don't**: opening hooks, cases, the original scene of an invention story; ≤2 per chapter; not for explaining principles.
+- **Use / don't**: opening hooks, cases, the original scene of an invention story; don't pile them up in one chapter (default ≤ 2; more are not remembered); not for explaining principles.
 - **Content**: `data-kind` sets the shape; body ≤2 paragraphs, otherwise split into two props or add a picture; a slip is ≤3 lines.
   Good: AI `ch03` case file, `ch10` newspaper, `ch18` letter; before joining the library these were ≥8 separate in-page implementations, now one component.
 - **Motion**: none (a slight rotation is static skin).
@@ -372,7 +372,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ## 5. Examples
 
 ### E1 Example carousel
-- **Job**: ≥3 examples of one concept (including 1 counterexample or near miss), switched sideways to save vertical space.
+- **Job**: several examples of one concept (by default ≥ 3, including 1 counterexample or near miss that marks the concept's edge), switched sideways to save vertical space.
 - **Content**: each = illustration (required; a counterexample shows what's missing) + ≤2 paragraphs; tab label ≤9 words (`data-t`); counterexamples get `.bad`, distinguished by a text tag + shape, not colour alone. With pictures on wide screens, two columns. Examples are not retold elsewhere.
 - **Interaction and keyboard**: tabs / ◀▶ / ←→ / 50px swipe; `role=tablist / tab / aria-selected`.
 - **Motion**: feedback (switch ≤300ms; a .42s paper page-turn must be cut to 300ms).
@@ -405,7 +405,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### M1 Predict → reveal
 - **Job**: the reader guesses first, then sees the answer; the gap itself teaches.
-- **Use / don't**: section-opening hooks, "what did they do back then?" in invention stories, predictions before a simulation. It doesn't replace a signature interaction.
+- **Use / don't**: only where it can expose a wrong intuition (`interaction.md` rule 3): section-opening hooks, "what did they do back then?" in invention stories, predictions before a simulation. It doesn't replace a signature interaction, and is never added just to reset the picture-density character count.
 - **Modes** (one component `.vl-guess`, switched by `data-mode`; `kit/vl.js` has think, pick, estimate; cards is `.vl-flip` in `kit/vl-interact.js` (kit/README.md section 7, "M1 补：翻牌"); draw and then-run are not in the kit yet — write them in the page if needed):
 
   | Mode | Shape | Good example |
@@ -580,7 +580,7 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 
 ### P3 Note box
 - **Job**: the reader writes down their thoughts, saved automatically.
-- **Content**: at the end of a philosophy moment or after a "your design" task, 1–2 per chapter; the placeholder gives a concrete opening; **storage key = `<course id>-note-<chapter filename>-<data-save or index>`**, assembled by vl.js; `data-save` is only a short name within this chapter, never a hand-written "chN" (bad: reusing another chapter's short name, so two chapters' notes overwrite each other); same-named Chinese and English pages share it.
+- **Content**: after an open question (a philosophy moment) or a "your design" task; the placeholder gives a concrete opening; **storage key = `<course id>-note-<chapter filename>-<data-save or index>`**, assembled by vl.js; `data-save` is only a short name within this chapter, never a hand-written "chN" (bad: reusing another chapter's short name, so two chapters' notes overwrite each other); same-named Chinese and English pages share it.
 - **Interaction**: saves on input; 0.5 seconds after typing stops, a line shows "Saved".
 
 ```html
@@ -589,7 +589,7 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 
 ### P4 Optional side path
 - **Job**: secondary content collapsed by default, showing only a hook; those who want to dig deeper open it.
-- **Use / don't**: timelines, going further, derivations, extra cases, original sources, a big game that can be skipped; 2–4 per chapter; never the main thread. Invention stories use K10.
+- **Use / don't**: timelines, going further, derivations, extra cases, original sources, a big game that can be skipped; used when such material exists, with the number set by the content; never the main thread. Invention stories use K10.
 - **Content**: summary = type tag (`data-kind`, added automatically; EN labels: history "History" / math "Maths" / play "Play more" / debate "Debate" / source "Original source" / extra "Extra practice" / more "Going further") + concrete question-style title (≤17 words) + one line of introduction (≤20 words) + expand button (added automatically); the inside is also bound by "boxes count as body text".
   Good: "1854: someone had already seen the cholera bacterium under a microscope / they saw the bacterium, so why did nobody treat it as the cause?"
 - **Interaction and keyboard**: native `details/summary`; collapsed by default, remembers open state (key `<course id>-side-<filename>-<id or index>`); all expanded in print; numbered per page as "Side path N" (not in the kit yet).
@@ -610,7 +610,7 @@ Candidates = valuable components used in only a few courses; prove them in one c
 | Candidate | What it does | Needed before going core |
 |---|---|---|
 | Quote card | One key original quotation set apart | Each course's project doc decides whether it's allowed |
-| Big number | One striking number counting up to its final value | Show the final value directly under reduced motion; ≤1 per chapter |
+| Big number | One striking number counting up to its final value | Show the final value directly under reduced motion; one per chapter is enough, more stop being startling |
 | People grid | 100 small figures showing a proportion | Figure style follows the skin |
 | Scene transition strip | A small scene between sections | First prove it helps understanding |
 | Self-check list | The reader ticks items against their own design | Extract `VL.checklist(el,key)` |

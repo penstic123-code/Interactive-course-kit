@@ -42,9 +42,9 @@ The script writes the `<link>` for the interactive components `kit/vl-interact.c
 1. Ask for the art style first (choose a skin), then readers, length, language and modules, and give the user a course plan to approve (`SKILL.md` section 6).
 2. Run `new-course.mjs`.
 3. Edit `js/course.js`: `id`, `title`, `CH` (chapter name / English name / file name / one-line description), `OPEN`, `PARTS`, `PATHS`, `MODULES`.
-4. Fill in sections 1, 4, 5 and 6 of `项目规则与经验.md`.
+4. Fill in sections 1, 2, 4, 5 and 6 of `项目规则与经验.md` (the chapter list in section 2 is the course plan the user approved).
 5. Edit the contents page `index.html`: the subtitle, "what it covers / who it is for / what you can do afterwards", and the header illustration.
-6. **Build the sample chapter first**: fill in every placeholder in `ch01-intro.html` (prose per `zh-teaching-prose`, or `en-teaching-prose` for English), draw the illustrations into `js/illus-ch01.js`, and show the user so they can approve the writing, layout and pacing before you roll out. Copy the sample chapter for new chapters, not the empty template (the empty template is only for the first use).
+6. **Build the sample chapter first**: write its outline `章纲/ch01.md` per section 4 of content-rules.md and pass it through logic review and user approval; then, following the outline, fill in every placeholder in `ch01-intro.html` (prose per `zh-teaching-prose`, or `en-teaching-prose` for English), draw the illustrations into `js/illus-ch01.js`, and show the user so they can approve the writing, layout and pacing before you roll out. Copy the sample chapter for new chapters, not the empty template (the empty template is only for the first use).
 7. Before delivering each chapter, run the checks (`SKILL.md` section 7):
 
    ```

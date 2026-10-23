@@ -1,13 +1,13 @@
 ---
 name: course-kit-en
-description: Visual and component toolkit for interactive learning web courses. It has a skin-independent component library organised by job (concept cards, "why it works" boxes, diagram templates, example carousels, "Try it" tasks, collapsible side paths, a hands-on task engine and more), approved visual skins (hand-drawn notebook, paper cut-out, handheld pixel, field notebook), rules for pictures, interactions, motion and reading rewards, and guidance on pacing a chapter. Use it first whenever you make, revise or review the layout, visuals, diagrams, interactions, motion or visual style of an interactive web course or explainer page (course chapters, interactive tutorials, long-form science pages). Also use it when starting a new course and choosing a skin, building the shared skeleton, making a sample chapter, briefing chapter-writing agents, or running the checks. For prose style use en-teaching-prose for English (zh-teaching-prose for Chinese); content rules live in references/content-rules.md.
+description: Visual and component toolkit for interactive learning web courses. It has a skin-independent component library organised by job (concept cards, "why it works" boxes, diagram templates, example carousels, "Try it" tasks, collapsible side paths, a hands-on task engine and more), approved visual skins (hand-drawn notebook, paper cut-out, handheld pixel, field notebook), rules for pictures, interactions, motion and reading rewards, and a method for planning a chapter (write the outline first: question chain and difficulty budget; then pick elements by what each passage is doing). Use it first whenever you make, revise, review, plan or outline the layout, visuals, diagrams, interactions, motion or visual style of an interactive web course or explainer page (course chapters, interactive tutorials, long-form science pages). Also use it when starting a new course and choosing a skin, building the shared skeleton, making a sample chapter, briefing chapter-writing agents, or running the checks. For prose style use en-teaching-prose for English (zh-teaching-prose for Chinese); content rules live in references/content-rules.md.
 ---
 
 # Interactive course toolkit (course-kit-en)
 
-These rules come from several finished interactive courses, approved round by round. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
+Purpose: planning, components, skins and checks for interactive learning web courses. These rules come from several finished interactive courses, approved round by round. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
 
-Who owns what: how content is taught (the five layers, acceptance numbers) lives in `references/content-rules.md` (copy it into your project if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction and motion** live here.
+**Get this straight first**: whether a chapter is easy to follow depends on whether the reader, at each point, knows what is being taught and why, and already has what is needed to understand it. Figures, interactions, boxes and cards are containers for answers, not a checklist to complete; every number in these files is a "default + why" that a course may change, and only the technical floor (accessibility and the check-script thresholds) stays fixed. So the order is always: outline → prose → pick elements by what each passage is doing. How content is taught (principles, difficulty points, acceptance, workflow) lives in `references/content-rules.md` (copy it into your project if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction, motion and checks** live here.
 
 Length limits: the Chinese original counts characters. This edition converts them at 1 English word = 1.5 characters, the same rate `tools/check.mjs` uses (e.g. 220 characters ≈ 150 words).
 
@@ -15,6 +15,7 @@ Length limits: the Chinese original counts characters. This edition converts the
 
 | Task | Read |
 |---|---|
+| Plan a chapter, write an outline, brief reviewers | Section 1 of this file + `references/content-rules.md` sections 1, 1A, 4 and 8 |
 | Decide how content is taught, acceptance criteria | `references/content-rules.md` |
 | Lay out a chapter, choose components | This file + `references/components.md` |
 | Draw concept diagrams | `references/diagrams.md` |
@@ -25,11 +26,13 @@ Length limits: the Chinese original counts characters. This edition converts the
 | Build a new course skeleton | `starter/README.md`: one command, `node starter/new-course.mjs <absolute course folder path> <skin>`; API in `kit/README.md` |
 | Check your work | Section 7 + `tools/check.mjs` |
 
-## 1. Pacing a chapter
+## 1. Planning a chapter: outline first, then pick elements
 
-**One topic, told unhurriedly.** Start from a situation the reader knows and unfold it layer by layer, each paragraph picking up the question the last one left. Keep the difficulty moderate: stop when the reader "gets it"; derivations, maths and research detail go into drawers that start collapsed.
+The rules come in three tiers: **principles** (required, flexible in how; in content-rules section 1), **optional practices** (picked by content; the table below and `components.md`) and the **technical floor** (accessibility and check-script thresholds, which do not move).
 
-**Choose the visual by what the passage is doing**, not by how important the component is:
+1. **Write the chapter outline first** (template in content-rules section 4): driving question, reader's starting point, question chain, concepts with difficulty points (method in content-rules 1A), element table. Check it against the eight principles in content-rules section 1; if the difficulty total crosses the warning line and won't fit, split the chapter. The outline passes logic review before the prose is written, and the outlines of the sample chapter and of each part's first chapter also need the user's approval (flow in content-rules section 8).
+2. **Write the prose to the outline.** One topic, told unhurriedly: start from a situation the reader knows and unfold it layer by layer, each section picking up what the last one left. Keep the difficulty moderate: stop when the reader "gets it", and put derivations, maths and research detail into drawers that start collapsed. Each new concept goes: trouble → the reader meets it first-hand → name → make it exact → edges.
+3. **Once the prose is settled, choose the visual by what each passage is doing**, not by how important a component is. If the table has nothing for a passage, add no element:
 
 | What the passage is doing | Use |
 |---|---|
@@ -42,23 +45,21 @@ Length limits: the Chinese original counts characters. This edition converts the
 
 Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a diagram; if not, use an illustration or photo.
 
-**Readers should always know which concept is being taught.** Every core concept is made visible in four places, with the same name in all four:
-1. The section heading names the concept (✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
-2. Where the concept is first named in the text, wrap it in the naming mark `<span class="vl-cn">core loop</span>` (a highlighter in the notebook skin). The highlighter is reserved for this; don't use it for general emphasis.
-3. A concept card with a picture (K1) follows right after.
-4. The end-of-chapter key points recap it once more.
-Secondary concepts get only the naming mark, no card. For the one sentence in a paragraph the reader must remember, use the emphasis mark `.vl-em`, at most two per paragraph. `tools/check.mjs` reports any concept card whose name has no matching naming mark or heading.
+4. **Readers should always know which concept is being taught** (an approved preference of the user; do it). Every core concept is made visible in four places, with the same name in all four:
+   1. The section heading names the concept (how to write headings: `en-teaching-prose`, chapter titles and headings: the section's core object or conclusion, one concept per section, about 10 words or fewer; ✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
+   2. Where the concept is first named in the text, wrap it in the naming mark `<span class="vl-cn">core loop</span>` (a highlighter in the notebook skin). The highlighter is reserved for this; don't use it for general emphasis.
+   3. A concept card with a picture (K1) follows right after.
+   4. The end-of-chapter key points recap it once more.
+   Secondary concepts get only the naming mark, no card. For the one sentence in a paragraph the reader must remember, use the emphasis mark `.vl-em`, at most two per paragraph. `tools/check.mjs` reports any concept card whose name has no matching naming mark or heading.
+5. **Pacing rules**
+   1. No walls of text: `check.mjs` step 3 reports more than about 220 characters between two visuals, or a single paragraph over about 160. First ask whether the paragraph packs in two new things; splitting it often suffices. Add a picture only if one is really missing, and let it show that passage's mechanism, not decorate. **Boxes count as body text**: a "why it works" box, concept card or story box with more than 2 paragraphs needs a picture, or must be split into "picture + short text".
+   2. Open and close each section with something warm (illustration, photo, example) and put diagrams in the middle (an aesthetic preference).
+   3. Never put two static diagrams back to back; separate them with an illustration, example or interaction. A diagram you can click or drag counts as half an interaction.
+   4. Secondary content starts collapsed: invention story boxes, full timelines, going-further material, derivations, extra cases. Show only a **concrete, question-style** hook title + one line of introduction + an expand button. The hook says what is inside (✓ "1898: a cat shut in a box, and how the law of reward was found"), not what experience the reader will have (✗ "Ready to travel back in time and start a new adventure?").
+   5. Repeated elements scroll sideways: examples, exercises, timeline cards, one at a time.
+   6. Each picture appears only once in the whole course. A main example may run through a chapter and be referred back to, but the same description is not retold in the opener, the concept card and the carousel.
 
-**Pacing rules**
-1. A visual every 1–2 paragraphs. **Boxes count as body text**: a "why it works" box, concept card or story box with more than 2 paragraphs needs a picture, or must be split into "picture + short text".
-2. Open and close each section with something warm (illustration, photo, example); diagrams go in the middle.
-3. Never put two static diagrams back to back; separate them with an illustration, example or interaction. A diagram you can click or drag counts as half an interaction.
-4. Rough mix per chapter: about a third diagrams, about half illustrations, photos and examples, the rest interactions. Adjust per course (maths-heavy courses get more diagrams, history-heavy courses more photos).
-5. Secondary content starts collapsed: invention story boxes, full timelines, going-further material, derivations, extra cases. Show only a **concrete, question-style** hook title + one line of introduction + an expand button. The hook says what is inside (✓ "1898: a cat shut in a box, and how the law of reward was found"), not what experience the reader will have (✗ "Ready to travel back in time and start a new adventure?").
-6. Repeated elements scroll sideways: examples, exercises, timeline cards, one at a time.
-7. Each picture appears only once in the whole course; the same example is not told three times in the opener, the concept card and the example card.
-
-**Layouts mix freely.** The only fixed parts are the five content layers (a writing self-check; section headings carry no layer labels) and the navigation. Everything else is picked from the component library to fit the content; chapters need not look alike.
+**Layouts mix freely.** The only fixed parts are the navigation and the chapter shell (header, learning goals, opening, key points, practice and so on; content-rules section 4). The five layers are a self-check after writing, not the order of sections; the sections in the middle and their elements are picked from the outline to fit the content, so chapters need not look alike.
 
 ## 2. Visual baseline
 
@@ -73,7 +74,7 @@ Secondary concepts get only the naming mark, no card. For the one sentence in a 
 
 ## 3. Interaction baseline
 
-- Before an interaction, one sentence says what question it answers; the "Try it" task says what to do and gives feedback when done.
+- Before an interaction, one sentence says what question it answers; the "Try it" task says what to do and gives feedback when done; interaction titles and "Try it" goals use only new words the prose has already named.
 - Few controls: the reader knows how to play within 3 seconds; at key points, predict first, then see the result; undo and restart are always possible.
 - Hard modes go into the advanced drawer. Multiple choice only appears in the exercises.
 - Works with the keyboard; touch targets are big enough.
@@ -123,15 +124,11 @@ If the user wants a style that isn't listed, explain that only approved skins ar
 
 **Then give the user a course plan to approve**; don't generate the skeleton or write chapters until they do:
 - Knowledge map: how many parts, chapters per part, what comes first;
-- Chapter table: one line per chapter on what it teaches, with its 1–3 core concepts marked, and each chapter name pointing straight at its core concept or topic;
+- Chapter table: one row per chapter: chapter name (saying the topic outright), driving question, and its core concepts with the difficulty total (content-rules 1A); a chapter whose difficulty estimate won't fit is split on the spot;
 - What readers can do afterwards (observable).
 Structure is hard to change once rolled out (renumbering remaps the whole course), so ask one question too many rather than one too few.
 
-Then:
-1. Write content per `references/content-rules.md`; record readers, length, language and modules in the project doc.
-2. Generate the skeleton with `starter/new-course.mjs <absolute course folder path> <skin name>` (kit, skin, config, contents page, chapter 1 template, project doc template); edit the chapter table and module switches in `js/course.js`.
-3. Make one sample chapter for the user to approve the writing, layout and pacing, then roll out.
-4. Run the checks (section 7) before delivering each chapter; never rely on the report alone. After delivery, send a reader review (`content-rules.md` section 8, step 5).
+The flow after that (skeleton → sample chapter → roll out by part; for each chapter: outline → logic review → user approval (sample chapter and first chapter of each part) → draft → checks → reader review → lead acceptance) and where the user takes part are in `references/content-rules.md` section 8. Generate the skeleton with `starter/new-course.mjs <absolute course folder path> <skin name>` (kit, skin, config, contents page, chapter 1 template, project doc template), then edit the chapter table and module switches in `js/course.js`; record readers, budget numbers, language and modules in the project doc.
 
 ## 7. Checks (catching errors you can't see while writing)
 
@@ -148,21 +145,25 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 | 1 Syntax | `node --check` on every .js; trial-compiles every inline script | Whole-page script not running |
 | 2 Wiring | Every `vl-` class the JS looks for actually exists in the page or scripts; a class the page uses that has no style and is not used by any script (hint only) | Renames not synced, dead buttons, styles not applying |
 | 2b Highlighting | Each concept card's name has a matching naming mark `.vl-cn` in the prose and appears in its section heading | A concept missing one of its highlights |
-| 3 Picture density | More than about 220 characters between two visuals, or a single paragraph over about 160 (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
+| 2c Experience before names (hint only) | Before a concept is first named in the prose, its name already appears in an interaction board title, a "Try it", a button or a guess-then-reveal question | Tasks using words the reader doesn't know yet |
+| 2d Load (hint only) | A paragraph with ≥ 2 terms or concept names appearing for the first time; a paragraph with more than 6 numbers | Two new things packed into one paragraph, numbers to remember piled into a sentence |
+| 3 Picture density (error) | More than about 220 characters between two visuals, or a single paragraph over about 160 (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
 | 4 Links | Local href / src exist | Wrong image or script paths |
 | 5 Run | `qa.mjs`: clicks every button and drags every slider at 420 and 1100 widths | JS errors, horizontal overflow, text in figures touching lines, overflowing or overlapping |
 | 6 Screenshots | Full-page shots of every page at 420 and 1100, saved in `%TEMP%/course-check-shots/<course folder name>/` | Prints paths; **you must open them with Read and look** |
 
+Steps 2c and 2d only print "· hint" lines and do not count as errors. Hints need judgement (a name the reader already knows is not "untaught", and a well-prepared reader can carry a little more), but the delivery report pastes every hint line and answers each with "fixed" or "kept on purpose, because…".
+
 `--fast` runs steps 1–4 only (seconds, no browser), good while writing; run the full version before delivery. Steps 5–6 need Edge or Chrome, which `tools/browser.mjs` finds on its own; if it can't, put the browser's path in the `EDGE_PATH` environment variable.
 
-**Must be checked by eye** (look at each screenshot): text in diagrams touching lines; illustrated people following the rules (feet on the ground, hands holding objects, nothing floating; `tools/illus-overlap.mjs` helps); colour contrast; whether each section's pacing follows section 1. Capture a single figure with `tools/shot.mjs <html> <png> "selector@index" 1100` and zoom in; add `?scheme=sepia` (or `dark`) after the html path for other schemes; full pages taller than 16000px are cut at 16000px with a warning, so capture the rest section by section with a selector.
+**Must be checked by eye** (look at each screenshot): text in diagrams touching lines; illustrated people following the rules (feet on the ground, hands holding objects, nothing floating; `tools/illus-overlap.mjs` helps); colour contrast; whether each section's pacing follows section 1; whether each section of the finished chapter answers the question the outline gave it. Capture a single figure with `tools/shot.mjs <html> <png> "selector@index" 1100` and zoom in; add `?scheme=sepia` (or `dark`) after the html path for other schemes; full pages taller than 16000px are cut at 16000px with a warning, so capture the rest section by section with a selector.
 
 **The delivery report must state**: which steps ran, the results (paste the ✗ lines), which screenshots were viewed, and what was not tested. "Syntax passes" is not "tested".
 
-**Flow**: write → `--fast` until 0 → full run until 0 → look at screenshots → fix → run again → deliver. When an agent delivers, the lead agent runs the full check again and looks at the screenshots itself.
+**Flow**: write → `--fast` until 0 → full run until 0 → look at screenshots → fix → run again → deliver. When an agent delivers, the lead agent runs the full check again and looks at the screenshots itself. The whole per-chapter pipeline (outline, the two kinds of review) is in `references/content-rules.md` section 8.
 
 ## 8. Learning from feedback
 
-Turn each piece of user feedback on visuals, components or interaction into a rule and improve the existing entry in the relevant file; add a new skin to `skins/` once it is approved.
+Sort each piece of user feedback first: a principle of understanding → content-rules section 1 or 1A; an aesthetic preference → the matching component or skin, saying it is a preference; a technical matter → kit / tools. Improve the existing entry rather than appending, and check for an opposite older entry before writing; how to word a rule ("when …", numbers as "default + why", three tiers) is in the last item of content-rules section 9. Add a new skin to `skins/` once it is approved.
 
 **Two editions**: the Chinese skill at `../course-kit/` is the source of truth for the shared code (kit, skins, tools, starter). Change code there, then run `node tools/sync-en.mjs` from the Chinese skill to copy it here (`examples/` is not synced). When a rule changes (SKILL.md, references/), make the matching change in both editions. The documentation files inside the code folders have their own English translations and are not synced (`kit/README.md`, `kit/modules/concepts-schema.md`, `starter/README.md`, `skins/*/README.md`; see the SKIP set in `tools/sync-en.mjs`); update them by hand when the Chinese ones change.

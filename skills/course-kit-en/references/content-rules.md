@@ -6,23 +6,25 @@ These rules are for building interactive learning web courses in **any field**, 
 Reader: an ordinary person who wants to learn a field systematically. Assume no background, but go to real depth, and keep it **interesting to read and easy to follow**.
 
 - Sections 1 to 9 are general rules that don't depend on style. Section 10 covers choosing a style and shared aesthetics; the actual look comes from each course's style.
-- A "chapter" below means the course's unit of learning, which can also be a level, a lesson or whatever unit the course defines. The numbers, structural order and file names here are **defaults and reference values**. Each course adjusts them to fit its aims and writes them into the project document.
+- A "chapter" below means the course's unit of learning, which can also be a level, a lesson or whatever unit the course defines. The rules come in three tiers: **principles** (required, with flexible ways of meeting them), **optional practices** (used when the content suits them) and the **technical floor** (accessibility and check-script thresholds, which do not move). The numbers, structural order and file names here are **defaults and reference values**, and each number says what it protects; change one if the course does not need it, and record the change in the project document.
 - Prose style follows the `en-teaching-prose` skill (classic style + narrative non-fiction); Chinese editions use `zh-teaching-prose`. This file doesn't repeat its details.
 - Visuals, components, layout, pictures, interactions, motion, skins and the one-step check are in course-kit's `SKILL.md`, and this file doesn't repeat them.
 - Tools live in course-kit's `tools/`: `check.mjs` for the one-step check, `qa.mjs` for automated click tests, `shot.mjs` for full-page or single-element screenshots, `readable.py` for the reader view, and `illus-overlap.mjs` for illustration overlap checks; the browser is found by `browser.mjs` (Edge or Chrome, or set the `EDGE_PATH` environment variable). `check.mjs` runs the three checks of section 8 in one go.
 
 ## 0. Master list of user requirements (check each one before delivering a course)
 
+The user's wording is unchanged; "How it is met" is the current practice, adjusted to difficulty and content, not a quota.
+
 | # | User requirement | How it is met | See |
 |---|---|---|---|
 | 1 | One standalone HTML per chapter, clear and easy to read, with a visual style I choose | At the start, the user picks from the approved skins; style is only a skin | 10 |
-| 2 | Explain concepts with visuals, and give long text pictures too | ≥3 concept diagrams per chapter; one visual every one or two paragraphs | 1A, 2 |
-| 3 | Interactions + practice that are fun like "taking a house apart", not multiple choice; a moderate number | Signature + supporting + micro-interactions, with "Try it" tasks | 1A, 2 |
-| 4 | Teach the most important concepts while keeping the knowledge systematic, broad and deep | 1–3 core concepts per chapter; a knowledge map of the whole course; check for gaps | 1, 1B |
-| 5 | Combine what with why, and teach the underlying principles | Five-layer structure; principles cite sources | 1 |
-| 6 | How each concept was invented, told from the learner's side | An "invention story" in each chapter, guess first then reveal, with an illustrated timeline | 1 |
+| 2 | Explain concepts with visuals, and give long text pictures too | Each hard-to-understand point gets a diagram that shows the mechanism; no walls of text, with visuals between stretches of text | 1A, 2 |
+| 3 | Interactions + practice that are fun like "taking a house apart", not multiple choice; a moderate number | For core concepts of difficulty ≥ 2, one hands-on moment at the key point, with a "Try it"; micro-interactions where they expose a wrong intuition | 1A, 2 |
+| 4 | Teach the most important concepts while keeping the knowledge systematic, broad and deep | Room is allotted by difficulty points (1A); a knowledge map of the whole course; check for gaps | 1, 1A, 1B |
+| 5 | Combine what with why, and teach the underlying principles | Core concepts get all five layers (section 1, item 9); principles cite sources | 1 |
+| 6 | How each concept was invented, told from the learner's side | Say what trouble it solved; where history is reliable, an invention story, guess first then reveal, with an illustrated timeline | 1 |
 | 7 | Knowledge that changes how you see the world, woven sensibly through the chapters | Worldview knowledge base + "principle–chapter" matrix | 1D |
-| 8 | Plenty of examples, illustrated, switched sideways to save vertical length | ≥3 examples per concept including a counterexample; example carousel + illustrations | 1A, 2 |
+| 8 | Plenty of examples, illustrated, switched sideways to save vertical length | By default ≥ 3 examples per core concept including a counterexample, and one main example may run through the chapter; example carousel + illustrations | 1, 2 |
 | 9 | Natural language, enough cause and effect, little AI voice, readable | `en-teaching-prose` skill | 1C |
 | 10 | Look up anything uncertain online | Verify online; delete what can't be verified | 1, 8 |
 | 11 | Easy to navigate: jumping, collapsing | In-chapter contents, collapsible sections, reading progress | 3 |
@@ -31,9 +33,9 @@ Reader: an ordinary person who wants to learn a field systematically. Assume no 
 | 14 | Chinese–English switching | Same-named files under `en/` + language button, full translation | 6 |
 | 15 | Enough text contrast; grey text mustn't be hard to read | Contrast ≥4.5:1 | 10 |
 | 16 | Write the requirements down as content-rules.md so other fields can reuse them | This file + the course project document | — |
-| 17 | Check when done: is the knowledge enough, can people learn from it | Three checks + reader review + lead acceptance + health check | 8 |
+| 17 | Check when done: is the knowledge enough, can people learn from it | Outline + logic review + three checks + reader review + lead acceptance + health check | 8 |
 | 18 | Teach only what readers really need, but with enough words to explain it fully | Deletion test; cut details, not explanations | 1 |
-| 19 | History and philosophy woven into every chapter, not separate chapters | An "invention story" + "philosophy moment" in each chapter | 1 |
+| 19 | History and philosophy woven into every chapter, not separate chapters | History in every chapter (an invention story, or the pain the concept solved); philosophy moments hung on a real question of the chapter, at least one per part | 1 |
 | 20 | Ordinary people can build the big picture step by step | Prerequisite checks, end-of-part review + synthesis questions; a running thread is optional | 1B |
 | 21 | Clear, good-looking illustrations: characters told apart by clothing, not floating, hands gripping things, text not covering pictures | Illustration rules + screenshot check of each one | 2 |
 | 22 | Decorative fonts (pixel, handwriting, chalk and so on) are hard to read | Calligraphy and similar decorative fonts only for large titles; handwriting fonts verified as legible may be used for subheadings, in-picture text and buttons | 10 |
@@ -41,41 +43,81 @@ Reader: an ordinary person who wants to learn a field systematically. Assume no 
 
 ## 1. Content principles (the most important part)
 
-1. **Teach each core concept in five layers.** The five layers are ingredients of each concept and appear interleaved concept by concept, not as blocks per chapter. Core concepts get all five; secondary concepts get "what it is + why it works", with the rest moved into side paths. The layers are only for the writer's self-check, so headings carry no layer labels.
+The first eight items are **principles**: they decide whether the reader can follow, they hold for every chapter, and how you meet them is flexible. Write them into the chapter outline before drafting (section 4) and check them in review (section 8). The last four cover completeness and accuracy.
+
+1. **One question per chapter; each section answers a question the previous one raised.** Why: readers hang new material on a slot that is already waiting for an answer; an answer to no question can only be memorised. The question chain is a planning and review tool. In the outline, each section gets one line: "question now → answer → question left"; the question uses only words the reader has now. The prose need not open every section with an explicit question (avoid "so the question is…" as a habit); the link comes from the previous section really leaving something and the next one picking it up, so the text reads straight through with the headings covered. A chapter can also be a guided tour around one theme (a history, a case study), and then the "question" can be broad.
+   ✓ "The four elements say what a game is made of, not why it is fun", followed by why games are fun.
+   ✗ A section ends on a question, and the next one turns to something the reader has not yet wondered about.
+2. **Experience first, name second.** Why: a name is a label for something the reader has already grasped; given earlier, it is stored as an empty word. For each new concept: trouble → the reader meets it first-hand (a scene, a hand calculation or an interaction) → name → make it exact → edges. The interaction can be that experience (play the definition tester first, then Wittgenstein). Interaction titles, "Try it" goals, buttons and exercises do not use a **new** word the prose has not yet named; names the reader already knows ("AI", "game") may come first, since the rule is about new terms.
+   ✗ A task "get the loss below 0.5" appears before the prose says "this score is called the loss".
+3. **One new thing per paragraph; numbers to remember go in a figure.** Why: working memory holds only a few items at once (about four chunks). A new term, new symbol, new operation, or a number to carry to the next sentence each counts as a "new thing". The default grain follows the reader's level: the stronger the reader's background, the more a paragraph may carry, but never two unfamiliar ideas in one paragraph that depend on each other. Numbers the reader needs later go in a table, figure or readout, and sentences only point to them; a hand calculation reveals one step at a time.
+   ✗ One paragraph that computes predictions, then errors, then squares them, then explains why squares, then averages: five new things in a row.
+4. **Make it solid before building on it.** Why: if the next concept uses one that still feels "just heard", the reader is building on sand. Let the reader use the depended-on concept once by hand (a hand step, a small interaction, a judgement) before teaching what depends on it. If that cannot be done, split the chapter.
+5. **Length follows difficulty.** A chapter's budget is estimated in difficulty points (1A), not by counting concepts. Difficulty points are a planning estimate, not a hard cap: use them to decide where to split a chapter or give a concept more room; ≤ 8 is a default warning line that can be adjusted after reader review; never pad or split mechanically to hit a number. A prerequisite is either taught in an earlier chapter (one sentence back-reference plus a visible reminder figure or table) or taught in full here as a new concept, never squeezed into a compressed paragraph.
+6. **Every element serves understanding or the reading experience.** Why: an element that helps neither takes attention, and readers must guess why it is there. Each row of the outline's element table says which question in the chain it answers, or what it gives the reading (an illustration that lets the eye rest after dense text, a recap that helps memory, a playful touch that holds interest), what the reader does or looks at, and what they understand or feel afterwards. Pure decoration that does neither is cut; the number of elements follows the content, with no quota.
+7. **Mark a concept's edge with positive and negative examples.** Why: with one example the reader mistakes the example for the concept; a counterexample or near miss shows where the concept stops (homework has a goal, rules and feedback, but lacks "voluntary", so it is not a game). Every core concept gets at least one such counterexample or near miss; by default ≥ 3 concrete examples, concrete enough to picture. One main example may run through the whole chapter and be referred back to, and each new example says something the main one cannot. Sources follow the course's level: introductory courses draw mostly on everyday life and ready-made situations in the field; academic or maths-heavy courses can use academic examples (classic worked problems, real datasets, experiments from papers, a typical exam-style problem). Which kind a course uses is its own choice, recorded in the project document.
+8. **Let the reader know whether they understood.** Why: reading is not understanding, and readers cannot always tell the difference. Every core concept gets a moment where the reader uses it and gets feedback: a "Try it" task, a prediction or an exercise, not reading alone.
+9. **Teach a core concept fully: all five layers** (a self-check after writing, not the order of sections and not a quota; headings carry no layer labels):
    - **What it is**: definition + intuitive example + diagram.
-   - **Invention story**: reconstruct it from the learner's side. What problem people faced, why earlier attempts failed, the key insight, and how it evolved into today's form, so the reader feels it **had to be invented**. Let the reader guess or try first, then reveal. Add an illustrated timeline or a "problem → solution → new problem" evolution diagram. The body keeps one or two sentences of the key insight, and the full story goes into an invention-story box collapsed by default. If there is no reliable history, explain "what pain it solved".
-   - **Why it works**: the underlying principle (psychology, maths, systems, physics and so on, depending on the field), **with its source** (who, which book or study), and an experiment the reader can verify by hand.
-   - **How to use it**: real situations + interactions and practice.
-   - **Reflection**: limits, controversies, common misconceptions. A controversy is discussed right next to the view it challenges, and the end-of-chapter misconceptions section holds only misunderstandings that cut across concepts. Say "this is X's view" once, where needed. When a study has a replication controversy, say so plainly.
-2. **Plenty of examples**: each core concept gets ≥3 concrete examples, including one counterexample or near miss, concrete enough to picture. Sources follow the course's level: introductory courses draw mostly on everyday life and ready-made situations in the field; academic or maths-heavy courses can use academic examples (classic worked problems, real datasets, experiments from papers, a typical exam-style problem). Everyday examples are for getting started, not a quota. Which kind a course uses is its own choice, recorded in the project document.
-3. **Focused and systematic**: each chapter tells its story around one theme, starting from a familiar situation and unfolding layer by layer, with each paragraph picking up the question the last one left. Teach the 1–3 most important core concepts and put the rest under "further reading". Draw the knowledge map of the whole course first (parts, dependencies, order). Intuition and examples come first, then the definition, then the principle.
-4. **Whole-course coverage**: basic concepts → underlying principles → worldview knowledge → case studies → hands-on projects. When setting the table of contents, list "what practitioners run into every day" and check it for gaps.
-5. **Factual accuracy**: verify uncertain names, years, numbers and quotations online, preferring primary sources such as original papers and official documentation. If a fact can't be found, delete it or make the claim more conservative. Never invent data. Label simplified teaching models as "illustrative". Get the maths and simulations right.
-6. **Teach only what is needed, but teach it fully.** Deletion test: if this sentence went, would the reader understand the core concept less well? If not, delete it. Keep timelines to 3–5 points. Give one or two representative names, versions, products or parameters. Take implementation details only as far as "why it matters". Keep the body at moderate difficulty and stop once the reader "gets it"; derivations, maths and research details go into drawers collapsed by default, leaving depth for readers who want it. Cut irrelevant detail, never explanation. Every new concept, example and story is explained until a reader with no background truly understands. Two or three extra sentences that fully explain one point beat one sentence each on five points.
-7. **History and philosophy woven into every chapter, never separate chapters.** History is the "invention story". Philosophy is 1–2 "philosophy moments" per chapter: a question genuinely worth thinking about, 2–3 positions with who holds each, no model answer, and an open question at the end.
+   - **Why it is needed**: what trouble it solved. When there is reliable history, tell the **invention story**: reconstruct it from the learner's side. What problem people faced, why earlier attempts failed, the key insight, and how it evolved into today's form, so the reader feels it **had to be invented**. Where the reader can make a guess and the guess can expose a wrong intuition, let them guess or try first, then reveal. Add an illustrated timeline or a "problem → solution → new problem" evolution diagram. The body keeps one or two sentences of the key insight, and the full story goes into an invention-story box collapsed by default. With no reliable history, explain in the body the pain it solved.
+   - **Why it works**: the underlying principle (psychology, maths, systems, physics and so on, depending on the field), **with its source** (who, which book or study); add a verification experiment when the reader can confirm it by hand and gains something from doing so. Core concepts of difficulty ≥ 2 must have this layer.
+   - **How to use it**: real situations + interactions and practice; the reader does it once by hand (item 8).
+   - **Edges**: limits, controversies, common misconceptions (the counterexample of item 7 counts). A controversy is discussed right next to the view it challenges, and the end-of-chapter misconceptions section holds only misunderstandings that cut across concepts. Say "this is X's view" once, where needed. When a study has a replication controversy, say so plainly.
+   A concept of 1 difficulty point is done once it has "what it is + why it is needed + one example"; secondary concepts do not get all five, and the rest goes into side paths.
+10. **Focused and systematic, covering the whole course**: each chapter tells its story around one theme, starting from a familiar situation and unfolding layer by layer. Draw the knowledge map of the whole course first (parts, dependencies, order). Intuition and examples come first, then the definition, then the principle. Whole-course coverage: basic concepts → underlying principles → worldview knowledge → case studies → hands-on projects. When setting the table of contents, list "what practitioners run into every day" and check it for gaps.
+11. **Factual accuracy**: verify uncertain names, years, numbers and quotations online, preferring primary sources such as original papers and official documentation. If a fact can't be found, delete it or make the claim more conservative. Never invent data. Label simplified teaching models as "illustrative". Get the maths and simulations right.
+12. **Teach only what is needed, but teach it fully; history and philosophy woven into every chapter, never separate chapters**:
+    - **Deletion test**: if this sentence went, would the reader understand the core concept less well? If not, delete it. Keep timelines to 3–5 points by default (only the points that move the story; more are not remembered). Give one or two representative names, versions, products or parameters. Take implementation details only as far as "why it matters". Keep the body at moderate difficulty and stop once the reader "gets it"; derivations, maths and research details go into drawers collapsed by default, leaving depth for readers who want it. Cut irrelevant detail, never explanation. Every new concept, example and story is explained until a reader with no background truly understands. Two or three extra sentences that fully explain one point beat one sentence each on five points.
+    - **History** is the invention story (item 9), making clear why it had to exist.
+    - **Philosophy moments**: aim for one per chapter, provided the chapter's concepts really raise a question worth thinking about (2–3 positions with who holds each, no model answer, an open question at the end). When no fitting question exists, skip it rather than pad; at least one per part.
 
 ## 1A. Chapter acceptance checklist
 
-The numbers in the table are reference values. Adjust them to the course's aims (game levels, for example, have more interaction and less text) and record the settled numbers in the project document.
+Three tiers. **Principles** (required) decide whether the reader can follow; every chapter is checked, and how to meet them is flexible. **Optional practices** are used when the content suits them, and held to the standard when used. **Technical floor** is checked in every chapter and does not move. The numbers in the tables are defaults, each with what it protects; change them if the course does not need them, and record the change in the project document.
 
-| Item | Standard |
+**Difficulty points** (the outline scores each concept once, relative to the course's reader): a base of 1 = names or groups something the reader already has experience of; 2 = asks the reader to change an old idea (a new distinction, a counter-intuitive conclusion); 3 = asks the reader to build a new moving model (a relation between quantities, a causal chain, an iteration). +1 for a new symbol or formula; +1 for depending on a concept just taught in the chapter that is not yet solid. A prerequisite taught in an earlier chapter scores 0, with one sentence back-reference plus a reminder figure or table; if it was not taught, it is a new concept of this chapter and scores in full. The method is deliberately rough and is a planning estimate, not a hard cap: its purpose is to let people see before drafting that "this chapter won't fit", and to decide where to split or give more room, never to pad or split mechanically to hit a number.
+
+Calibration: a chapter on "what is a game" with four everyday concepts (the four elements 1, kinds of play 1, "family resemblance" 2, "the playful attitude" 2, plus a small exercise) comes to about 7 points, within budget; a chapter that teaches gradients, slope, learning rate and local minima together comes to about 23 points and should be split into about three chapters.
+
+| Length rule | Default (what it protects) |
 |---|---|
-| Core concepts | 1–3, each with definition + intuitive example + diagram; each core concept gets at least its own section, with situation, examples, naming, picture and interaction laid out in turn, never squeezed into one paragraph with another new concept |
-| Required modules | Every part of the section 4 structure, plus 1–2 philosophy moments |
-| Hook | Within the first screen, give the cause and context (how, see `en-teaching-prose`); never open with a definition, nor with a story or metaphor that has no concept behind it |
-| Concept diagrams | ≥3, at least one relationship/flow/cycle diagram and one comparison or coordinate chart; each addresses one point that is hard to understand; each has an `aria-label` |
-| Pictures | Every one or two paragraphs have a visual beside or right after them: illustration, diagram, real photo, comic panel or small interaction. Examples and counterexamples are both illustrated. Each timeline item gets a picture large enough to read. Each picture shows the key mechanism or distinction (arrows, labels, contrasting positions) and is never pure decoration. Each picture is used only once in the whole course |
-| Examples | See section 1, item 2; multiple examples switch sideways in a carousel or tabs |
-| Invention story | ≥1 per core concept (see section 1, item 1) |
-| Why it works | ≥1 principle box: principle + source + verification experiment |
-| Worldview knowledge | Carries 1–2 cross-disciplinary principles (1D) with a clear link to the chapter's concepts |
-| Interaction | 1–2 signature interactions (direct manipulation, instant visual feedback, undo/reset; aim for one per core concept) + 0–2 supporting ones, ≤5 large interactions in total; plenty of micro-interactions (click to highlight, hover hints, guess then reveal, one-click comparison); each signature or supporting interaction has a "Try it" task with feedback on completion; multiple choice doesn't count as interaction |
+| Chapter total | ≤ 8 points, about 40 minutes, as a warning line (the reader finishes in one sitting without overload); short introductory courses can use ≤ 6; adjust after reader review |
+| Heavy concepts | At most 2 concepts of ≥ 3 points per chapter (each heavy concept needs its own section, with a hand calculation or interaction) |
+| Room per point | 1 point: 1–2 paragraphs + 1 visual, and several 1-point concepts can share a section; 2 points: its own section with one first-hand experience for the reader; 3 points: its own section with a hand calculation or interaction; ≥ 4 points: at least two sections, or a chapter of its own |
+| Over budget | Split at the course-plan stage, not by cramming while drafting; existing courses are not split retroactively, decide when rewriting |
+
+| Principle (required) | Standard | Checked by |
+|---|---|---|
+| Outline | An outline exists and passed logic review; each section of the finished chapter answers the question the outline gives it; every row of the element table says which question or which reading experience it serves, and a row that names neither is not built (item 6) | Logic review, lead |
+| Difficulty budget (item 5) | The total does not cross the warning line (table above), or there is a reason it does; scoring too low defeats the estimate, so review double-checks and reader review's sticking points calibrate it | Outline |
+| Question chain (item 1) | One driving question; each section's first sentence picks up what the previous one left | Reader review rebuilds the chain |
+| Experience before names (item 2) | Before a new concept is named, the reader has met it first-hand; interactions, tasks and exercises use no unnamed new word (words the reader already knows are exempt) | check.mjs 2c (hint), review |
+| Load (item 3) | One new thing per paragraph (a well-prepared reader can carry a little more, but never two unfamiliar, dependent ideas); numbers to remember are in figures or tables | check.mjs 2d (hint), review |
+| Solid before building (item 4) | The depended-on concept has been used by the reader once | Outline, closed-book test |
+| Taught fully (items 7, 9) | Core concepts get all five layers; each core concept has at least one counterexample or near miss that marks its edge, by default ≥ 3 examples | Outline, review |
+| Self-test (item 8) | Each core concept has a moment where the reader uses it and gets feedback (a "Try it", a prediction or an exercise) | Outline, closed-book test |
+| Opening | Within the first screen, say what is to be solved and what is in hand (how: `en-teaching-prose`); never open with a definition, nor with a story or metaphor that has no concept behind it | Review |
+| Visuals | Each point that is hard to understand has one diagram that shows the mechanism, with an `aria-label`; a visual sits beside or right after every one or two paragraphs, with no walls of text; examples and counterexamples are both illustrated; each timeline item gets a picture large enough to read; each picture shows the key mechanism or distinction (arrows, labels, contrasting positions) and is never pure decoration; each picture is used only once in the whole course | Screenshots, check.mjs 3 |
+| Highlighting | A core concept's name matches in the heading, the naming mark, the concept card and the key points | check.mjs 2b |
+| Practice | By default 4–6 questions with explanations (enough to test the goals without dragging); they test the learning goals, and ≥ 1 asks "why" | Lead |
+
+| Optional practice | When | Standard once used |
+|---|---|---|
+| Signature interaction | At the key moment of a core concept of difficulty ≥ 2 ("what if I change this", the reader running into the concept first-hand) | Direct manipulation, instant visual feedback, undo or reset, with a "Try it" task and feedback on completion; by default ≤ 5 large interactions per chapter (more tires the reader) |
+| Micro-interaction | When it can expose a wrong intuition, or let the reader run into the concept first-hand (click to highlight, hover hints, guess then reveal, one-click comparison) | Each option has its own feedback; no mental arithmetic of a single number; multiple choice doesn't count as interaction |
+| Invention-story box | There is reliable history, and it shows why the concept had to exist | Section 1, items 9 and 12; at most one per core concept |
+| Principle box | There is a "why" worth its own box and with a citable source | Principle + source; a verification experiment only when the reader can confirm it by hand and gains from it |
+| Worldview principle | Assigned to this chapter by the 1D matrix | Hung on a concrete phenomenon, clearly tied to the chapter's concepts, referred back to on its second appearance |
+| Philosophy moment | The chapter's concepts raise a question worth thinking about; at least one per part | Section 1, item 12 |
+| Timeline, side path, notes box | There is optional deeper material or an open question | See components.md |
+
+| Technical floor | Standard |
+|---|---|
+| Length | Reading time set by the course's aims and recorded in the project document; the number of sections follows the question chain, one question per section; paragraphs by default ≤ 4 lines, and the check script reports about 160 characters per paragraph and about 220 characters between two visuals as errors (check.mjs 3, not loosened) |
 | Terms | Explain each new term in one sentence where it appears; if hover definitions, a glossary or flashcards are used (see optional features table), add it there |
-| Practice | 4–6 questions with explanations; ≥1 asks "why", ≥1 asks "why was it invented"; they test the learning goals |
-| Length | Reading time set by the course's aims and recorded in the project document (about 25–40 minutes for an introductory course); 8–12 sections (more for an in-depth edition), one thing per section; paragraphs ≤4 lines (the check script uses about 160 characters of Chinese) |
 | Across chapters | No previews of later chapters; if a concept relationship map is used, register the chapter's concepts in `js/concepts.js` |
 | Accessibility | Colour is never the only carrier of information; contrast per section 10; interactions work by keyboard; respect "reduce motion"; sound is muted by default and can be turned off |
-| Technical | Passes the three checks in section 8; rerun after changes |
+| Checks | Passes the script checks in section 8; rerun after changes |
 
 ## 1B. Whole-course acceptance checklist
 
@@ -84,14 +126,14 @@ The numbers in the table are reference values, set by field and course aims.
 | Dimension | Standard |
 |---|---|
 | Positioning | State the reader, prerequisites (ideally none), what they can do after finishing (observable), and total time |
-| Structure | Roughly 4–7 parts and 20–35 chapters; from easy to hard, with clear links between parts |
+| Structure | Set by the length the user chose (short intro 5–8 chapters, standard 15–25, full 25+), with longer courses in 4–7 parts; from easy to hard, with clear links between parts |
 | Big picture | ① The last chapter of each part has a "part review" (knowledge map of the part + "what you can now make sense of") and cross-chapter synthesis questions; ② a running thread is optional: a recurring case, a project built step by step, or a background story (see 1C for how to write one); or each chapter can simply explore its own theme; ③ chapter 1 explains what the field is and what parts it is made of |
 | Coverage | No core topic missing; worldview principles woven in per the matrix (1D); ≥3 case studies; ≥2 hands-on projects |
-| Difficulty curve | Advanced chapters not placed too early and marked "advanced"; check chapter by chapter that every concept used has already been taught; later chapters may refer back, earlier chapters don't preview later ones |
+| Difficulty curve | Advanced chapters not placed too early and marked "advanced"; check chapter by chapter that every concept used has already been taught; later chapters may refer back, earlier chapters don't preview later ones; each chapter's difficulty total is estimated once at the course-plan stage, and chapters over the warning line are split then (1A) |
 | Consistency and coherence | One name per concept (Chinese–English glossary); consistent labels (source, controversy, illustrative); nothing taught twice, with brief back-references where topics overlap; if a relationship map exists, it covers every core concept |
 | Balance | Parts have roughly equal numbers of chapters; each part has at least one signature-interaction chapter; varied interaction types (simulation, building, mini-games, drag and drop, generators) |
 | Extras | Progress saving is required; everything else is chosen from the optional features table in section 3, with choices recorded in the project document |
-| Facts and ethics | All facts in the course verified (section 1, item 5); illustrations drawn in-house or licensed and credited, with no imitation of copyrighted characters; responsible tone on sensitive topics |
+| Facts and ethics | All facts in the course verified (section 1, item 11); illustrations drawn in-house or licensed and credited, with no imitation of copyrighted characters; responsible tone on sensitive topics |
 | Bilingual | Chinese and English chapters, numbering and interaction logic match; English fully translated |
 | Acceptance | `qa.mjs` passes with no errors across the course; sampled desktop and mobile screenshots show no misalignment; links work; data for any optional features built (glossary, flashcards, relationship map and so on) regenerated |
 
@@ -102,9 +144,8 @@ Body prose style (sentences, paragraphs, banned words, headings, dialogue, empha
 The writing requirements below sit outside the skill and come from the course structure:
 
 - **No meta-language**: the body never says "this chapter", "this course", "the next section covers" or "chapter N explains this in detail". Natural back-references are fine ("remember the hide-and-seek example?"), and links between chapters are left to "related chapters".
-- **Open with cause and context, then bring in the concept**: the required cause-and-context opening and the four optional ways in (everyday scene, same-structure analogy, lay out the task, a question) are in `en-teaching-prose`. One course-specific rule on top: a reference to an earlier chapter takes one sentence, and the data, definitions and worked numbers a chapter uses are shown in that chapter, so it can be read without the last one.
-- **One causal chain**: the question a section ends on is answered by the next, and headings state a section's conclusion or core concept, never a metaphor. Before drafting, write the chain (one line per section: what it answers, what it picks up); if it reads like an outline, rewrite.
-- **Concepts take the stage, the story stays behind** (courses with a background story or characters): the story appears only in the short opening briefing, the header picture and an occasional line from the companion. The prose is about the concept itself, with examples from real situations in the field, and interactive tasks use the concept's own terms ("get the loss below 0.5 within 6 steps"). Never replace a concept's name with a story stand-in, such as calling loss "enemy HP"; readers could not recognise it in the real world afterwards.
+- **Open with cause and context, then bring in the concept**: a chapter must open with cause and context, in one of four ways (everyday scene, same-structure analogy, lay out the task, a question; see `en-teaching-prose`); a reference to an earlier chapter takes one sentence, and the data, definitions and worked numbers a chapter uses are shown in that chapter, so it can be read without the last one.
+- **Concepts take the stage, the story stays behind** (courses with a background story or characters): the story appears only in the short opening briefing, the header picture and an occasional line from the companion, and a background story or level briefing never replaces the opening screen's cause and context (it goes in the header area or a collapsed box after the opening). The prose is about the concept itself, with examples from real situations in the field, and interactive tasks use the concept's own terms ("get the loss below 0.5 within 6 steps"). Never replace a concept's name with a story stand-in, such as calling loss "enemy HP"; readers could not recognise it in the real world afterwards.
 - **Concepts lead, maths supports** (courses with maths; the user's words: "no big blocks of isolated maths", "I don't want it to feel like a stiff textbook"):
   - Every formula belongs to a concept and appears right next to that concept's diagram or interaction. The reader understands the concept first, and the formula then arrives as shorthand.
   - No symbol tables, pure-maths sections or "supply depots" crammed with several concepts. Explain each symbol in passing, inside the sentence where it first appears.
@@ -116,9 +157,9 @@ The writing requirements below sit outside the skill and come from the course st
   3. Point out the pattern and swap words for symbols one at a time, ≤2 new symbols each time, saying on the spot how each is read and which number it stands for;
   4. Turn key formulas into a "formula breakdown" interaction: formula fragments and plain-language explanations linked by matching colours;
   5. Work it again with the formula and a live diagram (move a slider, the diagram changes at once).
-  Before any mathematical concept or symbol appears, prepare the ground with at least one of a real-world situation, a visualisation or a numerical example, and give more the harder and more abstract it is. Settle the reader's mathematical starting point first, and treat anything beyond it as new knowledge to prepare on the spot. The goal is **mathematical intuition**: what it resembles, why it has this shape, and what happens when one number changes. Better one formula fewer than one formula the reader can't follow. This pacing is not limited to maths: a paragraph introduces at most one new concept or symbol, and any term used in an interaction, task or exercise must already have been explained in the prose.
-- **Make readers think, not feel they are reading a textbook**: each section starts from a question or situation, lets the reader guess and try first at the key points and discover the pattern in an interaction, and only then makes it explicit and names it. Each section leaves one question genuinely worth thinking about.
-- **Self-check**: read it through with the headings covered. Does it flow, and is it clear why each sentence is there? If it reads like an outline, rewrite it.
+  Before any mathematical concept or symbol appears, prepare the ground with at least one of a real-world situation, a visualisation or a numerical example, and give more the harder and more abstract it is. Settle the reader's mathematical starting point first, and treat anything beyond it as new knowledge to prepare on the spot. The goal is **mathematical intuition**: what it resembles, why it has this shape, and what happens when one number changes. Better one formula fewer than one formula the reader can't follow.
+- **Make readers think, not feel they are reading a textbook**: each section starts from a question or situation, lets the reader guess and try first at the key points and discover the pattern in an interaction, and only then makes it explicit and names it. A section ends by leaving the question the reader themselves now wants to ask, not a summary.
+- **Self-check**: read it through with the headings covered. Does it flow, and is it clear why each sentence is there? If it reads like an outline, rewrite it (the question chain is in section 1, item 1; how to write headings is in `en-teaching-prose`, under chapter titles and headings).
 
 ## 1D. Worldview knowledge base and weaving rules
 
@@ -147,7 +188,7 @@ This kind of knowledge lets readers "see the world differently", and the user es
 ## 3. Structure and navigation
 
 - **In-chapter navigation** (generated by shared scripts): collapsible sections, chapter contents (highlighting the current section, expand/collapse all, back to top), reading progress, everything expanded when printing.
-- **Learning-aid components**: each module in section 4 has its own component, plus progress ticks (headings carry no layer labels; see section 1, item 1).
+- **Learning-aid components**: concept cards, principle boxes, invention-story boxes, stance cards and the like each have a component (`components.md`), plus progress ticks (headings carry no layer labels; see section 1, item 9).
 - **Small variations between chapters**: chapters in the same part vary slightly in main colour, background texture and title decoration, while the style's skeleton (fonts, component shapes, stroke style) stays the same.
 
 **Optional features table**: when starting a new course, consider each one, decide, and record the decision in the project document. Courses that readers look things up in and practise with repeatedly benefit most.
@@ -165,23 +206,26 @@ This kind of knowledge lets readers "see the world differently", and the user es
 | Notes / "Your thoughts" | Readers write down their own ideas | Open questions, philosophy moments | Auto-saving text box |
 | Sound | Feedback or atmosphere | Gamified courses, young readers | Muted by default, can be turned off |
 
-## 4. Chapter structure (default order)
+## 4. Chapter structure: outline first, fixed shell
 
-Below is the default order for teaching a single core concept. In a chapter with several concepts, each takes its turn through it; adjust or merge as the course needs. Other formats such as game levels write their own structure in the project document, but the five layers of content (what it is, invention story, why it works, how to use it, reflection) must all be there.
+Before drafting, write a one-page outline for each chapter and keep it in the course folder as `章纲/chNN.md`. An outline is far cheaper than a chapter, so problems of order, prerequisites and jumps are cheapest to fix here. The outline is a planning and review tool, not a form to fill mechanically; other formats such as game levels write their own structure in the project document, but the principles of section 1 and the five layers must all be there.
 
-1. Header: chapter-number badge + title (names the chapter's core concept or topic outright, so the title tells the reader what it covers; wording in `en-teaching-prose`) + one-line subtitle + small illustration
-2. Learning goals (3 items of "after reading you can…" + reading time)
-3. [What it is] diagram + example carousel (with illustrations)
-4. [Invention story] problem → early attempts → key insight → evolution; guess then reveal + illustrated timeline (the invention-story box is collapsed by default, showing its title and a one-line introduction)
-5. [Why it works] principle box (with source) + verification experiment + worldview principle
-6. [How to use it] signature interaction
-7. Common misconceptions → reflection and controversy
-8. Key points + one-sentence summary
-9. Practice; the last chapter of each part adds "part review + synthesis questions" after it
-10. "Your thoughts" text box (optional, auto-saving)
-11. Previous/next chapter; related chapters when a relationship map exists (generated by shared script)
+**Outline template**
 
-Put the "philosophy moment" wherever it fits best among items 4–6.
+1. Driving question: one line in the reader's words; a guided tour around one theme can be broad.
+2. Reader's starting point: concepts this chapter can use directly (taught in earlier chapters), and the reader's maths and background.
+3. How it opens: everyday scene / same-structure analogy / lay out the task / a question (see `en-teaching-prose`), one line on the concrete content.
+4. Question chain:
+
+| Section | Question now (only words already known) | Answer of this section (one line) | New things (by default ≤ 1 per paragraph) | How the reader meets it first-hand | Question left |
+|---|---|---|---|---|---|
+
+5. Concepts and difficulty: one row per concept: name, base points, +symbol, +dependency, total, depends on, section where it is made solid, the counterexample that marks its edge, the moment the reader uses it.
+6. Element table: one row each: element (component number), which question or which reading experience it serves, what the reader does or looks at, what they understand or feel afterwards.
+7. Key examples: one main example, plus one line each for the counterexample and the rest.
+8. Collapsed material: one line each for the invention story, derivations and side paths.
+
+**The chapter shell** (fixed order; the sections in the middle follow the question chain): header (chapter-number badge + a title that says the topic outright, wording in `en-teaching-prose` + one-line subtitle + small illustration) → learning goals (3 items of "after reading you can…" + reading time) → opening → sections following the question chain → common misconceptions (cross-concept only) → key points + one-sentence summary → practice (the last chapter of each part adds "part review + synthesis questions") → "Your thoughts" text box (optional, auto-saving) → previous/next chapter, with related chapters when a relationship map exists (generated by shared script). Philosophy moments, invention-story boxes and principle boxes are optional pieces placed in the middle sections wherever the content wants them, with no fixed position.
 
 ## 5. Files and numbering
 
@@ -193,6 +237,7 @@ Below is the default structure, adjusted per course (a game course might use `le
   map.html            Concept relationship map (optional)
   glossary.html       Glossary (optional)  flashcards.html  Flashcards (optional)
   chNN-xxx.html       One file per chapter, two-digit number, English kebab-case name
+  章纲/chNN.md         Each chapter's outline (section 4), through logic review before the prose is written
   skin/               The chosen skin (copied from skins/<name>/ by new-course.mjs)
   css/style.css       This course's own small style tweaks (beyond the skin)
   kit/                course-kit shared scripts and styles (top bar, progress, quizzes, in-chapter navigation, carousel, language switch)
@@ -222,18 +267,49 @@ Below is the default structure, adjusted per course (a game course might use `le
 
 ## 8. Workflow and quality gates
 
-1. Ask for the visual style first (section 10), then readers, length, language and modules, then give the user a course plan (knowledge map, chapter table, what readers can do afterwards) to approve; how to ask: course-kit `SKILL.md` section 6. Present a plan first for big changes such as renumbering or adding chapters.
-2. Settle the structure first (sections 4 and 5 by default, or the course's own) and the optional features → build the shared skeleton (generated with `starter/new-course.mjs`: styles, kit, contents page, chapter table, illustration library, chosen optional features) → make one sample chapter for the user to approve writing and layout → then roll out.
-3. Briefs for subagents are complete and self-contained: chapter table, structure template, required reading, prose style (include the `en-teaching-prose` path, or `zh-teaching-prose` for Chinese), assigned worldview principles, fact-checking requirements, interaction list, checking requirements and report format. Subagents change only their own files and never touch shared files; the same batch of files is never given to two agents at once; temporary files go in each agent's own subfolder of the scratchpad. When a subagent is interrupted (for example by running out of quota), continue it by message instead of starting over. How many run in parallel is set by each course's project document.
+**Pipeline for each chapter** (items 3–6 give the details of each step):
+
+| Step | What happens | Who | To pass |
+|---|---|---|---|
+| ① Outline | Write `章纲/chNN.md` from the section 4 template | Writing agent | Difficulty total within the warning line (or with a reason); every row of the element table can say what it serves |
+| ② Logic review | Reads only the outline and the project document's reader profile; checks order, prerequisites, jumps and load | Agent with no context (brief in item 5) | None of: "a question uses a new word not yet taught", "the answer doesn't lead to the next question", "a dependency was not made solid first" |
+| ③ User approves the outline | Sample chapter and the first chapter of each part one by one; the rest are merged into one document per part for a skim | User | User agrees; the user's changes are made in the outline |
+| ④ Draft | Write to the outline; change the outline first if it must change | Writing agent | For a heavy chapter (total near the warning line or with a concept of ≥ 4 points), run a quick reader review after the first two sections (part A only) before writing on |
+| ⑤ Script checks | `check.mjs --fast` down to 0 → full run down to 0 → look at screenshots | Writing agent | No ✗; each hint line is answered with "fixed" or "kept on purpose, because…" |
+| ⑥ Reader review | Reads the finished chapter, logs section by section, rebuilds the question chain, tests itself closed-book | Agent with no context (brief in item 5) | The lead compares with the outline and sends the list of changes back to the writing agent |
+| ⑦ Lead acceptance | Runs the full check, looks at screenshots, scans all headings, reads section by section against the outline | Lead | Subagent reports can be wrong too |
+| ⑧ User sees the result | Sample chapter one by one; afterwards one chapter per part | User | — |
+
+1. Ask for the visual style first (section 10), then readers, length, language and modules, then give the user a course plan (knowledge map, chapter table with each chapter's driving question and difficulty total, what readers can do afterwards) to approve; how to ask: course-kit `SKILL.md` section 6. Present a plan first for big changes such as renumbering or adding chapters.
+2. Settle the structure first (sections 4 and 5 by default, or the course's own) and the optional features → build the shared skeleton (generated with `starter/new-course.mjs`: styles, kit, contents page, chapter table, illustration library, chosen optional features) → make one sample chapter for the user to approve the outline, writing and layout → then roll out.
+3. Briefs for subagents are complete and self-contained: chapter table, the chapter outline, required reading, prose style (include the `en-teaching-prose` path, or `zh-teaching-prose` for Chinese), assigned worldview principles, fact-checking requirements, interaction list, checking requirements and report format. Subagents change only their own files and never touch shared files; the same batch of files is never given to two agents at once; temporary files go in each agent's own subfolder of the scratchpad. When a subagent is interrupted (for example by running out of quota), continue it by message instead of starting over. How many run in parallel is set by each course's project document.
 4. **Three checks per chapter** (one command, `node <skill>/tools/check.mjs <absolute course folder path> chNN`, runs them all; steps and flow in course-kit `SKILL.md` section 7):
    - **Syntax**: extract the inline `<script>` blocks and run each through `new Function(code)`.
    - **Runtime**: `node tools/qa.mjs <absolute course folder path> [chNN]` clicks every button and drags every slider at 420px and 1100px, checking for JS errors and horizontal overflow. Always pass an absolute path (a relative path is rejected); Chinese pages and English pages under `en/` are both tested.
    - **Visual**: `node tools/shot.mjs <absolute html path> <output.png> page <width>` captures the full page (one at 420 and one at 1100); then capture single illustrations or charts and inspect them enlarged: does the picture show, does text overlap, is contrast enough. Don't use `msedge --screenshot` directly (layout is wrong below about 500px).
-5. **Reader review**: after each chapter is delivered, send a review agent with no context to play the course's reader. It reads the reader view with `tools/readable.py`, tests itself closed-book first, then reports sticking points, jumps, AI voice and pacing. For each interaction it also asks: what did you understand after playing, and what was baffling? An interaction the reader cannot sum up in one sentence is cut or changed. Scripted replays cover every task's finish condition and numbers (counter-example: one interaction that crams fog, a trail, a health bar, a curve and two tasks into one board). The lead verifies the findings and sends the list of changes back to the writing agent. readable.py's output marks the right answers (correct options carry ✓, estimates state the answer, ordering tasks list the correct order), so the brief must say: read the prose only, do the exercises and note your own answers, then compare with the ✓ marks.
-6. **Lead acceptance**: after a subagent delivers, the lead takes screenshots and looks for themselves, scans all headings separately, and rechecks the subagent's "unverified/uncertain" list. Subagent reports can be wrong too.
-7. When everything is done, run a health check (by hand) against 1A and 1B item by item, focusing on whether invention stories make clear "why it had to exist", whether interactions are useful rather than piled up, whether the language is natural, and whether there are any forward previews.
+   - The report pastes every hint line (2c experience before names, 2d load, wiring hints) and answers each with "fixed" or "kept on purpose, because…"; the lead spot-checks.
+5. **Two kinds of review**, both by agents with no context; the brief states identity, input and a fixed report format:
+   - **Logic review (reads the outline)**: the identity is a teaching-design editor who does not touch the prose and checks only the logic. Input: `章纲/chNN.md`, the project document's reader profile (reader, maths starting point), and the concept list of earlier chapters. For each finding give "place | problem | suggestion": ① does each section's "question now" use only words from the reader's starting point or words already named in this chapter; ② does each answer naturally raise the next section's question, or is there a hard cut; ③ is any paragraph's load of new things too high; ④ was a depended-on concept made solid first; ⑤ were difficulty points scored too low (compare with the 1A calibration) and does the total cross the warning line; ⑥ does the element table have a row that serves neither understanding nor the reading experience; ⑦ does each core concept have an edge-marking counterexample and a moment where the reader uses it; ⑧ does the opening let the reader say what is being done and why. The last line answers: should this chapter be split, and how.
+   - **Reader review (reads the finished chapter)**: the identity is the course's target reader exactly as the project document describes it, with the maths and background starting point stated; it sees neither the outline nor any earlier discussion. Input: the output of `PYTHONIOENCODING=utf-8 python <skill>/tools/readable.py <absolute html path>`, which marks the right answers (correct options in quizzes and guess-then-reveal carry ✓, estimates state the answer, ordering tasks list the correct order), so the brief must say: read the prose only, do the exercises and note your own answers, then compare with the ✓ marks. The report has five parts. **A, section log** (one line after each section, never revised: "section N | what I understood (one line, own words) | what I now want to ask | which word, number or sentence lost me (first 15 characters)"); **B, rebuilt from memory** (with the text closed: what question the chapter answers; how each section follows the last; each core concept in own words plus an example not in the text); **C, closed-book exercises** (for each wrong answer, "why I chose that"); **D, elements** (for each interaction and figure: "what it made me understand" or "what it gave me as a reader", and "useless" if neither; any word in an interaction task I did not yet know; scripted replays cover every task's finish condition and numbers; counter-example: one interaction that crams fog, a trail, a health bar, a curve and two tasks into one board); **E, pacing and voice** (where is there a wall of text, where must I remember too much at once; AI voice per `en-teaching-prose/references/review.md`, only the five clearest). No pleasantries, no overall verdict.
+   - How the lead uses it: compare part B's question chain with the outline row by row, and the section where they differ is the break; where part A's "what I want to ask" differs from the next section's question, the link is broken; wrong answers in part C go back to the outline to see whether the concept was made solid; elements marked "useless" in part D are cut first; for concepts where sticking points cluster, raise the difficulty score by one.
+6. **Lead acceptance**: after a subagent delivers, the lead takes screenshots and looks for themselves, scans all headings separately, reads the finished chapter against the outline to see whether it teaches what the outline said, and rechecks the subagent's "unverified/uncertain" list. Subagent reports can be wrong too.
+7. When everything is done, run a health check (by hand) against 1A and 1B item by item, focusing on whether the question chain holds together, whether invention stories make clear "why it had to exist", whether interactions are useful rather than piled up, whether the language is natural, and whether there are any forward previews.
 8. Then build the chosen optional features (glossary, flashcards, learning paths and so on), and do the English edition last.
 9. On delivery, say honestly what was verified, what wasn't, and which facts are uncertain.
+
+**Who checks what**:
+
+| Problem | Who | How |
+|---|---|---|
+| Scripts run, wiring, links, overflow, button errors | Script | check.mjs 1, 2, 4, 5 |
+| Concept highlighting | Script (error) | check.mjs 2b |
+| Experience before names, load | Script hint + review | check.mjs 2c, 2d |
+| Walls of text | Script (error) + eye | check.mjs 3; screenshots |
+| Illustrations follow the rules, text touching lines, contrast | Lead's eye | shot.mjs on single elements, enlarged |
+| Order, prerequisites, jumps, difficulty over the line | Logic review | Reads the outline |
+| Did the reader really understand, where it broke, which element is useless, AI voice | Reader review | Section log, rebuilt chain, closed-book test |
+| Does the finished chapter teach what the outline said | Lead | Compare with the outline and the reader's rebuilt chain |
+| Direction, taste, "should this chapter be taught this way" | User | Course plan, outlines of the sample and each part's first chapter, the sample chapter, one chapter per part |
 
 ## 9. Communication preferences
 
@@ -241,7 +317,7 @@ Below is the default structure, adjusted per course (a game course might use `le
 - Report honestly without exaggerating; "syntax passes" is not "tested".
 - Look at the target before irreversible actions such as renaming, deleting or overwriting; don't keep asking for approval on a plan the user has already confirmed.
 - After feedback, fix one sample chapter and show the user before rolling it out. When the user says "I don't get it", ask where they got stuck before rewriting.
-- **Edit documents in place**: find the closest existing entry and rewrite it, or delete the conflicting old entry; never append "supplement/new" sections, and keep section numbers and titles unchanged; on conflict, the user's latest words win; use the same word for the same thing throughout a document, prefer tables and short lists, and start each document with one line stating its purpose. This applies only to documents; course pages, by contrast, should vary their structure and elements from chapter to chapter.
+- **Edit documents in place**: find the closest existing entry and rewrite it, or delete the conflicting old entry; never append "supplement/new" sections, and keep section numbers and titles unchanged; write a rule as "when …" rather than "≥ N per chapter", write any number that must stay as "default + why", and keep the three tiers (principle, optional practice, technical floor) distinct; on conflict, the user's latest words win; use the same word for the same thing throughout a document, prefer tables and short lists, and start each document with one line stating its purpose. This applies only to documents; course pages, by contrast, should vary their structure and elements from chapter to chapter.
 
 ## 10. Visual style and shared aesthetics
 
