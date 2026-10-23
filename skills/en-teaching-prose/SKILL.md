@@ -9,6 +9,16 @@ This is the English counterpart of `zh-teaching-prose`, adapted to how English w
 
 Read `references/examples.md` before writing. Use `references/review.md` when revising or reviewing.
 
+## Three tiers of rules
+
+| Tier | Nature | Where |
+|---|---|---|
+| Principles | Must hold, but the method is flexible: the purpose stays, the technique can change | Two styles, mixed; The four classic-style moves; Sentences; Narrative and structure |
+| Preferences | The user's taste; a project may override them in its own guide | Preferences |
+| AI-voice signals | Symptoms to check line by line when reviewing, not hard bans: judge a single one in context, fix a run of them | AI-voice signals |
+
+When they conflict, principles beat preferences, and preferences beat mechanical removal of a signal. If dodging a signal bends the meaning or stiffens the sentence, keep the signal.
+
 ## Two styles, mixed
 
 - **Classic style**: the writer points at something in the world, and the writer and reader both look at it. Attention stays on the thing, not on the writer or the reader. So skip "let's look at", "you'll notice", "in this section I want to show". Say what is there and why it is that way.
@@ -16,9 +26,9 @@ Read `references/examples.md` before writing. Use `references/review.md` when re
 
 Three adjustments get you most of the way to "plain but refined":
 
-1. **Follow the timeline.** Tell events in the order they happened, causes before effects: 1801 before 1805.
+1. **When telling history or how something was invented, follow the timeline.** Tell events in the order they happened, causes before effects: 1801 before 1805. When explaining a concept, a structure or a use, follow the reader's questions instead.
 2. **Weave concepts into sentences.** A concept's name arrives inside the narration. It doesn't get a separate glossary-style sentence.
-3. **No staged contrasts.** No strings of balanced sentences that build something up and knock it down (see Banned).
+3. **No staged contrasts.** No strings of balanced sentences that build something up and knock it down (see AI-voice signals).
 
 ## The four classic-style moves
 
@@ -28,11 +38,11 @@ Three adjustments get you most of the way to "plain but refined":
    When a naming sentence really is needed, keep it short and plain: ✓ "The thought experiment became known as the Chinese Room." Vary how paragraphs move, too: not every one should run "example, then definition", which is where the labelling feel comes from.
 2. **Show a concrete scene, not an abstract summary.** ✗ "Deep Blue also showed something else." ✓ "The sceptics had a point. Deep Blue could beat the world champion across sixty-four squares, but away from the board it could not recognise a shirt." The second version picks up the previous paragraph's scepticism and brings the eye back to the board.
 3. **Make transitions between paragraphs.** A transition works like a light tap on the shoulder that turns the reader's head (✓ "Now consider a five-year-old."). Each paragraph should pick up something the last one left behind, whether a question, a tension or an unfinished example.
-4. **End a paragraph on the question the reader now wants to ask, and answer it straight away in the next one** (✓ "So where were all these rules supposed to come from?"). Never end on an exam-style summary (✗ "Where the rules come from is the great fork in seventy years of AI."). The question must be answered at once, or it becomes a cliffhanger.
+4. **When it fits, end a paragraph on the question the reader now wants to ask, and answer it straight away in the next one** (✓ "So where were all these rules supposed to come from?"). This is one of several transition techniques, to be rotated with the tap on the shoulder in move 3 and with picking up the last paragraph's example, and it is not meant for every paragraph. Whichever you use, never end on an exam-style summary (✗ "Where the rules come from is the great fork in seventy years of AI."). A question you raise must be answered at once, or it becomes a cliffhanger.
 
 ## Sentences
 
-- **Plain and clear about reference.** One sentence, one job. Aim for about 25 words or fewer, and vary the length. When "it", "this" or "that" crosses a sentence boundary and the referent isn't obvious, repeat the noun. Put the phenomenon or conclusion first and the reason second. Introduce at most one new concept per sentence, and explain a term in one sentence when it first appears.
+- **Plain and clear about reference.** One sentence, one main idea. A long sentence is fine if it can be read in one breath; aim for about 25 words or fewer by default, and vary the length. When "it", "this" or "that" crosses a sentence boundary and the referent isn't obvious, repeat the noun. Put the phenomenon or conclusion first and the reason second. Introduce at most one new concept per sentence, and explain a term in one sentence when it first appears.
 - **Flowing, sentences joined up.** No strings of one-fact sentences: let the result of one sentence become the starting point of the next. Connectives must state the real relationship: "so" only for cause, "but" for contrast, "while" or "whereas" for comparison, "and" when nothing stronger is true. Read it aloud. No sentence should make the reader stop and reread.
 - **Agents as subjects.** If someone did something, make them the subject (✗ "The experiment was designed by Searle" ✓ "Searle designed the experiment"). Use the passive only when the agent is unknown or irrelevant, or when it keeps the topic in subject position (✓ "The pellets had to be made by hand").
 - **Verbs, not nominalisations.** ✗ "perform an update of the parameters", "make an assessment of", "the utilisation of" ✓ "nudge the dial", "judge", "use".
@@ -43,13 +53,15 @@ Three adjustments get you most of the way to "plain but refined":
 - Paragraphs run 4 lines or fewer on screen by default, and each one gives the reader a new fact or a new "why". Known information comes first and new information last. How many new things a paragraph may carry in a course, and which words an interaction or exercise may use, follow `content-rules.md` section 1 in course-kit (experience before names; one new thing per paragraph).
 - No meta-language ("in this chapter", "the next section will cover", "as mentioned above") and no previews of what comes later.
 
-## Banned (each with a fix)
+## AI-voice signals (each with a fix)
+
+Treat these as signals to check line by line when reviewing. Judge a single occurrence in context; when they come in a run (several in one paragraph, or the same pattern paragraph after paragraph) they must be fixed.
 
 | Tell | ✗ | ✓ |
 |---|---|---|
-| Em-dash overuse (more than one per paragraph, or any used for a dramatic pause) | "The answer — surprisingly — was no." | "The answer was no, which surprised him." |
+| Em-dash overuse (dashes used for dramatic pauses or stacked asides; the per-paragraph cap is under Preferences) | "The answer — surprisingly — was no." | "The answer was no, which surprised him." |
 | AI vocabulary: delve, tapestry, testament, crucial, pivotal, navigate, landscape, realm, unlock, harness, robust, (also: seamless, vibrant, intricate, foster, underscore, multifaceted) | "Let's delve into the rich tapestry of game design, a crucial realm…" | "Game designers argue about this constantly." |
-| "It's not X, it's Y" / "not just X but Y" / "not only… but also" | "It's not a game, it's a system of meaning." | "Players treat the rules as binding, though nothing forces them to." |
+| "It's not X, it's Y" / "not just X but Y" / "not only… but also" used to manufacture contrast (knocking down a position nobody holds). Correcting a misconception the reader really has is fine. | "It's not a game, it's a system of meaning." | "Players treat the rules as binding, though nothing forces them to." |
 | Rule-of-three lists and tricolons used for rhythm | "fast, fun and unforgettable" | List the items the facts actually contain, even if that is two or four. |
 | Stock connectives: In other words, Ultimately, In essence, It's worth noting that, Interestingly, Notably, Indeed, Essentially | "Interestingly, the rats kept pressing." | "The rats kept pressing." |
 | Rhetorical-question openers | "What makes a game a game?" (as the first line of a paragraph) | Start from the fact: "In 1953 Wittgenstein laid out board games, card games and ball games side by side." |
@@ -57,10 +69,10 @@ Three adjustments get you most of the way to "plain but refined":
 | Summary or moral at every paragraph end | "…This shows how powerful rules can be." | End on the last fact, or on the question the next paragraph answers. |
 | "Imagine you…" staging the reader's experience | "Imagine you're a pigeon in Skinner's box." | Describe the box and what the pigeon did. |
 | Inflated stakes | "a question that would reshape humanity's future" | "a question that kept philosophers busy for decades" |
-| Colon definitions "X: the Y that…" in prose | "The core loop: the cycle that keeps players coming back." | "The chain of actions a player repeats most often is the core loop." |
+| Colon definitions "X: the Y that…" in running prose | "The core loop: the cycle that keeps players coming back." | "The chain of actions a player repeats most often is the core loop." |
 | Generic openers and closers: Let's dive in, Let's explore, In conclusion, To sum up | "Let's dive in!" | Start with the first real fact. |
 | Formulaic opening sentence: a short assertion, signpost, mini-question or preview before the real content | "This isn't made up." / "Now the votes." / "And the calculator?" / "First, a game character." | Start with the fact ("In 1980 the American philosopher John Searle…"), or merge it into the next sentence. Scan every paragraph's first sentence separately. |
-| Enumeration scaffolding in running prose: Firstly, Secondly, Finally | "Firstly… Secondly… Finally…" | Narrate in the order things happened, joined by real connectives. |
+| Enumeration scaffolding in narrative prose: Firstly, Secondly, Finally (procedures and steps may use a numbered list) | "Firstly… Secondly… Finally…" | Narrate in the order things happened, joined by real connectives. |
 | Defensive writing: hedging stacks, parenthetical disclaimers, "of course", "arguably", "to some extent" | "This may potentially suggest that, to some extent, …" / "(though of course this is debated)" | Delete it. State real uncertainty once, on the specific claim ("Nobody knows whether this holds outside the lab."), or say who disputes it. |
 | Forced "and in everyday life too…" uplift after a concept | "Just like in life, we all face unnecessary obstacles." | Delete it, or give a real everyday example with its own detail. |
 | Suspense signposting | "Flip to the last card and see what's different." | "The cards show…, and only the last one is a person who really understands Chinese." |
@@ -81,7 +93,7 @@ Three adjustments get you most of the way to "plain but refined":
 - **Write meaning, not figures.** Before drafting, give each paragraph one line covering what the reader will understand, how it connects to the previous paragraph, and what question carries them on. Write around that line. Numbers and dates are evidence, so delete any the reader doesn't need.
 - **Concepts come first.** Stories, history, games and philosophy are vehicles for understanding the concept and must not outweigh it. When a course has a story, keep it in the background: the prose's subject is the concept itself, and a story character or prop never stands in for a concept's name. Deletion test: if this sentence went, would the reader understand the core concept less well? If not, cut it. Material that doesn't help understanding but is a pity to lose goes into a collapsible side note.
 - **Enough examples.** A core concept gets at least three concrete examples by default, including one counterexample or near miss that shows where the concept stops. For academic or maths-heavy material the examples can be classic worked problems, real data or experiments from papers; there is no need to force everyday scenes.
-- **Chapter titles and headings** (courses follow this one entry) say concretely what the chapter or section is about: a chapter title names the chapter's core concept or topic, a heading names the section's core object or conclusion, one concept per section and about 10 words or fewer by default (a longer one has probably packed in two concepts). The concept named for the first time in the section appears in its heading, with a touch of concrete image if possible. Vary the syntax across the set. No slogan or metaphor-only headings, no "X: Y" colon headings, no "Why X Matters", no title-case slogans ("Unlocking The Power Of Rules"). Use sentence case and at most one question heading per chapter.
+- **Chapter titles and headings** (courses follow this one entry) say concretely what the chapter or section is about: a chapter title names the chapter's core concept or topic, a heading names the section's core object or conclusion, one concept per section. The concept named for the first time in the section appears in its heading, with a touch of concrete image if possible. Vary the syntax across the set. No slogan or metaphor-only headings, no "Why X Matters", no title-case slogans ("Unlocking The Power Of Rules"); use sentence case. Length and format preferences are under Preferences.
   ✗ "The Magic Circle: Where Play Begins" ✓ "Huizinga draws a magic circle around play"
 - **Dialogue** (character lines, speech bubbles) appears only when it brings a question, a mistake, a discovery or a feeling. It should sound like someone muttering beside you, with half-sentences and corrections allowed. No cuteness, no characters reciting definitions for the author, no neat question-and-answer pairs.
 - **Primary sources** go at the end, collapsed. In the body, give only author and year.
@@ -95,9 +107,17 @@ Three adjustments get you most of the way to "plain but refined":
   - Spelling and conventions: follow the project's choice consistently, whether Australian/British (colour, organise, behaviour, metre, single quotes) or American (color, organize, behavior, double quotes). Check the project guide, such as `_EN_GUIDE.md`. Never mix the two.
 - **Never talk down.** No "Don't worry, this is easy!", no forced slang, no exclamation marks for enthusiasm. Younger readers get shorter sentences and better examples, with the same respect.
 
+## Preferences
+
+These are the user's taste, not questions of right and wrong. If the project guide says otherwise, follow the project; if not, do this.
+
+- **Headings:** no "X: Y" colon format; at most one question heading per chapter (or piece); about 10 words or fewer by default, since a longer one has probably packed in two concepts.
+- **Em dashes:** at most one per paragraph.
+- **Emphasis marks:** at most two of each kind per paragraph, and no bold in running prose.
+
 ## Emphasis in long web paragraphs
 
-The two marks each have one job, with at most two of each per paragraph and no bold in running prose. The highlighter marks the first naming of a concept. The emphasis mark (dots or underline, depending on the skin) goes on the one sentence in a paragraph, a conclusion or turn, that the reader should remember. Use the same CSS classes as the Chinese edition.
+The two marks each have one job (the per-paragraph cap is under Preferences). The highlighter marks the first naming of a concept. The emphasis mark (dots or underline, depending on the skin) goes on the one sentence in a paragraph, a conclusion or turn, that the reader should remember. Use the same CSS classes as the Chinese edition.
 
 ## Writing the English edition of a Chinese course
 

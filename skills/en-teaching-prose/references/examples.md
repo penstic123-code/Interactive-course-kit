@@ -1,6 +1,6 @@
 # Worked examples
 
-Most rules in SKILL.md come from cases like these. Learn the reasoning behind each fix rather than copying the sentences. The material comes from two of the user's courses: an AI course chapter on what AI is (the Chinese Room, the AI effect, narrow and general AI) and a game design chapter on what a game is (Suits, Caillois).
+Most rules in SKILL.md come from cases like these. Learn the reasoning behind each fix rather than copying the sentences. Read them by tier: a dropped-in opening, a hard cut or a wrong connective breaks a principle and must be fixed, while antitheses, labelling, formulaic openers and em dashes are AI-voice signals, to be fixed when they come in a run and judged in context when alone. The paragraph rewrite in section 2 tells a history, so it follows the timeline; explaining a concept does not need to. The material comes from two of the user's courses: an AI course chapter on what AI is (the Chinese Room, the AI effect, narrow and general AI) and a game design chapter on what a game is (Suits, Caillois).
 
 ## 1. Before / after pairs
 
