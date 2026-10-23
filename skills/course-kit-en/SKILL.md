@@ -5,7 +5,7 @@ description: Visual and component toolkit for interactive learning web courses. 
 
 # Interactive course toolkit (course-kit-en)
 
-These rules come from four finished courses: a game design course (hand-drawn notebook), a data science course (paper-cutout tower climb), an AI course (a different retro medium for each "world") and an anthropology course (field notebook). The user approved each rule. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
+These rules come from several finished interactive courses, approved round by round. The goal: an ordinary reader finds the page **comfortable, understandable and fun**, the look is coherent, and nothing feels stitched together by an AI.
 
 Who owns what: how content is taught (the five layers, acceptance numbers) lives in `references/content-rules.md` (copy it into your project if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction and motion** live here.
 
@@ -48,8 +48,6 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 3. A concept card with a picture (K1) follows right after.
 4. The end-of-chapter key points recap it once more.
 Secondary concepts get only the naming mark, no card. For the one sentence in a paragraph the reader must remember, use the emphasis mark `.vl-em`, at most two per paragraph. `tools/check.mjs` reports any concept card whose name has no matching naming mark or heading.
-
-**The story stays in the background; the concept takes the stage.** In a course with a story world or characters, the story appears only in a short opening briefing, the header picture and an occasional line from the companion. The prose is about the concept itself; never swap a concept for a story stand-in (details: `content-rules.md` 1B).
 
 **Pacing rules**
 1. A visual every 1–2 paragraphs. **Boxes count as body text**: a "why it works" box, concept card or story box with more than 2 paragraphs needs a picture, or must be split into "picture + short text".
@@ -97,7 +95,7 @@ Respect `prefers-reduced-motion` everywhere; the top bar's "Display" pop-up offe
 ## 5. Optional modules (decide one by one when starting a course; record the choices in the project doc)
 
 - **Reading rewards**: the mechanism is shared, the look follows the skin (notebook → stamp album, field guide, stamps; paper tower → backpack, lit windows). Reward only "understood it" (a correct answer, a finished "Try it"), never scrolling to the bottom or time on page.
-- **Companion character**: off by default. Add only if the course has a story world or young readers; speaks only when clicked, lines relate to what is being read, can be turned off, can be triggered by keyboard, ordinary tone.
+- **Companion character**: off by default. Add only if the course has a story world (which appears only in the briefing, header picture and companion lines; the prose still teaches the concept itself, see `content-rules.md` 1C) or young readers; speaks only when clicked, lines relate to what is being read, can be turned off, can be triggered by keyboard, ordinary tone.
 - **Concept map**: add when there are many interlinked concepts; it shares one concept dataset with the concept cards and the field guide.
 - Sound, glossary, flashcards, learning paths and more: see `modules.md`.
 
@@ -125,7 +123,7 @@ If the user wants a style that isn't listed, explain that only approved skins ar
 
 **Then give the user a course plan to approve**; don't generate the skeleton or write chapters until they do:
 - Knowledge map: how many parts, chapters per part, what comes first;
-- Chapter table: one line per chapter on what it teaches, with its 1–3 core concepts marked;
+- Chapter table: one line per chapter on what it teaches, with its 1–3 core concepts marked, and each chapter name pointing straight at its core concept or topic;
 - What readers can do afterwards (observable).
 Structure is hard to change once rolled out (renumbering remaps the whole course), so ask one question too many rather than one too few.
 
@@ -149,7 +147,7 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 |---|---|---|
 | 1 Syntax | `node --check` on every .js; trial-compiles every inline script | Whole-page script not running |
 | 2 Wiring | Every `vl-` class the JS looks for actually exists in the page or scripts; a class the page uses that has no style and is not used by any script (hint only) | Renames not synced, dead buttons, styles not applying |
-| 2b Highlighting | Each concept card's name has a matching naming mark `.vl-cn` in the prose and appears in its section heading | One of the "three matching places" missing |
+| 2b Highlighting | Each concept card's name has a matching naming mark `.vl-cn` in the prose and appears in its section heading | A concept missing one of its highlights |
 | 3 Picture density | More than about 220 characters between two visuals, or a single paragraph over about 160 (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
 | 4 Links | Local href / src exist | Wrong image or script paths |
 | 5 Run | `qa.mjs`: clicks every button and drags every slider at 420 and 1100 widths | JS errors, horizontal overflow, text in figures touching lines, overflowing or overlapping |

@@ -10,10 +10,10 @@ Defined on `:root`. Override the main colour per part with `body[data-part="n"]`
 
 | Group | Variables | Hard requirement |
 |---|---|---|
-| Text | `--ink` body text, `--ink2` secondary, `--muted` notes | All three ≥4.5:1 against `--panel` (`--muted` too; DS's `#4d566c` is a reference floor) |
+| Text | `--ink` body text, `--ink2` secondary, `--muted` notes | All three ≥4.5:1 against `--panel` (`--muted` too; `#4d566c` is a reference floor) |
 | Ground and surface | `--page` page background, `--panel` text surface, `--edge` edges of physical objects, `--sunk` control wells / grooves | Long text sits directly on `--panel`, never on an extra floating card; surfaces have a subtle real texture (paper grain, fibres), not a flat fill |
 | Plate | `--plate` background of diagrams and illustrations, `--plate-ink` text in figures | In dark and sepia schemes, `.vl-fig`, `.vl-cc-fig` and stand-alone `.vl-illus` keep a light plate, so colours inside illustrations never need to change with the scheme; `--plate-ink` ≥4.5:1 on `--plate` |
-| Main colour | `--accent`, `--accent2`, `--deep` | Light main colours only as fills; text in `--deep` (≥4.5:1); text on a selected button ≥4.5:1 against its fill (bad: DS view toggle, white text on accent2 at about 1.6:1) |
+| Main colour | `--accent`, `--accent2`, `--deep` | Light main colours only as fills; text in `--deep` (≥4.5:1); text on a selected button ≥4.5:1 against its fill (bad: a view toggle with white text on accent2 at about 1.6:1) |
 | Emphasis | `--hl` highlighter fill, `--focus` focus outline | `--focus` ≥3:1 on both `--page` and `--panel` |
 | State | `--ok` `--okbg` `--no` `--nobg` `--warnbg` | Every state also gets a shape — ✓ ✗, dashed lines — never colour alone |
 | Quantity encoding | `--q1` … `--q6` | Required for courses with maths; ≥3:1 on both `--panel` and `--plate`; fixed for the whole course; recheck contrast of each one in every scheme |
@@ -25,9 +25,9 @@ Defined on `:root`. Override the main colour per part with `body[data-part="n"]`
 
 **Font rules**
 - `--font-display` (calligraphy, chalk, pixel and other decorative faces) only for h1 and big chapter numbers.
-- `--font-hand` may be used for subheadings, text in figures and buttons only once **checked for legibility**: screenshot it at 13px and 16px and read it. Give letters and digits a clear font with `unicode-range` covering only U+0030-0039, U+0041-005A, U+0061-007A (GD's approach: Ma Shan Zheng for Chinese characters, Patrick Hand for letters and digits, which stopped "VR5" reading as "9R5"). For an English-only page, the handwriting face itself must pass the same 13px / 16px check.
-- Body text in a clear face (all three courses use LXGW WenKai, 17.5–18px / 1.85 line height).
-- Fonts are local woff2, large Chinese fonts subset to the characters the course uses (e.g. fonttools `pyftsubset`; rerun for new chapters); web fonts are inserted asynchronously as a `<link>` by JS, never `@import`ed in CSS (bad: lines 1–3 of GD `style.css`); system fonts as fallback.
+- `--font-hand` may be used for subheadings, text in figures and buttons only once **checked for legibility**: screenshot it at 13px and 16px and read it. Give letters and digits a clear font with `unicode-range` covering only U+0030-0039, U+0041-005A, U+0061-007A (e.g. Ma Shan Zheng for Chinese characters and Patrick Hand for letters and digits, which stops "VR5" reading as "9R5"). For an English-only page, the handwriting face itself must pass the same 13px / 16px check.
+- Body text in a clear face (LXGW WenKai, 17.5–18px / 1.85 line height).
+- Fonts are local woff2, large Chinese fonts subset to the characters the course uses (e.g. fonttools `pyftsubset`; rerun for new chapters); web fonts are inserted asynchronously as a `<link>` by JS, never `@import`ed in CSS (bad: `@import` of a web font at the top of the CSS); system fonts as fallback.
 - Before switching fonts compare them on a small test page, then rerun `qa.mjs` on the whole course (glyph widths change, so spacing changes).
 
 **Three colour schemes**
@@ -73,12 +73,12 @@ The illustration loader and the stick-figure drawing kit live in `kit/illus.js` 
 
 - Default canvas viewBox 200×140 (for a vertical canvas use the `{vb}` option of `add()`, see "插画位" / illustration slots in `kit/README.md`); people at scale ≥0.9 — don't draw them too small.
 - Text outside the filter group; filters use `in="SourceGraphic"`.
-- Building rules into the functions is cheaper than fixing pictures one by one (GD experience: sitting automatically adds a chair; facing left mirrors the arms automatically).
+- Building rules into the functions is cheaper than fixing pictures one by one (e.g. sitting automatically adds a chair; facing left mirrors the arms automatically).
 - Deliver with: a character sheet (6 different people standing, sitting, holding something, pointing at something, talking) + an object sheet; `tools/illus-overlap.mjs` passing; every picture looked at by a person in single-picture screenshots with `tools/shot.mjs`.
 - **How it plugs into the kit**: use the hook in `kit/illus.js`: `window.VL_SKIN.illus = function (base) { return { kit, svg, afterMount }; }` (`base = {kit, C, esc}`; all three are optional: `kit` replaces or adds drawing functions, and also give `reset` if you count outfits yourself; `svg(it, name)` builds the outer `<svg>` yourself; `afterMount(el, name)` runs after an illustration is placed, e.g. for a pencil redraw). See the "皮肤换画法的钩子" (skin drawing hook) comment in that file. `skin.js` must load before `kit/illus.js` (the starter templates already do). paper, pixel and fieldbook all use this hook; copy one of them for a new skin. A skin's `person` need not wrap itself in `g.px-person`; the kit adds it.
 - Feet are not at the same height in every skin: check a standing person with `k.feetY(x, y, opts)`, or work out the head's y as `y = groundY − k.feetY(x, 0, opts)`; don't hard-code a number (the y values in the starter examples follow notebook's geometry).
-- One drawing style per page: if a skin's drawing kit isn't finished, don't open chapters in that skin (bad: AI W4 chapter illustrations still use the pixel library).
-- Pitfalls from the three courses are in `visuals.md` section 3.
+- One drawing style per page: if a skin's drawing kit isn't finished, don't open chapters in that skin.
+- Common illustration pitfalls are in `visuals.md` section 3.
 
 ## 4. Skin-specific motion
 
@@ -88,7 +88,7 @@ A skin may bring atmosphere motion and the "feel" of feedback motion, but both o
 |---|---|
 | Off level is completely still | Ambient animation cleared; intros and transitions skipped |
 | Lite level | Ambient animation still; intro shortened |
-| Pause outside the viewport | Header ambient animation stops when it leaves the viewport (good: DS `ambient`) |
+| Pause outside the viewport | Header ambient animation stops when it leaves the viewport |
 | Intros / transitions skippable by clicking | Played at most once per chapter per session |
 | Only outside the text | No constant animation in the text area |
 | Freezable for screenshots | Supports `?freeze=seconds` |
@@ -105,28 +105,19 @@ A skin may bring atmosphere motion and the "feel" of feedback motion, but both o
    - `node tools/shot.mjs`: full pages at 420 and 1100 wide × three schemes (add `?scheme=dark` / `?scheme=sepia` after the html path), then every illustration as a single element, enlarged;
    - contrast measured with a tool (never estimated): body text, secondary text, captions, text in figures, selected buttons, `--q*`;
    - no atmosphere animation with reduced motion; print styles fully expanded, no dark backgrounds;
-   - opens correctly by double-clicking under `file://` (bad: an AI W8 sample's `mask-image` pointing at a local image vanished entirely under file://; fixed with `-webkit-mask-box-image`).
+   - opens correctly by double-clicking under `file://` (bad: a `mask-image` pointing at a local image vanishes entirely under file://; use `-webkit-mask-box-image` instead).
 4. **Send to the user for approval**: screenshots + one-line explanation + a list of open questions (concrete ones like "Is the misregistration too busy?", "Is a 16px bitmap font acceptable?"). Make the user's changes on the sample and show it again; don't roll it out directly.
 5. **Into the library**: once approved, put it in `skins/<name>/`, with a `README.md` covering: what courses / readers it suits, a parameter summary (colours, fonts, surface, outlines, illustration style, per-part variation), its own motion, known issues, the date the user approved it and the gist of what they said. Later feedback on the skin is edited into the relevant entry of that README.
 
 ## 6. Current skins
 
-| Name | Status | From | Suits | Colours | Fonts | Surface and outlines | Illustration style | Per-part variation | Own motion |
-|---|---|---|---|---|---|---|---|---|---|
-| `notebook` hand-drawn notebook | **In the library** (approval page `skins/notebook/gallery.html`) | GD | Design, thinking, humanities; adults and high-school students | ink #2b2b3a, paper #fdf8ec; fills yellow / pink / blue / green / orange / purple | Body LXGW WenKai 18px; h1 Ma Shan Zheng; subheadings, buttons and figure text LXGW WenKai + Patrick Hand (letters and digits, `unicode-range`) | Grid / dot / ruled / diagonal paper rotating per chapter; 3px ink lines, hard unblurred shadows, asymmetric corners | Stick figures `VL.illus.kit.person` (kit/illus.js) + wobble filter + flat colour fills; people change hats and hair automatically | 5 part colours + ±18° hue shift between chapters + rotating paper texture | Basically none (wobble and tilt are static) |
-| `paper` paper cut-out | **In the library** (approval page `skins/paper/gallery.html`) | DS (tower scene) + AI W3 (stage scene) | Courses with a story and characters; middle to high school | ink #1f2638, muted #4d566c; card #fbf6ea, kraft #dcc9a2 / #d9c49c; gold #ffd25e | Body LXGW WenKai 17.5px (small text Medium); labels ZCOOL KuaiLe | White trimmed edge 3–6px + soft shadow + fibre texture + kraft backing layer | Cut paper `paperKit` + `cut()` three-level shadows; paper-puppet people; data charts with straight edges | Tower: 4 segment colours + sky band + tower wall; stage: per-chapter colour + curtain | Header ambient animation, climbing transition / curtain intro, paper page turns, scroll reveal |
-| `pixel` handheld pixel | **In the library** (approval page `skins/pixel/gallery.html`) | AI W1 | Computing and gamified courses, early parts | Four greens #0f380f #306230 #8bac0f #9bbc0f; LCD #eef3d4; magenta A button #9b2257 | h1 Fusion Pixel 12px; digits VT323; body system sans / LXGW WenKai | Handheld console body; 4px notched pixel frames + bevels + whole-pixel shadows | 2px-grid pixel art (`skin.js` drawing kit); pixel people don't wear glasses | 5 part colours (`--p{n}a/b/s`) + ±18° hue shift between chapters + rotating LCD dot pattern | `steps(n)` easing, scan lines, level intro READY! |
-| `fieldbook` field notebook | **In the library** (approval page `skins/fieldbook/gallery.html`) | Anthropology course | Humanities, social science, history, fieldwork; high school to adult | Ink / red pen / six coloured pencils; warm white loose-leaf | Body LXGW WenKai; titles Source Han Serif; handwriting Caveat | Kraft-paper desk + grid loose-leaf, binder holes, red margin line, tape; paper pieces with 1px edge and light shadow | Coloured-pencil stick figures (`skin.js` drawing kit + Rough.js hatching, filter fallback without it) | 6 part colours + part index tabs on the right + rotating paper texture | Pencil redraw when an illustration enters the viewport |
-| `pixel-fc` NES-style pixel | Unfinished, not shipped | AI W2 | Same as above | Sky #5c94fc, bonus block #f8b800, brick red / green | Same as above | Brick ground and green hills (overworld / underground / night / castle); light dialogue boxes + black notched frames | Same as above | Level changes per chapter | Distant mountains scrolling, bonus block bumps up when pressed |
-| `town` miniature town | Unfinished, not shipped | AI W4 | Courses about "how a whole machine works" | Walnut; cream plaster #fbf5ea; accent #f2c98a / #a8452f | Body LXGW WenKai; titles Xiaolai | Wooden desk grain + warm desk-lamp light + vignette; plaster boards, radius 22, bright top edge and thick bottom | three.js offline-rendered PNG (the chapter illustration library isn't built; must be added before extraction) | Per-chapter colour; buildings go up as you progress | Town focus-in intro, current building's warm light breathing, flags waving |
+| Name | Status | Suits | Colours | Fonts | Surface and outlines | Illustration style | Per-part variation | Own motion |
+|---|---|---|---|---|---|---|---|---|
+| `notebook` hand-drawn notebook | **In the library** (approval page `skins/notebook/gallery.html`) | Design, thinking, humanities; adults and high-school students | ink #2b2b3a, paper #fdf8ec; fills yellow / pink / blue / green / orange / purple | Body LXGW WenKai 18px; h1 Ma Shan Zheng; subheadings, buttons and figure text LXGW WenKai + Patrick Hand (letters and digits, `unicode-range`) | Grid / dot / ruled / diagonal paper rotating per chapter; 3px ink lines, hard unblurred shadows, asymmetric corners | Stick figures `VL.illus.kit.person` (kit/illus.js) + wobble filter + flat colour fills; people change hats and hair automatically | 5 part colours + ±18° hue shift between chapters + rotating paper texture | Basically none (wobble and tilt are static) |
+| `paper` paper cut-out | **In the library** (approval page `skins/paper/gallery.html`) | Courses with a story and characters; middle to high school | ink #1f2638, muted #4d566c; card #fbf6ea, kraft #dcc9a2 / #d9c49c; gold #ffd25e | Body LXGW WenKai 17.5px (small text Medium); labels ZCOOL KuaiLe | White trimmed edge 3–6px + soft shadow + fibre texture + kraft backing layer | Cut paper `paperKit` + `cut()` three-level shadows; paper-puppet people; data charts with straight edges | Tower: 4 segment colours + sky band + tower wall; stage: per-chapter colour + curtain | Header ambient animation, climbing transition / curtain intro, paper page turns, scroll reveal |
+| `pixel` handheld pixel | **In the library** (approval page `skins/pixel/gallery.html`) | Computing and gamified courses, early parts | Four greens #0f380f #306230 #8bac0f #9bbc0f; LCD #eef3d4; magenta A button #9b2257 | h1 Fusion Pixel 12px; digits VT323; body system sans / LXGW WenKai | Handheld console body; 4px notched pixel frames + bevels + whole-pixel shadows | 2px-grid pixel art (`skin.js` drawing kit); pixel people don't wear glasses | 5 part colours (`--p{n}a/b/s`) + ±18° hue shift between chapters + rotating LCD dot pattern | `steps(n)` easing, scan lines, level intro READY! |
+| `fieldbook` field notebook | **In the library** (approval page `skins/fieldbook/gallery.html`) | Humanities, social science, history, fieldwork; high school to adult | Ink / red pen / six coloured pencils; warm white loose-leaf | Body LXGW WenKai; titles Source Han Serif; handwriting Caveat | Kraft-paper desk + grid loose-leaf, binder holes, red margin line, tape; paper pieces with 1px edge and light shadow | Coloured-pencil stick figures (`skin.js` drawing kit + Rough.js hatching, filter fallback without it) | 6 part colours + part index tabs on the right + rotating paper texture | Pencil redraw when an illustration enters the viewport |
 
-**Unfinished — must not be used for new courses** (they live in the AI course and are not shipped with the skill):
+Styles that are not in the library (NES-style pixel, miniature town and so on) must not be used for new courses.
 
-| Name | Look | Open question |
-|---|---|---|
-| W5 screen print | Flat dusk colour bands, ink grain, misregistration; Smiley Sans | Is the misregistration too busy? |
-| W6 desktop | Cyan halftone desktop, grey bevelled window frames; Unifont 16px bitmap | Is a 16px bitmap font acceptable? |
-| W7 cartoon | Sunny sea, thick outlines with offset hard shadows; Chill Round Gothic | Does the whole style need a big rework? |
-| W8 gouache | Gouache distant landscape, thick paper with shaky edges; Ma Shan Zheng + LXGW Marker Gothic | Should chapters 36 and 37 switch to grey? Degrades to straight edges in Firefox |
-
-When extracting the remaining styles: take the styles and drawing kit from the source course and strip out the course-specific things (DS's hero, floor guardians and backpack; AI's Little Bit, WORLD numbering and coins) — these belong to the companion and rewards modules, not the skin. Keep "scenes" such as the tower, stage, levels and town in the skin, as the way to draw the contents page and chapter headers. Replace colours hard-coded in pages (DS `#3b8fd6`, the undefined `--pp-edge`, the two shadow colours brown and blue), then go through the approval steps in section 5.
+When extracting the remaining styles: take the styles and drawing kit from the course and strip out the course-specific things (guide characters, floor guardians, backpacks, WORLD numbering, coins) — these belong to the companion and rewards modules, not the skin. Keep "scenes" such as the tower, stage, levels and town in the skin, as the way to draw the contents page and chapter headers. Replace colours hard-coded in pages, undefined variables and multiple shadow colours, then go through the approval steps in section 5.

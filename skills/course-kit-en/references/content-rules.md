@@ -85,7 +85,7 @@ The numbers in the table are reference values, set by field and course aims.
 |---|---|
 | Positioning | State the reader, prerequisites (ideally none), what they can do after finishing (observable), and total time |
 | Structure | Roughly 4–7 parts and 20–35 chapters; from easy to hard, with clear links between parts |
-| Big picture | ① The last chapter of each part has a "part review" (knowledge map of the part + "what you can now make sense of") and cross-chapter synthesis questions; ② a running thread is optional: a recurring case, a project built step by step, or a background story; or each chapter can simply explore its own theme. If there is a story, it stays in the background: it appears only in a few-line opening briefing, the header picture and an occasional line from the companion. The prose is about the concept itself (model, loss, slope…), with examples from real situations in the field. Never replace a concept's name or meaning with a story stand-in (don't call loss "enemy HP"); interactive tasks use the concept's own terms ("get the loss below 0.5 within 6 steps"), so readers can recognise it in the real world afterwards; ③ chapter 1 explains what the field is and what parts it is made of |
+| Big picture | ① The last chapter of each part has a "part review" (knowledge map of the part + "what you can now make sense of") and cross-chapter synthesis questions; ② a running thread is optional: a recurring case, a project built step by step, or a background story (see 1C for how to write one); or each chapter can simply explore its own theme; ③ chapter 1 explains what the field is and what parts it is made of |
 | Coverage | No core topic missing; worldview principles woven in per the matrix (1D); ≥3 case studies; ≥2 hands-on projects |
 | Difficulty curve | Advanced chapters not placed too early and marked "advanced"; check chapter by chapter that every concept used has already been taught; later chapters may refer back, earlier chapters don't preview later ones |
 | Consistency and coherence | One name per concept (Chinese–English glossary); consistent labels (source, controversy, illustrative); nothing taught twice, with brief back-references where topics overlap; if a relationship map exists, it covers every core concept |
@@ -102,6 +102,7 @@ Body prose style (sentences, paragraphs, banned words, headings, dialogue, empha
 The writing requirements below sit outside the skill and come from the course structure:
 
 - **No meta-language**: the body never says "this chapter", "this course", "the next section covers" or "chapter N explains this in detail". Natural back-references are fine ("remember the hide-and-seek example?"), and links between chapters are left to "related chapters".
+- **Concepts take the stage, the story stays behind** (courses with a background story or characters): the story appears only in the short opening briefing, the header picture and an occasional line from the companion. The prose is about the concept itself, with examples from real situations in the field, and interactive tasks use the concept's own terms ("get the loss below 0.5 within 6 steps"). Never replace a concept's name with a story stand-in, such as calling loss "enemy HP"; readers could not recognise it in the real world afterwards.
 - **Concepts lead, maths supports** (courses with maths; the user's words: "no big blocks of isolated maths", "I don't want it to feel like a stiff textbook"):
   - Every formula belongs to a concept and appears right next to that concept's diagram or interaction. The reader understands the concept first, and the formula then arrives as shorthand.
   - No symbol tables, pure-maths sections or "supply depots" crammed with several concepts. Explain each symbol in passing, inside the sentence where it first appears.
@@ -166,7 +167,7 @@ This kind of knowledge lets readers "see the world differently", and the user es
 
 Below is the default order for teaching a single core concept. In a chapter with several concepts, each takes its turn through it; adjust or merge as the course needs. Other formats such as game levels write their own structure in the project document, but the five layers of content (what it is, invention story, why it works, how to use it, reflection) must all be there.
 
-1. Header: chapter-number badge + title + one-line subtitle + small illustration
+1. Header: chapter-number badge + title (names the chapter's core concept or topic outright, so the title tells the reader what it covers; wording in `en-teaching-prose`) + one-line subtitle + small illustration
 2. Learning goals (3 items of "after reading you can…" + reading time)
 3. [What it is] diagram + example carousel (with illustrations)
 4. [Invention story] problem → early attempts → key insight → evolution; guess then reveal + illustrated timeline (the invention-story box is collapsed by default, showing its title and a one-line introduction)

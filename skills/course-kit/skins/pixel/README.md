@@ -1,6 +1,6 @@
 # 皮肤 pixel · 掌机像素
 
-用途：本皮肤的风格、变量、插画画法和适用场合。来源：AI 课第一篇（掌机世界）的样式和像素插图库。状态：已入库（验收页 `gallery.html`）；样板章见 `examples/pixel-binary-search/`。
+用途：本皮肤的风格、变量、插画画法和适用场合。状态：已入库（验收页 `gallery.html`）；样板章见 `examples/pixel-binary-search/`。
 
 **一句话**：整页是一台掌机，正文排在浅绿液晶屏上；四阶绿配一个洋红 A 键，缺角像素框、整格硬投影、阶梯动效，插画是 2px 网格的像素小人。
 
@@ -11,7 +11,7 @@
 | `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 + 机身外壳 + 目录页选关样式 + 开场样式 |
 | `skin.js` | `window.VL_SKIN`（VT323 网络字体、插画配色）；像素绘制工具（接到 `VL.illus.kit` 上）；关卡开场 READY! 与题头动画暂停 |
 | `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（方角、整格投影） |
-| `img/gb-dpad.svg` `img/gb-ab.svg` | 机身上的十字键和 A/B 键（宽屏两侧，AI 课自绘） |
+| `img/gb-dpad.svg` `img/gb-ab.svg` | 机身上的十字键和 A/B 键（宽屏两侧） |
 | `fonts/fusion-pixel-12px-zh_hans.woff2` | 缝合像素 Fusion Pixel 12px 比例版 v2026.10.16 简中全量（约 0.9MB），本地 |
 | `fonts/OFL.txt` `fonts/LICENSES/` | 字体授权（SIL OFL 1.1；含其上游 Ark Pixel、Cubic 11、Galmuri 的授权） |
 
@@ -88,10 +88,3 @@
 - VT323 是网络字体，离线时数字退到 Consolas。
 - `tools/illus-overlap.mjs` 会把"拿在手里的物件压在人物身前"报成重叠（像素画法里物件画在躯干前面是故意的），这类可以忽略。
 - 像素人眼睛只有一格宽，`glasses` 的细框在小尺寸下略挤；需要清楚的眼镜人物时把 `s` 设到 1.2 以上。
-
-## 与 AI 课原版的差异
-
-- 去掉小比特角色、WORLD 标号、金币、星星、进度条上奔跑的小人（归陪伴角色和激励模块）。
-- 机身铭牌字 "DOT MATRIX · AI POCKET" 去掉；节末像素小物件去掉。
-- 小标题、按钮、标签从像素字改成清晰黑体；像素字只留给 h1 和章号。
-- 颜色全部改成变量；新增护眼、暗色两套配色。

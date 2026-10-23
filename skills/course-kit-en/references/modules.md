@@ -29,7 +29,7 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 | Each correct round / clearing the end-of-part review | `vl:review-round` / `vl:review-done` events; stored in `<id>-review` (see `kit/README.md` section 7, P2) |
 | 3 quiz answers right in a row (optional small celebration, not stored) | — |
 
-**Never do**: triggers by scroll percentage (bad: DS marked a chapter "read" at 92% and fired confetti + lit the top of the tower at 98.5%), triggers by time spent (bad: DS flew a paper plane into the backpack after 1.5s on a concept card), score leaderboards, health bars, failure endings, daily streaks.
+**Never do**: triggers by scroll percentage (bad: marking a chapter "read" at 92% and firing confetti at 98.5%), triggers by time spent (bad: flying a paper plane into the backpack after 1.5s on a concept card), score leaderboards, health bars, failure endings, daily streaks.
 
 **Shared core × skin look**
 
@@ -51,16 +51,16 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 
 **Pitfalls**
 - The reward look stealing the text: a celebration layer covering the text for more than 1.2s, or confetti for every small action. Play it once, when something is understood.
-- Mixing "read" and "understood": the top-bar progress and the lights on the contents page are decided only by quiz all correct (GD and AI already work this way; DS needs changing).
-- Badges drawn as decoration unrelated to the concept: every object should bring its concept to mind (DS's backpack has 16 props, each tied to one chapter's concept).
+- Mixing "read" and "understood": the top-bar progress and the lights on the contents page are decided only by quiz all correct.
+- Badges drawn as decoration unrelated to the concept: every object should bring its concept to mind (e.g. a backpack whose props each tie to one chapter's concept).
 
 ## 2. Companion character
 
-**Worth adding when**: the skin has a world (the tower's hero, the AI course's Little Bit) or readers are young. Off by default. Existing courses keep theirs: AI's Little Bit is the thread running through the whole course; the user loves the DS hero ("clicking the hero to make it talk makes the page more fun").
+**Worth adding when**: the skin has a world (e.g. the tower's protagonist, a little robot on a handheld) or readers are young. Off by default.
 
 **Two forms**
 1. Dialogue in the text: lines written by the author, static, appearing with the prose (AI `.npc`, 56 places).
-2. A clickable character that talks: pinned to the page margin or the progress bar (DS hero).
+2. A clickable character that talks: pinned to the page margin or the progress bar (e.g. the tower's protagonist).
 
 **Rules**
 
@@ -76,18 +76,9 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 
 Example lines (same section, "selection bias"): ✓ "Oh — I only cast the net near the bank. No wonder it's all yellow fish." ✗ "Brave one, the fog of data surrounds us!" ✗ "Selection bias is when a sample is filtered before it is collected." (reading out the definition)
 
-**Gaps in today's DS hero**
-
-| Gap | Now | Should be |
-|---|---|---|
-| Lines unrelated to content | 8 generic lines in rotation; `data-hero-lines` used in 0 chapters | `data-lines` per section |
-| No keyboard trigger | Character is `aria-hidden` and can't take focus | `button` + accessible name |
-| No off switch | Only follows the motion level | Its own toggle in the top bar |
-| Walks along the stairs | Follows scrolling (a position display; can stay) | Must never trigger any reward because of it |
-
 ## 3. Concept map
 
-**Worth adding when**: there are many concepts (>40), tangled together, with prerequisites. GD (110 concepts) and AI both have a `map.html`.
+**Worth adding when**: there are many concepts (>40), tangled together, with prerequisites.
 
 **One concept data set, three uses**:
 
@@ -104,8 +95,8 @@ The course's `js/concepts.js` sets `window.VL_CONCEPTS = {items, links, terms}`,
 **How**: node = concept name + chapter number; clicking a node lights its neighbours and shows its def and "go to chapter N" beside it; colour by part with a text legend; world-view principles are registered as nodes too (content-rules.md 1D). The kit's `kit/modules/graph.js` (`VL.mapPage`, `VL.graph`, `VL.miniMap`, `VL.graphList`) does all of this; `kit/modules/build-concepts.mjs` builds and checks `concepts.js` from the chapters.
 
 **Pitfalls**
-- Nodes not keyboard-operable (bad: GD `map.html` nodes have no tabindex): every node `tabindex=0`, Enter selects, arrow keys move between neighbours. (The kit's graph uses roving focus: one node in the Tab order, arrows move to the nearest node.)
-- Sideways scrolling on phones (bad: GD `#gsvg{min-width:900px}`): on narrow screens switch to a list grouped by part, opening each to show its neighbours.
+- Nodes not keyboard-operable (bad: nodes have no tabindex): every node `tabindex=0`, Enter selects, arrow keys move between neighbours. (The kit's graph uses roving focus: one node in the Tab order, arrows move to the nearest node.)
+- Sideways scrolling on phones (bad: a hard-coded `min-width:900px` on the SVG): on narrow screens switch to a list grouped by part, opening each to show its neighbours.
 - Force-directed layout turning into a hairball: with >60 nodes lay out in zones by part, don't rely on automatic layout alone.
 - Concepts from chapters not yet open stay out of the map, or appear grey and unclickable.
 
@@ -115,9 +106,9 @@ The course's `js/concepts.js` sets `window.VL_CONCEPTS = {items, links, terms}`,
 
 | Piece | How | Pitfall |
 |---|---|---|
-| Hover definition | `.vl-term[data-def]` in the text (`components.md` K7); the JS definition box is clamped inside the viewport | Pure CSS `::after` runs off the screen at the edges (old GD / AI) |
+| Hover definition | `.vl-term[data-def]` in the text (`components.md` K7); the JS definition box is clamped inside the viewport | Pure CSS `::after` runs off the screen at the edges |
 | Glossary `glossary.html` | `kit/modules/build-concepts.mjs --write` collects every chapter's `.vl-term[data-def]` into the `terms` of `js/concepts.js`, and `VL.glossary` (`kit/modules/terms.js`) reads it; sorted by pinyin / alphabet; each entry links back to its chapter | The same term defined differently in different places: the script reports ✗; the first occurrence wins |
-| Flashcards `flashcards.html` | Leitner, 4 boxes: right moves up a box, wrong goes back to box one; only terms from chapters already understood (`VL.flashcards`) | Can't flip by keyboard (old GD): Space flips, ←→ judge right/wrong; remove emoji (old AI still has them) |
+| Flashcards `flashcards.html` | Leitner, 4 boxes: right moves up a box, wrong goes back to box one; only terms from chapters already understood (`VL.flashcards`) | Can't flip by keyboard: Space flips, ←→ judge right/wrong; no emoji |
 
 The English edition needs English fields for all three; storage keys are shared by both languages.
 
@@ -128,15 +119,15 @@ The English edition needs English fields for all three; storage keys are shared 
 **How**
 - One speaker toggle in the top bar, saved (`<course id>-sound`); short WebAudio-synthesised sounds, no external audio files. Code in `kit/modules/sound.js`; with `modules.sound:false` the whole module is absent (see `kit/README.md` section 8).
 - The timbre belongs to the skin: the skin's CSS sets `:root{--vl-snd:paper|sine|square|triangle}`; `kit/modules/sound.js` accepts only these four. notebook, paper and fieldbook = paper (pencil and paper sounds); the pixel skin should be square (square-wave 8-bit). Each skin sets it in its `modules.css`; with skin.css loaded but not modules.css, it falls back to sine.
-- Sound used for teaching (GD `ch12` listening bench) is part of the interaction itself; also muted by default and switchable.
+- Sound used for teaching (such as a listening bench) is part of the interaction itself; also muted by default and switchable.
 
-**Pitfalls**: GD `ch12`'s mute checkbox starts unticked, which means sound on by default — it must start ticked. Sounds on every scroll get annoying fast; tie sounds only to actions and understanding events.
+**Pitfalls**: a mute checkbox that starts unticked means sound on by default — it must start ticked. Sounds on every scroll get annoying fast; tie sounds only to actions and understanding events.
 
 ## 6. Learning paths
 
 **Worth adding when**: readers start from very different places, many chapters (>20).
 
-**How**: 2–5 routes on the contents page (e.g. "One-week intro", "Full route", "Under-the-hood route"); each route = a name + one line on who it suits + a list of chapter numbers. Click one and the other chapters dim and the route's chapters are joined by a line. Route data goes in `VL_COURSE.paths` in the course's `js/course.js` (`{name, who, chs}`; vl.js doesn't read it, the contents page does; `starter/index.html` already does "click one, the rest dim"). Good examples: GD's 5 routes, DS's quick route, AI's floating bar.
+**How**: 2–5 routes on the contents page (e.g. "One-week intro", "Full route", "Under-the-hood route"); each route = a name + one line on who it suits + a list of chapter numbers. Click one and the other chapters dim and the route's chapters are joined by a line. Route data goes in `VL_COURSE.paths` in the course's `js/course.js` (`{name, who, chs}`; vl.js doesn't read it, the contents page does; `starter/index.html` already does "click one, the rest dim").
 
 **Pitfall**: a route that skips a prerequisite concept a later chapter needs — check every route for "every concept a chapter uses was taught earlier on the route".
 
@@ -144,18 +135,18 @@ The English edition needs English fields for all three; storage keys are shared 
 
 **Worth adding when**: the skin itself is a map (town, tower, level route) and there is an offline rendering pipeline.
 
-**How**: one map does three jobs — the course map, cumulative progress (chapters understood are "built"), and this chapter's contents (click a building to jump to its section). Good example: the AI course's W4 renders transparent PNGs offline with its own script (not shipped with the skill), so chapter pages don't run three.js.
+**How**: one map does three jobs — the course map, cumulative progress (chapters understood are "built"), and this chapter's contents (click a building to jump to its section). Render transparent PNGs offline, so chapter pages don't run three.js.
 
 **Pitfalls**
-- When it replaces the N4 floating button, test narrow-screen behaviour separately (AI W4 untested).
+- When it replaces the N4 floating button, test narrow-screen behaviour separately.
 - Keyboard: every building on the map is a `button`, reachable by Tab, with a text name.
-- Chapter illustrations must use the same drawing style as the map (AI W4's chapter illustrations are still pixel art, clashing with the rendered town).
+- Chapter illustrations must use the same drawing style as the map, or the two styles clash.
 
 ## 8. Timeline of events
 
 **Worth adding when**: history carries a lot of weight and there are many invention stories.
 
-**How**: every invention story in the course in year order, filterable by type; clicking an event jumps to the story box in its chapter (good example: the AI course's timeline page; the kit has no timeline module yet). Event data is collected from each chapter's K10 / T5, not written a second time.
+**How**: every invention story in the course in year order, filterable by type; clicking an event jumps to the story box in its chapter (the kit has no timeline module yet). Event data is collected from each chapter's K10 / T5, not written a second time.
 
 **Pitfall**: years and names on the timeline must match the chapters — generate both from the same data.
 

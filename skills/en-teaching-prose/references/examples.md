@@ -60,4 +60,4 @@ Note: the "AI effect" phrasing is commonly traced to McCorduck. Her best-known s
 
 ## 3. Mixing in narrative non-fiction
 
-The rewrite above is classic style. Narrative non-fiction then asks for one more pass: restraint, economy and pictures. Words like "peak of human thought", or "awe" if it feels overstated, can be toned down further. Rhetorical questions such as "Wasn't each of these once a grand challenge?" should go. The three adjustments still apply: follow the timeline, weave concepts into sentences, and drop the deliberate antitheses.
+The rewrite above is classic style. Narrative non-fiction asks for one more pass: restraint, economy and pictures. Phrases like "peak of human thought", or "awe" if it feels overstated, can be toned down further, and rhetorical questions such as "Wasn't each of these once a grand challenge?" should go. The timeline, the woven-in concepts and the dropped antitheses are already in the rewrite.

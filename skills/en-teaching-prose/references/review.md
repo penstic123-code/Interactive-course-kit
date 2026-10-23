@@ -10,6 +10,7 @@ How to use it: go through the text one paragraph at a time. Read each paragraph 
 | Labelling | "This is called X", "This phenomenon has a name: X", "AI that does Y is called Z", with every paragraph running example then definition | Let the name arrive inside the narration, and vary how paragraphs move forward |
 | Formulaic opening sentence | The paragraph opens with a short standalone sentence before the real content. It can be an assertion ("This isn't made up."), a signpost ("Now the votes." "Back to the room."), a mini-question ("And the calculator?") or a preview ("First, a game character.") | Delete it and start from the fact, or merge it into the next sentence. After fixing, scan every paragraph's first sentence once more |
 | Rhetorical-question opener | The paragraph or section begins with a question the writer then answers | Start from the fact or the scene. A question belongs at the end of a paragraph, answered at once |
+| String of short sentences | One fact per sentence with nothing joining them, so the paragraph reads like a list | Let each sentence's result start the next, joined by connectives that state the real relationship |
 | Hard cut | A new paragraph switches subject with no reason given | Add one linking clause that picks up what the last paragraph left |
 | Summary or moral ending | The last sentence restates the paragraph, or "This shows…", "Ultimately…" | Delete it, or end on a question the next paragraph answers |
 | One-line punchline paragraph | A paragraph that is a single dramatic sentence | Fold it into a neighbouring paragraph, or cut it |
@@ -37,9 +38,9 @@ How to use it: go through the text one paragraph at a time. Read each paragraph 
 - With the headings covered, does the text read straight through, so the reader knows why each paragraph is there? If it reads like an outline, rewrite it.
 - Are events told in the order they happened, without jumping ahead and doubling back?
 - Have numbers, dates and names the reader doesn't need been cut?
-- Do the story, history or game outweigh the concept itself?
+- Do the story, history or game outweigh the concept itself? In a course with a story, is the subject the concept or a story character, and has any concept's name been replaced by a story term?
 - Does each core concept have three or more concrete examples, including a counterexample?
-- Does each heading say what the section covers in sentence case, and does it contain the concept first named in that section? Check for colon headings, "Why X Matters", slogans and more than one question heading.
+- Does each heading say what the section covers in sentence case, and does it contain the concept first named in that section? Check for colon headings, "Why X Matters", slogans, metaphor-only headings and more than one question heading.
 - Does character dialogue lecture, recite definitions or run as neat Q&A?
 - Is there meta-language ("in this chapter", "as mentioned"), or any preview of later sections?
 - Does the register fit the named audience, with the right sentence length, glossed terms and spelling, and no talking down?

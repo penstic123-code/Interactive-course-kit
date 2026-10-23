@@ -1,6 +1,6 @@
 # Skin pixel: handheld pixel
 
-Purpose: this skin's style, variables, illustration style and what it suits. Source: the style and pixel illustration library of the AI course's first part (the handheld world). Status: in the library (approval page `gallery.html`); sample chapter in `examples/pixel-binary-search/`. This is the English translation of the Chinese README, which remains the source of truth.
+Purpose: this skin's style, variables, illustration style and what it suits. Status: in the library (approval page `gallery.html`); sample chapter in `examples/pixel-binary-search/`. This is the English translation of the Chinese README, which remains the source of truth.
 
 **In one line**: the whole page is a handheld console, with the body text on a light green LCD screen. Four greens plus one magenta A button, notched pixel frames, whole-pixel hard shadows and stepped motion; illustrations are 2px-grid pixel people.
 
@@ -11,7 +11,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sou
 | `skin.css` | Variables (three colour schemes + five part colours) + component looks + the console shell + level-select styles for the contents page + intro styles |
 | `skin.js` | `window.VL_SKIN` (VT323 web font, illustration palette); the pixel drawing kit (attached to `VL.illus.kit`); the READY! level intro and header animation pause |
 | `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (square corners, whole-pixel shadows) |
-| `img/gb-dpad.svg` `img/gb-ab.svg` | The D-pad and A/B buttons on the console body (on both sides at wide widths; drawn for the AI course) |
+| `img/gb-dpad.svg` `img/gb-ab.svg` | The D-pad and A/B buttons on the console body (on both sides at wide widths) |
 | `fonts/fusion-pixel-12px-zh_hans.woff2` | Fusion Pixel 12px proportional, v2026.10.16, full Simplified Chinese set (about 0.9MB), local |
 | `fonts/OFL.txt` `fonts/LICENSES/` | Font licences (SIL OFL 1.1; including the licences of its upstreams Ark Pixel, Cubic 11 and Galmuri) |
 
@@ -88,10 +88,3 @@ Part colours: `--p1…p5`, each with a (light) / b (dark) / s (console body): li
 - VT323 is a web font; offline, digits fall back to Consolas.
 - `tools/illus-overlap.mjs` reports "an object held in hand in front of the body" as an overlap (in the pixel style, drawing the object in front of the torso is deliberate); ignore these.
 - Pixel people's eyes are one cell wide, and the thin `glasses` frame is a little cramped at small sizes; when you need a clearly bespectacled character, set `s` above 1.2.
-
-## Differences from the original AI course
-
-- Removed the Little Bit character, WORLD numbering, coins, stars and the little runner on the progress bar (these belong to the companion and rewards modules).
-- Removed the console nameplate text "DOT MATRIX · AI POCKET" and the small pixel objects at the end of sections.
-- Subheadings, buttons and labels changed from pixel font to clear sans-serif; the pixel font is kept only for h1 and chapter numbers.
-- All colours became variables; the sepia and dark schemes are new.

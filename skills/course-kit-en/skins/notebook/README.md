@@ -1,6 +1,6 @@
 # Skin notebook: hand-drawn notebook
 
-Purpose: this skin's style, variables, illustration style and what it suits. Source: the game design course's styles and illustration library. This is the English translation of the Chinese README, which remains the source of truth.
+Purpose: this skin's style, variables, illustration style and what it suits. This is the English translation of the Chinese README, which remains the source of truth.
 
 **In one line**: an open grid- or ruled-paper notebook, with stick figures and macaron colour blocks drawn by hand on the page, highlighter for the key points, and thick ink lines and hard shadows kept for diagrams, interaction boards and concept cards.
 
@@ -24,7 +24,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sou
 | `--font-body` | body text | LXGW WenKai (web) → KaiTi → Microsoft YaHei |
 | English pages | body Segoe UI or similar sans-serif; headings / buttons Patrick Hand | |
 
-Ma Shan Zheng is a calligraphic display face and is used only for h1. Subheadings and buttons use LXGW WenKai, which is clearer than in the game design course (see "Differences" below). Web fonts are inserted asynchronously by `vl-head.js`; offline, they fall back to the system KaiTi and the layout stays intact.
+Ma Shan Zheng is a calligraphic display face and is used only for h1. Subheadings and buttons use LXGW WenKai, which is clearer than a calligraphic face. Web fonts are inserted asynchronously by `vl-head.js`; offline, they fall back to the system KaiTi and the layout stays intact.
 
 ## Variables
 
@@ -63,10 +63,3 @@ Paper: `body[data-pat]` rotates by chapter number through grid / dots / ruled / 
 ## When it fits
 - Suits: introductory to intermediate concept courses where readers want an easy read and are willing to get hands-on (game design, psychology, product, education, writing…); illustrations mostly of people and everyday scenes.
 - Doesn't suit: courses heavy on data charts and precise figures (the hand-drawn wobble makes data charts look imprecise; for data charts remove every filter except on `.vl-dg-box`, or leave `filter` off the data SVG in the page); serious history or medicine (macaron colours and stick figures feel flippant); courses that rely mainly on real photos (`.vl-fig.photo` taped photos work, but for many photos choose another skin).
-
-## Differences from the original game design course
-- h2 / h3 / buttons / figure text changed from Ma Shan Zheng to LXGW WenKai (+ Patrick Hand for letters and digits), following "decorative fonts only for large titles"; Ma Shan Zheng is kept only for h1 and the big chapter number.
-- The why-it-works box changed from a "floating purple card with a hard shadow" to a light block (vertical rule + small tag + pale gradient), no longer a slide-deck card.
-- Box titles no longer start with emoji (🔬💡⚠️🎯) but with a text tag; text such as "one-line summary" and "example / counterexample" is no longer written in CSS `content`.
-- Added the dark and sepia colour schemes; concept cards gained a picture slot; picture-beside-text is top-aligned (the original was vertically centred).
-- Web fonts changed from CSS `@import` to asynchronous insertion by JS.

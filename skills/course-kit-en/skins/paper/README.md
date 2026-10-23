@@ -1,6 +1,6 @@
 # Skin paper: paper cut-out
 
-Purpose: this skin's style, variables, illustration style and what it suits. Source: the data science course's tower-climbing paper style and its paper cut-out illustration library (the AI course's W3 stage scene uses the same drawing style). Status: in the library; sample chapter in `examples/paper-survivorship/`. This is the English translation of the Chinese README, which remains the source of truth.
+Purpose: this skin's style, variables, illustration style and what it suits. Status: in the library; sample chapter in `examples/paper-survivorship/`. This is the English translation of the Chinese README, which remains the source of truth.
 
 **In one line**: a warm-white sheet of card stands in front of blue sky and grass, with the body text printed straight onto the card. Figures, interaction boards and concept cards are cut-out coloured card with a white trimmed edge and a soft shadow, and the heaviest ones sit on a backing layer of kraft paper. The contents page is a paper tower: chapter 1 is on the ground floor, and you climb up.
 
@@ -11,7 +11,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sou
 | `skin.css` | Variables (three colour schemes + five part colours, sky bands, tower walls) + component looks + the paper tower on the contents page + the sky band in the chapter header |
 | `skin.js` | `window.VL_SKIN` (web fonts, cut-paper filters `#pp-cut1…3`, fibre texture `#pp-fiber`, illustration palette) + the paper-cut drawing kit (replaces the drawing style of `VL.illus.kit` through the kit's skin drawing hook `VL_SKIN.illus`) + header animation pause / freeze |
 | `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (made from the notebook files of the same name, redrawn in card style) |
-| `img/` | Fibre textures `fiber.png` `fiber-soft.png`, background paper clouds `clouds.svg`, grass `hills.svg` (drawn for the original course) |
+| `img/` | Fibre textures `fiber.png` `fiber-soft.png`, background paper clouds `clouds.svg`, grass `hills.svg` |
 | `gallery.html` | Approval page |
 
 ## Fonts
@@ -23,7 +23,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sou
 | `--font-fig` | text inside illustrations and diagrams | system sans-serif, bold (KuaiLe is hard to read at small sizes) |
 | English pages | body Segoe UI or similar; headings Fredoka (web, OFL) | |
 
-No local fonts are bundled: the original course's woff2 files were subsets cut to that course's characters and would lack characters in another course. Offline, it falls back to system fonts and the layout stays intact.
+No local fonts are bundled: a woff2 subset cut to one course's characters would lack characters in another course. Offline, it falls back to system fonts and the layout stays intact.
 
 ## Variables
 
@@ -33,7 +33,7 @@ No local fonts are bundled: the original course's woff2 files were subsets cut t
 | `--page --panel --edge --sunk --kraft` | sky #cdeafa / card #fbf6ea / white trim #fffdf7 / #f3ecdc / kraft #dcc9a2 | dark blue ground, dark card | beige |
 | `--accent --accent2 --deep` | part colour (light, fills only) / secondary colour / part's dark colour for text | part colour blended into dark / part colour brightened | desaturated / dark colour blended with brown |
 | `--plate --plate-ink` | #fdfaf1 / #1f2638, unchanged in all three schemes | | #fffaf0 |
-| `--shadow-c` | one shadow colour rgba(40,60,90,.22) (the original course's brown and blue are merged) | | |
+| `--shadow-c` | one shadow colour rgba(40,60,90,.22) | | |
 | `--shadow-obj` | 5px white trim + kraft backing layer + distant shadow (interaction boards, numbered figures, badges) | | |
 | `--shadow-mid` `--shadow-soft` | 4px white trim + medium shadow (concept cards, carousel) / 3px white trim + soft shadow (Try it, wrap-up blocks) | | |
 | `--dg-*` | fills sky blue, grass green, coral, pale purple, light yellow, peach; selected #c8364f; boxes take the cut-paper filter `--dg-filter:url(#pp-cut1)`, lines don't | | |
@@ -61,7 +61,7 @@ Measured contrast (light, against the card #fbf6ea): ink 13.98, ink2 9.14, muted
 ## Own motion
 - In the header sky band a paper cloud drifts slowly (only at the full level; pauses outside the viewport; `?freeze=seconds` freezes it; absent at the lite / off levels and under reduced motion).
 - Popover panels drop in lightly and buttons sink like paper when pressed; all removed at the off level.
-- The original course's tower-climbing transition, paper page turns and scroll reveal were not extracted (they depend on course scripts); build them separately if needed.
+- The tower-climbing transition, paper page turns and scroll reveal are not part of the skin (they depend on course scripts); build them separately if needed.
 
 ## When it fits
 - Suits: light-hearted courses with a story and characters, for middle to high school readers; illustrations mostly of paper puppets and small scenes.
