@@ -1,59 +1,59 @@
-# 统一概念数据（js/concepts.js）
+# Unified concept data (js/concepts.js)
 
-用途：一份数据同时供概念卡、关系图、本章概念小图、相关章节、集邮册 / 图鉴、术语表、闪卡使用，避免几处写得不一致。示例：`demo/concepts.js`。
+Purpose: one data set serves concept cards, the concept map, the chapter mini map, related chapters, the stamp album / field guide, the glossary and flashcards, so the places never disagree. Example: `demo/concepts.js`. This is the English translation of the Chinese file of the same name, which remains the source of truth.
 
 ```js
 window.VL_CONCEPTS = {
-  items: [ /* 核心概念（含世界观原理） */ ],
-  links: [ /* 可选：集中写的关系边，和 items[].links 合并去重 */ ],
-  terms: [ /* 普通术语：进术语表、闪卡，不进关系图和图鉴 */ ],
+  items: [ /* core concepts (including worldview principles) */ ],
+  links: [ /* optional: relation edges written in one place, merged and deduplicated with items[].links */ ],
+  terms: [ /* ordinary terms: go into the glossary and flashcards, not the concept map or album */ ],
 };
 ```
 
-## items[]：概念
+## items[]: concepts
 
-| 字段 | 必填 | 说明 | 谁用 |
+| Field | Required | Description | Used by |
 |---|---|---|---|
-| `id` | 是 | 英文短横线，全课唯一；改了要同步各章 `data-concept` | 全部 |
-| `ch` | 是 | 所属章号（第一次讲透它的那一章） | 关系图分列、相关章节、图鉴分组、闪卡只出已读懂章 |
-| `zh` / `en` | 是 | 中英名称 | 概念卡、节点、术语表 |
-| `def` / `defEn` | 是 | 一句定义（≤60 字） | 概念卡 `.vl-cc-def`、术语表、闪卡背面 |
-| `plain` / `plainEn` | 建议 | 通俗地说的一句 | 概念卡"通俗地说"、集邮册释义、闪卡背面 |
-| `illus` | 建议 | 插画名（`VL.illus.add` 注册的） | 概念卡图位、邮票、图鉴格、闪卡背面 |
-| `by` / `byEn` | 否 | 出处：谁 · 哪本书 · 年份 | 概念卡 `.vl-cc-by` |
-| `aka` | 否 | 别名数组（中英都可） | 搜索、build-concepts 认术语 |
-| `kind` | 否 | `"concept"`（默认）或 `"principle"`（世界观原理，content-rules.md 一D） | 节点、图鉴格用双线框；小签写"世界观原理" |
-| `badge` | 否 | `true` = 这一章的邮票用它的图；不写就用本章第一个概念 | 集邮册 |
-| `links` | 否 | `[{to, type}]`，从本概念出发的边 | 关系图、相关章节 |
+| `id` | yes | English kebab-case, unique across the course; if you change it, update `data-concept` in every chapter | everything |
+| `ch` | yes | Chapter number (the chapter that first teaches it fully) | map columns, related chapters, album grouping, flashcards (only chapters already understood) |
+| `zh` / `en` | yes | Chinese and English names | concept cards, nodes, glossary |
+| `def` / `defEn` | yes | One-sentence definition (≤60 Chinese characters; for English about 40 words at most) | concept card `.vl-cc-def`, glossary, back of flashcards |
+| `plain` / `plainEn` | recommended | One sentence in plain words | the "In plain words" line on the concept card, stamp-album definition, back of flashcards |
+| `illus` | recommended | Illustration name (registered with `VL.illus.add`) | concept card picture slot, stamp, album cell, back of flashcards |
+| `by` / `byEn` | no | Source: who · which book · year | concept card `.vl-cc-by` |
+| `aka` | no | Array of alternative names (Chinese or English) | search; build-concepts uses it to recognise terms |
+| `kind` | no | `"concept"` (default) or `"principle"` (worldview principle, content-rules.md 1D) | nodes and album cells get a double border; the tag reads "Worldview principle" |
+| `badge` | no | `true` = this chapter's stamp uses its picture; omitted = the chapter's first concept | stamp album |
+| `links` | no | `[{to, type}]`, edges leaving this concept | concept map, related chapters |
 
-## 关系边
+## Relation edges
 
-`{from, to, type}`，写在 `items[i].links`（from = 这个概念）或顶层 `links`。
+`{from, to, type}`, written in `items[i].links` (from = this concept) or in the top-level `links`.
 
-| type | 中文 | 方向的意思 | 信息栏里怎么说（对 from / 对 to） |
+| type | Meaning | What the direction means | Wording in the info panel (for from / for to) |
 |---|---|---|---|
-| `prereq` | 前置 | 先懂 from 才能懂 to | 接着能懂 / 先要懂 |
-| `explains` | 解释 | from 给出 to 背后的原理 | 它能解释 / 背后的原理 |
-| `applies` | 应用 | from 用在 to 上（to 是 from 的一个应用场景） | 用在 / 用到了 |
-| `contrast` | 对照 | 不分方向，两者对照或有张力 | 对照 |
+| `prereq` | prerequisite | understand from before you can understand to | then you can understand / needs first |
+| `explains` | explains | from gives the principle behind to | it can explain / the principle behind it |
+| `applies` | applies | from is used on to (to is an application of from) | used in / makes use of |
+| `contrast` | contrast | no direction; the two contrast or are in tension | contrasts with |
 
-也认中文 `前置 / 解释 / 应用 / 对照`。指向不存在的 id 会在控制台警告并丢掉，`build-concepts.mjs` 报 ✗。
+The Chinese names `前置 / 解释 / 应用 / 对照` are also accepted. An edge pointing to an id that doesn't exist triggers a console warning and is dropped, and `build-concepts.mjs` reports ✗.
 
-## terms[]：普通术语
+## terms[]: ordinary terms
 
-`{id, ch, zh, en?, def, defEn?, aka?, anchor?}`。`anchor` 是章节页里那个术语元素的 id，术语表链接会跳到它。可以手写，也可以 `build-concepts.mjs --write` 从各章 `.vl-term[data-def]`、`<dfn title>` 汇进来（已经是核心概念的词不重复收）。
+`{id, ch, zh, en?, def, defEn?, aka?, anchor?}`. `anchor` is the id of the term's element in the chapter page, which the glossary link jumps to. Write them by hand, or let `build-concepts.mjs --write` collect them from each chapter's `.vl-term[data-def]` and `<dfn title>` (words that are already core concepts are not collected twice).
 
-## 章节页里怎么用
+## Using it in chapter pages
 
-| 写法 | 效果 |
+| Markup | Effect |
 |---|---|
-| `<aside class="vl-cc" data-concept="spacing"></aside>` | 整张概念卡由数据生成（名称、英文、出处、通俗地说、定义、图位） |
-| `<aside class="vl-cc" data-concept="spacing"><p class="vl-cc-eg">…</p></aside>` | 只写本章特有的例子，其余字段由数据补 |
-| `<p class="vl-try" data-try="t1" data-concept="spacing">` | 试试看第一次完成时，集邮册把这个概念收进图鉴（不写就取同一节里第一张 `.vl-cc[data-concept]`） |
-| `<div class="vl-minimap" data-ch="3"></div>` | 本章概念小图 |
-| `<nav class="vl-related"></nav>` | 相关章节放这里；不写就自动插在翻页前面 |
+| `<aside class="vl-cc" data-concept="spacing"></aside>` | The whole concept card is generated from the data (name, English name, source, plain words, definition, picture slot) |
+| `<aside class="vl-cc" data-concept="spacing"><p class="vl-cc-eg">…</p></aside>` | Write only this chapter's own example; the other fields come from the data |
+| `<p class="vl-try" data-try="t1" data-concept="spacing">` | The first time the Try it is completed, the stamp album adds this concept to the album (if omitted, the first `.vl-cc[data-concept]` in the same section is used) |
+| `<div class="vl-minimap" data-ch="3"></div>` | This chapter's concept mini map |
+| `<nav class="vl-related"></nav>` | Where the related chapters go; if omitted, they are inserted before the pager automatically |
 
-## 维护
+## Maintenance
 
-- 改完各章或数据，跑 `node kit/modules/build-concepts.mjs <课程绝对路径>`：查 data-concept 找不到、卡片和数据不一致、同一术语两种释义、边指向不存在的 id、缺图。
-- 英文版：`en`、`defEn`、`plainEn`、`byEn` 补齐即可，同一个文件，英文页自动取英文字段。
+- After changing chapters or data, run `node kit/modules/build-concepts.mjs <absolute course path>`. It checks for `data-concept` values that can't be found, cards that disagree with the data, one term with two definitions, edges pointing to ids that don't exist, and missing pictures.
+- English edition: just fill in `en`, `defEn`, `plainEn` and `byEn`. It is the same file, and English pages pick the English fields automatically.

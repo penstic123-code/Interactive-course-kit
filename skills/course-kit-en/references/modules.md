@@ -91,16 +91,7 @@ Example lines (same section, "selection bias"): ✓ "Oh — I only cast the net 
 
 **One concept data set, three uses**:
 
-```js
-// Illustrative. The current form: the course's js/concepts.js sets window.VL_CONCEPTS = {items, links, terms},
-// which kit/modules/vl-concepts.js reads into VL.concepts; fields in kit/modules/concepts-schema.md
-VL.concepts = [
-  { id:'core-loop', ch:2, zh:'核心循环', en:'Core loop',
-    def:'The set of actions a player repeats over and over…',   // = concept card "In plain words" = badge definition
-    illus:'cc-core-loop',                                        // = concept card picture = small picture in the album
-    links:[{to:'flow', type:'explains'}, {to:'feedback', type:'prereq'}] }
-];
-```
+The course's `js/concepts.js` sets `window.VL_CONCEPTS = {items, links, terms}`, which `kit/modules/vl-concepts.js` reads into `VL.concepts`. Fields and edge types are in `kit/modules/concepts-schema.md`; the API is in `kit/README.md` section 8.
 
 | Used in | Fields |
 |---|---|
@@ -108,7 +99,7 @@ VL.concepts = [
 | Concept map `map.html` | all; edge types: prerequisite, explains, applies, contrast (`prereq / explains / applies / contrast`) |
 | End-of-chapter "Related chapters" N5 | chapters derived from links |
 | Album / backpack (rewards) | zh, def, illus |
-| Glossary | can merge into the term data |
+| Glossary | `terms` |
 
 **How**: node = concept name + chapter number; clicking a node lights its neighbours and shows its def and "go to chapter N" beside it; colour by part with a text legend; world-view principles are registered as nodes too (content-rules.md 1D). The kit's `kit/modules/graph.js` (`VL.mapPage`, `VL.graph`, `VL.miniMap`, `VL.graphList`) does all of this; `kit/modules/build-concepts.mjs` builds and checks `concepts.js` from the chapters.
 

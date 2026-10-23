@@ -1,6 +1,6 @@
 # Interaction and motion
 
-Purpose: the interaction types to choose from, how to design an interaction that is fun without being hard, keyboard and touch, and the timing and switch rules for the four kinds of motion. The baseline is in `SKILL.md` sections 3 and 4; each component's structure is in `components.md`. **`kit/README.md` is the API reference**: the code for G6–G9, M1 cards (`.vl-flip`), M2 hotspots, K5 voting, E2 drag-divider and `.vl-pad` in the tables below is in `kit/vl-interact.js` (G1–G5 are only the `.vl-board` shell and control classes, with the stage written per chapter; M1 draw and then-run are not in the kit yet), documented in `kit/README.md` section 7 (互动组件 / interactive components).
+Purpose: the interaction types to choose from, how to design an interaction that is fun without being hard, keyboard and touch, and the timing and switch rules for the four kinds of motion. The baseline is in `SKILL.md` sections 3 and 4; each component's structure is in `components.md`. **`kit/README.md` is the API reference**: the code for G6–G10, M1 cards (`.vl-flip`), M2 hotspots, K5 voting, E2 drag-divider and `.vl-pad` in the tables below is in `kit/vl-interact.js`, and G11 live plots are in `kit/vl-plot.js`; both are documented in `kit/README.md` section 7 (互动组件 / interactive components). G1–G5 are only the `.vl-board` shell and control classes, with the stage written per chapter; M1 draw and then-run are not in the kit yet.
 
 ## 1. Interaction types
 
@@ -12,6 +12,7 @@ Purpose: the interaction types to choose from, how to design an interaction that
 | Drag a slider | Drag / arrow keys → live chart updates instantly | G2 | GD `ch05`, DS `ch05`, AI `ch08` | native |
 | Segmented switch / toggle | Click → change view, switch an effect | G1 | GD `ch05`, DS `ch01` list / map toggle | `aria-pressed` |
 | Drag onto axes / drag a point | Drag → drop point, reference circle, reading | G4 | GD `ch06` flow, DS `ch03` salary points | arrow keys (must add) |
+| Tap cells | Click → cross out / hit / highlight | G10 | sample chapter `pixel-binary-search` | arrow keys move between cells + Enter |
 | Take apart / assemble / slots | Click a part, then a slot → consequence for the whole | G5 | GD `ch01` take the house apart, `ch02` break the loop, `ch24` slots | click-select |
 | Sort / order / pair / judge | Drag or click-select → right/wrong + reason + graded hints | G6 | DS boss rounds, GD `ch21` judging | click-select, ↑↓ |
 | Think first / pick first / estimate / sketch a prediction / flip cards / guess then run | Commit first → reveal + the gap | M1 | AI `.guess`, `ch03` sketch pad, DS `ch04` | see M1 |

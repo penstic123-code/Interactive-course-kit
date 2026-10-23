@@ -382,9 +382,9 @@ notebook 皮肤：案卷 = 牛皮纸文件夹 + 标签；报纸 = 报头双线�
 - 投票：`aria-pressed`，可改票，存 `<id>-vote-<文件名>-<data-key>`；单独用 `<div class="vl-vote" data-key="…" data-options="A|B">` 也行。事件 `vl:vote {key, i, option}`、`vl:philo {i}`。JS：`VL.vote(el, {key, options})` → `{pick, option, on(fn)}`；`VL.philo(el)` → `{go(i), vote}`。
 
 ### G10 选格子 `VL.cells`
-猜数、选座位、日历、棋盘这类"一排排可点的格子"。结构和键盘在 kit，外观归皮肤（`.vl-cell` 及状态类，皮肤的 `interact.css` 可覆盖）。容器会被加上 `.vl-cells` 和 `role="group"`，`aria-label` 由页面自己写在容器上。
+猜数、选座位、日历、棋盘这类"一排排可点的格子"。结构和键盘在 kit，外观归皮肤（`.vl-cell` 及状态类，皮肤的 `interact.css` 可覆盖）。容器会被加上 `.vl-cells` 和 `role="group"`，用 `name` 选项给容器写 `aria-label`（如"1 到 100 的数字格"）；不写 `name` 且容器没有 `aria-label` / `aria-labelledby` 时按页面语言补默认说明，已有的不覆盖。
 ```js
-const g = VL.cells(document.getElementById("c03-grid"), { n: 100, cols: 10, label: i => i + 1,
+const g = VL.cells(document.getElementById("c03-grid"), { n: 100, cols: 10, label: i => i + 1, name: "1 到 100 的数字格",
   onPick: (i, cell) => { g.mark(i, "is-last"); } });
 g.mark(41, "is-out");   g.mark(41, "is-out", false);   g.reset();   g.get(0);   g.cells
 ```

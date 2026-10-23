@@ -1,97 +1,97 @@
-# 皮肤 pixel · 掌机像素
+# Skin pixel: handheld pixel
 
-用途：本皮肤的风格、变量、插画画法和适用场合。来源：AI 课第一篇（掌机世界）的样式和像素插图库。状态：已入库（验收页 `gallery.html`）；样板章见 `examples/pixel-binary-search/`。
+Purpose: this skin's style, variables, illustration style and what it suits. Source: the style and pixel illustration library of the AI course's first part (the handheld world). Status: in the library (approval page `gallery.html`); sample chapter in `examples/pixel-binary-search/`. This is the English translation of the Chinese README, which remains the source of truth.
 
-**一句话**：整页是一台掌机，正文排在浅绿液晶屏上；四阶绿配一个洋红 A 键，缺角像素框、整格硬投影、阶梯动效，插画是 2px 网格的像素小人。
+**In one line**: the whole page is a handheld console, with the body text on a light green LCD screen. Four greens plus one magenta A button, notched pixel frames, whole-pixel hard shadows and stepped motion; illustrations are 2px-grid pixel people.
 
-## 文件
+## Files
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 + 机身外壳 + 目录页选关样式 + 开场样式 |
-| `skin.js` | `window.VL_SKIN`（VT323 网络字体、插画配色）；像素绘制工具（接到 `VL.illus.kit` 上）；关卡开场 READY! 与题头动画暂停 |
-| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（方角、整格投影） |
-| `img/gb-dpad.svg` `img/gb-ab.svg` | 机身上的十字键和 A/B 键（宽屏两侧，AI 课自绘） |
-| `fonts/fusion-pixel-12px-zh_hans.woff2` | 缝合像素 Fusion Pixel 12px 比例版 v2026.10.16 简中全量（约 0.9MB），本地 |
-| `fonts/OFL.txt` `fonts/LICENSES/` | 字体授权（SIL OFL 1.1；含其上游 Ark Pixel、Cubic 11、Galmuri 的授权） |
+| `skin.css` | Variables (three colour schemes + five part colours) + component looks + the console shell + level-select styles for the contents page + intro styles |
+| `skin.js` | `window.VL_SKIN` (VT323 web font, illustration palette); the pixel drawing kit (attached to `VL.illus.kit`); the READY! level intro and header animation pause |
+| `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (square corners, whole-pixel shadows) |
+| `img/gb-dpad.svg` `img/gb-ab.svg` | The D-pad and A/B buttons on the console body (on both sides at wide widths; drawn for the AI course) |
+| `fonts/fusion-pixel-12px-zh_hans.woff2` | Fusion Pixel 12px proportional, v2026.10.16, full Simplified Chinese set (about 0.9MB), local |
+| `fonts/OFL.txt` `fonts/LICENSES/` | Font licences (SIL OFL 1.1; including the licences of its upstreams Ark Pixel, Cubic 11 and Galmuri) |
 
-## 适合什么课
+## What courses it suits
 
-- 适合：计算、编程、算法、游戏化的课；初中到成人；章节像"关卡"的课的开头部分。
-- 不太适合：严肃历史、医学、人文田野；以真实照片为主的课；需要大量细腻插画的课（像素人表情和细节有限）。
+- Suits: computing, programming, algorithms and gamified courses; middle school to adult; the opening part of a course whose chapters feel like "levels".
+- Doesn't suit: serious history, medicine, humanities fieldwork; courses based mainly on real photos; courses needing lots of fine illustration (pixel people have limited expression and detail).
 
-## 字体
+## Fonts
 
-| 变量 | 用在 | 字体 |
+| Variable | Used for | Font |
 |---|---|---|
-| `--font-display` | **只用于** h1、章号徽记、大章号角标、开场标题 | Fusion Pixel 12px（本地）→ 系统黑体。字号保持 12 的整数倍（36 / 24 / 96） |
-| `--font-body` = `--font-label` = `--font-hand` | 正文、小标题、按钮、标签、图中字 | 苹方 / 微软雅黑 / Noto Sans SC（系统黑体，清晰） |
-| `--font-mono` | 数字读数、代码、用时、计数 | VT323（Google Fonts 网络字体，OFL）→ Consolas |
-| 英文页 | 正文 Segoe UI 等无衬线 | |
+| `--font-display` | **only** h1, chapter badge, big chapter-number corner mark, intro title | Fusion Pixel 12px (local) → system sans-serif. Keep sizes at integer multiples of 12 (36 / 24 / 96) |
+| `--font-body` = `--font-label` = `--font-hand` | body text, subheadings, buttons, labels, text in figures | PingFang / Microsoft YaHei / Noto Sans SC (system sans-serif, clear) |
+| `--font-mono` | numeric readouts, code, reading time, counters | VT323 (Google Fonts web font, OFL) → Consolas |
+| English pages | body Segoe UI or similar sans-serif | |
 
-## 变量
+## Variables
 
-| 组 | 亮 | 暗 | 护眼 |
+| Group | Light | Dark | Sepia |
 |---|---|---|---|
 | `--ink` `--ink2` `--muted` | #122412 / #2b3f25 / #3a4d33 | #dcebb4 / #c3d69a / #b3c78c | #2a2614 / #433c22 / #4f472c |
-| `--page`（机身）`--panel`（液晶）`--edge` `--sunk` | 篇机身色 / #eef3d4 / #f7faea / #e3ebc4 | #1d2024 / #162416 / #1f321f / #122012 | #cfc3a8 / #f3ead0 / #f9f3df / #ebe0c0 |
-| `--accent`（浅，做底）`--accent2`（深，做底配 `--on2` 字）`--deep`（写字） | 篇浅色 / 篇深色 / 篇深色压暗 | 浅色混深底 / 篇浅色（配深字）/ 篇浅色 | 降饱和 |
-| `--focus` | #9b2257 洋红虚线 | #ff7fb5 | #9b2257 |
-| `--plate` `--plate-ink` | #f5f8e3 / #0f380f | 同亮 | #fbf6e4 / #0f380f |
-| 常量 | 四阶绿 `--gb0…gb3` #0f380f #306230 #8bac0f #9bbc0f；A 键 `--gbA` #9b2257 | | |
-| 形状 | `--stroke` 3px、`--radius` 0、`--px-f` / `--px-f3`（四条整格投影拼成的缺角描边）、`--shadow-obj` 8px 8px 0 | | |
-| 动效 | `--ease: steps(4)`、`--steps: 4`、`--dur-fb` .2s | | |
+| `--page` (console body) `--panel` (LCD) `--edge` `--sunk` | part body colour / #eef3d4 / #f7faea / #e3ebc4 | #1d2024 / #162416 / #1f321f / #122012 | #cfc3a8 / #f3ead0 / #f9f3df / #ebe0c0 |
+| `--accent` (light, for fills) `--accent2` (dark, for fills with `--on2` text) `--deep` (for text) | part light colour / part dark colour / part dark colour darkened | light colour blended into dark / part light colour (with dark text) / part light colour | desaturated |
+| `--focus` | #9b2257 magenta dashed | #ff7fb5 | #9b2257 |
+| `--plate` `--plate-ink` | #f5f8e3 / #0f380f | same as light | #fbf6e4 / #0f380f |
+| Constants | four greens `--gb0…gb3` #0f380f #306230 #8bac0f #9bbc0f; A button `--gbA` #9b2257 | | |
+| Shape | `--stroke` 3px, `--radius` 0, `--px-f` / `--px-f3` (a notched outline made of four whole-pixel shadows), `--shadow-obj` 8px 8px 0 | | |
+| Motion | `--ease: steps(4)`, `--steps: 4`, `--dur-fb` .2s | | |
 
-篇章色：`--p1…p5` 的 a（浅）/ b（深）/ s（机身）：青柠绿、薄荷、琥珀、莓粉、灰蓝；同篇各章浅色色相 ±18°（`--vl-dh`）。液晶点阵按 `data-pat` 轮换：细网格 / 网点 / 横扫描线 / 粗网格。
+Part colours: `--p1…p5`, each with a (light) / b (dark) / s (console body): lime, mint, amber, berry pink, grey-blue; the light colour's hue varies ±18° within a part (`--vl-dh`). The LCD dot pattern rotates by `data-pat`: fine grid / dots / horizontal scan lines / coarse grid.
 
-## 对比度（脚本实测，三套配色的最小值）
+## Contrast (measured by script, minimum across the three schemes)
 
-| 项 | 亮 | 暗 | 护眼 |
+| Item | Light | Dark | Sepia |
 |---|---|---|---|
-| 正文 / 次要 / 注释（对 panel、edge、sunk、试试看底） | ≥9.15 / — / ≥7.35 | ≥8.28 / — / ≥7.08 | ≥8.33 / — / ≥7.00 |
-| 选中态（浅字配深绿 / 暗色下深字配篇浅色） | 6.39 | ≥10.1 | — |
-| A 键白字 / 禁用按钮 | 7.61 / 5.05 | 同 | 同 |
-| `--on2` 字配篇深色（章号、节号、小签） | ≥6.56 | ≥10.1 | ≥7.26 |
-| 图中字 plate-ink / 图注 | 12.19 / 10.36 | 同 | 同 |
-| `--q1…q6` 对 panel / plate | ≥4.75 | — | ≥4.75 |
-| `--focus` 对 page / panel（要求 ≥3） | ≥4.28 | ≥6.9 | ≥4.36 |
+| Body / secondary / notes (on panel, edge, sunk, Try-it ground) | ≥9.15 / — / ≥7.35 | ≥8.28 / — / ≥7.08 | ≥8.33 / — / ≥7.00 |
+| Selected state (light text on dark green / dark text on the part's light colour in dark) | 6.39 | ≥10.1 | — |
+| White text on the A button / disabled button | 7.61 / 5.05 | same | same |
+| `--on2` text on the part's dark colour (chapter number, section number, small tags) | ≥6.56 | ≥10.1 | ≥7.26 |
+| Text in figures plate-ink / captions | 12.19 / 10.36 | same | same |
+| `--q1…q6` on panel / plate | ≥4.75 | — | ≥4.75 |
+| `--focus` on page / panel (≥3 required) | ≥4.28 | ≥6.9 | ≥4.36 |
 
-## 谁重谁轻
+## What is heavy and what is light
 
-| 重（缺角像素框 + 整格投影） | 中（3px 方框） | 轻 |
+| Heavy (notched pixel frame + whole-pixel shadow) | Medium (3px square frame) | Light |
 |---|---|---|
-| 互动台（另加一圈篇色内框，屏中屏）、编号图与概念图解、概念卡（左侧 12px 篇色块）、测验卡、A 键按钮、翻页 | 例子卡、误区、两栏对比、文档道具、翻牌 | 原理框（一列像素竖线 + 小签）、支线 / 发明故事（虚线存档槽，展开变实线）、要点（虚线）、先猜后揭晓（虚线） |
+| Interaction boards (with an extra inner frame in the part colour, a screen inside the screen), numbered figures and concept diagrams, concept cards (12px block of the part colour on the left), quiz cards, A-button buttons, pager | Example cards, misconceptions, two-column comparison, document props, flip cards | Why-it-works box (a column of pixel vertical rules + small tag), side paths / invention stories (dashed save slot, solid when open), key points (dashed), guess-then-reveal (dashed) |
 
-## 插画画法（skin.js 的像素绘制工具）
+## Illustration style (the pixel drawing kit in skin.js)
 
-- 接口照 `references/skin-contract.md` 第三节：`person / hands / holding / feetY / ground / item / bubble / T / arrow / eye / C / reset`，另给 `R F L sprite icon chair desk ICONS`。
-- **几何和 kit 火柴人一致**：x,y = 头部中心，脚底 = y + 64·s，`ground()` 默认 126；给笔记本写的插画坐标原样能用（验收页的插画就是笔记本的那几张，没改坐标）。
-- 人物：方块脑袋 + 圆柱身体 + 描边手臂 + 裤子鞋子。同一张图第 k 个人依次换装：短发 → 鸭舌帽 → 长发 → 毛线帽 → 礼帽，衣服颜色也轮换。坐姿自带凳子，凳腿落地；`look:-1` 整个人镜像（五官不翻）；`glasses` 画细框，眼睛在框里。
-- `holding()` 先画物件，再把两只手压在物件两侧；物件 book box cup phone die star coin，外加 robot doc bulb cat dog 等像素图标。
-- 气泡是像素描边框 + 台阶收窄的尾巴，尾尖对准说话人；尾巴从框外画起，不压框里的字。尾尖在框下 / 框上就从底边 / 顶边伸出，在框左右两侧（说话人站在旁边）就从左 / 右边伸出。字用 `T` 写在文字层（清晰黑体，≥12）。
-- 插画组默认描边 ink 3.5（像素块自己 `stroke="none"`），所以页面里手写的 `<circle>` `<path>` 也照样有线。
+- The interface follows section 3 of `references/skin-contract.md`: `person / hands / holding / feetY / ground / item / bubble / T / arrow / eye / C / reset`, plus `R F L sprite icon chair desk ICONS`.
+- **Geometry matches the kit's stick figures**: x,y = head centre, feet = y + 64·s, `ground()` defaults to 126. Illustration coordinates written for notebook work unchanged (the pictures on the approval page are notebook's own, with no coordinate changes).
+- People: block head + cylinder body + outlined arms + trousers and shoes. Within one picture the k-th person changes outfit in turn: short hair → baseball cap → long hair → beanie → top hat, and clothing colours rotate too. Sitting comes with a stool whose legs reach the ground; `look:-1` mirrors the whole person (facial features not flipped); `glasses` draw a thin frame with the eyes inside it.
+- `holding()` draws the object first, then presses the two hands on either side of it. Objects are book box cup phone die star coin, plus pixel icons such as robot doc bulb cat dog.
+- Speech bubbles are pixel-outlined boxes with a stepped, narrowing tail, the tip aimed at the speaker. The tail is drawn from outside the box and never covers text inside it. A tip below or above the box comes out of the bottom or top edge; a tip at the left or right (the speaker standing beside it) comes out of that edge. Text is written with `T` in the text layer (clear sans-serif, ≥12).
+- The illustration group has a default ink 3.5 stroke (pixel blocks themselves are `stroke="none"`), so a `<circle>` or `<path>` written by hand in the page also gets a line.
 
-## 专属动效（都受 `vl-fx-full / lite / off` 控制）
+## Own motion (all controlled by `vl-fx-full / lite / off`)
 
-| 动效 | 规矩 |
+| Motion | Rule |
 |---|---|
-| 关卡开场：浅绿全屏 "第 N 章 · 章名 · READY!"，阶梯收缩 | 每会话每章一次；点一下或按任意键跳过；lite 0.6s、full 1.4s；off、减少动态、无头浏览器、`?freeze=` 时不播 |
-| 题头插画两格上下跳 `steps(2)` | 只在全开档；题头离开视口暂停 |
-| 按钮按下整格下沉、弹层 / 揭晓 / 徽章 `steps(3–5)` 弹出、试试看完成时闪两下 | 反馈动效 ≤300ms；off 档由 kit 全局清空 |
-| `?freeze=秒` | 所有动画暂停（截图用） |
+| Level intro: a full-screen light green "Chapter N · chapter name · READY!" that shrinks in steps | Once per chapter per session; click or press any key to skip; 0.6s at lite, 1.4s at full; not played at off, under reduced motion, in headless browsers, or with `?freeze=` |
+| Header illustration hops two frames up and down `steps(2)` | Full level only; pauses when the header leaves the viewport |
+| Buttons sink a whole pixel when pressed; popovers / reveals / badges pop in with `steps(3–5)`; Try it blinks twice on completion | Feedback motion ≤300ms; cleared globally by the kit at the off level |
+| `?freeze=seconds` | Pauses all animation (for screenshots) |
 
-## 已知问题
+## Known issues
 
-- 暗色只给了变量，未精调（用户暂缓暗色）；暗色下机身框和液晶对比偏低。
-- 目录页只把章节卡改成"关卡方块 + 点阵分隔线"，没有画成真正的选关地图路线。
-- Fusion Pixel 简中全量约 0.9MB；整课只在 h1 用，可以按全课用字裁剪（做法见 `skin-contract.md` 第一节"字体规则"）。
-- VT323 是网络字体，离线时数字退到 Consolas。
-- `tools/illus-overlap.mjs` 会把"拿在手里的物件压在人物身前"报成重叠（像素画法里物件画在躯干前面是故意的），这类可以忽略。
-- 像素人眼睛只有一格宽，`glasses` 的细框在小尺寸下略挤；需要清楚的眼镜人物时把 `s` 设到 1.2 以上。
+- Dark has variables only and is not fine-tuned (the user put dark on hold); in dark the console frame and LCD have rather low contrast.
+- The contents page only turns chapter cards into "level blocks + dot-matrix dividers"; it is not drawn as a true level-select map route.
+- The full Simplified Chinese Fusion Pixel is about 0.9MB; the whole course uses it only for h1, so it can be subset to the course's characters (see "Font rules" in section 1 of `skin-contract.md`).
+- VT323 is a web font; offline, digits fall back to Consolas.
+- `tools/illus-overlap.mjs` reports "an object held in hand in front of the body" as an overlap (in the pixel style, drawing the object in front of the torso is deliberate); ignore these.
+- Pixel people's eyes are one cell wide, and the thin `glasses` frame is a little cramped at small sizes; when you need a clearly bespectacled character, set `s` above 1.2.
 
-## 与 AI 课原版的差异
+## Differences from the original AI course
 
-- 去掉小比特角色、WORLD 标号、金币、星星、进度条上奔跑的小人（归陪伴角色和激励模块）。
-- 机身铭牌字 "DOT MATRIX · AI POCKET" 去掉；节末像素小物件去掉。
-- 小标题、按钮、标签从像素字改成清晰黑体；像素字只留给 h1 和章号。
-- 颜色全部改成变量；新增护眼、暗色两套配色。
+- Removed the Little Bit character, WORLD numbering, coins, stars and the little runner on the progress bar (these belong to the companion and rewards modules).
+- Removed the console nameplate text "DOT MATRIX · AI POCKET" and the small pixel objects at the end of sections.
+- Subheadings, buttons and labels changed from pixel font to clear sans-serif; the pixel font is kept only for h1 and chapter numbers.
+- All colours became variables; the sepia and dark schemes are new.

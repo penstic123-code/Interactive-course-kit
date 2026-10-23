@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="../../kit/vl-interact.css">
 <link rel="stylesheet" href="skin.css">
 <link rel="stylesheet" href="interact.css">
+<link rel="stylesheet" href="../../kit/vl-plot.css">
 <script src="skin.js"></script>
 <script src="../../kit/vl-head.js"></script>
 <script>
@@ -188,6 +189,36 @@
     <div class="vl-ans">想法。</div>
   </div>
 
+  <div id="gl-new">
+  <div class="vl-sec"><h2>立场卡、选格子和活图</h2></div>
+  <p>立场卡：先表态，再翻看不同立场，最后留一个开放问题。</p>
+  <div class="vl-philo" data-key="gl-philo">
+    <div class="vl-philo-slide" data-t="问题">
+      <p class="vl-philo-q">一个只会背答案的机器，算“懂”吗？</p>
+      <div class="vl-vote" data-options="算|不算|说不清"></div>
+    </div>
+    <div class="vl-philo-slide" data-t="看行为">
+      <p>能稳定答对各种问法，就没有理由再要求别的：“懂”不过是一种表现。</p>
+      <p class="vl-src">这是图灵 1950 年论文里的思路。</p>
+    </div>
+    <div class="vl-philo-slide" data-t="看内部">
+      <p>只会按手册对照符号，哪怕回答无误，也没有理解过任何一个符号的意思。</p>
+      <p class="vl-src">这是塞尔 1980 年“中文屋”论证的看法。</p>
+    </div>
+    <div class="vl-philo-slide" data-t="留给你">
+      <p>如果有一天它答得比你还好，你会怎么判断它有没有懂？</p>
+      <textarea class="vl-note" data-save="gl-philo" placeholder="写下你的想法。"></textarea>
+    </div>
+  </div>
+  <p>选格子：心里想一个 1 到 30 的数，点格子来猜；划掉的是排除过的，最近一次有标记，猜中会高亮。</p>
+  <div id="gl-grid" aria-label="1 到 30 的猜数格，目标数在其中"></div>
+  <p id="gl-gmsg" aria-live="polite">点一个格子开始猜。</p>
+  <p>活图：拖滑块，柱子随之变化；虚线是参考线。</p>
+  <p><label>每次排除的比例 <input type="range" id="gl-pr" min="10" max="90" step="10" value="50"> <output id="gl-pro">50%</output></label></p>
+  <figure class="vl-fig"><div id="gl-plot1"></div><figcaption>从 100 个候选开始，每猜一次剩下多少。</figcaption></figure>
+  <figure class="vl-fig"><div id="gl-plot2"></div><figcaption>两种猜法的剩余候选数对比（折线）。</figcaption></figure>
+
+  </div>
   <div class="vl-sec"><h2>收束、练习和笔记</h2></div>
   <div class="vl-withimg">
     <span data-illus="gl-end"></span>
@@ -206,7 +237,7 @@
   <details class="vl-side" data-kind="more">
     <summary><b>还没摆进来的组件</b><small>代码并入 kit 后补到本页</small></summary>
     <ul class="gl-todo">
-      <li>K2 并列卡阵、K5 立场卡、T6 漫画分镜、T7 读数条与图例、G2–G9 招牌互动骨架：见 kit/README.md 第七节。</li>
+      <li>K2 并列卡阵、T6 漫画分镜、T7 读数条与图例、G2–G9 招牌互动骨架：见 kit/README.md 第七节。</li>
       <li>其余图解模板（时间轴、树、维恩、天平、网络、光谱、层叠）：见 kit/README.md 第九节。</li>
       <li>阅读激励外观、陪伴角色、概念关系图：见 kit/README.md 第八节。</li>
       <li>目录页学习地图：见 starter/index.html。</li>
@@ -216,6 +247,8 @@
 <script src="../../kit/vl.js"></script>
 <script src="../../kit/diagrams.js"></script>
 <script src="../../kit/illus.js"></script>
+<script src="../../kit/vl-interact.js"></script>
+<script src="../../kit/vl-plot.js"></script>
 <script>
 /* 插画样张：站、坐、拿东西、指东西、说话，人物自动换装 */
 VL.illus.add("gl-hero", "一个人坐在椅子上捧着一本书", k => k.ground() + k.person(80, 62, { legs: "sit", arms: "hold", face: "smile", look: 1 }) + k.holding(80, 62, { look: 1 }, "book"));
@@ -242,6 +275,30 @@ VL.quiz("#gl-quiz", [
 VL.quiz("#gl-quiz2", [
   { q: "拖卡作答：把对的卡拖进答题位。", opts: ["对的卡", "错的卡"], a: 0, why: "解析。" },
 ], { mode: "drag", progress: false });
+</script>
+<script>
+/* 立场卡、选格子、活图样张 */
+(function () {
+  const target = 17, g = VL.cells(document.getElementById("gl-grid"), { n: 30, cols: 10, label: i => i + 1,
+    onPick: (i, cell) => {
+      const msg = document.getElementById("gl-gmsg");
+      g.cells.forEach((c, k) => c.classList.remove("is-last"));
+      if (i + 1 === target) { g.mark(i, "is-hit"); msg.textContent = "猜中了，就是 " + target + "。"; return; }
+      const lo = i + 1 < target;
+      g.cells.forEach((c, k) => { if ((lo && k < i) || (!lo && k > i)) c.classList.add("is-out"); });
+      g.mark(i, "is-last");
+      msg.textContent = (i + 1) + " 太" + (lo ? "小" : "大") + "了，" + (lo ? "左边" : "右边") + "的格子可以划掉。";
+    } });
+  const r = document.getElementById("gl-pr"), out = document.getElementById("gl-pro");
+  const series = p => { const a = [100]; for (let k = 1; k < 8; k++) a.push(Math.max(1, Math.round(a[k - 1] * (1 - p / 100)))); return a; };
+  const p1 = VL.plot("#gl-plot1", { type: "bar", height: 200, x: { label: "猜了几次", n: 8, from: 0 }, y: { label: "剩下几个数", min: 0, max: 100 },
+    series: [{ name: "剩余", data: series(50), labels: true }], marks: [{ y: 50, label: "一半" }], hi: 3,
+    aria: d => "每猜一次后剩下的数：" + d.series[0].data.join("、") });
+  r.addEventListener("input", () => { out.textContent = r.value + "%"; p1.set(series(+r.value)); });
+  VL.plot("#gl-plot2", { type: "line", height: 200, x: { label: "猜了几次", n: 8, from: 0 }, y: { label: "剩下几个数", min: 0, max: 100 },
+    series: [{ name: "猜中间", data: series(50) }, { name: "逐个猜", data: [100, 93, 86, 79, 72, 65, 58, 51] }],
+    marks: [{ x: 3, label: "第 3 次" }] });
+})();
 </script>
 </body>
 </html>

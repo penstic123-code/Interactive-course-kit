@@ -2,8 +2,8 @@
 // 用法：node sync-en.mjs          改完 kit/ skins/ tools/ starter/ 后跑一次
 //       node sync-en.mjs --check  只比较，不复制；有差异时退出码 1
 // 只同步这四个代码目录；SKILL.md 和 references/ 是两种语言各自的文档，不同步，改规则时两边手动对应修改。
-// 例外：kit/README.md（API 文档）英文版另有译本，同步时跳过，--check 也不算差异（见 SKIP）。
-//       改了中文 kit/README.md 后要同步改英文版 course-kit-en/kit/README.md。
+// 例外：这些说明文档（API 文档、起步说明、皮肤说明、概念数据说明）英文版另有译本，同步时跳过，--check 也不算差异（见 SKIP）。
+//       改了中文的这些文档后，要同步改英文版 course-kit-en 里的同名文件。
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -13,7 +13,10 @@ const ZH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EN = path.join(path.dirname(ZH), "course-kit-en");
 const DIRS = ["kit", "skins", "tools", "starter"];
 const CHECK = process.argv.includes("--check");
-const SKIP = new Set(["kit/README.md"]);   // 两种语言各写各的，不同步（路径相对 skill 根目录，用 / 分隔）
+const SKIP = new Set([
+  "kit/README.md", "kit/modules/concepts-schema.md", "starter/README.md",
+  "skins/notebook/README.md", "skins/paper/README.md", "skins/pixel/README.md", "skins/fieldbook/README.md",
+]);   // 两种语言各写各的，不同步（路径相对 skill 根目录，用 / 分隔）
 const skip = (root, f) => SKIP.has(path.relative(root, f).split(path.sep).join("/"));
 if (!fs.existsSync(EN)) { console.error("找不到 " + EN); process.exit(1); }
 

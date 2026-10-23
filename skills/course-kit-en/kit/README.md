@@ -16,6 +16,7 @@ This is the English translation of the Chinese `course-kit/kit/README.md`, which
 | `vl.js` | after `</main>` | Top bar, sections, carousels, terms, the components, quizzes, notes, pager |
 | `diagrams.js` | after vl.js | 12 concept diagram types (section 9) |
 | `vl-interact.js` + `vl-interact.css` | after vl.js / `<head>` | Interactive components (section 7); skin appearance in `skin/interact.css` |
+| `vl-plot.js` + `vl-plot.css` | after vl.js / `<head>` | Live plots `VL.plot` (section 7, "G11 Live plot"); load only when needed |
 | `modules/*.js` + `modules/modules.css` | see section 8 (`vl-concepts.js` must come before vl.js) | Optional modules; skin appearance in `skin/modules.css` |
 | `illus.js` | after vl.js | Illustration loader plus stick-figure toolkit |
 | `js/illus-chNN.js` | after illus.js | This chapter's illustration pack (`VL.illus.add`) |
@@ -37,7 +38,7 @@ Illustration mounting and figure numbering run on `DOMContentLoaded`, so figures
 <script src="js/illus-ch02.js"></script>
 <script>/* this chapter's interactions */</script>
 ```
-Starting a new course: generate it with `starter/new-course.mjs <absolute course folder path> <skin name> [--lang en]` (the skin name is required: notebook / paper / pixel / fieldbook). This copies `kit/` to `<course>/kit/` and the skin to `<course>/skin/`; see `starter/README.md`. Demo pages (their paths are written relative to the skill folder): `demo.html` basic components, `demo-interact.html` interactive components, `demo-diagrams.html` the 12 diagrams, `demo-en.html` an English page, `modules/demo-modules.html` optional modules.
+Starting a new course: generate it with `starter/new-course.mjs <absolute course folder path> <skin name> [--lang en]` (the skin name is required). This copies `kit/` to `<course>/kit/` and the skin to `<course>/skin/`, neither with demo pages; see `starter/README.md`. The demo pages exist only inside the skill, so look at them there (their paths are written relative to the skill folder): `demo.html` basic components, `demo-interact.html` interactive components, `demo-diagrams.html` the 12 diagrams, `demo-en.html` an English page, `modules/demo-modules.html` optional modules.
 
 ## 2. Configuration
 
@@ -58,7 +59,7 @@ window.VL_I18N = { zh: { "cc.tag": "关键词" }, en: { "cc.tag": "Key idea" } }
 ```
 - Chapter pages use `<body data-ch="N">` (if omitted, the chapter is found by file name in the chapter list). vl.js writes `body[data-part]` (which part), `body[data-pat]` (chapter number % 4, which skins use to vary the paper texture), `--vl-dh` (a small hue shift within a part, −18…+18) and `--vl-chnum` (the two-digit chapter number, which a skin can use as a corner mark).
 - Language: pages with `<html lang="en">` use the English table (`EN` in vl.js). Every interface string goes through `VL.t(key, Chinese default, …args)`, with `{0}{1}` in the template replaced by the arguments. English fields in the chapter list and contents page are `en` / `nameEn` / `descEn` / `whoEn`.
-- The top bar on English pages always has a "中文" (Chinese) button pointing to `../same-name file`. English-only courses (generated with `--lang en`) hide it in `css/style.css`; bilingual courses delete that rule. In a bilingual course the English pages live in `en/`, and their file names, ids, `data-save` and `data-try` match the Chinese pages (so progress and notes are shared between the two languages).
+- The top bar on English pages always has a "中文" (Chinese) button pointing to `../same-name file`. How an English-only course hides it, and how the `en/` pages of a bilingual course are laid out (file names, ids, `data-save` and `data-try` matching the Chinese pages), are in `starter/README.md` section 5.
 - Reader preferences have no course prefix and apply across courses: `vl-scheme` (light / dark / sepia) and `vl-fx` (auto / full / lite / off). They are written to `<html data-scheme>` and `html.vl-fx-full|lite|off`.
 
 ## 3. Writing the components
@@ -86,6 +87,8 @@ window.VL_I18N = { zh: { "cc.tag": "关键词" }, en: { "cc.tag": "Key idea" } }
 VL.illus.add("c02-hero", "alt：画面里有什么", k => k.ground() + k.person(60, 63, { arms: "hold", look: 1 }) + k.holding(60, 63, { look: 1 }, "phone"),
                                              k => k.T(150, 30, 14, "再来一局", "middle"));   // 4th argument: text layer (outside the filter group)
 VL.illus.svg(name)   VL.illus.mount(rootNode)   VL.illus.lib
+// Vertical or other proportions: 5th argument { vb: "0 0 140 200" } (default "0 0 200 140"). Work in the new canvas's coordinates and pass the ground y yourself as k.ground(y). A person's feet are at y + 64·s, so enlarge s to make the figure fill the picture.
+VL.illus.add("c02-face", "alt", k => k.ground(186) + k.person(70, 58, { s: 2 }), "", { vb: "0 0 140 200" });
 ```
 (Sample strings: "alt：画面里有什么" alt: what is in the picture; "再来一局" one more round.)
 `k` (= `VL.illus.kit`): `person(x,y,o)`, `hands(x,y,o)` (coordinates of both hands), `holding(x,y,o,object)` (draws the object between the two hands), `feetY(x,y,o)`, `ground(y=126)`, `T(x,y,fontSize,text,anchor)`, `eye`, `bubble(x,y,w,h,[tailTipX,tailTipY])`, `arrow(x1,y1,x2,y2)`, `item(kind,x,y)` (book box cup phone die star coin), `C` (palette), `reset()`.
@@ -97,19 +100,7 @@ The above is the kit's default (notebook) drawing style. A skin with a different
 `<figure class="vl-fig" id="fig-x">image<figcaption>caption</figcaption></figure>`: "Figure N" is written before the caption in order of appearance (don't write it by hand). In the text, `<a data-figref="fig-x" href="#fig-x">图</a>` is rewritten to "Figure N" automatically. Call `VL.figs()` after adding figures dynamically. Photos use `.vl-fig.photo`. Wrap wide tables and wide images in `.vl-scroll`.
 
 ### Concept diagrams (diagrams.js)
-There are 12 types (all options in section 9); the five most common are listed here. Each item in `nodes / layers / quads / rows` can carry `info` (HTML shown in the info line when selected) and `c` (colour number 1–6).
-```js
-VL.diagram.cycle(target, { nodes:[{name, eg, info}], center:"再来一局", numbered:true, caption, label, hint, select:true, onSelect(i, item) })   // "再来一局" = one more round
-VL.diagram.nested(target, { layers:[innermost to outermost], spin:true, caption })          // wide screens: leader-line labels on the right; narrow: numbered key
-VL.diagram.flow(target, { nodes:[…], dir:"auto|row|column", numbered:false })  // one row if it fits, otherwise a column
-VL.diagram.quadrant(target, { x:{name, lo, hi}, y:{name, lo, hi}, quads:[topLeft, topRight, bottomLeft, bottomRight], points:[{x:0–1, y:0–1, label}] })
-VL.diagram.compare(target, { a:{name, eg, mark:"✓"}, b:{…}, rows:[{k:"dimension compared", a:"…", b:"…", info}] })
-```
-- `target`: a `figure.vl-fig` (or a selector); if it is not a figure, a new one is created inside it. `caption` is used only when there is no `<figcaption>`. Returns `{el, svg, redraw(), select(i), selected}`. Selecting dispatches `vl:dgselect {i}` (clicking again deselects, i = −1).
-- Declarative form: `<figure class="vl-fig" data-diagram="cycle"><script type="application/json">{…}</script><figcaption>…</figcaption></figure>`.
-- Nodes are Tab-focusable; Enter / Space selects and the arrow keys move between nodes. With `select:false` the whole diagram is `role=img`. If `label` is not given, an aria-label is generated.
-- viewBox width = displayed width, so font sizes are screen sizes (names 19/17px, examples 15/14px). Text is laid out and its bounding box measured before boxes are drawn (padding ≥9px). The diagram redraws when fonts finish loading and when the width changes by more than 24px.
-- Classes and state classes available to skins: see section 9, "Classes available to skins".
+There are 12 types, written as `VL.diagram.<name>(target, config)` or declaratively with `<figure class="vl-fig" data-diagram="name">`. All the syntax, options, return values, keyboard behaviour and skin classes are in section 9.
 
 ### Example carousel
 ```html
@@ -149,7 +140,7 @@ The "Why it works" tag is added automatically (change it with `data-tag`). With 
 <details class="vl-side" data-kind="history|math|play|debate|source|extra|more"><summary><b>…</b><small>…</small></summary>…</details>
 ```
 (Sample text: "具体问题式钩子标题" a hook title phrased as a concrete question; "一句介绍：里面有什么" one line saying what is inside.)
-A type tag is added automatically (Invention story / History / Maths / Play a little longer / Debate / Original source / Extra practice / Going further; change it with `data-tag`), along with an "Expand ▾ / Collapse ▴" button. The content goes into `.vl-side-body`. **Collapsed by default**; the reader's open state is remembered (key `<id>-side-<file name>-<id or index>`). Inside you can put an evolution chain `ol.vl-chain > li` (arrows as `li.vl-chain-ar`; at ≤600px it stacks vertically with arrows pointing down) and a timeline `.vl-timeline > .vl-ev` (`.hasimg` with a picture, year in `b.vl-yr`).
+A type tag is added automatically (Invention story / History / Maths / Play a little longer / Debate / Original source / Extra practice / Going further; change it with `data-tag`), along with an "Expand ▾ / Collapse ▴" button. The content goes into `.vl-side-body`. **Collapsed by default**; the reader's open state is remembered (key `<id>-side-<file name>-<id or index>`). Inside you can put an evolution chain `ol.vl-chain > li` (arrows as `li.vl-chain-ar`; at ≤600px it stacks vertically with arrows pointing down; a node picture is an illustration slot `data-illus` or `<span class="vl-chain-img"><img …></span>` placed before the node text, at most 200px wide, 240px on narrow screens) and a timeline `.vl-timeline > .vl-ev` (`.hasimg` with a picture, year in `b.vl-yr`).
 
 ### Try it
 ```html
@@ -214,7 +205,7 @@ There are three schemes, `html[data-scheme="light|dark|sepia"]`, implemented by 
 
 ## 7. Interactive components (vl-interact.js / vl-interact.css)
 
-Purpose: HTML patterns and JS APIs for G6 hands-on tasks, P2 end-of-part review, G7 round-based mini-games, G8 step-through demos, G9 formula anatomy, E2 comparisons, M1 flip cards, M2 hotspot pictures, T6 comic strips, K9 document props, and K5 stance cards plus voting. Demo page `kit/demo-interact.html` (topic: reinforcement schedules).
+Purpose: HTML patterns and JS APIs for G6 hands-on tasks, P2 end-of-part review, G7 round-based mini-games, G8 step-through demos, G9 formula anatomy, E2 comparisons, M1 flip cards, M2 hotspot pictures, T6 comic strips, K9 document props, and K5 stance cards plus voting, G10 grid picker and G11 live plot (the first ten are in `vl-interact.js`, the live plot in `vl-plot.js`). Demo page `kit/demo-interact.html` (topic: reinforcement schedules).
 
 ### Loading
 
@@ -405,6 +396,47 @@ In the notebook skin: file = kraft folder + tab; news = masthead with double rul
 - One card at a time: tabs (stance names, `role=tablist`, ← → Home End), ◀ previous / next ▶, "2 / 4", swipe >50px. On a stance card, the top echoes "You chose: X" (if the reader has not voted, it says the first card is where to vote). All cards are expanded in print.
 - Voting: `aria-pressed`, the vote can be changed, saved to `<id>-vote-<file name>-<data-key>`. It also works on its own as `<div class="vl-vote" data-key="…" data-options="A|B">`. Events `vl:vote {key, i, option}`, `vl:philo {i}`. JS: `VL.vote(el, {key, options})` → `{pick, option, on(fn)}`; `VL.philo(el)` → `{go(i), vote}`.
 
+### G10 Grid picker `VL.cells`
+For "rows of clickable cells": number guessing, seats, calendars, boards. Structure and keyboard live in the kit; looks belong to the skin (`.vl-cell` and state classes). The container gets `.vl-cells` and `role="group"`. Use the `name` option to set its `aria-label`; without `name`, and if the container has no `aria-label` / `aria-labelledby`, a default is filled in by page language (an existing label is never overridden).
+```js
+const g = VL.cells(document.getElementById("c03-grid"), { n: 100, cols: 10, label: i => i + 1, name: "Numbers 1 to 100",
+  onPick: (i, cell) => { g.mark(i, "is-last"); } });
+g.mark(41, "is-out");   g.mark(41, "is-out", false);   g.reset();   g.get(0);   g.cells
+```
+State classes: `is-out` struck out, `is-last` just picked, `is-hit` hit, `is-sel` selected. Arrow keys / Home / End move between cells (one cell is tabbable), Enter / Space picks. Cells are `<button>`s. Note `label` is the per-cell text function, not the container name.
+
+### G11 Live plot `VL.plot`
+Bar charts, line charts (which can be mixed), distributions, growth curves and comparisons; dragging a slider redraws the plot. It is a separate module, loaded only when needed (courses that don't use it leave it out):
+```html
+<link rel="stylesheet" href="kit/vl-plot.css">      <!-- in <head>, after the skin -->
+<script src="kit/vl-plot.js"></script>              <!-- after vl.js, before page scripts -->
+<figure class="vl-fig"><div id="c03-plot"></div><figcaption>……</figcaption></figure>
+```
+```js
+const p = VL.plot("#c03-plot", {
+  type: "bar",                                  // default chart type "bar" | "line"; each series can override it with series[i].type (bars + lines mixed)
+  height: 220,                                  // svg height in px (excluding the y-axis name / legend above and the x-axis name below)
+  x: { label: "猜了几次", n: 11 },               // category axis: n cells (or cats:["Jan",…]); cell names default to the index (from: 1 counts from 1; fmt(i) customises)  ("猜了几次" = number of guesses)
+  y: { label: "剩下几个数", min: 0, max: 100 },   // without min/max it picks them automatically, rounds to tidy numbers and includes 0 (zero:false stops forcing 0)  ("剩下几个数" = numbers left)
+  series: [
+    { name: "猜中间", data: [100, 50, 24], labels: true },        // labels: write the value on top of the bar / at the point (can be a formatting function); if they don't fit, none are written for the whole series  ("猜中间" = guess the middle)
+    { name: "逐个猜", type: "line", data: [100, 99, 98] },        // a second line is automatically dashed with square dots; dash:false|true|"4 3", dots:true|false, fill:true draws an area  ("逐个猜" = guess one by one)
+  ],
+  marks: [{ y: 50, label: "一半" }, { x: 3, y: 12, label: "你猜的" }, { x: 7, label: "第 7 次" }],   // horizontal reference line / annotated point / vertical reference line (color changes the colour)  ("half", "your guess", "round 7")
+  hi: 2,                                        // highlight the bar (or point) at index 2; an array also works
+  aria: d => "每猜一次后剩下的数：" + d.series[0].data.join("、"),   // updates the svg aria-label on every redraw ("Numbers left after each guess: …"); generated automatically if omitted
+});
+range.addEventListener("input", () => p.set(newData));            // an array = replace the first series' data
+p.set({ series: [{ data: a }, { data: b }], marks: [], hi: null });  // merges series by index (names and colours kept); x / y can also be changed in part
+```
+- Returns `{ el, svg, set(data or partial config), draw(), destroy(), opts }`. Calling `VL.plot` again on the same container is the same as `set`. The container is an empty `<div>` (its contents are replaced); don't pass an `<svg>`.
+- The text of annotations (`label` in `marks`) is placed afresh on every redraw: it tries several positions (above, below, left, right and diagonals of a point; the two ends of a horizontal line, above and below; the two ends of a vertical line, left and right), picks the one overlapping bars, lines, points and other labels least, and keeps it inside the plot area. When nothing is clear, value labels (`labels`) give way. Keep label text short.
+- X axis: if there are bars or `cats` is given, it is a **category axis** (data goes one cell per index, and line points sit in the middle of the cell); with lines only it is a **numeric axis**, where `data` can be `[y, …]` (x = index) or `[[x, y], …]`, and `x.min / max` default to the data range. `x.ticks` / `y.ticks` can be customised: `[0, 50, 100]` or `[[0, "gift day"], [6, "half a year"]]`. `x.hidden` / `y.hidden` hide that axis's ticks. `null` is a gap (no bar is drawn; the line breaks).
+- **Text does not shrink on phones**: the viewBox width = the container's real pixel width (a ResizeObserver redraws), and font sizes are fixed pixels (`--vp-fs` for numbers, `--vp-fs-txt` for text, default 14px; the pixel skin uses 19 / 15px). When narrow, fewer ticks are drawn and category names are written every few cells; a custom tick that would collide with the previous one is skipped. Tick steps are 1 / 2 / 5 × 10ⁿ. The y-axis name, legend and x-axis name are HTML (above / below the plot) and wrap on narrow screens.
+- Colours: series default to `--q1…--q6` (`color` accepts any CSS colour or `var(--…)`), axes and text use `--ink` `--ink2`, the highlight uses `--accent` (`--vp-hi`); all of the `--vp-*` variables can be overridden on the page. Inside a `.vl-fig` it follows the picture board in dark and sepia. Colour is not the only signal: with several series a legend appears automatically (`legend:false` turns it off, `true` shows it even for one series), lines get dashes plus different dot shapes, the second group of bars onward get hatching, and the highlighted bar gets a heavier border.
+- The pixel skin (`VL_SKIN.name === "pixel"`; the container's `data-skin` is written by the script) uses `shape-rendering:crispEdges`. There is no redraw transition (dragging draws the final state directly), so reduced motion is not involved.
+- When the container leaves the page, the listener stops itself at the next size change; if you remove the whole block dynamically, calling `destroy()` is cleaner.
+
 ### Events at a glance
 
 | Event (all bubble) | When | detail |
@@ -547,7 +579,7 @@ Purpose: how to write the twelve concept diagrams and their options. Which one t
 ```html
 <link rel="stylesheet" href="kit/vl.css">
 <link rel="stylesheet" href="skin/skin.css">
-<link rel="stylesheet" href="skin/diagrams.css">   <!-- skin appearance for the seven newer diagrams (all four skins have one; the starter templates link it automatically) -->
+<link rel="stylesheet" href="skin/diagrams.css">   <!-- skin appearance for the later seven diagrams (types 6–12; all four skins have one; new-course.mjs links it automatically) -->
 …
 <script src="kit/vl.js"></script>
 <script src="kit/diagrams.js"></script>            <!-- after vl.js -->
@@ -717,7 +749,7 @@ Per type: `.vl-dg-ring` `.vl-dg-spin` (nested), `.vl-dg-cell` `.vl-dg-mid` `.vl-
 Text: `.vl-dg-t1` name / `.vl-dg-t2` example / `.vl-dg-t3` small text, `.vl-dg-k`, `.vl-dg-axname`, `.vl-dg-num`.
 States: `.is-on` (selected), `.is-near` (network neighbours, tree path), on the wrapper `.vl-dg.has-on` (everything else fades), `.vl-dg.is-level` (balance level); `[data-c="1…6"]`.
 
-A new skin should write a `diagrams.css` for the seven newer diagrams (based on `skins/notebook/diagrams.css`). Without it they still display: shapes carry a `fill="none" stroke="currentColor"` fallback, and structural styles such as fading and transitions are injected by diagrams.js (`<style id="vl-dg-css">`, with `:where()` to lower specificity so the skin can always override).
+A new skin should write a `diagrams.css` for the later seven diagrams (types 6–12, based on `skins/notebook/diagrams.css`). Without it they still display: shapes carry a `fill="none" stroke="currentColor"` fallback, and structural styles such as fading and transitions are injected by diagrams.js (`<style id="vl-dg-css">`, with `:where()` to lower specificity so the skin can always override).
 
 ### Implementation notes
 

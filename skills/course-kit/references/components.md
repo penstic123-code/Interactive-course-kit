@@ -540,7 +540,7 @@ G6–G9 的代码在 `kit/vl-interact.js`，写法见 kit/README.md 第七节；
 ### G10 选格子
 - **功能**：一排排可点的格子，读者点格子做选择，格子随之划掉、高亮或标出命中：猜数、选座位、日历、棋盘、抽样。
 - **用 / 不用**：选项本来就排成网格、位置有意义时用；只有三五个并列选项用按钮或 chip。手机上 10 列每格约 30px，格子多时减列。
-- **写法**：`VL.cells(容器, { n, cols, label, onPick })`，见 `kit/README.md` 第七节"G10 选格子"。正例：`examples/pixel-binary-search` 的 10×10 猜数格（页内实现，写法同理）。
+- **写法**：`VL.cells(容器, { n, cols, label, onPick, name })`（`name` 写容器的 `aria-label`，缺省按页面语言补默认），见 `kit/README.md` 第七节"G10 选格子"。正例：`examples/pixel-binary-search` 的 10×10 猜数格（页内实现，写法同理）。
 - **交互**：方向键走格、回车选中；状态类 `is-out / is-last / is-hit / is-sel`。
 - **皮肤**：结构样式在 `kit/vl-interact.css`，各皮肤可在 `interact.css` 里覆盖 `.vl-cell` 外观。
 

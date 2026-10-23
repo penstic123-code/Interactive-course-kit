@@ -145,7 +145,7 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 | Step | Checks | Catches |
 |---|---|---|
 | 1 Syntax | `node --check` on every .js; trial-compiles every inline script | Whole-page script not running |
-| 2 Wiring | Every `vl-` class the JS looks for actually exists in the page or scripts; every class the page uses has a style | Renames not synced, dead buttons, styles not applying |
+| 2 Wiring | Every `vl-` class the JS looks for actually exists in the page or scripts; a class the page uses that has no style and is not used by any script (hint only) | Renames not synced, dead buttons, styles not applying |
 | 2b Highlighting | Each concept card's name has a matching naming mark `.vl-cn` in the prose and appears in its section heading | One of the "three matching places" missing |
 | 3 Picture density | More than about 300 characters between two visuals (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
 | 4 Links | Local href / src exist | Wrong image or script paths |
@@ -164,4 +164,4 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 
 Turn each piece of user feedback on visuals, components or interaction into a rule and improve the existing entry in the relevant file; add a new skin to `skins/` once it is approved.
 
-**Two editions**: the Chinese skill at `../course-kit/` is the source of truth for the shared code (kit, skins, tools, starter). Change code there, then run `node tools/sync-en.mjs` from the Chinese skill to copy it here (`examples/` is not synced). When a rule changes (SKILL.md, references/), make the matching change in both editions. kit/README.md has its own English translation and is not synced; update it by hand when the Chinese one changes.
+**Two editions**: the Chinese skill at `../course-kit/` is the source of truth for the shared code (kit, skins, tools, starter). Change code there, then run `node tools/sync-en.mjs` from the Chinese skill to copy it here (`examples/` is not synced). When a rule changes (SKILL.md, references/), make the matching change in both editions. The documentation files inside the code folders have their own English translations and are not synced (`kit/README.md`, `kit/modules/concepts-schema.md`, `starter/README.md`, `skins/*/README.md`; see the SKIP set in `tools/sync-en.mjs`); update them by hand when the Chinese ones change.

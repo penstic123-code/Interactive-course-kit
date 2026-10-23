@@ -29,7 +29,7 @@ The "Skins" line describes how the source courses looked when these rules were e
 | Figures and pictures (8) | T1 illustration slot, T2 text beside picture, T3 numbered figure, T4 real photos, T5 illustrated timeline, T6 comic panels, T7 bar readouts and legends, T8 tables and scroll wrappers |
 | Examples (2) | E1 example carousel, E2 comparison |
 | Micro-interactions (3) | M1 predict → reveal, M2 hotspot picture, M3 Try it |
-| Signature interaction frames (9) | G1 interaction board, G2 slider + live chart, G3 seeded simulator, G4 draggable objects, G5 assembly bench, G6 hands-on task engine, G7 round-based mini-game, G8 step-through demo, G9 formula anatomy |
+| Signature interaction frames (11) | G1 interaction board, G2 slider + live chart, G3 seeded simulator, G4 draggable objects, G5 assembly bench, G6 hands-on task engine, G7 round-based mini-game, G8 step-through demo, G9 formula anatomy, G10 grid picker, G11 live plot |
 | Exercises and collapsibles (4) | P1 end-of-chapter quiz, P2 end-of-part review, P3 note box, P4 optional side path |
 
 Concept diagrams (loops, nested circles…) are a family within T3 numbered figures; their templates are in `diagrams.md`.
@@ -177,7 +177,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ```html
 <ol class="vl-chain">
-  <li><span data-illus="c03-ev1"></span>Seven observations don't fit one orbit</li>
+  <li><span data-illus="c03-ev1"></span>Seven observations don't fit one orbit</li>   <!-- node picture: an illustration goes in data-illus, a photo in <span class="vl-chain-img"><img …></span>, at most 200px wide; keep text in the picture to a minimum -->
   <li class="vl-chain-ar" aria-hidden="true">→</li>
   <li>…</li>
 </ol>
@@ -276,7 +276,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Job**: write a name and it is replaced by a picture from the illustration library. The picture shows the *why*: a good example has every element, a counterexample shows the missing one.
 - **Use / don't**: every illustration goes through it; data charts and concept diagrams don't (use T3, G2).
 - **Content**: each picture once per course; alt text required; rules for people are in section 2 of `references/content-rules.md`, and pitfalls from the three courses are in `visuals.md`; text sits outside the filter group.
-- **Loading**: register with `VL.illus.add(name, alt, shapes, textLayer)`; alt becomes the SVG's `aria-label`. A missing picture doesn't error; it shows a placeholder `.vl-illus-miss` with the name. For content inserted later, call `VL.illus.mount(root)` or `VL.enhance(root)` (good: DS `DS.illus(root)`). Each chapter's illustration pack `js/illus-chNN.js` is included with a `<script>` after `kit/illus.js` (the kit doesn't yet load packs from the chapter table).
+- **Loading**: register with `VL.illus.add(name, alt, shapes, textLayer, options)` (a vertical canvas uses the option `{vb}`, see "插画位" / illustration slots in `kit/README.md`); alt becomes the SVG's `aria-label`. A missing picture doesn't error; it shows a placeholder `.vl-illus-miss` with the name. For content inserted later, call `VL.illus.mount(root)` or `VL.enhance(root)` (good: DS `DS.illus(root)`). Each chapter's illustration pack `js/illus-chNN.js` is included with a `<script>` after `kit/illus.js` (the kit doesn't yet load packs from the chapter table).
 - **Skins**: notebook = stick figures + wobble filter + flat colour blocks (viewBox 200×140) | paper = layered cutouts + white trim + three-level shadows | pixel = 2px grid pixel art | town = offline-rendered PNG.
 
 ```html
@@ -489,7 +489,7 @@ Interaction design rules (one sentence stating the question, playable in 3 secon
 ### G2 Slider + live chart
 - **Job**: drag one parameter and the chart changes at once: "what if you change one number?"
 - **Content**: plain words at both slider ends ("all skill / all luck"); the current value also appears in the readout; one accent colour in the chart; 1–3 "real-world" preset buttons.
-- **Interaction**: native range; the chart is read-only, `role=img` + readout `aria-live`. Use one shared plotting function (planned: taken from AI `M.Plot`; no `VL.plot()` in the kit yet) instead of rewriting `X()/Y()` per chapter (bad: GD wrote one in each of 15 chapters).
+- **Interaction**: native range; the chart is read-only, `role=img` + readout `aria-live`. Draw with the shared `VL.plot()` (G11 live plot) instead of rewriting `X()/Y()` per chapter (bad: GD wrote one in each of 15 chapters).
 - **Motion**: aids understanding (redraw directly while dragging; presets may transition over 300ms).
 
 ### G3 Seeded simulator
@@ -538,9 +538,23 @@ The code for G6–G9 is in `kit/vl-interact.js`; usage in `kit/README.md`. Below
 
 ```html
 <!-- see kit/README.md; sketch below -->
-<div class="vl-anat"><div class="vl-anat-f">\(\htmlClass{q3}{J}=\sum \htmlClass{q6}{d_i}^2\)</div>
-  <ul class="vl-anat-key"><li data-k="q3" tabindex="0"><b>J</b>, read as …, means …, here it equals 14</li></ul></div>
+<div class="vl-anat vl-board"><div class="vl-anat-f"><span data-k="3">J</span> = Σ <span data-k="6">d²</span></div>   <!-- with KaTeX, \htmlClass{vl-k3}{J} is also recognised; data-k takes 1–6 -->
+  <ul class="vl-anat-key"><li data-k="3"><b>J</b>, read as …, means …, here it equals 14</li></ul></div>
 ```
+
+### G10 Grid picker
+- **Job**: rows of clickable cells; the reader picks cells to make choices, and cells cross out, light up or mark a hit: guessing a number, choosing seats, a calendar, a board, sampling.
+- **Use / don't**: use it when the options naturally form a grid and position matters; for three or five parallel options use buttons or chips. On a phone, 10 columns make each cell about 30px, so reduce the columns when there are many cells.
+- **Usage**: `VL.cells(container, { n, cols, label, onPick, name })` (`name` becomes the container's `aria-label`; by default one is added in the page language); see "G10" in `kit/README.md` section 7. Good: the 10×10 guessing grid in `examples/pixel-binary-search` (written in the page; usage is the same).
+- **Interaction**: arrow keys move between cells, Enter selects; state classes `is-out / is-last / is-hit / is-sel`.
+- **Skins**: structural styles are in `kit/vl-interact.css`; each skin can override the `.vl-cell` look in `interact.css`.
+
+### G11 Live plot
+- **Job**: coordinate charts: bar charts, line charts (which can be mixed), distributions, growth curves, comparisons; with a G2 slider, dragging redraws it.
+- **Use / don't**: use it when the reader must read off "how much, how it changes"; for structure and relationships use concept diagrams (`diagrams.md`). At most 3 series per chart.
+- **Usage**: `VL.plot(container, config)`; load `kit/vl-plot.js` + `kit/vl-plot.css` only when needed. Options and behaviour (axes, `marks` annotations that avoid overlap automatically, `hi` highlight, `aria`, phone font sizes) are in "G11" in `kit/README.md` section 7. The page links a slider by calling `p.set(…)` in its `input` handler; keep label text short.
+- **Accessibility**: the plot is read-only; put the reading in a feedback sentence with `aria-live`; colour is not the only signal (the kit supplies legend, dashes and dot shapes).
+- **Skins**: all colours come from skin variables (series `--q1…`, axes and text `--ink`, highlight `--accent`).
 
 G2–G9 all look like the G1 interaction board in each skin; shapes on the stage follow the skin's drawing style (notebook hand-drawn, paper cutout, pixel grid, town model).
 

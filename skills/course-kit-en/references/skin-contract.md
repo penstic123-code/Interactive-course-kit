@@ -42,7 +42,7 @@ Switched under "Display" in the top bar, saved under key `vl-scheme` (no course 
 
 ## 2. Components a skin must give a look
 
-Each function gets its own look in each skin. `skins/<name>/gallery.html` lays out every item below and is the approval page (`skins/notebook/gallery.html` already shows every component in kit/vl.js; for a new skin, copy it and change only the skin paths; add `?scheme=dark|sepia` to the URL to screenshot all three schemes). K9 document props and K5 stance cards are now in `kit/vl-interact.js` (`kit/README.md` section 7) but not yet in the notebook, paper and pixel gallery pages (fieldbook has them) — add them when building the next skin; T7 legend shapes are not in the kit yet.
+Each function gets its own look in each skin. `skins/<name>/gallery.html` lays out every item below and is the approval page (`skins/notebook/gallery.html` already shows every component in kit/vl.js; for a new skin, copy it and change only the skin paths; add `?scheme=dark|sepia` to the URL to screenshot all three schemes). The interactive components, the optional modules and the 12 diagrams have demos in `kit/demo-interact.html`, `kit/modules/demo-modules.html` and `kit/demo-diagrams.html`; check against them too when building a new skin. Of these, only fieldbook's gallery lays out K9 document props; none of the four galleries yet shows K5 stance cards, G10 grid picker or G11 live plot — add them when building the next skin. T7 legend shapes are not in the kit yet.
 
 | Class | Components (numbers from `components.md`) |
 |---|---|
@@ -71,7 +71,7 @@ The illustration loader and the stick-figure drawing kit live in `kit/illus.js` 
 | `kit.arrow(x1, y1, x2, y2)` | The tip lands exactly on the end point |
 | Chairs / desks | Against floating: the kit's sitting pose brings its own chair, `arms:'desk'` is a hunched-over-a-desk pose; the kit has no stand-alone `chair / desk` objects yet |
 
-- Default canvas viewBox 200×140; people at scale ≥0.9 — don't draw them too small.
+- Default canvas viewBox 200×140 (for a vertical canvas use the `{vb}` option of `add()`, see "插画位" / illustration slots in `kit/README.md`); people at scale ≥0.9 — don't draw them too small.
 - Text outside the filter group; filters use `in="SourceGraphic"`.
 - Building rules into the functions is cheaper than fixing pictures one by one (GD experience: sitting automatically adds a chair; facing left mirrors the arms automatically).
 - Deliver with: a character sheet (6 different people standing, sitting, holding something, pointing at something, talking) + an object sheet; `tools/illus-overlap.mjs` passing; every picture looked at by a person in single-picture screenshots with `tools/shot.mjs`.

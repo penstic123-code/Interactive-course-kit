@@ -1023,13 +1023,18 @@
     $$(".vl-task", scope).forEach(e => { if (!e._vlTask && e.querySelector(':scope > script[type="application/json"]')) task(e); });
     $$(".vl-review", scope).forEach(e => { if (!e._vlTask && e.querySelector(':scope > script[type="application/json"]')) review(e); });
   }
-  /* 选格子 VL.cells(容器, {n, cols, label, onPick})：一排排可点的格子（猜数、选座位、日历、棋盘）。
+  /* 选格子 VL.cells(容器, {n, cols, label, onPick, name})：一排排可点的格子（猜数、选座位、日历、棋盘）。
      n 个格子，cols 列；label(i) 格子上的字（默认 i+1）；onPick(i, 格子) 点击或回车时调用。
      键盘：方向键在格子间走（只有一个格子可 Tab 进入），回车 / 空格选中。
      返回 { cells, get(i), mark(i, 类, 开关), reset() }；状态类：is-out 划掉、is-last 刚选、is-hit 命中、is-sel 选中，外观归皮肤。 */
   function cells(root, o) {
     o = o || {}; const n = o.n || 0, cols = o.cols || Math.ceil(Math.sqrt(n)) || 1, lab = o.label || (i => String(i + 1));
     root.classList.add("vl-cells"); root.style.setProperty("--vl-cols", cols); root.setAttribute("role", "group"); root.innerHTML = "";
+    if (o.name) root.setAttribute("aria-label", o.name);
+    else if (!root.hasAttribute("aria-label") && !root.hasAttribute("aria-labelledby")) {
+      const lg = (doc.documentElement.lang || "").toLowerCase();
+      root.setAttribute("aria-label", (!lg || lg.indexOf("zh") === 0) ? "选格子，方向键移动，回车选中" : "Grid, use arrow keys to move, Enter to pick");
+    }
     const list = [];
     for (let i = 0; i < n; i++) {
       const b = doc.createElement("button"); b.type = "button"; b.className = "vl-cell"; b.dataset.i = i;

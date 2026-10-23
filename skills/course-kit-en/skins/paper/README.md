@@ -1,74 +1,74 @@
-# 皮肤 paper · 纸片（剪纸）
+# Skin paper: paper cut-out
 
-用途：本皮肤的风格、变量、插画画法和适用场合。来源：数据科学课的爬塔纸片样式和剪纸插画库（AI 课 W3 戏台场景也是同一画法）。状态：已入库；样板章见 `examples/paper-survivorship/`。
+Purpose: this skin's style, variables, illustration style and what it suits. Source: the data science course's tower-climbing paper style and its paper cut-out illustration library (the AI course's W3 stage scene uses the same drawing style). Status: in the library; sample chapter in `examples/paper-survivorship/`. This is the English translation of the Chinese README, which remains the source of truth.
 
-**一句话**：蓝天草地前立着一张暖白卡纸，正文直接印在卡纸上；图、互动台、概念卡都是剪下来的彩色卡纸，带一圈白裁边和柔和投影，最重的底下再垫一层牛皮纸。目录页是一座纸塔，第 1 章在底层，往上爬。
+**In one line**: a warm-white sheet of card stands in front of blue sky and grass, with the body text printed straight onto the card. Figures, interaction boards and concept cards are cut-out coloured card with a white trimmed edge and a soft shadow, and the heaviest ones sit on a backing layer of kraft paper. The contents page is a paper tower: chapter 1 is on the ground floor, and you climb up.
 
-## 文件
+## Files
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| `skin.css` | 变量（三套配色 + 五篇主色、天空带、塔墙）+ 组件外观 + 目录页纸塔 + 题头天空带 |
-| `skin.js` | `window.VL_SKIN`（网络字体、剪纸滤镜 `#pp-cut1…3`、纤维纹 `#pp-fiber`、插画配色）+ 剪纸绘制工具（经 kit 的换画法钩子 `VL_SKIN.illus` 换掉 `VL.illus.kit` 的画法）+ 题头动画暂停 / 冻结 |
-| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（由 notebook 同名文件改成卡纸画法） |
-| `img/` | 纤维纹 `fiber.png` `fiber-soft.png`、背景纸云 `clouds.svg`、草地 `hills.svg`（原课程自绘） |
-| `gallery.html` | 验收页 |
+| `skin.css` | Variables (three colour schemes + five part colours, sky bands, tower walls) + component looks + the paper tower on the contents page + the sky band in the chapter header |
+| `skin.js` | `window.VL_SKIN` (web fonts, cut-paper filters `#pp-cut1…3`, fibre texture `#pp-fiber`, illustration palette) + the paper-cut drawing kit (replaces the drawing style of `VL.illus.kit` through the kit's skin drawing hook `VL_SKIN.illus`) + header animation pause / freeze |
+| `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (made from the notebook files of the same name, redrawn in card style) |
+| `img/` | Fibre textures `fiber.png` `fiber-soft.png`, background paper clouds `clouds.svg`, grass `hills.svg` (drawn for the original course) |
+| `gallery.html` | Approval page |
 
-## 字体
+## Fonts
 
-| 变量 | 用在 | 字体 |
+| Variable | Used for | Font |
 |---|---|---|
-| `--font-display` = `--font-label` = `--font-hand` | h1–h4、按钮、标签、纸签 | 站酷快乐体 ZCOOL KuaiLe（网络，OFL）→ 霞鹜文楷 → 微软雅黑 |
-| `--font-body` | 正文 17.5px / 1.85 | 霞鹜文楷 LXGW WenKai（网络，OFL）→ 楷体 |
-| `--font-fig` | 插画、图解里的字 | 系统黑体加粗（快乐体小字号难读） |
-| 英文页 | 正文 Segoe UI 等；标题 Fredoka（网络，OFL） | |
+| `--font-display` = `--font-label` = `--font-hand` | h1–h4, buttons, labels, paper tags | ZCOOL KuaiLe (web, OFL) → LXGW WenKai → Microsoft YaHei |
+| `--font-body` | body text 17.5px / 1.85 | LXGW WenKai (web, OFL) → KaiTi |
+| `--font-fig` | text inside illustrations and diagrams | system sans-serif, bold (KuaiLe is hard to read at small sizes) |
+| English pages | body Segoe UI or similar; headings Fredoka (web, OFL) | |
 
-不带本地字体：原课程的 woff2 是按该课用字裁过的子集，换课会缺字。离线时退到系统字体，版面不乱。
+No local fonts are bundled: the original course's woff2 files were subsets cut to that course's characters and would lack characters in another course. Offline, it falls back to system fonts and the layout stays intact.
 
-## 变量
+## Variables
 
-| 组 | 亮 | 暗（只给变量，未精调） | 护眼 |
+| Group | Light | Dark (variables only, not fine-tuned) | Sepia |
 |---|---|---|---|
 | `--ink --ink2 --muted` | #1f2638 / #3b4358 / #4d566c | #ece6d6 / #d0d6e0 / #b6bfcd | #3b3123 / #54473a / #5c4f3f |
-| `--page --panel --edge --sunk --kraft` | 天空 #cdeafa / 卡纸 #fbf6ea / 白裁边 #fffdf7 / #f3ecdc / 牛皮纸 #dcc9a2 | 深蓝底、深卡纸 | 米黄 |
-| `--accent --accent2 --deep` | 篇色（浅，只做底）/ 副色 / 篇深色写字 | 篇色混深底 / 篇色提亮 | 降饱和 / 深色混棕 |
-| `--plate --plate-ink` | #fdfaf1 / #1f2638，三套配色都不变 | | #fffaf0 |
-| `--shadow-c` | 一种投影色 rgba(40,60,90,.22)（原课程棕、蓝两种已合并） | | |
-| `--shadow-obj` | 白边 5px + 牛皮纸垫层 + 远投影（互动台、编号图、徽章） | | |
-| `--shadow-mid` `--shadow-soft` | 白边 4px + 中投影（概念卡、轮播）/ 白边 3px + 软影（试试看、收束块） | | |
-| `--dg-*` | 色块天蓝 草绿 珊瑚 淡紫 浅黄 蜜桃；选中 #c8364f；框加剪纸滤镜 `--dg-filter:url(#pp-cut1)`，线不加 | | |
-| `--q1…q6` | 同 notebook（卡纸上 ≥4.5:1） | | |
+| `--page --panel --edge --sunk --kraft` | sky #cdeafa / card #fbf6ea / white trim #fffdf7 / #f3ecdc / kraft #dcc9a2 | dark blue ground, dark card | beige |
+| `--accent --accent2 --deep` | part colour (light, fills only) / secondary colour / part's dark colour for text | part colour blended into dark / part colour brightened | desaturated / dark colour blended with brown |
+| `--plate --plate-ink` | #fdfaf1 / #1f2638, unchanged in all three schemes | | #fffaf0 |
+| `--shadow-c` | one shadow colour rgba(40,60,90,.22) (the original course's brown and blue are merged) | | |
+| `--shadow-obj` | 5px white trim + kraft backing layer + distant shadow (interaction boards, numbered figures, badges) | | |
+| `--shadow-mid` `--shadow-soft` | 4px white trim + medium shadow (concept cards, carousel) / 3px white trim + soft shadow (Try it, wrap-up blocks) | | |
+| `--dg-*` | fills sky blue, grass green, coral, pale purple, light yellow, peach; selected #c8364f; boxes take the cut-paper filter `--dg-filter:url(#pp-cut1)`, lines don't | | |
+| `--q1…q6` | same as notebook (≥4.5:1 on the card) | | |
 
-篇章：`--p{n}a/b/d` 五套（天蓝 + 草绿、薄荷 + 蜜桃、淡紫 + 浅黄、珊瑚 + 云灰、杏黄 + 浅蓝），另有每篇的天空带 `--pp-sky-n`、窗外小景 `--pp-art-n`（清晨风车 → 午后风筝 → 黄昏星月 → 黎明云海）和塔墙 `--pp-wall-n`。同篇各章色相 ±18°。
+Parts: five sets of `--p{n}a/b/d` (sky blue + grass green, mint + peach, pale purple + light yellow, coral + cloud grey, apricot + light blue), plus each part's sky band `--pp-sky-n`, window scene `--pp-art-n` (morning windmill → afternoon kite → dusk stars and moon → dawn sea of clouds) and tower wall `--pp-wall-n`. Hue within a part varies ±18°.
 
-对比度实测（亮色，对卡纸 #fbf6ea）：ink 13.98、ink2 9.14、muted 6.80（对控件底 6.23）；deep 五篇 5.28–6.76；选中按钮（ink 压 accent）8.48–10.27；--ok 对 okbg 5.43；--q 4.52–6.00；focus 对天空 6.12、对卡纸 7.12。护眼：ink 10.55、ink2 7.44、muted 6.58、deep 6.9–8.0、focus 4.55。暗：ink 11.65、ink2 9.94、muted 7.83、选中按钮 5.33。
+Measured contrast (light, against the card #fbf6ea): ink 13.98, ink2 9.14, muted 6.80 (6.23 on the control ground); deep 5.28–6.76 across the five parts; selected button (ink on accent) 8.48–10.27; --ok on okbg 5.43; --q 4.52–6.00; focus 6.12 on the sky and 7.12 on the card. Sepia: ink 10.55, ink2 7.44, muted 6.58, deep 6.9–8.0, focus 4.55. Dark: ink 11.65, ink2 9.94, muted 7.83, selected button 5.33.
 
-## 谁重谁轻
+## What is heavy and what is light
 
-| 最重（白边 5px + 牛皮纸垫层 + 远投影） | 中（白边 + 中投影） | 轻（无投影） |
+| Heaviest (5px white trim + kraft backing + distant shadow) | Medium (white trim + medium shadow) | Light (no shadow) |
 |---|---|---|
-| 互动台 `.vl-board`、编号图与概念图解 `.vl-fig`、测验徽章 | 概念卡（左边副色厚纸条）、照片（纸胶带）、例子轮播、试试看、收束块、文档道具 | 原理框（左边主色纸条 + 纸签）、立场卡、支线 / 发明故事（牛皮纸文件袋，展开后左边一道牛皮纸边） |
+| Interaction boards `.vl-board`, numbered figures and concept diagrams `.vl-fig`, quiz badges | Concept cards (thick secondary-colour paper strip on the left), photos (washi tape), example carousel, Try it, wrap-up blocks, document props | Why-it-works box (main-colour paper strip on the left + paper tag), stance cards, side paths / invention stories (kraft file folder, with a kraft edge down the left when open) |
 
-## 插画画法
-- 剪纸纸偶：层叠彩色卡纸，整个物件外圈一道白裁边 + 投影（`cut()`），纸面有纤维纹和上亮下暗的纸面光，边缘像剪刀剪的略不规则。
-- 接口照 kit：`VL.illus.add(...)` 里的 `k.person / hands / feetY / ground / item / holding / bubble / T / arrow` 都是剪纸画法，参数和 notebook 相同；`k.person` 的脚底仍在 `y + 64·s`，`k.ground()` 是一条纸草地。
-- 物件：`k.item / k.holding` 支持 kit 的全部物件 book box cup phone die star coin，另有剪纸专属 doc photo card board chip plant。
-- 自动规则：同一张图第 k 个人依次换装（短发 → 鸭舌帽 → 长发裙子 → 毛线帽围巾 → 礼帽西装领带）；传了 hat / hair / glasses / tie / shirt 等的人，指定的项用指定值，其余衣着照旧按出场顺序换（只指定发型时去掉那套的帽子）；`outfit:false` 关闭换装；`legs:"sit"` 自带木凳（`chair:false` 关）；`look:-1` 整个纸偶镜像、字不翻；`holding()` 把物件画在两手中点，再把两只手压在物件两侧。
-- 描边：插画外层 `<g>` 默认带 3.5px 墨线（给作者手写的线条用）。`k.person` 等 kit 接口和 `k.paper` 里所有画东西的函数（rect、blob、cut、tag、stage……）输出都已包好 `stroke="none"`，直接拼即可，不用自己包；`k.paper.stage(o, inner)` 只给布景去描边，`inner` 原样放，里面手写的线仍继承墨线。
-- 更多纸片 API 在 `k.paper`：`stage({back:"meadow|plain|hills|lab|night|city", ground:"grass|wood|cobble"})`、`cut / lay / rect / circle / blob / strip`、`paperPerson`（服饰更全：fedora、beret、白大褂、马甲……）、`desk / chair / lamp / plant / board / card / tag / sign / parrow`。
-- 图中文字用 `k.T`，放在 `add()` 第 4 个参数（文字层）；字号 ≥12。
+## Illustration style
+- Paper-cut puppets: layered coloured card, a white trimmed edge and shadow around the whole object (`cut()`), fibre texture on the paper surface with light from above, edges slightly irregular as if cut with scissors.
+- The interface follows the kit: `k.person / hands / feetY / ground / item / holding / bubble / T / arrow` in `VL.illus.add(...)` all use the paper-cut style, with the same parameters as notebook. `k.person`'s feet are still at `y + 64·s`, and `k.ground()` is a strip of paper grass.
+- Objects: `k.item / k.holding` support all the kit's objects book box cup phone die star coin, plus the paper-specific doc photo card board chip plant.
+- Automatic rules: within one picture the k-th person changes outfit in turn (short hair → baseball cap → long hair and skirt → beanie and scarf → top hat, suit and tie). For a person given hat / hair / glasses / tie / shirt and so on, the specified items use the specified values and the rest of the outfit still follows the order of appearance (if only hair is specified, that outfit's hat is dropped). `outfit:false` turns off outfit changes; `legs:"sit"` brings its own wooden stool (`chair:false` turns it off); `look:-1` mirrors the whole puppet and leaves text unflipped; `holding()` draws the object at the midpoint of the hands, then presses the two hands on either side of it.
+- Strokes: the outer `<g>` of an illustration carries a 3.5px ink line by default (for lines the author writes by hand). The kit interfaces such as `k.person`, and every drawing function in `k.paper` (rect, blob, cut, tag, stage…), already output `stroke="none"`, so just combine them without wrapping. `k.paper.stage(o, inner)` strips strokes only from the set, and puts `inner` in as it is, where hand-written lines still inherit the ink line.
+- More paper API is in `k.paper`: `stage({back:"meadow|plain|hills|lab|night|city", ground:"grass|wood|cobble"})`, `cut / lay / rect / circle / blob / strip`, `paperPerson` (fuller costumes: fedora, beret, lab coat, waistcoat…), `desk / chair / lamp / plant / board / card / tag / sign / parrow`.
+- Text in pictures uses `k.T`, in the 4th argument of `add()` (the text layer); font size ≥12.
 
-## 专属动效
-- 题头天空带里一朵纸云慢慢飘（只在"全开"档；出视口暂停；`?freeze=秒` 冻结；轻量 / 关 / 减少动态时不出现）。
-- 弹出面板轻落、按钮按下有纸片下沉感；关档全部去掉。
-- 原课程的登楼过场、纸片翻页、滚动翻出未抽取（依赖课程脚本），需要时另做。
+## Own motion
+- In the header sky band a paper cloud drifts slowly (only at the full level; pauses outside the viewport; `?freeze=seconds` freezes it; absent at the lite / off levels and under reduced motion).
+- Popover panels drop in lightly and buttons sink like paper when pressed; all removed at the off level.
+- The original course's tower-climbing transition, paper page turns and scroll reveal were not extracted (they depend on course scripts); build them separately if needed.
 
-## 何时适合用
-- 适合：有叙事、有角色、偏轻快的课，初中到高中读者；插画以纸偶人物和小场景为主。
-- 不太适合：严肃历史 / 医学题材；以照片为主的课。数据图请保持直边、不加剪纸滤镜。
+## When it fits
+- Suits: light-hearted courses with a story and characters, for middle to high school readers; illustrations mostly of paper puppets and small scenes.
+- Doesn't suit: serious history or medicine; courses based mainly on photos. Keep data charts straight-edged, without the cut-paper filter.
 
-## 已知问题
-- 暗色只给了变量，未精调（用户暂缓暗色）。
-- `.vl-tb-dots` 第 6 篇以后回到第 1 篇颜色。
-- 目录页纸塔只认 starter/index.html 的 `#ix-parts / .ix-part / .ix-ch` 结构；为了压过页内样式，选择器带 `body #ix-parts`。
-- 插画替换靠 kit 的钩子 `window.VL_SKIN.illus`：必须在 kit/illus.js 之前加载 skin.js（starter 模板就是这个顺序）。
+## Known issues
+- Dark has variables only and is not fine-tuned (the user put dark on hold).
+- From part 6 on, `.vl-tb-dots` wraps back to part 1's colours.
+- The paper tower on the contents page recognises only the `#ix-parts / .ix-part / .ix-ch` structure of starter/index.html; to beat in-page styles, its selectors carry `body #ix-parts`.
+- Replacing the illustrations relies on the kit hook `window.VL_SKIN.illus`: skin.js must load before kit/illus.js (the starter template already does).

@@ -1,72 +1,72 @@
-# 皮肤 notebook · 手绘笔记本
+# Skin notebook: hand-drawn notebook
 
-用途：本皮肤的风格、变量、插画画法和适用场合。来源：游戏设计课的样式和插图库。
+Purpose: this skin's style, variables, illustration style and what it suits. Source: the game design course's styles and illustration library. This is the English translation of the Chinese README, which remains the source of truth.
 
-**一句话**：一本摊开的方格 / 横线笔记本，火柴人和马卡龙色块手绘在纸上，荧光笔划重点，粗墨线和硬阴影只留给图解、互动台和概念卡。
+**In one line**: an open grid- or ruled-paper notebook, with stick figures and macaron colour blocks drawn by hand on the page, highlighter for the key points, and thick ink lines and hard shadows kept for diagrams, interaction boards and concept cards.
 
-## 文件
+## Files
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 |
-| `skin.js` | `window.VL_SKIN`：网络字体地址、手绘抖动滤镜 `#vl-rough`、插画配色 |
-| `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（其余三套皮肤由它们改画法而来） |
-| `gallery.html` | 验收页 |
-| `fonts/PatrickHand-Regular.ttf` | Patrick Hand（字母数字手写体），本地，离线可用 |
-| `fonts/OFL.txt` | 字体授权（SIL OFL 1.1） |
+| `skin.css` | Variables (three colour schemes + five part colours) + component looks |
+| `skin.js` | `window.VL_SKIN`: web font addresses, the hand-drawn wobble filter `#vl-rough`, the illustration palette |
+| `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, the optional modules and the later seven diagrams (the other three skins were made by redrawing these) |
+| `gallery.html` | Approval page |
+| `fonts/PatrickHand-Regular.ttf` | Patrick Hand (handwriting for letters and digits), local, works offline |
+| `fonts/OFL.txt` | Font licence (SIL OFL 1.1) |
 
-## 字体
+## Fonts
 
-| 变量 | 用在 | 字体（依次兜底） |
+| Variable | Used for | Font (with fallbacks, in order) |
 |---|---|---|
-| `--font-display` | h1、大章号 | Patrick Hand（字母数字）→ 马善政 Ma Shan Zheng（网络）→ 霞鹜文楷 → 楷体 |
-| `--font-hand` = `--font-label` | h2–h4、按钮、标签、图中文字 | Patrick Hand（只管 0–9 A–Z a–z，`unicode-range`）→ 霞鹜文楷 → 楷体 |
-| `--font-body` | 正文 | 霞鹜文楷（网络）→ 楷体 → 微软雅黑 |
-| 英文页 | 正文 Segoe UI 等无衬线；标题 / 按钮 Patrick Hand | |
+| `--font-display` | h1, big chapter number | Patrick Hand (letters and digits) → Ma Shan Zheng (web) → LXGW WenKai → KaiTi |
+| `--font-hand` = `--font-label` | h2–h4, buttons, labels, text in figures | Patrick Hand (only 0–9 A–Z a–z, via `unicode-range`) → LXGW WenKai → KaiTi |
+| `--font-body` | body text | LXGW WenKai (web) → KaiTi → Microsoft YaHei |
+| English pages | body Segoe UI or similar sans-serif; headings / buttons Patrick Hand | |
 
-马善政是书法装饰体，只用在 h1；小标题和按钮用霞鹜文楷（比游戏设计课清楚，见下方"差异"）。网络字体由 `vl-head.js` 异步插入，离线时退到系统楷体，版面不乱。
+Ma Shan Zheng is a calligraphic display face and is used only for h1. Subheadings and buttons use LXGW WenKai, which is clearer than in the game design course (see "Differences" below). Web fonts are inserted asynchronously by `vl-head.js`; offline, they fall back to the system KaiTi and the layout stays intact.
 
-## 变量
+## Variables
 
-| 组 | 变量 | 亮 | 暗 | 护眼 |
+| Group | Variables | Light | Dark | Sepia |
 |---|---|---|---|---|
-| 文字 | `--ink` `--ink2` `--muted` | #2b2b3a / #4b4b5e / #52526a | #ece6d6 / #cfc8b8 / #bdb6a6 | #3b3123 / #54473a / #5c4f3f |
-| 底 | `--page`（= 篇纸色）`--line`（格线）`--panel` `--edge`（实体件）`--sunk`（控件底） | 篇纸色 / 篇格线 / = page / #fff / #fffdf3 | #1d1d26 / #30303f / = page / #272733 / #22222c | #f3e9d2 / #e0d1ae / = page / #fbf4e3 / #f7eedb |
-| 主色 | `--accent` `--accent2`（只做底色）`--deep`（写字） | 篇色（同篇色相 ±18°） | 篇色混进深底 | 篇色降饱和 |
-| 强调 | `--hl` 荧光笔、`--focus` | = accent / #2b6cff | 深荧光 / #7aa7ff | 浅荧光 / #2b6cff |
-| 状态 | `--ok --okbg --no --nobg --warnbg` | 深绿、浅绿、深红、浅红、杏 | 亮绿字配深底 | 暖色版 |
-| 皮肤专用 | `--note`（试试看便签）`--egbg / --egbad`（例子 / 反例底）`--whybg`（原理框渐变）`--sidebg`（折页） | | | |
-| 图板 | `--plate` `--plate-ink` | #fff / #2b2b3a | 同亮（浅底） | #fffaf0 / #2b2b3a |
-| 图解 | `--dg-c1…c6`（黄 蓝 粉 绿 紫 橙）`--dg-ink --dg-ink2 --dg-hi`（选中 #d6336c）`--dg-filter` | 三套配色都不变（在图板上） | | |
-| 插画 | `--il-filter`；配色在 `skin.js` 的 `palette` | 不变 | | |
-| 量的编码 | `--q1…q6` | 蓝 橙 绿 紫 红 青（白底 ≥4.5:1） | | |
-| 形状 | `--stroke` 3px、`--radius` / `--radius-alt`（非对称手绘圆角）、`--shadow-obj` 5px 6px 0 墨色、`--shadow-soft` | | 投影变成近黑 | |
-| 动效 | `--ease`、`--dur-fb` .22s | | | |
+| Text | `--ink` `--ink2` `--muted` | #2b2b3a / #4b4b5e / #52526a | #ece6d6 / #cfc8b8 / #bdb6a6 | #3b3123 / #54473a / #5c4f3f |
+| Ground | `--page` (= the part's paper colour) `--line` (grid lines) `--panel` `--edge` (physical objects) `--sunk` (control wells) | part paper colour / part grid colour / = page / #fff / #fffdf3 | #1d1d26 / #30303f / = page / #272733 / #22222c | #f3e9d2 / #e0d1ae / = page / #fbf4e3 / #f7eedb |
+| Main colour | `--accent` `--accent2` (fills only) `--deep` (for text) | part colour (hue within a part ±18°) | part colour blended into a dark ground | part colour, desaturated |
+| Emphasis | `--hl` highlighter, `--focus` | = accent / #2b6cff | dark highlighter / #7aa7ff | light highlighter / #2b6cff |
+| State | `--ok --okbg --no --nobg --warnbg` | dark green, light green, dark red, light red, apricot | bright green text on a dark ground | warm version |
+| Skin-specific | `--note` (Try-it sticky note) `--egbg / --egbad` (example / counterexample ground) `--whybg` (why-it-works gradient) `--sidebg` (folded page) | | | |
+| Plate | `--plate` `--plate-ink` | #fff / #2b2b3a | same as light (light plate) | #fffaf0 / #2b2b3a |
+| Diagrams | `--dg-c1…c6` (yellow, blue, pink, green, purple, orange) `--dg-ink --dg-ink2 --dg-hi` (selected #d6336c) `--dg-filter` | unchanged in all three schemes (they sit on the plate) | | |
+| Illustrations | `--il-filter`; colours in `palette` in `skin.js` | unchanged | | |
+| Quantity encoding | `--q1…q6` | blue, orange, green, purple, red, teal (≥4.5:1 on white) | | |
+| Shape | `--stroke` 3px, `--radius` / `--radius-alt` (asymmetric hand-drawn corners), `--shadow-obj` 5px 6px 0 ink, `--shadow-soft` | | shadows become near-black | |
+| Motion | `--ease`, `--dur-fb` .22s | | | |
 
-篇章主色：`--p1a…p5a`（主色）、`--p1b…p5b`（强调）、`--p1p…p5p`（纸色）、`--p1l…p5l`（格线），黄 / 蓝 / 绿 / 粉 / 紫五篇。第 6 篇以后回到第 1 篇的颜色，需要时在 skin.css 里加 `body[data-part="6"]`。
+Part colours: `--p1a…p5a` (main), `--p1b…p5b` (accent), `--p1p…p5p` (paper), `--p1l…p5l` (grid lines), for five parts in yellow / blue / green / pink / purple. From part 6 on the colours wrap back to part 1's; add `body[data-part="6"]` in skin.css if you need more.
 
-纸面：`body[data-pat]` 按章号轮换方格 / 点阵 / 横线 / 斜纹四种。章首右上角有空心大章号（`--vl-chnum`）。
+Paper: `body[data-pat]` rotates by chapter number through grid / dots / ruled / diagonal. The chapter opening has a large hollow chapter number at the top right (`--vl-chnum`).
 
-## 谁粗谁细
+## What is thick and what is thin
 
-| 粗墨线 3px + 硬阴影（主角） | 细线 / 虚线 / 无框（配角） |
+| Thick 3px ink line + hard shadow (the stars) | Thin line / dashed / no frame (supporting cast) |
 |---|---|
-| 编号图和概念图解 `.vl-fig`、互动台 `.vl-board`、概念卡 `.vl-cc`（左侧 12px 篇色厚边 + 篇色投影、歪 −0.35°）、测验卡、浮层 | 原理框（页边一条竖线 + 小签）、折页（虚线框，展开变实线）、例子卡（2.5px）、学习目标、收束块、试试看便签（软影） |
+| Numbered figures and concept diagrams `.vl-fig`, interaction boards `.vl-board`, concept cards `.vl-cc` (12px thick left edge in the part colour + shadow in the part colour, tilted −0.35°), quiz cards, popovers | Why-it-works box (a vertical rule at the margin + small tag), folded pages (dashed frame, solid when open), example cards (2.5px), learning goals, wrap-up blocks, Try-it sticky notes (soft shadow) |
 
-## 插画画法要点
-- 火柴人：圆脑袋 + 墨线躯干四肢 + 两点眼 + 弧线嘴，`viewBox 200×140`，线宽 3.5，`#vl-rough` 抖动；文字放 extra 层，不抖。
-- 平涂马卡龙色块（`palette`），一张图一个视觉重点；人物靠帽子、发型、眼镜、胡子区分（`illus.js` 自动换装）。
-- 站着的人脚落在 `ground()`（y=126）上；坐着的人自带椅子；拿东西用 `holding()` 放在两手之间；指东西的手对准画面里的东西。
-- 气泡用 `bubble()`，字短，不压人物；字号 ≥12。
-- 暗色 / 护眼下插画放在浅色图板上，配色不变，不要为暗色另画。
+## Illustration style
+- Stick figures: round head + ink-line torso and limbs + two-dot eyes + curved mouth, `viewBox 200×140`, line width 3.5, wobbled by `#vl-rough`; text goes in the extra layer and does not wobble.
+- Flat macaron colour blocks (`palette`), one visual focus per picture; people are told apart by hat, hair, glasses and beard (`illus.js` changes outfits automatically).
+- Standing people have their feet on `ground()` (y=126); seated people come with a chair; objects held in hand use `holding()` and sit between the two hands; a pointing hand points at something in the picture.
+- Speech bubbles use `bubble()`, with short text that never covers a person; font size ≥12.
+- In dark and sepia the illustrations sit on a light plate and their colours don't change; don't draw separate versions for dark.
 
-## 何时适合用
-- 适合：入门到中级的概念课，读者想轻松读、愿意动手（游戏设计、心理学、产品、教育、写作……）；插画以人物和日常场景为主。
-- 不太适合：大量数据图和精确图表（手绘抖动会让数据图不严谨——数据图请去掉 `.vl-dg-box` 以外的滤镜，或在页内给数据 SVG 不加 `filter`）；严肃历史或医学题材（马卡龙色和火柴人显得轻佻）；需要真实照片为主的课（可用 `.vl-fig.photo` 胶带照片，但量大时选别的皮肤）。
+## When it fits
+- Suits: introductory to intermediate concept courses where readers want an easy read and are willing to get hands-on (game design, psychology, product, education, writing…); illustrations mostly of people and everyday scenes.
+- Doesn't suit: courses heavy on data charts and precise figures (the hand-drawn wobble makes data charts look imprecise; for data charts remove every filter except on `.vl-dg-box`, or leave `filter` off the data SVG in the page); serious history or medicine (macaron colours and stick figures feel flippant); courses that rely mainly on real photos (`.vl-fig.photo` taped photos work, but for many photos choose another skin).
 
-## 与游戏设计课原版的差异
-- h2 / h3 / 按钮 / 图中字从马善政改成霞鹜文楷（+ Patrick Hand 管字母数字），遵守"装饰字体只用于大标题"；马善政只留给 h1 和大章号。
-- 原理框从"浮起来的紫色卡片 + 硬阴影"改成轻块（竖线 + 小签 + 淡渐变），不再是 PPT 卡片。
-- 框标题前不再用 emoji（🔬💡⚠️🎯），改成文字小签；"一句话总结""例 / 反例"等文字不写在 CSS `content` 里。
-- 新增暗色、护眼两套配色；概念卡加了图位；图文并排顶端对齐（原版垂直居中）。
-- 网络字体从 CSS `@import` 改为 JS 异步插入。
+## Differences from the original game design course
+- h2 / h3 / buttons / figure text changed from Ma Shan Zheng to LXGW WenKai (+ Patrick Hand for letters and digits), following "decorative fonts only for large titles"; Ma Shan Zheng is kept only for h1 and the big chapter number.
+- The why-it-works box changed from a "floating purple card with a hard shadow" to a light block (vertical rule + small tag + pale gradient), no longer a slide-deck card.
+- Box titles no longer start with emoji (🔬💡⚠️🎯) but with a text tag; text such as "one-line summary" and "example / counterexample" is no longer written in CSS `content`.
+- Added the dark and sepia colour schemes; concept cards gained a picture slot; picture-beside-text is top-aligned (the original was vertically centred).
+- Web fonts changed from CSS `@import` to asynchronous insertion by JS.
