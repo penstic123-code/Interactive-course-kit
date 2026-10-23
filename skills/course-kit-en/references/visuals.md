@@ -1,6 +1,6 @@
 # Pictures
 
-Purpose: which kind of picture a chapter needs, where real images come from and how to record them, the pitfalls of illustration, and how to check picture density. The rules for drawing people and the licence baseline for real images are in section 2 of `references/content-rules.md` and are not repeated here; this file adds the how-to and the common pitfalls. The master table "choose the visual by what the passage is doing" is in `SKILL.md` section 1.
+Purpose: which kind of picture a chapter needs, where real images come from and how to record them, how to draw an illustration (picture script first) and its pitfalls, and how to check picture density. The rules for drawing people and the licence baseline for real images are in section 2 of `references/content-rules.md` and are not repeated here; this file adds the how-to and the common pitfalls. The master table "choose the visual by what the passage is doing" is in `SKILL.md` section 1.
 
 ## 1. Kinds of picture
 
@@ -63,9 +63,33 @@ One row per image in the project doc's "image credits" list (`starter/项目规�
 
 If you can't establish the licence, don't use the image — draw an illustration or cut it. No image may appear on a page unless it is in the register.
 
-## 3. Illustration: common pitfalls
+## 3. Illustration: write the picture script first, then avoid the pitfalls
 
-The general rules (tell people apart by clothing, feet on the ground, hands holding things, no text over the picture, screenshot every picture) are in section 2 of content-rules.md. These add to them:
+The general rules (tell people apart by clothing, feet on the ground, hands holding things, no text over the picture, screenshot every picture) are in section 2 of content-rules.md. This section adds the method and the common pitfalls.
+
+### 1 Method: script, mechanism, image, world
+
+1. **Write the picture script first, then draw.** Start from the exact sentence the picture sits next to and write the alt text as a scene script: who or what is in it, where, the one focal object, and any number or word the picture shows, taken verbatim from the sentence (the sentence says "12,000 photos", so the bubble says "12,000"). Then draw from the script. The alt text does two jobs: it is the screen-reader text, and it is the spec a reviewer checks the picture against.
+   - ✓ "The back room of a pet clinic at dusk: sunset in the window, a hard drive on the desk with a bubble rising from it holding a cat photo and a dog photo and the words '12,000 photos'; the square-headed robot looks up at the bubble." (focal object: the bubble; the number comes from the prose)
+   - ✗ "A robot looking at data." (no setting, no focal object, none of the prose's numbers)
+2. **Draw the "why", not the noun.** The picture shows the mechanism or the distinguishing point. For "same on all four blocks; only the pupils differ", draw both sides equal everywhere except the pupils, so the one difference stands alone. A counterexample shows the missing piece (the table without a leg, the empty slot) and gets a text tag.
+3. **Give abstract and maths concepts a concrete physical image.** Pick the mapping once and use the same image for that concept across the course (examples in the table below, not a required list).
+4. **One world for the whole course.** Fix recurring characters, a setting and props, and draw every chapter's pictures in that world so they read as one continuing story; draw a prop once and reuse it when its concept returns, so later pictures can refer back. The world is only the illustration's stage; the prose still talks about the concept, not the plot.
+5. **Words inside a picture: 1–3 words**, the same term the sentence uses; one focal point with space around it; light and shadow that have a source (where the light comes from, where the shadow falls); it should look like game art or a picture book, not clip art.
+6. **Example and flip cards (E1)**: the card caption is the question the prose is asking; the picture shows the case and doesn't repeat the caption.
+
+| Concept | Concrete image |
+|---|---|
+| Probability | A grid of 100 little people, a few with hands up |
+| Average | The balance point of a seesaw |
+| Squared error | Literal small squares whose area is the error |
+| Slope, gradient | A ball on a hillside, which way it rolls |
+| Weighted sum, trade-off | A balance scale; the weight of each block is the weight |
+| Discounting | Coins getting darker with distance |
+| Sigmoid | A dimmer switch that stops getting brighter at the end |
+| Logarithm | Counting how many doublings |
+
+### 2 Common pitfalls
 
 | Pitfall | Fix |
 |---|---|
@@ -83,9 +107,10 @@ The general rules (tell people apart by clothing, feet on the ground, hands hold
 | Mirroring a figure flipped its text too | `look:-1` (or `flip`) mirrors only the limbs; text goes in the text layer of `VL.illus.add` and doesn't flip |
 | Sky in a small header window so dark it looked like a black hole | At small sizes lighten big colour areas one step; check the thumbnail in a screenshot |
 | "White background, little person, label" illustrations looked cheap | Illustrations have a setting, ground and light (where are they, what time is it), not an isolated figure on white |
-| Counterexample and example pictures look the same | The counterexample shows the missing piece or the mistake (a table missing a leg, an empty slot) and gets a text tag |
+| Counterexample and example pictures look the same | See method point 2 above; the counterexample gets a text tag |
+| Numbers or terms in the picture don't match the sentence beside it | The script's words are taken verbatim from that sentence; in review, check the alt text against the picture item by item |
 
-**Before drawing, ask**: what "why" does this picture show? If the answer is "it makes the page less empty", draw something that explains a mechanism instead, or draw nothing.
+**Before drawing, ask**: what "why" does this picture show? If the answer is "it makes the page less empty", draw something that explains a mechanism instead, or draw nothing. If the script can't name a focal object and the prose's number, the sentence doesn't need a picture yet.
 
 **Check**: screenshot each illustration as a single element and look at it enlarged: `node <skill>/tools/shot.mjs <absolute html path> <out.png> "selector@index" 1100` (use `tools/illus-overlap.mjs` for overlaps). One checker covers 3–5 chapters, going through every picture with the list "no hands or legs, floating, facing the wrong way, text on lines".
 

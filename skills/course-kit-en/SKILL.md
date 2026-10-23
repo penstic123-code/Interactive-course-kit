@@ -43,7 +43,7 @@ The rules come in three tiers: **principles** (required, flexible in how; in con
 | Giving examples and counterexamples | Illustrated example carousel |
 | Naming the concept | Concept card (with a small picture) |
 
-Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a diagram; if not, use an illustration or photo.
+Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a diagram; if not, use an illustration or photo. Write an illustration's picture script from the sentence it sits next to before drawing; a diagram shows the mechanism and uses the numbers the prose just used (see `references/visuals.md` section 3, `references/diagrams.md` section 1).
 
 4. **Readers should always know which concept is being taught** (an approved preference of the user; do it). Every core concept is made visible in four places, with the same name in all four:
    1. The section heading names the concept (how to write headings: `en-teaching-prose`, chapter titles and headings: the section's core object or conclusion, one concept per section, about 10 words or fewer; ✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").

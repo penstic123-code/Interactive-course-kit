@@ -2,7 +2,7 @@
 
 Purpose: which diagram to use when a passage explains a *structure* (a loop, layers, cause and effect, a contrast, a classification…), how to draw it, and which mistakes to avoid. Diagrams are one family within T3 numbered figures in `components.md`; when to use a diagram and how to alternate it with illustrations is in `SKILL.md` section 1.
 
-All twelve templates below are in `kit/diagrams.js`: `VL.diagram.cycle / nested / flow / quadrant / compare / timeline / tree / venn / balance / network / spectrum / stack` (templates 1–12 in order). **`kit/README.md` is the API reference** (section 9, "概念图解" / concept diagrams, which lists the parameters of all twelve).
+Templates 1–12 are in `kit/diagrams.js`: `VL.diagram.cycle / nested / flow / quadrant / compare / timeline / tree / venn / balance / network / spectrum / stack` (in order). **`kit/README.md` is the API reference** (section 9, "概念图解" / concept diagrams, which lists the parameters of all twelve). Templates 13–14 (frequency tree, inference chain) are not in the kit yet: they have a drawing method only, so draw them as in-page SVG.
 
 This is the kind of picture the user values most: loop diagrams, nested circles and the like, where **every node has a name plus one concrete example line, the caption says "why", the reader can click one layer at a time, and labels sit outside the shape on leader lines.**
 
@@ -11,7 +11,7 @@ This is the kind of picture the user values most: loop diagrams, nested circles 
 | # | Rule | How | Good / bad example |
 |---|---|---|---|
 | 1 | Node = name + one example line | Name in bold, short (≤6 Chinese characters, roughly 1–3 English words); below it one concrete example line (≤14 Chinese characters, roughly ≤8 English words), e.g. "Seconds: press a key, jump". No abstract definitions | Good: AI `ch07-learning-as-search.html` mutate → select → inherit, with an example under each step. Bad: a circle of three bare words "action / feedback / reward" that leaves the reader guessing what they mean |
-| 2 | Colours have jobs | Structure (boxes, arrows, axes) in ink `--dg-ink`. **One accent colour for the whole diagram**, for the part to look at now (selected state `--dg-hi`). Node fills `--dg-c1…c6` chosen by colour number `c` to mark categories, never rotated per node. Right/wrong uses `--ok/--no` plus ✓✗. Quantities use `--q1…--q6`, the same colours as in the prose and formulas | Bad: every node a different colour, a rainbow: it looks machine-assembled |
+| 2 | Colours have jobs | Structure (boxes, arrows, axes) in ink `--dg-ink`. **One accent colour for the whole diagram**, for the part to look at now (selected state `--dg-hi`). Node fills `--dg-c1…c6` chosen by colour number `c` to mark categories, never rotated per node. Right/wrong uses `--ok/--no` plus ✓✗. Quantities use `--q1…--q6`, the same colours as in the prose and formulas. **The same thing keeps the same colour through the whole chapter** (category A always orange, B always blue, in every figure), so the reader recognises "that again" by colour | Bad: every node a different colour, a rainbow: it looks machine-assembled; orange is cats in one figure and dogs in the next |
 | 3 | Labels outside, on leader lines | Labels for nested circles, concentric ellipses and curves go outside the shape, joined by a thin leader line (1–1.5px) to the part they name. Never squeeze text onto a border | Good: three nested loops, each layer labelled on the right with a leader line |
 | 4 | Text ≥4px from lines | Every text bounding box stays ≥4px from any box, line or circle. If it doesn't fit, make the canvas taller; don't shrink the text | The in-figure text check of `tools/qa.mjs` (out of bounds, on a border, crowding a line, overlapping) catches many of these |
 | 5 | Diagram text ≥13px, contrast ≥4.5:1 | A handwriting font may be used inside diagrams only once checked for legibility, with a clear font for letters and digits (`unicode-range`) | Bad: a handwriting font that makes "VR5" read as "9R5" |
@@ -19,8 +19,12 @@ This is the kind of picture the user values most: loop diagrams, nested circles 
 | 7 | If it can be clicked, one layer at a time | Kit diagrams are selectable by default (`select:true`): nodes take Tab focus; click / Enter / Space selects a part (`.is-on`) and dims the rest (outer `.has-on`); the info line `.vl-dg-info` shows that part's `info`; arrow keys move between nodes; fires `vl:dgselect {i}`. With `select:false` the whole diagram is `role=img` | Good: AI `ch01-what-is-ai.html` nesting-doll diagram, "click any layer to see what it adds to the one outside it" |
 | 8 | The static version is complete | Readable without clicking; clicking only zooms in on detail. Everything visible when printed or with motion off | — |
 | 9 | Has `aria-label` | Say what is drawn and how it connects (screen-reader users rely on it); colour is never the only signal. Kit diagrams generate one if you don't pass `label` | Good: every inline figure has a full `aria-label` |
-| 10 | Same width as the text, about 2:1, height ≤300px | With many nodes, split into two diagrams rather than shrink | — |
+| 10 | One idea per diagram; same width as the text, about 2:1, height ≤300px | Before drawing, say in one sentence what the diagram is about; if it won't fit in one sentence, split it. With many nodes, split into two diagrams rather than shrink | — |
 | 11 | Edges: concept diagrams may wobble with the skin; data charts stay straight | Wobble filter uses `in="SourceGraphic"`; text sits outside the filter group | Data charts set `o.wob = 0` |
+| 12 | Show the mechanism, so the reader can trace it | Write multipliers or values on the edges, use arrows for cause, so the reader can recompute the result from the picture | Good: every edge of a tree says "×0.3" and each leaf shows the product; bad: bare "cause → effect" arrows |
+| 13 | The numbers in the diagram are the ones the prose just used | Don't switch to a different set of numbers in the figure; where possible generate the figure and the prose from the same data in code, so changing a number changes both | Bad: the prose says 36 photos, the figure draws 40 cells |
+| 14 | Line styles carry meaning and get a legend | Say what solid / dashed / thick mean in a one-line legend in the corner; colour is never the only signal (rule 2, template 10) | Bad: dashed means "related" in one figure and "extra condition" in another |
+| 15 | Introduce probability as counts | The first time a probability appears, write "36 out of 100" (natural frequencies), not a percentage or p-value; counts can be counted and multiplied directly, percentages make the reader convert (source: Gigerenzer & Hoffrage, 1995, *Psychological Review*, frequency formats substantially improve Bayesian reasoning) | Good: the frequency tree (template 13) |
 
 ## 2. Templates
 
@@ -96,6 +100,18 @@ This is the kind of picture the user values most: loop diagrams, nested circles 
 - **How**: the bottom layer at the bottom (a foundation). Each layer = name + example, outside on the right. Clicking a layer shows how much it contributes; give `value` and the heights become proportional (`total`, `unit` optional). Stacked bars use the `--q*` colours, matching the prose.
 - **Mistakes**: layer names inside the layer, swallowed by the fill; layer order that doesn't match what depends on what.
 
+### 13 Frequency tree (drawing method only; not in the kit, draw as in-page SVG)
+- **For**: working out, with counts rather than percentages, "of the cases showing a feature, how many really belong to a category" — conditional probability, Bayes, false positives in tests.
+- **Examples**: 100 animals split into cats / dogs, then into "pointy ears / not", then "of the pointy-eared ones, how many are cats?"; a test question: 10 of 1000 people have the disease, of those who test positive how many really have it.
+- **How**: four tiers, top to bottom. (1) A total box ("100 animals"). (2) Split by category; **write the multiplier or ratio on every edge** ("×0.3", "×0.7") and the resulting whole number in each child box. (3) Split again by feature, with multipliers on the edges and counts in the leaves. (4) A conclusion box at the bottom: "N pointy-eared in all, M of them cats, M ÷ N". Use the accent for the leaves being asked about and for the conclusion box. Numbers come from the same source as the prose (rule 13); pick a total that divides evenly so every box is a whole number and the boxes add up.
+- **Mistakes**: edges without multipliers, so the reader can't compute the child boxes; percentages in the leaves; counts that are rounded and don't add up; drawing the leaves in question the same as the irrelevant ones.
+
+### 14 Inference chain (drawing method only; not in the kit, draw as in-page SVG)
+- **For**: several rules chained together: one rule's conclusion becomes another rule's condition and the chain ends in an action — expert systems, rule engines, logical inference, diagnostic flows.
+- **Examples**: symptoms (fever, cough) → rule 1 "suspected infection" → rule 2 "suspected infection and high white cell count → bacterial infection" → action "prescribe antibiotics".
+- **How**: input facts on the left (small boxes), rule nodes in the middle (rounded boxes holding one "if … then …" sentence), the action on the right. Inputs enter rules by solid arrows; **draw a rule's conclusion as a small tag, and run an arrow from the tag into the next rule's condition slot**; an extra condition a rule needs is a dashed arrow, explained in a corner legend; the final action in the accent. Lay out left to right with no crossing arrows.
+- **Mistakes**: rule node and conclusion indistinguishable (give the conclusion its own tag); solid vs dashed with no legend; more than 5 rules on one figure (split it).
+
 ## 3. Picking a template
 
 | The text says something like | Use |
@@ -112,6 +128,8 @@ This is the kind of picture the user values most: loop diagrams, nested circles 
 | "these things all affect each other" | 10 Network |
 | "from… to…, with… in between" | 11 Spectrum |
 | "made of … layers", "add these up and you get…" | 12 Stack |
+| "out of 100 there are…, of which…", "how sure can we be when we see…" | 13 Frequency tree |
+| "if…then…, and that in turn meets another rule's condition" | 14 Inference chain |
 
 ## 4. HTML structure
 
