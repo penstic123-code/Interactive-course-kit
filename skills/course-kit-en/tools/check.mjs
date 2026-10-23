@@ -5,7 +5,7 @@
 //   1 语法：课程里每个 .js / .mjs（lib/、node_modules/ 除外）跑 node --check；每页内联 <script> 用 new Function 试编译
 //   2 接线：JS 去找的 vl- 类名，页面和脚本里有没有造出来；HTML 里写的 vl- 类名没有样式也没被脚本用到时只提示
 //   2b 凸显：每张概念卡的名字，正文里要有同名起名标记 .vl-cn，所在分节的小标题要写出它
-//   3 配图密度：两个视觉元素之间的正文超过 300 字就报（框里的文字也算；默认收起的 <details> 不算；
+//   3 配图密度：两个视觉元素之间的正文超过 220 字、单段 <p> 超过 160 字就报（框里的文字也算；默认收起的 <details> 不算；
 //     小互动 vl-guess / vl-flip / vl-philo / vl-hot、活图 vl-plot 也算视觉）
 //   4 链接：href / src 指向的本地文件是否存在
 //   5 运行：调用同目录 qa.mjs，420 和 1100 宽度下点遍按钮、拖遍滑块，报 JS 错误、横向溢出、图内文字压线
@@ -79,7 +79,7 @@ for (const p of pages) {
 }
 
 // 3 配图密度
-console.log("3 配图密度（两个视觉之间 >300 字）");
+console.log("3 配图密度（两个视觉之间 >220 字；单段 >160 字）");
 const VISUAL = /<(img|svg|canvas|figure|video|iframe)\b|data-illus|data-diagram|class="[^"]*\bvl-(board|dg|fig|eg|cc-fig|illus|photo|comic|guess|flip|philo|hot|plot)\b/; // 小互动（先猜后揭晓、翻牌、立场卡、热区）也算视觉
 for (const p of pages) {
   let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, ""); // 默认收起的故事框、支线由读者自选展开，不算进配图密度
@@ -89,7 +89,7 @@ for (const p of pages) {
   const hits = [];
   for (const tok of html.split(/(<[^>]+>)/)) {
     if (tok.startsWith("<")) {
-      if (VISUAL.test(tok)) { if (run > 300) hits.push(`${run} 字：「${from}…」`); run = 0; from = ""; }
+      if (VISUAL.test(tok)) { if (run > 220) hits.push(`${run} 字：「${from}…」`); run = 0; from = ""; }
       continue;
     }
     const raw = tok.replace(/&[a-z#0-9]+;/g, " ").trim();
@@ -97,8 +97,10 @@ for (const p of pages) {
     if (!from) from = raw.slice(0, 14);
     run += en ? Math.round(raw.split(/\s+/).length * 1.5) : raw.replace(/\s+/g, "").length; // 英文按词数×1.5 折成"字"
   }
-  if (run > 300) hits.push(`${run} 字（到页尾）：「${from}…」`);
+  if (run > 220) hits.push(`${run} 字（到页尾）：「${from}…」`);
   hits.slice(0, 8).forEach(h => fail("配图", `${path.basename(p)} ${h}`));
+  const long = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map(m => strip(m[1])).map(t => [t, en ? Math.round(t.split(/\s+/).filter(Boolean).length * 1.5) : t.replace(/\s+/g, "").length]).filter(([, n]) => n > 160);
+  long.slice(0, 8).forEach(([t, n]) => fail("段长", `${path.basename(p)} 一段 ${n} 字（>160，拆段或配图）：「${t.slice(0, 14)}…」`));
 }
 
 // 4 链接

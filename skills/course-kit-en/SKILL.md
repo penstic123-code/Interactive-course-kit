@@ -9,7 +9,7 @@ These rules come from four finished courses: a game design course (hand-drawn no
 
 Who owns what: how content is taught (the five layers, acceptance numbers) lives in `references/content-rules.md` (copy it into your project if you like); how sentences are written lives in en-teaching-prose for English prose (zh-teaching-prose for Chinese); **visuals, components, layout, interaction and motion** live here.
 
-Length limits: the Chinese original counts characters. This edition converts them at 1 English word = 1.5 characters, the same rate `tools/check.mjs` uses (e.g. 300 characters = 200 words).
+Length limits: the Chinese original counts characters. This edition converts them at 1 English word = 1.5 characters, the same rate `tools/check.mjs` uses (e.g. 220 characters ≈ 150 words).
 
 ## What to read first
 
@@ -42,11 +42,14 @@ Length limits: the Chinese original counts characters. This edition converts the
 
 Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a diagram; if not, use an illustration or photo.
 
-**Readers should always know which concept is being taught.** Every core concept is made visible three ways, with the same name in all three:
+**Readers should always know which concept is being taught.** Every core concept is made visible in four places, with the same name in all four:
 1. The section heading names the concept (✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
 2. Where the concept is first named in the text, wrap it in the naming mark `<span class="vl-cn">core loop</span>` (a highlighter in the notebook skin). The highlighter is reserved for this; don't use it for general emphasis.
 3. A concept card with a picture (K1) follows right after.
+4. The end-of-chapter key points recap it once more.
 Secondary concepts get only the naming mark, no card. For the one sentence in a paragraph the reader must remember, use the emphasis mark `.vl-em`, at most two per paragraph. `tools/check.mjs` reports any concept card whose name has no matching naming mark or heading.
+
+**The story stays in the background; the concept takes the stage.** In a course with a story world or characters, the story appears only in a short opening briefing, the header picture and an occasional line from the companion. The prose is about the concept itself; never swap a concept for a story stand-in (details: `content-rules.md` 1B).
 
 **Pacing rules**
 1. A visual every 1–2 paragraphs. **Boxes count as body text**: a "why it works" box, concept card or story box with more than 2 paragraphs needs a picture, or must be split into "picture + short text".
@@ -147,7 +150,7 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 | 1 Syntax | `node --check` on every .js; trial-compiles every inline script | Whole-page script not running |
 | 2 Wiring | Every `vl-` class the JS looks for actually exists in the page or scripts; a class the page uses that has no style and is not used by any script (hint only) | Renames not synced, dead buttons, styles not applying |
 | 2b Highlighting | Each concept card's name has a matching naming mark `.vl-cn` in the prose and appears in its section heading | One of the "three matching places" missing |
-| 3 Picture density | More than about 300 characters between two visuals (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
+| 3 Picture density | More than about 220 characters between two visuals, or a single paragraph over about 160 (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
 | 4 Links | Local href / src exist | Wrong image or script paths |
 | 5 Run | `qa.mjs`: clicks every button and drags every slider at 420 and 1100 widths | JS errors, horizontal overflow, text in figures touching lines, overflowing or overlapping |
 | 6 Screenshots | Full-page shots of every page at 420 and 1100, saved in `%TEMP%/course-check-shots/<course folder name>/` | Prints paths; **you must open them with Read and look** |

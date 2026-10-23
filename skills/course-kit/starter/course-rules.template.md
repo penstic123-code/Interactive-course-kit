@@ -11,7 +11,7 @@ Purpose: what is specific to this course: who it is for, its numbers, the skin a
 | Assumed knowledge | [As close to none as possible; state the maths starting point, e.g. "can do arithmetic and percentages"] |
 | By the end readers can | [2–4 things you could watch them do] |
 | Total time | [N chapters × about M minutes ≈ X hours] |
-| Running thread | [A guide character who grows / a case that keeps returning / a project built step by step] |
+| Running thread | [Optional: a case that keeps returning / a project built step by step / a background story (only in the briefing, header picture and companion) / none] |
 | Prose style | `en-teaching-prose`; anything specific to this course goes in section 6 |
 | Spelling | [e.g. Australian English: colour, behaviour, -ise] |
 | Other language edition | [None / Chinese edition in the course root, English in `en/`; see starter/README.md] |
