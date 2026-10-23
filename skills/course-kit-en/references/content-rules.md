@@ -19,7 +19,7 @@ The user's wording is unchanged; "How it is met" is the current practice, adjust
 |---|---|---|---|
 | 1 | One standalone HTML per chapter, clear and easy to read, with a visual style I choose | At the start, the user picks from the approved skins; style is only a skin | 10 |
 | 2 | Explain concepts with visuals, and give long text pictures too | Each hard-to-understand point gets a diagram that shows the mechanism; no walls of text, with visuals between stretches of text | 1A, 2 |
-| 3 | Interactions + practice that are fun like "taking a house apart", not multiple choice; a moderate number | For core concepts of difficulty ≥ 2, one hands-on moment at the key point, with a "Try it"; micro-interactions where they expose a wrong intuition | 1A, 2 |
+| 3 | Interactions + practice that are fun like "taking a house apart", not multiple choice; a moderate number | For core concepts of difficulty ≥ 2, the reader uses the concept once at the key point: an interaction when acting on it shows the consequence, otherwise a prediction or an exercise; micro-interactions where they expose a wrong intuition | 1A, 2 |
 | 4 | Teach the most important concepts while keeping the knowledge systematic, broad and deep | Room is allotted by difficulty points (1A); a knowledge map of the whole course; check for gaps | 1, 1A, 1B |
 | 5 | Combine what with why, and teach the underlying principles | Core concepts get all five layers (section 1, item 9); principles cite sources | 1 |
 | 6 | How each concept was invented, told from the learner's side | Say what trouble it solved; where history is reliable, an invention story, guess first then reveal, with an illustrated timeline | 1 |
@@ -103,8 +103,8 @@ Calibration: a chapter on "what is a game" with four everyday concepts (the four
 
 | Optional practice | When | Standard once used |
 |---|---|---|
-| Signature interaction | At the key moment of a core concept of difficulty ≥ 2 ("what if I change this", the reader running into the concept first-hand) | Direct manipulation, instant visual feedback, undo or reset, with a "Try it" task and feedback on completion; by default ≤ 5 large interactions per chapter (more tires the reader) |
-| Micro-interaction | When it can expose a wrong intuition, or let the reader run into the concept first-hand (click to highlight, hover hints, guess then reveal, one-click comparison) | Each option has its own feedback; no mental arithmetic of a single number; multiple choice doesn't count as interaction |
+| Signature interaction | At the key moment of a core concept of difficulty ≥ 2 ("what if I change this", the reader running into the concept first-hand), and only when acting on it shows something a static figure can't. Substitution test: if a picture or a sentence makes it just as clear, don't build an interaction | Direct manipulation, instant visual feedback, undo or reset, with a "Try it" task and feedback on completion; by default ≤ 5 large interactions per chapter (more tires the reader) |
+| Micro-interaction | When it can expose a wrong intuition, or let the reader run into the concept first-hand (click to highlight, hover hints, guess then reveal, one-click comparison) | Each option has its own feedback; no mental arithmetic of a single number; never added just to break up text for the picture-density check; multiple choice doesn't count as interaction |
 | Invention-story box | There is reliable history, and it shows why the concept had to exist | Section 1, items 9 and 12; at most one per core concept |
 | Principle box | There is a "why" worth its own box and with a citable source | Principle + source; a verification experiment only when the reader can confirm it by hand and gains from it |
 | Worldview principle | Assigned to this chapter by the 1D matrix | Hung on a concrete phenomenon, clearly tied to the chapter's concepts, referred back to on its second appearance |
@@ -131,7 +131,7 @@ The numbers in the table are reference values, set by field and course aims.
 | Coverage | No core topic missing; worldview principles woven in per the matrix (1D); ≥3 case studies; ≥2 hands-on projects |
 | Difficulty curve | Advanced chapters not placed too early and marked "advanced"; check chapter by chapter that every concept used has already been taught; later chapters may refer back, earlier chapters don't preview later ones; each chapter's difficulty total is estimated once at the course-plan stage, and chapters over the warning line are split then (1A) |
 | Consistency and coherence | One name per concept (Chinese–English glossary); consistent labels (source, controversy, illustrative); nothing taught twice, with brief back-references where topics overlap; if a relationship map exists, it covers every core concept |
-| Balance | Parts have roughly equal numbers of chapters; each part has at least one signature-interaction chapter; varied interaction types (simulation, building, mini-games, drag and drop, generators) |
+| Balance | Parts have roughly equal numbers of chapters; interactions follow the concepts, not a per-part quota; when the same kind of interaction repeats, consider another form (simulation, building, mini-games, drag and drop, generators) |
 | Extras | Progress saving is required; everything else is chosen from the optional features table in section 3, with choices recorded in the project document |
 | Facts and ethics | All facts in the course verified (section 1, item 11); illustrations drawn in-house or licensed and credited, with no imitation of copyrighted characters; responsible tone on sensitive topics |
 | Bilingual | Chinese and English chapters, numbering and interaction logic match; English fully translated |
@@ -170,7 +170,7 @@ This kind of knowledge lets readers "see the world differently", and the user es
 2. A principle appears under a concrete phenomenon ("Why are gacha pulls so compelling?" → prediction error).
 3. On its second appearance, refer back to the first and take a new angle.
 4. Cite sources and controversies; register the principle as a node in the relationship map, linked to the concepts that use it.
-5. Worldview chapters also follow the five-layer structure, with a signature interaction that verifies the law.
+5. Worldview chapters also follow the five-layer structure; when the law can be checked first-hand, add an interaction that verifies it.
 
 ## 2. Interaction and visualisation
 
