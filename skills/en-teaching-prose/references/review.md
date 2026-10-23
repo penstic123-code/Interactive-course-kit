@@ -29,7 +29,7 @@ Structure:
 - When telling history or an invention, are events in the order they happened, without jumping ahead and doubling back? (Not needed when explaining a concept or a use.)
 - Have numbers, dates and names the reader doesn't need been cut?
 - Do the story, history or game outweigh the concept itself? In a course with a story, is the subject the concept or a story character, and has any concept's name been replaced by a story term? Apply the deletion test.
-- Does each core concept have three or more concrete examples, including a counterexample?
+- Do the examples of each core concept mark its edge (by default three or more, including a counterexample; one is enough for an easy concept)?
 - Does each heading say what the section covers, and does it contain the concept first named in that section? Check for slogans, "Why X Matters" and metaphor-only headings.
 - Does character dialogue lecture, recite definitions or run as neat Q&A?
 - Is there meta-language ("in this chapter", "as mentioned"), or any preview of later sections?

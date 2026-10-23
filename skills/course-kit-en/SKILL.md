@@ -30,8 +30,8 @@ Length limits: the Chinese original counts characters. This edition converts the
 
 The rules come in three tiers: **principles** (required, flexible in how; in content-rules section 1), **optional practices** (picked by content; the table below and `components.md`) and the **technical floor** (accessibility and check-script thresholds, which do not move).
 
-1. **Write the chapter outline first** (template in content-rules section 4): driving question, reader's starting point, question chain, concepts with difficulty points (method in content-rules 1A), element table. Check it against the eight principles in content-rules section 1; if the difficulty total crosses the warning line and won't fit, split the chapter. The outline passes logic review before the prose is written, and the outlines of the sample chapter and of each part's first chapter also need the user's approval (flow in content-rules section 8).
-2. **Write the prose to the outline.** One topic, told unhurriedly: start from a situation the reader knows and unfold it layer by layer, each section picking up what the last one left. Keep the difficulty moderate: stop when the reader "gets it", and put derivations, maths and research detail into drawers that start collapsed. Each new concept goes: trouble → the reader meets it first-hand → name → make it exact → edges.
+1. **Write the chapter outline first** (template in content-rules section 4): driving question, reader's starting point, question chain, concepts with difficulty points (method in content-rules 1A), element table. Check it against the eight principles in content-rules section 1; if the difficulty total crosses the warning line and won't fit, consider splitting the chapter first, and if you don't split, write down why in the outline. The outline passes logic review before the prose is written, and the outlines of the sample chapter and of each part's first chapter also need the user's approval (flow in content-rules section 8).
+2. **Write the prose to the outline.** One topic, told unhurriedly: start from a situation the reader knows and unfold it layer by layer, each section picking up what the last one left. Keep the difficulty moderate: stop when the reader "gets it", and put derivations, maths and research detail into drawers that start collapsed. Each new concept by default goes: trouble → the reader meets it first-hand → name → make it exact → edges (the floor is that the name never comes before the experience; names the reader already knows are exempt, see content-rules section 1, item 2).
 3. **Once the prose is settled, choose the visual by what each passage is doing**, not by how important a component is. If the table has nothing for a passage, add no element:
 
 | What the passage is doing | Use |
@@ -45,8 +45,8 @@ The rules come in three tiers: **principles** (required, flexible in how; in con
 
 Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a diagram; if not, use an illustration or photo. Write an illustration's picture script from the sentence it sits next to before drawing; a diagram shows the mechanism and uses the numbers the prose just used (see `references/visuals.md` section 3, `references/diagrams.md` section 1).
 
-4. **Readers should always know which concept is being taught** (an approved preference of the user; do it). Every core concept is made visible in four places, with the same name in all four:
-   1. The section heading names the concept (how to write headings: `en-teaching-prose`, chapter titles and headings: the section's core object or conclusion, one concept per section, about 10 words or fewer; ✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
+4. **Readers should always know which concept is being taught** (an approved preference of the user; do it by default). Every core concept is made visible in four places, with the same name in all four:
+   1. The section that mainly teaches the concept has a heading that names it (the heading only orients; the naming in the text comes after the reader has met the concept; how to write headings: `en-teaching-prose`, chapter titles and headings: the section's core object or conclusion, one concept per section by default (a section comparing two concepts names the pair), about 10 words or fewer; ✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
    2. Where the concept is first named in the text, wrap it in the naming mark `<span class="vl-cn">core loop</span>` (a highlighter in the notebook skin). The highlighter is reserved for this; don't use it for general emphasis.
    3. A concept card with a picture (K1) follows right after.
    4. The end-of-chapter key points recap it once more.
@@ -54,7 +54,7 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 5. **Pacing rules**
    1. No walls of text: `check.mjs` step 3 reports more than about 220 characters between two visuals, or a single paragraph over about 160. First ask whether the paragraph packs in two new things; splitting it often suffices. Add a picture only if one is really missing, and let it show that passage's mechanism, not decorate. **Boxes count as body text**: a "why it works" box, concept card or story box with more than 2 paragraphs needs a picture, or must be split into "picture + short text".
    2. Open and close each section with something warm (illustration, photo, example) and put diagrams in the middle (an aesthetic preference).
-   3. Never put two static diagrams back to back; separate them with an illustration, example or interaction. A diagram you can click or drag counts as half an interaction.
+   3. By default don't put two static diagrams back to back (two similar figures in a row tire the reader); separate them with an illustration, example or interaction, except for two figures that form a deliberate pair. A diagram you can click or drag counts as half an interaction.
    4. Secondary content starts collapsed: invention story boxes, full timelines, going-further material, derivations, extra cases. Show only a **concrete, question-style** hook title + one line of introduction + an expand button. The hook says what is inside (✓ "1898: a cat shut in a box, and how the law of reward was found"), not what experience the reader will have (✗ "Ready to travel back in time and start a new adventure?").
    5. Repeated elements scroll sideways: examples, exercises, timeline cards, one at a time.
    6. Each picture appears only once in the whole course. A main example may run through a chapter and be referred back to, but the same description is not retold in the opener, the concept card and the carousel.
@@ -63,7 +63,7 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 
 ## 2. Visual baseline
 
-- **Courses use approved skins only** (`skins/`); never improvise styling inside a course page. When a course starts, ask the user which one (section 6); never pick one for them. For a new look, design a new skin together with the user: build its gallery page and one sample chapter, and use it once the user has approved it and it joins the library (process: `skin-contract.md` section 5).
+- **Courses use approved skins only** (`skins/`); never improvise a whole look inside a course page (small chapter-specific styles go inline in the page, see content-rules section 7). When a course starts, ask the user which one (section 6); never pick one for them. For a new look, design a new skin together with the user: build its gallery page and one sample chapter, and use it once the user has approved it and it joins the library (process: `skin-contract.md` section 5).
 - **A quiet ground**: long text sits directly on the ground (paper, wall, page), never on a card floating over a flat colour. Only *things* get physical presence (pictures, interaction boards, concept cards, document props), with shadows cast in one direction.
 - **Heavy borders only for the stars**: signature interactions and concept diagrams get thick strokes; everything else gets thin lines or none. No emoji as icons, no gradient text, no glow shadows.
 - **One theme colour per chapter**; chapters in the same part vary slightly in main colour, texture and header decoration, while fonts and component shapes stay the same.
@@ -76,7 +76,7 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 
 - Before an interaction, one sentence says what question it answers; the "Try it" task says what to do and gives feedback when done; interaction titles and "Try it" goals use only new words the prose has already named.
 - Few controls: the reader knows how to play within 3 seconds; at key points, predict first, then see the result; undo and restart are always possible.
-- Hard modes go into the advanced drawer. Multiple choice only appears in the exercises.
+- Hard modes go into the advanced drawer. Multiple choice only appears in the exercises (prediction questions that reveal the answer afterwards are the exception).
 - Works with the keyboard; touch targets are big enough.
 - Details in `interaction.md`.
 

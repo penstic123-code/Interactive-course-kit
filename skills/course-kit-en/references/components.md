@@ -13,7 +13,7 @@ Purpose: what each core component does, when to use it, how to write its content
 | # | Rule | Good / bad example |
 |---|---|---|
 | 1 | Components own structure, interaction and accessibility only; colour, font, stroke and texture come from the skin. No hard-coded colours in components; UI text goes through `VL.t()`, never into CSS `::before` | Bad: hard-coding "一句话总结" (one-line summary) and "例 / 反例" (example / counterexample) in `::before`, so the English edition needs patches |
-| 2 | **Boxes count as body text**: any box with more than 2 paragraphs gets a picture or is split into "picture + short text"; every box with body text has a picture slot (concept card `.vl-cc-fig`, why-it-works box `.vl-why-fig`) | Bad: a why-it-works box that runs past 250 characters with no picture |
+| 2 | **Boxes count as body text**: any box with more than 2 paragraphs gets a picture or is split into "picture + short text"; the concept card always has a picture slot (`.vl-cc-fig`), while in boxes of 2 paragraphs or fewer, such as the why-it-works box, the slot (`.vl-why-fig`) is kept only when there is a mechanism to draw | Bad: a why-it-works box that runs past 250 characters with no picture |
 | 3 | No emoji as icons; icons are small pictures from the illustration library | Bad: card icons that are emoji |
 | 4 | Motion is filed under four kinds (aids understanding / feedback / reading reward / atmosphere), details in `interaction.md`; a component plays only feedback motion itself, and for rewards it only dispatches events | Good: `VL.tryDone()` only ticks and saves; the confetti comes from a separate module listening for it |
 
@@ -150,8 +150,8 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K3 Why-it-works box
 - **Job**: explain why something holds: one principle + its source + an experiment the reader can verify themselves, plus one line of dispute if needed.
-- **Use / don't**: when there is a "why" worth its own box and with a citable source (a core concept of difficulty ≥ 2 must be taught to this layer, though not always in a box), placed after a concrete phenomenon; no definitions (those go in K1).
-- **Content**: the title is the principle as a sentence (≤13 words, without the word "principle"); **body ≤2 paragraphs (about 130 words); beyond that add a picture or split into picture + short text**; **picture slot required** (`.vl-why-fig`: diagram, real photo, or a thumbnail of the interaction above; the code doesn't enforce it and won't error, so check step 3, picture density, is the backstop); the "Why it works" tag is added automatically; source line = who · which study · year + "Check it: the … above"; dispute in one line: "Not everyone agrees: … (so-and-so)".
+- **Use / don't**: when there is a "why" worth its own box and with a citable source (a core concept of difficulty ≥ 2 is taught to this layer by default, though not always in a box), placed after a concrete phenomenon; no definitions (those go in K1).
+- **Content**: the title is the principle as a sentence (≤13 words, without the word "principle"); **body ≤2 paragraphs (about 130 words); beyond that add a picture or split into picture + short text**; **keep a picture slot when there is a mechanism to draw** (`.vl-why-fig`: diagram, real photo, or a thumbnail of the interaction above; the code doesn't enforce it and won't error, so check step 3, picture density, is the backstop); the "Why it works" tag is added automatically; source line = who · which study · year + "Check it: the … above"; dispute in one line: "Not everyone agrees: … (so-and-so)".
   Good: the source line says "Check it: the simulator above". Bad: a long flat card with a shadow, breaking "no PPT cards".
 - **Shape**: a light block (margin rule + small tag), not a floating card.
 - **Skins**: notebook = margin rule + hand-drawn magnifier tag | paper = thin sheet held by a brass pin | pixel = thin frame + coloured-block title | town = notice card pinned to a plaster board.
@@ -184,7 +184,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K5 Stance cards (philosophy moment / dispute)
 - **Job**: a question genuinely worth thinking about: the reader takes a position, flips through 2–3 stances (each attributed), and ends on an open question.
-- **Use / don't**: when the chapter's concepts raise a question really worth thinking about (frequency: content-rules section 1, item 12 — aim for one per chapter, at least one per part); not for questions with a correct answer.
+- **Use / don't**: when the chapter's concepts raise a question really worth thinking about (frequency: content-rules section 1, item 12); not for questions with a correct answer.
 - **Content**: first card = question + vote buttons; each middle card = one stance, ≤2 paragraphs, may have a picture, the stance is named by its view not its author ("rules come before the game"), the person goes in the source line; last card = open question, can lead into P3.
 - **Interaction and keyboard**: votes use `aria-pressed` and can be changed; stance cards echo "You chose: …"; ◀▶ / ←→ / swipe / dots labelled with stance names; all expanded in print.
   Bad: AI wrote the vote separately in 13 chapters; in the library it is one component (`.vl-philo` / `.vl-vote`, see `kit/README.md`).
@@ -373,7 +373,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### E1 Example carousel
 - **Job**: several examples of one concept (by default ≥ 3, including 1 counterexample or near miss that marks the concept's edge), switched sideways to save vertical space.
-- **Content**: each = illustration (required; a counterexample shows what's missing) + ≤2 paragraphs; tab label ≤9 words (`data-t`); counterexamples get `.bad`, distinguished by a text tag + shape, not colour alone. With pictures on wide screens, two columns. Examples are not retold elsewhere.
+- **Content**: each = illustration (by default; a counterexample shows what's missing; in academic courses an example may be a worked calculation, a data chart or a quoted passage) + ≤2 paragraphs; tab label ≤9 words (`data-t`); counterexamples get `.bad`, distinguished by a text tag + shape, not colour alone. With pictures on wide screens, two columns. Examples are not retold elsewhere.
 - **Interaction and keyboard**: tabs / ◀▶ / ←→ / 50px swipe; `role=tablist / tab / aria-selected`.
 - **Motion**: feedback (switch ≤300ms; a .42s paper page-turn must be cut to 300ms).
 - **Skins**: notebook = sticky-note tabs + dashed counterexample | paper = folder tabs + paper page-turn | pixel = pixel tabs | town = wooden drawer labels.
@@ -469,7 +469,7 @@ Interaction design rules (one sentence stating the question, playable in 3 secon
 
 ### G1 Interaction board
 - **Job**: the shell for every signature / supporting interaction: question sentence + Try it + stage + control row + readout + feedback sentence + restart.
-- **Content**: the title is the question this board answers (✓ "Definition tester: can you write a definition with zero errors?"); ≤3 control groups; must have "restart" or "undo". **Only interaction boards and concept diagrams get the heaviest physical presence in the course** (thick border, backing layer, shadow).
+- **Content**: the title is the question this board answers (✓ "Definition tester: can you write a definition with zero errors?"); by default ≤3 control groups; a board whose state the reader can mess up must have "restart" or "undo" (`interaction.md`, rule 5). **Only interaction boards and concept diagrams get the heaviest physical presence in the course** (thick border, backing layer, shadow).
 - **Control family**: `.vl-btn` (primary; `.alt` secondary; `disabled`), `.vl-chip` (`.on/.right/.wrong/.miss`), `label.vl-ctl > output + input[type=range]`, segmented toggle `role=group` + `.vl-chip[aria-pressed]`, feedback sentence `.vl-msg`; touch targets ≥44px; feedback sentence `aria-live=polite`. Selected-state text ≥4.5:1 against its ground (bad: a view toggle with white text on accent2, about 1.6:1).
 - **Motion**: feedback (press ≤150ms, a light 280ms shake on failure).
 - **Skins**: notebook = cardboard + ink line + hard shadow | paper = white paper + kraft backing | pixel = pixel frame + bevel | town = wood-edged workbench + brass title plate.
@@ -574,8 +574,8 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 ```
 
 ### P2 End-of-part review
-- **Job**: the last chapter of each part: a knowledge map of the part + "What you can make sense of now" + cross-chapter hands-on review tasks.
-- **Content** (code in `kit/vl-interact.js`, see `kit/README.md`): the map uses the network / flow templates in `diagrams.md`, with nodes linking back to chapters; the review has 3 rounds, each knocking down one "wrong claim", with G6 task types; no health bar, no score, no failing. Good: an end-of-part review and guarded rounds. "Floor guardian / BOSS" is skin appearance only.
+- **Job**: in a course divided into parts, the last chapter of each part: a knowledge map of the part + "What you can make sense of now" + cross-chapter hands-on review tasks.
+- **Content** (code in `kit/vl-interact.js`, see `kit/README.md`): the map uses the network / flow templates in `diagrams.md`, with nodes linking back to chapters; the review has 3 rounds by default, each knocking down one "wrong claim", with G6 task types; no health bar, no score, no failing. Good: an end-of-part review and guarded rounds. "Floor guardian / BOSS" is skin appearance only.
 - **Skins**: notebook = "Review page" + red-pen crossings-out | paper = floor guardian + wooden signs torn down | pixel = save point + BOSS | town = town council.
 
 ### P3 Note box
