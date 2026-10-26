@@ -7,7 +7,7 @@
 //   2b 凸显：每张概念卡的名字，正文里要有同名起名标记 .vl-cn，所在分节的小标题要写出它
 //   2c 先讲后用（只提示）：概念在正文里第一次起名之前，互动台标题、试试看、按钮、先猜后揭晓的题干里就出现了它的名字
 //   2d 负荷（只提示）：一个 <p> 里有 ≥2 个第一次出现的 .vl-term / .vl-cn；一个 <p> 里数字超过 6 个
-//   2e 文风提示（只提示）：中文页里段首短句（≤10 字）、连续三个以上 ≤15 字的短句、两句以上命令式开头、冒号后罗列
+//   2e 文风提示（只提示）：中文页里段首短句（≤10 字）、连续三个以上 ≤15 字的短句、两句以上命令式开头、冒号后罗列、分号对仗、顿号三连加总结、段尾短结论
 //   3 配图密度：两个视觉元素之间的正文超过 360 字、单段 <p> 超过 220 字只提示，超过 500 字连着没有视觉才报错（框里的文字也算；默认收起的 <details> 不算；
 //     小互动 vl-guess / vl-flip / vl-philo / vl-hot、活图 vl-plot 也算视觉）
 //   4 链接：href / src 指向的本地文件是否存在
@@ -122,7 +122,7 @@ for (const p of pages) {
   out.slice(0, 8).forEach(o => hint("负荷", o));
 }
 
-console.log("2e 文风提示（提示：段首短句、连续短句串、命令式开头、冒号后罗列；单句短有时是对的，逐条人看，见 zh-teaching-prose 的 AI 腔信号）");
+console.log("2e 文风提示（提示：段首短句、连续短句串、命令式开头、冒号后罗列、分号对仗、顿号三连加总结、段尾短结论；单句短有时是对的，逐条人看，见 zh-teaching-prose 的 AI 腔信号）");
 const IMP = /^(先|再|然后|点|拖|按|选|试试|试着|把|看看|想想|想一想|找|填|数一数|猜)/; // 命令式开头
 const clen = s => s.replace(/[，、；：“”‘’（）《》〈〉。！？…—,.;:!?()"'\s]/g, "").length;
 for (const p of pages) {
@@ -140,6 +140,9 @@ for (const p of pages) {
     const imp = sents.filter(s => IMP.test(s)).length;
     if (imp >= 2) out.push(`${imp} 句命令式开头，任务提示也按讲解文风写，说明这样做是为了看到什么：${at}`);
     if (/：[^。！？：]{1,14}、[^。！？：]{1,14}、/.test(text)) out.push(`冒号后罗列，读者得自己找共同点，把共同点写出来：${at}`);
+    for (const sn of sents) { const h = sn.split("；"); if (h.length === 2 && clen(h[0]) >= 8 && clen(h[1]) >= 8 && Math.abs(clen(h[0]) - clen(h[1])) <= 0.35 * Math.max(clen(h[0]), clen(h[1]))) { out.push(`分号并列的对仗，用真实的连接词并成因果或转折：${at}`); break; } }
+    if (/[^，。、]{1,10}、[^，。、]{1,10}、[^，。、]{1,12}，[^。]{0,6}(都是|就是|说明|体现)/.test(text)) out.push(`顿号三连后接总结句，改成一个完整的场景：${at}`);
+    if (sents.length >= 3 && clen(sents[sents.length - 1]) <= 14) out.push(`段尾是一句短结论「${sents[sents.length - 1]}」，看是不是金句收尾，讲完就停：${at}`);
   }
   out.slice(0, 12).forEach(o => hint("文风", o));
   if (out.length > 12) hint("文风", `${path.basename(p)} 另有 ${out.length - 12} 条未列出`);
