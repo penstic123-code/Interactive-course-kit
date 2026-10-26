@@ -19,14 +19,19 @@ Defined on `:root`. Override the main colour per part with `body[data-part="n"]`
 | Quantity encoding | `--q1` … `--q6` | Required for courses with maths; ≥3:1 on both `--panel` and `--plate`; fixed for the whole course; recheck contrast of each one in every scheme |
 | Fonts | `--font-body` body, `--font-label` subheadings / buttons / labels, `--font-hand` handwriting, `--font-display` big titles, `--font-mono` numbers / code | See the font rules below |
 | Shape | `--stroke` outline width, `--radius`, `--radius-alt` (for asymmetric corners), `--shadow-obj` shadow for physical objects, `--shadow-soft` | Only "things" get `--shadow-obj`, all shadows in the same direction; thick outlines only for interaction boards and concept diagrams |
-| Motion | `--ease`, `--dur-fb` (≤300ms), `--steps` (pixel skins) | See `interaction.md` section 4 |
+| Motion | `--ease`, `--dur-fb`, `--steps` (pixel skins) | Values and the duration table: `interaction.md` section 4 |
 | Diagrams | `--dg-c1…c6` node fills, `--dg-ink` `--dg-ink2` lines and text, `--dg-hi` selected, `--dg-filter` hand-drawn filter (not for data charts) | Diagrams sit on the plate and stay the same in all three schemes; class names in `kit/README.md` section 9, "Classes available to skins" |
 | Illustrations | `--il-filter`; colours in `VL_SKIN.palette` in `skin.js` | Same as above |
 
-**Font rules**
-- `--font-display` (calligraphy, chalk, pixel and other decorative faces) only for h1 and big chapter numbers.
-- `--font-hand` may be used for subheadings, text in figures and buttons only once **checked for legibility**: screenshot it at 13px and 16px and read it. Give letters and digits a clear font with `unicode-range` covering only U+0030-0039, U+0041-005A, U+0061-007A (e.g. Ma Shan Zheng for Chinese characters and Patrick Hand for letters and digits, which stops "VR5" reading as "9R5"). For an English-only page, the handwriting face itself must pass the same 13px / 16px check.
-- Body text in a clear face (LXGW WenKai, 17.5–18px / 1.85 line height).
+**Contrast** (the one place this rule lives; other files only point here): text against its ground — body, secondary, notes, small print, captions, text in figures, text on selected buttons — is ≥4.5:1; the `--focus` outline ≥3:1; `--q*` ≥3:1 on `--panel` and `--plate` (see the rows above). Small print uses Medium weight. Measure all three schemes with a tool, never by eye (section 5, step 3).
+
+**Font rules** (the one place these live; `SKILL.md` section 2 and the content-rules visual-style section only point here)
+- **Principle**: the reader can read it. What this protects is recognition: handwriting and calligraphy faces at small sizes make "VR5" look like "9R5".
+- **Default**:
+  - `--font-display` (calligraphy, chalk, pixel and other decorative faces) only for h1 and big chapter numbers.
+  - `--font-hand` may be used for subheadings, text in figures and buttons only once **checked for legibility**: screenshot it at 13px and 16px and read it. Give letters and digits a clear font with `unicode-range` covering only U+0030-0039, U+0041-005A, U+0061-007A (e.g. Ma Shan Zheng for Chinese characters and Patrick Hand for letters and digits). For an English-only page, the handwriting face itself must pass the same 13px / 16px check.
+  - Body text in a clear face (LXGW WenKai, 17.5–18px / 1.85 line height).
+- **Exception**: a face the skin has had approved may go beyond the default; that skin's `skins/<name>/README.md` decides. For example the hand-drawn (notebook) skin's text inside figures may use its current handwritten calligraphy face, as long as it reads clearly, without switching to a clear face. An exception belongs to that skin only; every other skin follows the default.
 - Fonts are local woff2, large Chinese fonts subset to the characters the course uses (e.g. fonttools `pyftsubset`; rerun for new chapters); web fonts are inserted asynchronously as a `<link>` by JS, never `@import`ed in CSS (bad: `@import` of a web font at the top of the CSS); system fonts as fallback.
 - Before switching fonts compare them on a small test page, then rerun `qa.mjs` on the whole course (glyph widths change, so spacing changes).
 

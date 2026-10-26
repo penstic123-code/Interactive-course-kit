@@ -47,10 +47,10 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 - Components only fire events (in the kit now: `vl:try {id, el, first}`, `vl:quiz-perfect {ch, firstTry, n}`, `vl:answer {i, firstTry}`; the end-of-part review's events are `vl:review-round {id, i, n, claim, revealed, last}` and `vl:review-done {id, first, revealed}`, see `kit/README.md` section 7). The rewards module (`kit/modules/collect.js`, `VL.collect`) subscribes, records, plays the look, and rewards only when `first` is true. No reward logic inside components.
 - Badge data shares one concept data set with the concept map and concept cards (section 3); a badge's definition is the concept card's "In plain words" line.
 - The collection is a dialog: Tab moves through cells, ←→ turns pages, Esc closes; each item expands to its definition (`aria-expanded`).
-- Motion is the "reading rewards" kind: ≤1.2s each; nothing plays at the off level, but it is still recorded.
+- Motion is the "reading rewards" kind (duration: `interaction.md` section 4); nothing plays at the off level, but it is still recorded.
 
 **Pitfalls**
-- The reward look stealing the text: a celebration layer covering the text for more than 1.2s, or confetti for every small action. Play it once, when something is understood.
+- The reward look stealing the text: a celebration layer covering the text for longer than the reward duration limit, or confetti for every small action. Play it once, when something is understood.
 - Mixing "read" and "understood": the top-bar progress and the lights on the contents page are decided only by quiz all correct.
 - Badges drawn as decoration unrelated to the concept: every object should bring its concept to mind (e.g. a backpack whose props each tie to one chapter's concept).
 
@@ -59,7 +59,7 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 **Worth adding when**: the skin has a world (e.g. the tower's protagonist, a little robot on a handheld) or readers are young. Off by default.
 
 **Two forms**
-1. Dialogue in the text: lines written by the author, static, appearing with the prose (AI `.npc`, 56 places).
+1. Dialogue in the text: lines written by the author, static, appearing with the prose (from one course: `.npc`, 56 places).
 2. A clickable character that talks: pinned to the page margin or the progress bar (e.g. the tower's protagonist).
 
 **Rules**

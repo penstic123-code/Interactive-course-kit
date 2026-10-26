@@ -92,12 +92,14 @@ Acceptance: `node <skill>/tools/check.mjs <absolute course path> chNN` (step 5 c
 
 ### 1 Four kinds
 
-| Kind | What it is | Duration | Easing | With motion off / reduced | Who writes it |
-|---|---|---|---|---|---|
-| Aids understanding | The motion itself teaches: collapse, falling balls, step changes, cells lighting up in turn, bars growing | step change ≤350ms; bar growth 200–400ms; collapse ≤600ms; simulations as needed | `--ease` | **Skip the process and show the final state**; switch to manual stepping if needed; no information lost | component / chapter |
-| Feedback on actions | Answers the reader's hand: press, switch, reveal, a shake | press 100–150ms; switch and reveal ≤300ms; failure shake 280ms | `--ease`; pixel skins `steps(n)` | Colour / text change only, no movement | component; movement amounts belong to the skin |
-| Reading rewards | Celebrating understanding: a stamp, lighting up, adding to the album | ≤1.2s once, no loop | set by skin | Not played, but the state is still recorded | rewards module + skin look |
-| Atmosphere | Life outside the text: header clouds, intros, transitions, backgrounds | loops ≥8s period (slow); intros ≤1.2s | set by skin | Still or absent | skin |
+Durations are not in this table; the one duration table for the whole course is in section 2 below.
+
+| Kind | What it is | Easing | With motion off / reduced | Who writes it |
+|---|---|---|---|---|
+| Aids understanding | The motion itself teaches: collapse, falling balls, step changes, cells lighting up in turn, bars growing | `--ease` | **Skip the process and show the final state**; switch to manual stepping if needed; no information lost | component / chapter |
+| Feedback on actions | Answers the reader's hand: press, switch, reveal, a shake | `--ease`; pixel skins `steps(n)` | Colour / text change only, no movement | component; movement amounts belong to the skin |
+| Reading rewards | Celebrating understanding: a stamp, lighting up, adding to the album | set by skin | Not played, but the state is still recorded | rewards module + skin look |
+| Atmosphere | Life outside the text: header clouds, intros, transitions, backgrounds | set by skin | Still or absent | skin |
 
 **Atmosphere only outside the text** (header, background, margins, transitions). Elements in the text area have no constant animation and no entrance effects other than scroll-reveal.
 
@@ -105,18 +107,29 @@ Acceptance: `node <skill>/tools/check.mjs <absolute course path> chNN` (step 5 c
 
 ### 2 Durations and easing
 
-| Motion | Recommended |
-|---|---|
-| Button hover / press | 100–150ms |
-| Fold arrow | ≤200ms; no height animation when showing / hiding content |
-| TOC panel opening | ≤250ms |
-| Reveal, example switch | ≤300ms (a .42s paper page turn must be cut to 300ms) |
-| Failure shake | 280ms, `VL.shake(el)` |
-| Hotspot highlight, formula linking | ≤200ms, opacity / outline only |
-| 3D card flip | about 400ms (aids understanding, so not bound by 300ms) |
-| Rewards (badge, stamp) | ≤1.2s, once (a 2s duel animation is too long) |
+**This is the only duration table in the course** (components.md, SKILL.md and skin-contract.md point here). What it protects is the feeling of immediacy: the reader's own actions should be answered as fast as possible, teaching animations may run a little longer, but the reader should never wait on an animation. The values are defaults; a motion that truly needs longer (say a collapse that must be followed) may exceed them, provided it is an "aids understanding" motion and shows the final state when motion is off.
 
-`--ease` defaults to `cubic-bezier(.2,.8,.3,1)`; `--dur-fb` defaults to 200ms; pixel skins use `--steps` (`steps(3)`–`steps(6)`) instead of smooth easing. The skin supplies the values as variables (see `skin-contract.md`); components only reference the variables.
+| Motion | Kind | Default |
+|---|---|---|
+| Button hover / press | feedback | 100–150ms |
+| Term definition popup | feedback | ≤150ms, or instant |
+| Fold arrow | feedback | ≤200ms; no height animation when showing / hiding content |
+| Hotspot highlight, formula linking | aids understanding / feedback | ≤200ms, opacity / outline only |
+| TOC panel opening | feedback | ≤250ms |
+| Drop (reference circle fading in) | feedback | ≤250ms |
+| Reveal, switches (examples, stances, quiz pages), "Try it" tick | feedback | ≤300ms; a skin's own page-turn animation (e.g. a paper page turn) must also fit within this |
+| Failure shake | feedback | 280ms, `VL.shake(el)` |
+| Bar growth, width transitions | aids understanding | 200–400ms |
+| Step change (step-through demo) | aids understanding | ≤350ms |
+| 3D card flip | aids understanding | about 400ms (not bound by 300ms) |
+| Collapse, spring back | aids understanding | ≤600ms |
+| Simulations that drop items one by one | aids understanding | as needed; draw all at once under reduced motion |
+| Rewards (badge, stamp) | reward | ≤1.2s, once, no loop |
+| Ambient loops | atmosphere | period ≥8s |
+| Intro | atmosphere | ≤1.2s |
+| Page transitions | atmosphere | see the level table in section 3 |
+
+`--ease` defaults to `cubic-bezier(.2,.8,.3,1)`; `--dur-fb` defaults to 200ms (the base for feedback, never above 300ms); pixel skins use `--steps` (`steps(3)`–`steps(6)`) instead of smooth easing. The skin supplies the values as variables (see `skin-contract.md`); components only reference the variables.
 
 ### 3 The three-level switch
 

@@ -23,13 +23,13 @@ Sentences and paragraphs:
 
 Structure:
 
-- Does the opening start from something familiar and set up why we're here, or does it drop the reader into a scene?
+- Does the opening start from something familiar and set up why we're here, or does it drop the reader into a scene? (Ways in: SKILL.md, "Narrative and structure".)
 - Situation first, then solution, then name?
 - With the headings covered, does the text read straight through, so the reader knows why each paragraph is there? If it reads like an outline, rewrite it.
 - When telling history or an invention, are events in the order they happened, without jumping ahead and doubling back? (Not needed when explaining a concept or a use.)
 - Have numbers, dates and names the reader doesn't need been cut?
-- Do the story, history or game outweigh the concept itself? In a course with a story, is the subject the concept or a story character, and has any concept's name been replaced by a story term? Apply the deletion test.
-- Do the examples of each core concept mark its edge (by default three or more, including a counterexample; one is enough for an easy concept)?
+- Do the story, history or game outweigh the concept itself? Is the subject the concept or a story character, and has any concept's name been replaced by a story term? (Rule: SKILL.md, "Concepts come first".)
+- Do the examples of each core concept mark its edge (count: content-rules section 1, item 7)?
 - Does each heading say what the section covers, and does it contain the concept first named in that section? Check for slogans, "Why X Matters" and metaphor-only headings.
 - Does character dialogue lecture, recite definitions or run as neat Q&A?
 - Is there meta-language ("in this chapter", "as mentioned"), or any preview of later sections?
@@ -42,9 +42,9 @@ Scan for the signals below. How to judge: if several turn up in one paragraph, o
 
 | Type | How to spot it | Fix |
 |---|---|---|
-| Antithesis template | Two or three sentences in a row that build up, then knock down ("before it was solved / after it was solved", "beat the champion / couldn't fold a shirt") | Keep one contrast and tell the rest straight, or move the contrasts into different paragraphs |
+| Antithesis template | Two or three sentences in a row that build up, then knock down ("before it was solved / after it was solved", "it finished the essay / it never started the next") | Keep one contrast and tell the rest straight, or move the contrasts into different paragraphs |
 | Labelling | "This is called X", "This phenomenon has a name: X", "AI that does Y is called Z", with every paragraph running example then definition | Let the name arrive inside the narration, and vary how paragraphs move forward |
-| Formulaic opening sentence | The paragraph opens with a short standalone sentence before the real content. It can be an assertion ("This isn't made up."), a signpost ("Now the votes." "Back to the room."), a mini-question ("And the calculator?") or a preview ("First, a game character.") | Delete it and start from the fact, or merge it into the next sentence. After fixing, scan every paragraph's first sentence once more |
+| Formulaic opening sentence | The paragraph opens with a short standalone sentence before the real content: an assertion ("Small bits count, of course."), a signpost, a mini-question ("Where does the knowledge come from?") or a preview ("Let us try a game character first."); more examples in SKILL.md | Delete it and start from the fact, or merge it into the next sentence. After fixing, scan every paragraph's first sentence once more |
 | Rhetorical-question opener | The paragraph or section begins with a question the writer then answers | Start from the fact or the scene. A question belongs at the end of a paragraph, answered at once |
 | Question at every paragraph end | Each paragraph closes on a question that the next one answers | Keep the ones that really drive the reading and use other transitions for the rest |
 | Summary or moral ending | The last sentence restates the paragraph, or "This shows…", "Ultimately…" | Delete it, or end on a question the next paragraph answers |
@@ -74,3 +74,5 @@ Report preference problems as suggestions, separate from principles and signals.
 ## 4. Report format
 
 One line per issue: `location (section + first 8 words of the sentence) | tier (principle / signal / preference) | type | original | rewrite`. Mark uncertain calls as "possible", and a lone signal judged acceptable as "kept". End with the 3 most frequent types so the writer can search the whole text for them in one go.
+
+How many to report depends on the setting: in a writer's own self-check, report all of them; in a reader review (a third party reading the finished chapter, content-rules section 8), report only the five clearest AI-voice problems.

@@ -1,6 +1,6 @@
 ---
 name: course-kit-en
-description: Visual and component toolkit for interactive learning web courses. It has a skin-independent component library organised by job (concept cards, "why it works" boxes, diagram templates, example carousels, "Try it" tasks, collapsible side paths, a hands-on task engine and more), approved visual skins (hand-drawn notebook, paper cut-out, handheld pixel, field notebook), rules for pictures, interactions, motion and reading rewards, and a method for planning a chapter (write the outline first: question chain and difficulty budget; then pick elements by what each passage is doing). Use it first whenever you make, revise, review, plan or outline the layout, visuals, diagrams, interactions, motion or visual style of an interactive web course or explainer page (course chapters, interactive tutorials, long-form science pages). Also use it when starting a new course and choosing a skin, building the shared skeleton, making a sample chapter, briefing chapter-writing agents, or running the checks. For prose style use en-teaching-prose for English (zh-teaching-prose for Chinese); content rules live in references/content-rules.md.
+description: Visual and component toolkit for interactive learning web courses. It has a skin-independent component library organised by job (concept cards, "why it works" boxes, diagram templates, example carousels, "Try it" tasks, collapsible side paths, a hands-on task engine and more), approved visual skins (hand-drawn notebook, paper cut-out, handheld pixel, field notebook, sticker collage), rules for pictures, interactions, motion and reading rewards, and a method for planning a chapter (write the outline first: question chain and difficulty budget; then pick elements by what each passage is doing). Use it first whenever you make, revise, review, plan or outline the layout, visuals, diagrams, interactions, motion or visual style of an interactive web course or explainer page (course chapters, interactive tutorials, long-form science pages). Also use it when starting a new course and choosing a skin, building the shared skeleton, making a sample chapter, briefing chapter-writing agents, or running the checks. For prose style use en-teaching-prose for English (zh-teaching-prose for Chinese); content rules live in references/content-rules.md.
 ---
 
 # Interactive course toolkit (course-kit-en)
@@ -46,7 +46,7 @@ The rules come in three tiers: **principles** (required, flexible in how; in con
 Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a diagram; if not, use an illustration or photo. Write an illustration's picture script from the sentence it sits next to before drawing; a diagram shows the mechanism and uses the numbers the prose just used (see `references/visuals.md` section 3, `references/diagrams.md` section 1).
 
 4. **Readers should always know which concept is being taught** (an approved preference of the user; do it by default). Every core concept is made visible in four places, with the same name in all four:
-   1. The section that mainly teaches the concept has a heading that names it (the heading only orients; the naming in the text comes after the reader has met the concept; how to write headings: `en-teaching-prose`, chapter titles and headings: the section's core object or conclusion, one concept per section by default (a section comparing two concepts names the pair), about 10 words or fewer; ✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
+   1. The section that mainly teaches the concept has a heading that names it (the heading only orients; the naming in the text comes after the reader has met the concept; how to write headings and how long: `en-teaching-prose`, "Chapter titles and headings" and "Preferences"; ✓ "The core loop behind one last game at 1 a.m.", ✗ "One last game at 1 a.m.").
    2. Where the concept is first named in the text, wrap it in the naming mark `<span class="vl-cn">core loop</span>` (a highlighter in the notebook skin). The highlighter is reserved for this; don't use it for general emphasis.
    3. A concept card with a picture (K1) follows right after.
    4. The end-of-chapter key points recap it once more.
@@ -63,7 +63,7 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 
 ## 2. Visual baseline
 
-- **Courses use approved skins only** (`skins/`); never improvise a whole look inside a course page (small chapter-specific styles go inline in the page, see content-rules section 7). When a course starts, ask the user which one (section 6); never pick one for them. For a new look, design a new skin together with the user: build its gallery page and one sample chapter, and use it once the user has approved it and it joins the library (process: `skin-contract.md` section 5).
+- **Courses use approved skins only** (`skins/`); never improvise a whole look inside a course page (small chapter-specific styles go inline in the page, see content-rules section 7). Which skin to use, and what to do for a new look, is in section 6.
 - **A quiet ground**: long text sits directly on the ground (paper, wall, page), never on a card floating over a flat colour. Only *things* get physical presence (pictures, interaction boards, concept cards, document props), with shadows cast in one direction.
 - **Heavy borders only for the stars**: signature interactions and concept diagrams get thick strokes; everything else gets thin lines or none. No emoji as icons, no gradient text, no glow shadows.
 - **One theme colour per chapter**; chapters in the same part vary slightly in main colour, texture and header decoration, while fonts and component shapes stay the same.
@@ -76,7 +76,7 @@ Do you need a diagram? Ask whether the passage has a *structure*. If yes, draw a
 
 - Before an interaction, one sentence says what question it answers; the "Try it" task says what to do and gives feedback when done; interaction titles and "Try it" goals use only new words the prose has already named.
 - Few controls: the reader knows how to play within 3 seconds; at key points, predict first, then see the result; undo and restart are always possible.
-- Hard modes go into the advanced drawer. Multiple choice only appears in the exercises (prediction questions that reveal the answer afterwards are the exception).
+- Hard modes go into the advanced drawer. Where multiple choice may appear: `interaction.md` section 2, rule 12.
 - Works with the keyboard; touch targets are big enough.
 - Details in `interaction.md`.
 
@@ -87,7 +87,7 @@ Four kinds by purpose, each with its own rules (details in `interaction.md`):
 | Purpose | Rule |
 |---|---|
 | Aids understanding | With motion off, the final state is still shown; no information is lost |
-| Feedback on an action | 150–300ms; under reduced motion keep only the colour change |
+| Feedback on an action | Must feel instant; durations in `interaction.md` section 4, "Durations and easing"; under reduced motion keep only the colour change |
 | Reading reward | Fires once, only after the reader understood something; never interrupts reading |
 | Atmosphere | Only outside the body text, light by default, one click to turn off |
 
@@ -104,13 +104,13 @@ Respect `prefers-reduced-motion` everywhere; the top bar's "Display" pop-up offe
 
 **The first thing to ask is the art style.** When the user says "make a course", use the question tool (AskUserQuestion; otherwise just ask) to let them pick a skin, or choose "design a new skin with the AI". Don't default and don't improvise a style. Give each option one line on what it suits, plus the path to its approval page `skins/<name>/gallery.html`:
 
-| Skin | In one line | Suits |
-|---|---|---|
-| `notebook` hand-drawn notebook | Ruled paper, ink stick figures, colour blocks | Design, thinking, humanities; adults and high school |
-| `paper` paper cut-out | Card-paper cut-outs, white edges, soft shadows; the contents page is a tower | Courses with a story and characters; middle to high school |
-| `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses |
-| `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, fieldwork and history |
-| `collage` sticker collage | Handmade paper, Matisse cut-out colours; photos, paintings and cut-paper figures all as white-edged stickers | Intro courses heavy on paintings and historical photos (education, art history, psychology) |
+| Skin | In one line | Suits | Status (per each `skins/<name>/README.md` and `skin-contract.md` section 6) |
+|---|---|---|---|
+| `notebook` hand-drawn notebook | Ruled paper, ink stick figures, colour blocks | Design, thinking, humanities; adults and high school | In the library; dark scheme not tuned |
+| `paper` paper cut-out | Card-paper cut-outs, white edges, soft shadows; the contents page is a tower | Courses with a story and characters; middle to high school | In the library, with a sample chapter; dark scheme not tuned |
+| `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses | In the library, with a sample chapter; dark scheme not tuned |
+| `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, fieldwork and history | In the library, with a sample chapter; dark scheme not tuned; "how it looks once extracted as a skin" not yet separately approved |
+| `collage` sticker collage | Handmade paper, Matisse cut-out colours; photos, paintings and cut-paper figures all as white-edged stickers | Intro courses heavy on paintings and historical photos (education, art history, psychology) | Approved into the library by the user on 2026-10-26; dark and easy-on-the-eyes schemes not tuned; leader-line label breakdown not yet a component |
 
 If the user wants a style that isn't listed, or chose to design a new skin: first talk through the feel they want, references they like and who the readers are, and offer two or three directions to pick from; then build the gallery page and one sample chapter following `skin-contract.md` section 5, and start the course once the user has approved it and it has joined the library. Three sample chapters built with real content live in `../course-kit/examples/` (shipped with the Chinese edition: `paper-survivorship`, `pixel-binary-search`, `fieldbook-gift`); show them to the user or use them as the model for a sample.
 
@@ -149,7 +149,7 @@ node <skill>/tools/check.mjs <absolute course folder path> [ch02,ch03] [--fast]
 | 2c Experience before names (hint only) | Before a concept is first named in the prose, its name already appears in an interaction board title, a "Try it", a button or a guess-then-reveal question | Tasks using words the reader doesn't know yet |
 | 2d Load (hint only) | A paragraph with ≥ 2 terms or concept names appearing for the first time; a paragraph with more than 6 numbers | Two new things packed into one paragraph, numbers to remember piled into a sentence |
 | 2e Style (hint only, Chinese pages) | A paragraph opening with a sentence of ≤ 10 characters, three or more short sentences in a row, two or more sentences opening with a command, a colon followed by a bare list | AI-voice runs of short sentences, task prompts that sound like someone hurrying you |
-| 3 Picture density (hint; error over 500) | More than about 360 characters between two visuals, or a single paragraph over about 220, is a hint; over 500 characters in a row with no visual is an error (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
+| 3 Picture density (hint; error past the limit) | Thresholds in section 1, item 5.1: past them is a hint, and only a long enough stretch with no visual is an error (boxes count; collapsed `details` don't; English converted by word count). What counts as a visual: `visuals.md` section 4 | Long text with no pictures |
 | 4 Links | Local href / src exist | Wrong image or script paths |
 | 5 Run | `qa.mjs`: clicks every button and drags every slider at 420 and 1100 widths | JS errors, illustrations that failed to draw (wrong illustration name, mismatched brackets in an illustration script), horizontal overflow, text in figures touching lines, overflowing or overlapping; JS errors or missing illustrations get their own !!! line in the summary |
 | 6 Screenshots | Full-page shots of every page at 420 and 1100, saved in `%TEMP%/course-check-shots/<course folder name>/` | Prints paths; **you must open them with Read and look** |
