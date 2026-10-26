@@ -10,7 +10,7 @@ This is the English translation of the Chinese `course-kit/starter/README.md`, w
 node <skill>/starter/new-course.mjs <absolute course folder path> <skin name> [--lang en] [--update-kit]
 ```
 
-- `<skin name>` is required and has no default: notebook / paper / pixel / fieldbook. Ask the user first (`SKILL.md` section 6). If it is missing or wrong, the script lists the available skins and exits.
+- `<skin name>` is required and has no default: notebook / paper / pixel / fieldbook / collage. Ask the user first (`SKILL.md` section 6). If it is missing or wrong, the script lists the available skins and exits.
 - The course folder is created if it doesn't exist; **existing files are never overwritten** (they are skipped and listed).
 - `--lang en`: an English-only course. Pages, config, illustration pack and the course's own stylesheet come from the same-named templates under `starter/en/` (`<html lang="en">`; placeholders and comments are in English, and UI text goes through the kit's English table automatically). The project document is generated as `course-rules.md` (from `course-rules.template.md`) and `项目规则与经验.md` is not generated. Without the flag you get a Chinese course. A bilingual course doesn't use this flag; see section 5.
 - `--update-kit`: replaces only `kit/` and `skin/` with the latest versions from the skill (for upgrades) and touches nothing else.

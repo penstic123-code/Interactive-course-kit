@@ -1,0 +1,336 @@
+/* 皮肤 collage · 贴纸拼贴
+   只定义变量和组件外观；结构在 kit/vl.css。三套配色：html[data-scheme="light|dark|sepia"]；篇章主色：body[data-part="1…5"]。
+   规矩：一张有纤维的手工纸，长文直接印在纸上；"东西"（图、照片、互动台、概念卡）是剪下来贴上去的纸，靠错位的彩纸垫层和同向浅投影分层，不描黑边；
+   颜色取马蒂斯剪纸的几种纯色（群青、朱红、叶绿、柠檬黄、玫红），大块纯色只给剪纸形状，正文底下只用浅色；照片、名画和插画都做成白边贴纸（同一种描边和投影），概念拆解用引线标签。
+   字体同 notebook（游戏设计课的层级）：h1 马善政；小标题、按钮、图中字霞鹜文楷 + Patrick Hand（字母数字）；正文霞鹜文楷。网络字体由 skin.js 声明。 */
+
+@font-face{font-family:"VLHandLatin";src:url("fonts/PatrickHand-Regular.ttf") format("truetype");unicode-range:U+0030-0039,U+0041-005A,U+0061-007A;font-display:swap}
+@font-face{font-family:"VLHandEn";src:url("fonts/PatrickHand-Regular.ttf") format("truetype");font-display:swap}
+
+/* ---------- 不随配色变的常量 ---------- */
+:root{
+  /* 篇章色：a 浅色（垫在字下面）、b 剪纸纯色（形状、节号、垫层）、t b 上的字色、d 写字用的深色 */
+  --p1a:#c4d2f2;--p1b:#2c4fa3;--p1t:#ffffff;--p1d:#1d3a80;
+  --p2a:#f6c6b6;--p2b:#c43d22;--p2t:#ffffff;--p2d:#9a2c16;
+  --p3a:#bfe0c8;--p3b:#26794e;--p3t:#ffffff;--p3d:#1b5c3b;
+  --p4a:#f7dc8c;--p4b:#e8a917;--p4t:#241f1a;--p4d:#6e4a05;
+  --p5a:#f3c9d3;--p5b:#b84a6f;--p5t:#ffffff;--p5d:#8f2f50;
+  --cl-blue:#2c4fa3;--cl-red:#d6492c;--cl-green:#2e8b5b;--cl-yellow:#f0b92e;--cl-pink:#e58ba0;--cl-black:#241f1a;--cl-tape:rgba(226,214,180,.78);
+  --dg-c1:#f7dc8c;--dg-c2:#c4d2f2;--dg-c3:#f6c6b6;--dg-c4:#bfe0c8;--dg-c5:#f3c9d3;--dg-c6:#f2d3a8;
+  --dg-ink:#241f1a;--dg-ink2:#3d352d;--dg-hi:#c43d22;--dg-filter:none;--il-filter:none;
+  --q1:#2c4fa3;--q2:#c2410c;--q3:#1f7a4c;--q4:#8b3fae;--q5:#b42318;--q6:#0e6f86;
+  --font-body:"LXGW WenKai","霞鹜文楷","KaiTi","楷体","STKaiti","Microsoft YaHei",serif;
+  --font-hand:"VLHandLatin","LXGW WenKai","霞鹜文楷","KaiTi","楷体","STKaiti",cursive;
+  --font-label:var(--font-hand);
+  --font-display:"VLHandLatin","Ma Shan Zheng","LXGW WenKai","KaiTi","楷体","STKaiti",cursive;
+  --font-mono:"VLHandLatin","Consolas","Menlo",monospace;
+  --stroke:2px;--radius:3px;--radius-alt:4px 2px 5px 3px;
+  --ease:cubic-bezier(.2,.8,.3,1);--dur-fb:.22s;--focus:#1d4fd8;
+  --plate:#fffdf8;--plate-ink:#241f1a;
+  /* 纸纤维：一张极淡的噪点图（脚本无关，file:// 下也显示） */
+  --cl-fiber:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body{--pa:var(--p1a);--pb:var(--p1b);--pt:var(--p1t);--pd:var(--p1d)}
+body[data-part="2"]{--pa:var(--p2a);--pb:var(--p2b);--pt:var(--p2t);--pd:var(--p2d)}
+body[data-part="3"]{--pa:var(--p3a);--pb:var(--p3b);--pt:var(--p3t);--pd:var(--p3d)}
+body[data-part="4"]{--pa:var(--p4a);--pb:var(--p4b);--pt:var(--p4t);--pd:var(--p4d)}
+body[data-part="5"]{--pa:var(--p5a);--pb:var(--p5b);--pt:var(--p5t);--pd:var(--p5d)}
+
+/* ---------- 亮（默认） ---------- */
+body{
+  --accent:var(--pa);--accent2:var(--pb);--ontint:var(--pt);
+  --page:#f3eee3;--line:#ddd2bd;--panel:var(--page);--edge:#fffdf8;--sunk:#fbf8f1;
+  --ink:#241f1a;--ink2:#4a4037;--muted:#574c41;
+  --deep:var(--pd);--hl:var(--pa);
+  --ok:#1d6b32;--okbg:#d6efd6;--no:#b42318;--nobg:#fbd9d2;--warnbg:#fbe9cf;
+  --note:#f7e08e;--egbg:#fffdf8;--egbad:#fbe6df;--whybg:transparent;--sidebg:#fbf7ee;
+  --shadow-c:rgba(40,30,20,.2);--shadow-obj:3px 4px 0 rgba(40,30,20,.16),0 1px 2px rgba(40,30,20,.12);--shadow-soft:2px 3px 0 rgba(40,30,20,.13);
+}
+html[data-scheme="dark"] body{
+  --accent:color-mix(in srgb,var(--pa) 30%,#1e1b18);--accent2:var(--pb);
+  --page:#1e1b18;--line:#34302a;--panel:var(--page);--edge:#2a2622;--sunk:#24211d;
+  --ink:#efe8db;--ink2:#d3cabb;--muted:#c2b8a8;
+  --deep:var(--pa);--hl:color-mix(in srgb,var(--pa) 38%,#1e1b18);
+  --ok:#8fe0a0;--okbg:#1f3a27;--no:#ff9b94;--nobg:#45201f;--warnbg:#3b2d1c;
+  --note:#3d3620;--egbg:#2a2622;--egbad:#3c2421;--sidebg:#26231f;
+  --shadow-c:rgba(0,0,0,.5);--shadow-obj:3px 4px 0 rgba(0,0,0,.5);--shadow-soft:2px 3px 0 rgba(0,0,0,.45);--focus:#8fb0ff;
+}
+html[data-scheme="sepia"] body{
+  --accent:color-mix(in srgb,var(--pa) 70%,#eadcc0);
+  --page:#efe3c9;--line:#ddcca8;--panel:var(--page);--edge:#f9f1df;--sunk:#f5ebd5;
+  --ink:#3b3123;--ink2:#54473a;--muted:#5c4f3f;
+  --hl:color-mix(in srgb,var(--pa) 62%,#efe2c4);
+  --ok:#2d5e2c;--okbg:#dbe8c4;--no:#9c2b1f;--nobg:#f2d2c4;--warnbg:#f2dfbf;
+  --note:#f2d98a;--egbg:#f9f1df;--egbad:#f2d9d2;--sidebg:#f3e8cf;
+  --plate:#fffaf0;
+}
+html:not([data-scheme="light"]) :is(.vl-fig,.vl-cc-fig,.vl-illus:not(.vl-fig .vl-illus):not(.vl-cc-fig .vl-illus)){
+  --ink:var(--plate-ink);--ink2:#4a4037;--muted:#574c41;--edge:#fffdf8;--sunk:#fbf8f1;
+  background:var(--plate);color:var(--plate-ink);
+}
+
+/* ---------- 底面与正文 ---------- */
+html{background:#f3eee3}
+body{color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.85;background-color:var(--page);background-image:radial-gradient(var(--line) 1.3px,transparent 1.6px),var(--cl-fiber);background-size:24px 24px,240px 240px}
+h1,h2,h3,h4{font-weight:400;line-height:1.3;margin:0 0 .4em;color:var(--ink)}
+h1{font-family:var(--font-display);font-size:3rem}
+h2{font-family:var(--font-hand);font-size:1.9rem;font-weight:700}
+h3{font-family:var(--font-hand);font-size:1.4rem;font-weight:700}
+h4{font-family:var(--font-hand);font-size:1.2rem;font-weight:700}
+p{margin:.6em 0}
+a{color:inherit}
+main a:not([class]){color:var(--deep);text-decoration-thickness:2px;text-underline-offset:3px}
+b,strong{font-weight:700}
+/* 起名 = 一条剪下来的浅色纸条垫在字下（只给概念第一次被命名处）；着重 = 着重号 */
+.vl-cn{background:linear-gradient(176deg,transparent 46%,var(--hl) 46%,var(--hl) 94%,transparent 94%);font-weight:700;padding:0 3px;font-style:normal}
+.vl-em{font-style:normal;text-emphasis:filled dot var(--ink);-webkit-text-emphasis:filled dot var(--ink);text-emphasis-position:under right;-webkit-text-emphasis-position:under}
+html[lang^="en"] .vl-em{text-emphasis:none;-webkit-text-emphasis:none;text-decoration:underline 2px var(--accent2);text-underline-offset:3px}
+.vl-src,.small{font-size:.92rem;color:var(--muted)}
+::selection{background:var(--hl)}
+@media(max-width:700px){h1{font-size:2.3rem}h2{font-size:1.6rem}}
+
+/* ---------- 共用：纸做的按钮、芯片 ---------- */
+.vl-btn,.vl-tb-btn,.vl-seg button,.vl-navtools button,.vl-egtab,.vl-qdot{font-family:var(--font-hand);color:var(--ink)}
+.vl-btn{font-size:1.12rem;font-weight:700;background:var(--accent);border:none;border-radius:var(--radius-alt);box-shadow:var(--shadow-soft);transition:transform .1s,box-shadow .1s}
+.vl-btn:hover:not(:disabled){transform:translate(-1px,-2px) rotate(-.8deg);box-shadow:3px 5px 0 rgba(40,30,20,.16)}
+.vl-btn:active:not(:disabled){transform:translate(2px,3px);box-shadow:0 0 0 transparent}
+.vl-btn.alt{background:var(--edge)}
+.vl-btn:disabled{opacity:.55}
+.vl-chip{font-size:.98rem;color:var(--ink);background:var(--edge);border:none;border-radius:3px;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.28),var(--shadow-soft)}
+.vl-chip.on,.vl-chip[aria-pressed="true"]{background:var(--accent);box-shadow:inset 0 0 0 2px var(--ink)}
+.vl-chip.right{background:var(--okbg);font-weight:700}.vl-chip.right::before{content:"✓ "}
+.vl-chip.wrong{background:var(--nobg);text-decoration:line-through}.vl-chip.wrong::before{content:"✗ "}
+.vl-chip.miss{background:var(--warnbg);box-shadow:inset 0 0 0 1.5px var(--ink2);outline:1.5px dashed var(--ink2);outline-offset:2px}.vl-chip.miss::before{content:"✓ "}
+input[type=range]{accent-color:var(--accent2)}
+.vl-ctl output{font-family:var(--font-hand);font-size:1.25rem;margin-left:6px;font-weight:700}
+.vl-msg{font-family:var(--font-hand);font-size:1.15rem}
+textarea,input[type=text]{color:var(--ink)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+/* ---------- 顶栏：一条纸边，下面垫一条篇色纸 ---------- */
+.vl-topbar{background:var(--page);background-image:var(--cl-fiber);border-bottom:none;box-shadow:0 4px 0 var(--accent2),0 6px 6px rgba(40,30,20,.12)}
+.vl-tb-home{font-family:var(--font-hand);font-weight:700;font-size:1.15rem;color:var(--ink)}
+.vl-tb-btn{background:var(--edge);border:none;border-radius:3px;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.3);font-size:1rem;font-weight:700}
+.vl-tb-btn:hover,.vl-tb-btn[aria-expanded="true"]{background:var(--accent)}
+.vl-tb-dots a,.vl-tb-dots span{border:none;border-radius:50%;color:var(--p1t);font-family:var(--font-hand);font-weight:700;background:var(--p1b);box-shadow:1px 2px 0 rgba(40,30,20,.2)}
+.vl-tb-dots [data-part="2"]{background:var(--p2b);color:var(--p2t)}.vl-tb-dots [data-part="3"]{background:var(--p3b);color:var(--p3t)}.vl-tb-dots [data-part="4"]{background:var(--p4b);color:var(--p4t)}.vl-tb-dots [data-part="5"]{background:var(--p5b);color:var(--p5t)}
+.vl-tb-dots a.done{box-shadow:0 0 0 3px var(--page),0 0 0 5px var(--ok)}
+.vl-tb-dots a.cur{transform:rotate(-8deg) scale(1.2);box-shadow:2px 3px 0 rgba(40,30,20,.3)}
+.vl-tb-dots span.off{opacity:.4}
+.vl-tb-dots span{width:24px;height:24px;display:grid;place-items:center;line-height:1;font-size:.72rem;flex:none}
+.vl-pop,.vl-navpanel{background:var(--edge);color:var(--ink);border:none;border-radius:3px;box-shadow:6px 6px 0 var(--accent2),0 2px 10px rgba(40,30,20,.18)}
+.vl-pop.open,.vl-navpanel.open{animation:cl-pop var(--dur-fb) var(--ease)}
+@keyframes cl-pop{from{transform:translateY(-6px) rotate(-.6deg);opacity:0}to{transform:none;opacity:1}}
+.vl-pop h4,.vl-navpanel h4{font-size:1.25rem}
+.vl-pop-part{font-family:var(--font-hand);font-weight:700;color:var(--ink2)}
+.vl-pop a.done::after{content:" ✓";color:var(--ok);font-weight:700}
+.vl-pop li.cur > a,.vl-navpanel a.on{background:linear-gradient(176deg,transparent 50%,var(--hl) 50%)}
+.vl-pop a:hover,.vl-navpanel a:hover{text-decoration:underline 2px var(--accent2)}
+.vl-seg button,.vl-navtools button{background:var(--edge);border:none;border-radius:3px;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.3);font-weight:700}
+.vl-seg button[aria-pressed="true"]{background:var(--accent);box-shadow:inset 0 0 0 2px var(--ink)}
+.vl-pref-now{font-size:.9rem;color:var(--ink2);margin:0}
+.vl-tb-lang{background:var(--p2a);color:#241f1a}
+
+/* ---------- 章首：徽记是一块剪下的纯色纸，标题下垫一条浅纸 ---------- */
+.vl-badge{font-family:var(--font-hand);font-weight:700;font-size:1.15rem;background:var(--accent2);color:var(--ontint);border:none;padding:1px 16px;border-radius:2px;transform:rotate(-3deg);box-shadow:var(--shadow-soft);clip-path:polygon(0 6%,22% 0,58% 4%,100% 0,98% 52%,100% 100%,64% 95%,30% 100%,2% 96%,0 50%)}
+.vl-hero h1{display:inline;background:linear-gradient(177deg,transparent 58%,var(--accent) 58%,var(--accent) 92%,transparent 92%);padding:0 4px}
+.vl-hero .vl-sub{color:var(--ink2);font-size:1.1rem}
+.vl-hero::after{content:var(--vl-chnum,"");position:absolute;right:4px;top:-8px;font-family:var(--font-display);font-size:9rem;line-height:1;color:var(--accent);opacity:.55;z-index:-1;pointer-events:none;transform:rotate(-4deg)}
+@media(max-width:700px){.vl-hero::after{font-size:6rem}}
+.vl-goals{background:transparent;border:none;border-left:6px solid var(--accent2);border-radius:0;padding-left:18px}
+.vl-goals h3{font-size:1.25rem}
+.vl-goals .vl-time{font-family:var(--font-hand);color:var(--ink2)}
+
+/* ---------- 分节：节号是剪下的圆纸片 ---------- */
+.vl-sec .vl-n{border:none;background:var(--accent2);color:var(--ontint);font-family:var(--font-hand);font-weight:700;font-size:1.45rem;border-radius:48% 52% 50% 46%/52% 46% 54% 48%;transform:rotate(-6deg);box-shadow:2px 3px 0 rgba(40,30,20,.2)}
+.vl-sec:hover h2{text-decoration:underline 3px var(--accent);text-underline-offset:6px}
+.vl-sec .vl-caret{color:var(--ink2)}
+.vl-fab{background:var(--accent2);color:var(--ontint);border:none;border-radius:50%;box-shadow:3px 4px 0 rgba(40,30,20,.22)}
+.vl-fab:hover{transform:rotate(-6deg) scale(1.06)}
+.vl-readbar i{background:var(--accent2)}
+
+/* ---------- 编号图：一张白纸贴在本子上 ---------- */
+.vl-fig{background:var(--plate);color:var(--plate-ink);border:none;border-radius:2px;box-shadow:var(--shadow-obj)}
+.vl-fig figcaption{color:var(--ink2)}
+.vl-fig-n{font-family:var(--font-hand);font-weight:700;color:var(--ink)}
+/* 照片和名画：贴纸。白色粗描边 + 圆角 + 同向浅投影，和插画贴纸同一种质感 */
+.vl-fig.photo,.cl-sticker{background:#fff;padding:9px;border-radius:14px;box-shadow:0 0 0 1px rgba(40,30,20,.06),3px 5px 0 rgba(40,30,20,.13),0 6px 14px rgba(40,30,20,.1);transform:rotate(-.8deg)}
+.vl-fig.photo:nth-of-type(even){transform:rotate(.7deg)}
+.vl-fig.photo img,.cl-sticker img{display:block;max-width:100%;height:auto;border-radius:7px;filter:saturate(.95) contrast(1.02)}
+.vl-fig.photo figcaption{padding:4px 4px 0}
+/* 插画与图解 */
+.vl-illus-svg text,.vl-dg text{font-family:var(--font-hand)}
+.vl-illus-miss{border:2px dashed var(--ink2);color:var(--ink2);border-radius:3px}
+.vl-dg .vl-dg-box{fill:var(--dg-c1);stroke:none;filter:var(--dg-filter)}
+.vl-dg [data-c="2"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="2"]{fill:var(--dg-c2)}
+.vl-dg [data-c="3"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="3"]{fill:var(--dg-c3)}
+.vl-dg [data-c="4"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="4"]{fill:var(--dg-c4)}
+.vl-dg [data-c="5"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="5"]{fill:var(--dg-c5)}
+.vl-dg [data-c="6"] > .vl-dg-box,.vl-dg .vl-dg-box[data-c="6"]{fill:var(--dg-c6)}
+.vl-dg-nested .vl-dg-ring[data-c="1"]{fill:#fbefc6}.vl-dg-nested .vl-dg-ring[data-c="2"]{fill:#e2e9f8}.vl-dg-nested .vl-dg-ring[data-c="3"]{fill:#fbe3da}
+.vl-dg-nested .vl-dg-ring[data-c="4"]{fill:#e0f0e4}.vl-dg-nested .vl-dg-ring[data-c="5"]{fill:#f8e2e8}.vl-dg-nested .vl-dg-ring[data-c="6"]{fill:#f8e9d4}
+.vl-dg .vl-dg-ring{stroke:none}
+.vl-dg .vl-dg-ghost{fill:none;stroke:var(--dg-ink2);stroke-dasharray:6 5;stroke-width:2;filter:none}
+.vl-dg .vl-dg-cell{stroke:none;filter:none;opacity:.55}
+.vl-dg .vl-dg-cellbox{fill:#fbf8f1;stroke:none;filter:none}
+.vl-dg .vl-dg-row:nth-child(odd) .vl-dg-cellbox{fill:#fff}
+.vl-dg [data-side="b"] > .vl-dg-hbox{fill:var(--dg-c3)}
+.vl-dg .vl-dg-ln{stroke:var(--dg-ink);stroke-width:2.5;stroke-linecap:round}
+.vl-dg .vl-dg-lead{stroke-width:1.5}
+.vl-dg .vl-dg-spin{stroke-width:2.5}
+.vl-dg .vl-dg-mid{stroke-width:1.5;stroke-dasharray:5 5}
+.vl-dg .vl-dg-axis{stroke-width:2.5}
+.vl-dg .vl-dg-ah{stroke:var(--dg-ink);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.vl-dg .vl-dg-dot{fill:var(--dg-ink)}
+.vl-dg .vl-dg-badge .vl-dg-dot,.vl-dg .vl-dg-lab .vl-dg-dot{fill:#fff;stroke:var(--dg-ink);stroke-width:2}
+.vl-dg .vl-dg-pt{fill:var(--dg-hi);stroke:none}
+.vl-dg .vl-dg-t1{fill:var(--dg-ink);font-weight:700}
+.vl-dg .vl-dg-t2,.vl-dg .vl-dg-t3{fill:var(--dg-ink2)}
+.vl-dg .vl-dg-num{fill:var(--dg-ink);font-weight:700}
+.vl-dg .vl-dg-axname,.vl-dg .vl-dg-k{fill:var(--dg-ink);font-weight:700}
+.vl-dg .vl-dg-hit{stroke:none}
+.vl-dg .is-on > .vl-dg-box,.vl-dg .vl-dg-ring.is-on{stroke:var(--dg-hi);stroke-width:4}
+.vl-dg .is-on > .vl-dg-hit{fill:#fbefc6}
+.vl-dg .vl-dg-row.is-on .vl-dg-cellbox{stroke:var(--dg-hi);stroke-width:3}
+.vl-dg [tabindex]:focus-visible > .vl-dg-box,.vl-dg [tabindex]:focus-visible .vl-dg-cellbox{stroke:var(--focus);stroke-width:4}
+.vl-dg [tabindex]:focus-visible > .vl-dg-hit{stroke:var(--focus);stroke-width:3;stroke-dasharray:6 4}
+.vl-dg-info{font-size:1rem;color:var(--ink);border-top:1.5px dashed var(--line);padding-top:6px}
+
+/* ---------- 例子轮播：页签是彩纸小条，内容是一张白纸 ---------- */
+.vl-egtab{font-size:.98rem;font-weight:700;background:var(--edge);border:none;border-radius:2px;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.25)}
+.vl-egtab:hover{transform:translateY(-2px)}
+.vl-egtab.on{background:var(--accent);box-shadow:var(--shadow-soft);transform:translateY(-2px) rotate(-1deg)}
+.vl-egtab.bad{box-shadow:inset 0 0 0 1.5px var(--no)}
+.vl-egtab.bad.on{background:var(--egbad)}
+.vl-egnav{background:var(--edge);color:var(--ink);border:none;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.3),var(--shadow-soft)}
+.vl-egnav svg{width:18px;height:18px}
+.vl-egnav:hover{background:var(--accent)}
+.vl-eg{background:var(--egbg);border:none;border-radius:2px;box-shadow:var(--shadow-obj)}
+.vl-eg.bad{background:var(--egbad);outline:2px dashed var(--no);outline-offset:-8px}
+.vl-egk{font-family:var(--font-hand);font-weight:700;font-size:.92rem;border:none;border-radius:2px;padding:0 8px;background:var(--accent2);color:var(--ontint)}
+.vl-eg.bad .vl-egk{background:var(--no);color:#fff}
+.vl-egcount{color:var(--ink2)}
+
+/* ---------- 术语 ---------- */
+.vl-term{border-bottom:2px dotted var(--ink)}
+.vl-tip{background:var(--ink);color:var(--page);border-radius:3px;box-shadow:3px 4px 0 rgba(0,0,0,.2);transition:opacity .12s}
+.vl-tip b{font-family:var(--font-hand);color:inherit}
+
+/* ---------- 概念卡：白卡片压在一张错位的彩纸上，左上角一条胶带 ---------- */
+.vl-cc{background:var(--edge);color:var(--ink);border:none;border-radius:2px;box-shadow:10px 10px 0 var(--accent2),0 1px 3px rgba(40,30,20,.15);transform:rotate(-.4deg)}
+.vl-cc-tag{background:var(--ink);color:var(--page);border:none;border-radius:1px;font-family:var(--font-body);font-weight:700;font-size:.88rem;transform:rotate(-2deg)}
+.vl-cc-name{font-family:var(--font-hand);font-weight:700;font-size:2.1rem;line-height:1.25}
+.vl-cc-name span{background:linear-gradient(176deg,transparent 56%,var(--hl) 56%,var(--hl) 94%,transparent 94%);padding:0 4px}
+.vl-cc-en{color:var(--ink2);font-size:1rem}
+.vl-cc-by{color:var(--ink2);font-size:.95rem}
+.vl-cc-plain{font-size:1.05rem}
+.vl-cc-def{font-size:1.1rem;font-weight:700}
+.vl-cc-eg{font-size:1rem;margin-top:.5em;padding-top:.45em;border-top:1.5px dashed var(--line)}
+.vl-cc-k{font-weight:700;font-size:.85rem;border:none;border-radius:1px;padding:0 8px;background:var(--accent)}
+.vl-cc-fig{border:none;border-radius:2px;padding:6px;background:var(--plate);box-shadow:inset 0 0 0 1px var(--line)}
+.vl-cc-nofig{color:#b42318;border-color:#b42318}
+@media(max-width:700px){.vl-cc{box-shadow:7px 7px 0 var(--accent2),0 1px 3px rgba(40,30,20,.15)}.vl-cc-name{font-size:1.8rem}}
+@media print{.vl-cc{box-shadow:none;transform:none}}
+
+/* ---------- 原理框：轻块，左边一条剪下的纯色纸条 + 小签 ---------- */
+.vl-why{border-left:8px solid var(--accent2);background:none}
+.vl-why-tag{font-family:var(--font-hand);font-weight:700;font-size:.92rem;border:none;border-radius:1px;padding:0 10px;background:var(--accent);transform:rotate(-2deg)}
+.vl-why h3{font-size:1.3rem}
+.vl-why-fig .vl-illus,.vl-why-fig > svg{width:100%}
+
+/* ---------- 收起块：夹进来的一张便条纸 ---------- */
+.vl-side,.vl-story{background:var(--sidebg);border:none;border-radius:2px;box-shadow:inset 0 0 0 1px var(--line),var(--shadow-soft)}
+.vl-side > summary,.vl-story > summary{font-family:var(--font-hand)}
+.vl-side-tag{font-weight:700;font-size:.9rem;border:none;border-radius:1px;background:var(--accent);transform:rotate(-2deg)}
+.vl-story .vl-side-tag{background:var(--cl-black);color:#fff}
+.vl-side-t b{font-size:1.12rem;font-weight:700;line-height:1.4}
+.vl-side-t small{font-family:var(--font-body);font-size:.92rem;color:var(--ink2);line-height:1.5}
+.vl-side-btn{font-weight:700;font-size:.92rem;border:none;border-radius:2px;background:var(--edge);box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.3)}
+.vl-side > summary:hover .vl-side-btn,.vl-story > summary:hover .vl-side-btn{background:var(--accent)}
+.vl-side-body{border-top:1.5px dashed var(--line)}
+
+/* ---------- 演化链、时间线 ---------- */
+.vl-chain > li:not(.vl-chain-ar){background:var(--edge);border:none;border-radius:2px;box-shadow:var(--shadow-soft)}
+.vl-chain-ar{font-family:var(--font-hand);font-size:1.5rem;font-weight:700;color:var(--ink)}
+.vl-timeline{border-left:3px solid var(--ink)}
+.vl-timeline .vl-ev::before{content:"";position:absolute;left:-30px;top:11px;width:15px;height:15px;border:none;border-radius:50%;background:var(--accent2);box-shadow:1px 2px 0 rgba(40,30,20,.2)}
+.vl-timeline .vl-yr{font-family:var(--font-hand);font-weight:700;font-size:1.15rem}
+
+/* ---------- 试试看：一张黄色便签，胶带贴着 ---------- */
+.vl-try{background:var(--note);border:none;border-radius:1px;transform:rotate(-.6deg);box-shadow:var(--shadow-soft)}
+.vl-try-box{border:2px solid var(--ink);background:var(--edge);border-radius:2px}
+.vl-try-k{font-family:var(--font-hand)}
+.vl-try.done{background:var(--okbg)}
+.vl-try.done .vl-try-box{background:var(--ok);color:var(--edge)}
+.vl-try.done .vl-try-box svg{color:#fff}
+.vl-try-fb{color:var(--ok);font-weight:700}
+.vl-try.fresh-done{animation:vl-pop .35s var(--ease)}
+
+/* ---------- 先猜后揭晓 ---------- */
+.vl-guess{background:color-mix(in srgb,var(--edge) 75%,transparent);border:none;border-radius:2px;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.22)}
+.vl-guess .vl-q{font-weight:700}
+.vl-ans{border-top:1.5px dashed var(--line);padding-top:8px}
+.vl-fb{font-size:1rem}
+.vl-g-ctl label{font-family:var(--font-hand);font-weight:700}
+.vl-g-ctl output{font-family:var(--font-hand);font-size:1.2rem;font-weight:700}
+.vl-g-line{background:var(--ink)}
+.vl-g-span{background:color-mix(in srgb,var(--accent) 80%,transparent);border-radius:2px}
+.vl-g-mk{background:var(--ink);border-radius:1px}
+.vl-g-mk.ans{background:var(--no)}
+.vl-g-mk span{font-family:var(--font-hand);font-weight:700;color:var(--ink)}
+.vl-g-mk.ans span{color:var(--no)}
+.vl-g-ends{color:var(--ink2)}
+.vl-g-res{font-family:var(--font-hand);font-weight:700;font-size:1.1rem}
+
+/* ---------- 测验 ---------- */
+.vl-q:not(.vl-guess .vl-q){background:var(--edge);border:none;border-radius:2px;box-shadow:var(--shadow-obj)}
+.vl-qt{font-weight:700}
+.vl-qopt{color:var(--ink);background:var(--sunk);border:none;border-radius:2px;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.25);transition:transform .1s}
+.vl-qopt:hover:not(:disabled){transform:translateX(4px);background:var(--accent)}
+.vl-qopt.ok{background:var(--okbg);font-weight:700}.vl-qopt.ok::before{content:"✓ "}
+.vl-qopt.no{background:var(--nobg);text-decoration:line-through;color:var(--ink2)}.vl-qopt.no::before{content:"✗ "}
+.vl-qopt.sel{background:var(--accent);box-shadow:inset 0 0 0 2.5px var(--ink)}
+.vl-qopt.drag{box-shadow:4px 6px 0 rgba(40,30,20,.3)}
+.vl-qwhy{background:color-mix(in srgb,var(--accent) 35%,var(--edge));border:none;border-radius:2px;font-size:.98rem}
+.vl-qslot{border:2px dashed var(--ink2);border-radius:2px;background:var(--sunk)}
+.vl-qslot.armed,.vl-qslot.over{background:var(--accent);border-style:solid}
+.vl-qslot.ok{border-style:solid;background:var(--okbg)}
+.vl-qph{color:var(--ink2)}
+.vl-qdot{border:none;border-radius:50%;background:var(--edge);font-weight:700;box-shadow:inset 0 0 0 1.5px rgba(40,30,20,.35)}
+.vl-qdot.on{background:var(--accent2);color:var(--ontint);box-shadow:var(--shadow-soft)}
+.vl-qdot.tried{background:var(--nobg);box-shadow:inset 0 0 0 1.5px var(--no)}
+.vl-qdot.ok{background:var(--okbg);box-shadow:inset 0 0 0 2px var(--ok)}
+.vl-score{font-family:var(--font-hand);font-size:1.3rem;font-weight:700}
+.vl-quiz-badge{text-align:center;font-family:var(--font-hand);font-weight:700;font-size:1.6rem;background:var(--okbg);border:none;border-radius:2px;padding:10px;transform:rotate(-1.5deg);margin:20px 0;box-shadow:8px 8px 0 var(--accent2);animation:vl-pop .5s var(--ease)}
+
+/* ---------- 笔记框：横线信纸 ---------- */
+.vl-note{color:var(--ink);background-color:var(--edge);background-image:linear-gradient(transparent 33px,var(--line) 33px);background-size:100% 34px;line-height:34px;border:none;border-radius:2px;box-shadow:var(--shadow-obj)}
+.vl-note:focus{outline:3px solid var(--focus)}
+.vl-note-st{color:var(--ink2);font-family:var(--font-hand)}
+
+/* ---------- 章末翻页 ---------- */
+.vl-pager a{font-family:var(--font-hand);font-weight:700;font-size:1.1rem;color:var(--ink);background:var(--edge);border:none;border-radius:2px;box-shadow:6px 6px 0 var(--accent2);transition:transform .12s}
+.vl-pager a:hover{transform:translateY(-3px)}
+.vl-pager small{font-family:var(--font-body);font-weight:400;color:var(--ink2)}
+.vl-pager .vl-pg-next{background:var(--accent)}
+
+/* ---------- 互动台（最重）：浅色卡纸，下面垫一张错位的篇色纸，顶边一条纯色纸 ---------- */
+.vl-board{background:var(--sunk);border:none;border-top:8px solid var(--accent2);border-radius:2px;box-shadow:12px 12px 0 var(--accent),0 2px 6px rgba(40,30,20,.16)}
+.vl-board > h3:first-child{margin-top:0}
+@media(max-width:700px){.vl-board{box-shadow:7px 7px 0 var(--accent),0 2px 6px rgba(40,30,20,.16)}}
+
+/* ---------- 收束块、两栏对比 ---------- */
+.vl-misc{background:var(--warnbg);border:none;border-radius:2px;box-shadow:var(--shadow-soft)}
+.vl-key{background:none;border:none;border-left:8px solid var(--accent2);border-radius:0}
+.vl-tldr{background:var(--accent2);color:var(--ontint);border:none;border-radius:2px;font-family:var(--font-hand);font-size:1.3rem;font-weight:700;line-height:1.5;box-shadow:var(--shadow-soft);transform:rotate(-.4deg)}
+.vl-tldr b:first-child{display:block;font-family:var(--font-body);font-size:.95rem;opacity:.9}
+.vl-vs > *{background:var(--edge);border:none;border-radius:2px;box-shadow:var(--shadow-soft)}
+.vl-vs > .bad{background:var(--egbad);outline:2px dashed var(--no);outline-offset:-6px}
+
+/* ---------- 英文页 ---------- */
+html[lang^="en"]{--font-hand:"VLHandEn","Patrick Hand","Comic Sans MS",cursive;--font-display:"VLHandEn","Patrick Hand",cursive;--font-body:"Segoe UI","Helvetica Neue",Arial,"Noto Sans",system-ui,sans-serif}
+html[lang^="en"] body{font-size:18px;line-height:1.75}
+
+/* ---------- 动效档位：没有氛围动画；轻量档去掉悬停歪斜 ---------- */
+html.vl-fx-lite .vl-btn:hover,html.vl-fx-lite .vl-egtab:hover,html.vl-fx-lite .vl-fab:hover{transform:none}
+@media print{body{background:#fff}.vl-fig,.vl-board,.vl-cc,.cl-sticker{box-shadow:none}}

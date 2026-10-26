@@ -1,6 +1,6 @@
 // 开新课：把 kit 和所选皮肤复制进课程目录，生成配置、目录页、第 1 章骨架、项目文档。已有文件一律不覆盖。
 // 用法：node new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en] [--update-kit]
-//   皮肤名必填（notebook / paper / pixel / fieldbook），没有默认值；不写或写错时列出现有皮肤并退出。
+//   皮肤名必填（notebook / paper / pixel / fieldbook / collage），没有默认值；不写或写错时列出现有皮肤并退出。
 //   --lang en：英文课（页面模板取 starter/en/，项目文档用 course-rules.template.md）；默认中文。中英双语课的做法见 README.md 第五节。
 //   --update-kit：只把 kit/ 和 skin/ 换成 skill 里的最新版（升级用），其他文件照样不碰。
 // 说明见同目录 README.md。

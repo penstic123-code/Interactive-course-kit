@@ -8,7 +8,7 @@
 node <skill>/starter/new-course.mjs <课程文件夹绝对路径> <皮肤名> [--lang en] [--update-kit]
 ```
 
-- `<皮肤名>` 必填，没有默认值：notebook / paper / pixel / fieldbook，先问用户（`SKILL.md` 第六节）。不写或写错时脚本列出现有皮肤并退出。
+- `<皮肤名>` 必填，没有默认值：notebook / paper / pixel / fieldbook / collage，先问用户（`SKILL.md` 第六节）。不写或写错时脚本列出现有皮肤并退出。
 - 课程文件夹不存在就新建；**已有的文件一律不覆盖**（跳过并列出来）。
 - `--lang en`：英文课（只有英文页）。页面、配置、插画包、本课样式取 `starter/en/` 下的同名模板（`<html lang="en">`，占位和注释是英文，界面文字自动走 kit 的英文表），项目文档生成 `course-rules.md`（来自 `course-rules.template.md`），不生成 `项目规则与经验.md`。不写就是中文课。中英双语课不用这个参数，见第五节。
 - `--update-kit`：只把 `kit/` 和 `skin/` 换成 skill 里的最新版（升级用），其他文件照样不碰。

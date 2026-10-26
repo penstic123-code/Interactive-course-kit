@@ -61,6 +61,9 @@ const probe = `(async()=>{
   const wide=[...document.querySelectorAll('main *')].filter(e=>e.getBoundingClientRect().right>window.innerWidth+2&&getComputedStyle(e).position!=='fixed'&&!e.closest('svg')&&!e.closest('pre')&&!e.closest('.navpanel,.vl-navpanel')&&!e.closest('table')).slice(0,3).map(e=>e.tagName+'.'+(e.className&&e.className.baseVal===undefined?e.className:'')+'#'+e.id);
   out.wide=wide;
 
+  // ---- 插画没画出来（名字写错、插画脚本没跑完）：data-illus 里没有 svg
+  out.noIllus=[...document.querySelectorAll('main [data-illus]')].filter(e=>!e.querySelector('svg,img,canvas')).map(e=>e.getAttribute('data-illus'));
+
   // ---- 图内文字检查：出界 / 压在形状边框上 / 文字互相重叠 ----
   out.layout = [];
   document.querySelectorAll('main svg').forEach((svg, si) => {
@@ -133,9 +136,10 @@ for (const vp of [{ w: 420, h: 900, m: true }, { w: 1100, h: 900, m: false }]) {
 }
 ws.close(); proc.kill();
 for (const r of report) {
-  const bad = r.errs.length || r.logs.length || r.overflowAfter > 2 || r.evalFail || (r.layout && r.layout.length);
+  const bad = r.errs.length || r.logs.length || r.overflowAfter > 2 || r.evalFail || (r.layout && r.layout.length) || (r.noIllus && r.noIllus.length);
   console.log(`${bad ? "✗" : "✓"} ${String(r.vp).padEnd(5)}${r.f.padEnd(34)} secs=${r.secs} svg=${r.svgs} clicked=${r.clicked} ranges=${r.ranges} overflow=${r.overflow}/${r.overflowAfter}${r.wide && r.wide.length ? " wide=" + r.wide.join("|") : ""}`);
   if (r.layout && r.layout.length) { console.log("     图内文字问题 " + r.layout.length + " 处："); [...new Set(r.layout)].slice(0, +(process.env.QA_LAYOUT_MAX || 6)).forEach(x => console.log("       ·", x)); }
+  if (r.noIllus && r.noIllus.length) console.log("     插画没画出来 " + r.noIllus.length + " 张：" + [...new Set(r.noIllus)].slice(0, 8).join("、"));
   r.errs.forEach(e => console.log("     JS错误:", e));
   r.logs.forEach(e => console.log("     日志:", e));
   if (r.evalFail) console.log("     evalFail", r.evalFail);

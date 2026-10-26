@@ -373,7 +373,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### E1 Example carousel
 - **Job**: several examples of one concept (by default ≥ 3, including 1 counterexample or near miss that marks the concept's edge), switched sideways to save vertical space.
-- **Content**: each = illustration (by default; a counterexample shows what's missing; in academic courses an example may be a worked calculation, a data chart or a quoted passage) + ≤2 paragraphs; tab label ≤9 words (`data-t`); counterexamples get `.bad`, distinguished by a text tag + shape, not colour alone. With pictures on wide screens, two columns. Examples are not retold elsewhere.
+- **Content**: each = illustration (by default; a counterexample shows what's missing; in academic courses an example may be a worked calculation, a data chart or a quoted passage) + ≤2 paragraphs; tab label ≤9 words (`data-t`); counterexamples get `.bad`, distinguished by a text tag + shape, not colour alone. With pictures on wide screens, two columns. Examples are not retold elsewhere. With only one example, don't use `.vl-eg` (a single `.vl-eg` stretches the picture to half a screen); use `.vl-withimg` side by side.
 - **Interaction and keyboard**: tabs / ◀▶ / ←→ / 50px swipe; `role=tablist / tab / aria-selected`.
 - **Motion**: feedback (switch ≤300ms; a .42s paper page-turn must be cut to 300ms).
 - **Skins**: notebook = sticky-note tabs + dashed counterexample | paper = folder tabs + paper page-turn | pixel = pixel tabs | town = wooden drawer labels.

@@ -15,7 +15,7 @@ const DIRS = ["kit", "skins", "tools", "starter"];
 const CHECK = process.argv.includes("--check");
 const SKIP = new Set([
   "kit/README.md", "kit/modules/concepts-schema.md", "starter/README.md",
-  "skins/notebook/README.md", "skins/paper/README.md", "skins/pixel/README.md", "skins/fieldbook/README.md",
+  "skins/notebook/README.md", "skins/paper/README.md", "skins/pixel/README.md", "skins/fieldbook/README.md", "skins/collage/README.md",
 ]);   // 两种语言各写各的，不同步（路径相对 skill 根目录，用 / 分隔）
 const skip = (root, f) => SKIP.has(path.relative(root, f).split(path.sep).join("/"));
 if (!fs.existsSync(EN)) { console.error("找不到 " + EN); process.exit(1); }

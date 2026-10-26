@@ -7,6 +7,7 @@
 //   2b 凸显：每张概念卡的名字，正文里要有同名起名标记 .vl-cn，所在分节的小标题要写出它
 //   2c 先讲后用（只提示）：概念在正文里第一次起名之前，互动台标题、试试看、按钮、先猜后揭晓的题干里就出现了它的名字
 //   2d 负荷（只提示）：一个 <p> 里有 ≥2 个第一次出现的 .vl-term / .vl-cn；一个 <p> 里数字超过 6 个
+//   2e 文风提示（只提示）：中文页里段首短句（≤10 字）、连续三个以上 ≤15 字的短句、两句以上命令式开头、冒号后罗列
 //   3 配图密度：两个视觉元素之间的正文超过 220 字、单段 <p> 超过 160 字就报（框里的文字也算；默认收起的 <details> 不算；
 //     小互动 vl-guess / vl-flip / vl-philo / vl-hot、活图 vl-plot 也算视觉）
 //   4 链接：href / src 指向的本地文件是否存在
@@ -121,11 +122,34 @@ for (const p of pages) {
   out.slice(0, 8).forEach(o => hint("负荷", o));
 }
 
+console.log("2e 文风提示（提示：段首短句、连续短句串、命令式开头、冒号后罗列；单句短有时是对的，逐条人看，见 zh-teaching-prose 的 AI 腔信号）");
+const IMP = /^(先|再|然后|点|拖|按|选|试试|试着|把|看看|想想|想一想|找|填|数一数|猜)/; // 命令式开头
+const clen = s => s.replace(/[，、；：“”‘’（）《》〈〉。！？…—,.;:!?()"'\s]/g, "").length;
+for (const p of pages) {
+  if (/<html[^>]*lang="en/.test(read(p))) continue; // 只看中文页
+  const out = [];
+  for (const m of mainOf(read(p)).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)) {
+    const text = strip(m[1]);
+    const sents = (text.match(/[^。！？!?]+[。！？!?…”]*/g) || []).map(s => s.trim()).filter(s => clen(s));
+    if (sents.length < 2) continue; // 单句段（图注、旁注）不看
+    const at = `${path.basename(p)}「${text.slice(0, 16)}…」`;
+    if (clen(sents[0]) <= 10) out.push(`段首短句「${sents[0]}」：${at}`);
+    let run = 0, most = 0;
+    for (const s of sents) { run = clen(s) <= 15 ? run + 1 : 0; most = Math.max(most, run); }
+    if (most >= 3) out.push(`连续 ${most} 个 15 字以内的短句，用真实的连接词并成能带齐前因后果的句子：${at}`);
+    const imp = sents.filter(s => IMP.test(s)).length;
+    if (imp >= 2) out.push(`${imp} 句命令式开头，任务提示也按讲解文风写，说明这样做是为了看到什么：${at}`);
+    if (/：[^。！？：]{1,14}、[^。！？：]{1,14}、/.test(text)) out.push(`冒号后罗列，读者得自己找共同点，把共同点写出来：${at}`);
+  }
+  out.slice(0, 12).forEach(o => hint("文风", o));
+  if (out.length > 12) hint("文风", `${path.basename(p)} 另有 ${out.length - 12} 条未列出`);
+}
+
 // 3 配图密度
 console.log("3 配图密度（两个视觉之间 >220 字；单段 >160 字）");
 const VISUAL = /<(img|svg|canvas|figure|video|iframe)\b|data-illus|data-diagram|class="[^"]*\bvl-(board|dg|fig|eg|cc-fig|illus|photo|comic|guess|flip|philo|hot|plot)\b/; // 小互动（先猜后揭晓、翻牌、立场卡、热区）也算视觉
 for (const p of pages) {
-  let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, "").replace(/<div class="vl-goals"[\s\S]*?<\/ul>\s*<\/div>/g, ""); // 默认收起的故事框、支线由读者自选展开；学习目标属于题头：都不算进配图密度
+  let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg\b[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, "").replace(/<div class="vl-goals"[\s\S]*?<\/ul>\s*<\/div>/g, ""); // 默认收起的故事框、支线由读者自选展开；学习目标属于题头：都不算进配图密度
   const en = /<html[^>]*lang="en/.test(read(p));
   const m = html.match(/<main[\s\S]*<\/main>/); if (m) html = m[0];
   let run = 0, from = "";
@@ -163,6 +187,10 @@ else if (!FAST) {
   const r = spawnSync(process.execPath, [path.join(HERE, "qa.mjs"), ROOT, ...(onlyArg ? [onlyArg] : [])], { encoding: "utf8", timeout: 600000 });
   const out = (r.stdout || "") + (r.stderr || "");
   out.split("\n").filter(l => l.trim()).forEach(l => { if (l.startsWith("✗")) bad++; console.log("  " + l); });
+  const jsErr = (out.match(/JS错误:/g) || []).length, noIl = (out.match(/插画没画出来/g) || []).length;
+  if (jsErr || noIl) console.log(`
+  ！！！ ${jsErr ? `JS 运行错误 ${jsErr} 条` : ""}${jsErr && noIl ? "，" : ""}${noIl ? `${noIl} 个页面有插画没画出来` : ""}：页面会少图、少互动，先修这个（插画脚本常见原因：括号闭合错位、插画名写错）。
+`);
   if (!/[✓✗]/.test(out)) fail("运行", "qa.mjs 没有输出结果（路径对吗？浏览器找得到吗？可设 EDGE_PATH）");
 
   // 6 截图

@@ -6,7 +6,7 @@
 
 ## 一、必须定义的 CSS 变量
 
-写在 `:root`；按篇用 `body[data-part="n"]` 覆盖主色（vl.js 按篇序号写 1、2、3……）。四套皮肤都把当前篇的主色映射成 `--pa`（主色）、`--pb`（强调），其余篇章变量各不相同：notebook `--pp` 纸色 / `--pl` 格线（5 套），paper `--pd` 深色 + `--psky` `--part` `--pwall`（5 套），pixel `--ps` 机身（5 套），fieldbook `--pd` 深色（6 套）；组件只该用 `--pa` `--pb`，皮肤专属的以 `skins/<名>/README.md` 为准；配色用 `html[data-scheme="dark"]`、`html[data-scheme="sepia"]` 覆盖。vl.js 另给皮肤三个钩子：`body[data-pat]`（章号 % 4，换纸纹）、`--vl-dh`（同篇色相微移 −18…+18）、`--vl-chnum`（两位章号，做角标）。组件只引用变量，不写死颜色。
+写在 `:root`；按篇用 `body[data-part="n"]` 覆盖主色（vl.js 按篇序号写 1、2、3……）。五套皮肤都把当前篇的主色映射成 `--pa`（主色）、`--pb`（强调），其余篇章变量各不相同：notebook `--pp` 纸色 / `--pl` 格线（5 套），paper `--pd` 深色 + `--psky` `--part` `--pwall`（5 套），pixel `--ps` 机身（5 套），fieldbook `--pd` 深色（6 套），collage `--pd` 深色 + `--pt` 纯色上的字色（5 套）；组件只该用 `--pa` `--pb`，皮肤专属的以 `skins/<名>/README.md` 为准；配色用 `html[data-scheme="dark"]`、`html[data-scheme="sepia"]` 覆盖。vl.js 另给皮肤三个钩子：`body[data-pat]`（章号 % 4，换纸纹）、`--vl-dh`（同篇色相微移 −18…+18）、`--vl-chnum`（两位章号，做角标）。组件只引用变量，不写死颜色。
 
 | 组 | 变量 | 硬要求 |
 |---|---|---|
@@ -75,7 +75,7 @@
 - 文字放在滤镜组外；滤镜写 `in="SourceGraphic"`。
 - 规则写进函数比事后逐张改省事（如坐姿自动配椅子、脸朝左手臂自动镜像）。
 - 交付时附：一页人物样张（6 个不同人物站、坐、拿东西、指东西、说话）+ 物件样张；`tools/illus-overlap.mjs` 通过；用 `tools/shot.mjs` 逐张截单个插画人眼看过。
-- **怎么接进 kit**：用 `kit/illus.js` 的钩子 `window.VL_SKIN.illus = function (base) { return { kit, svg, afterMount }; }`（`base = {kit, C, esc}`，三项都可选：`kit` 覆盖或新增绘制函数，自己计数换装时同时给 `reset`；`svg(it, name)` 自己包外层 `<svg>`；`afterMount(el, name)` 插画放进页面后调用，如彩铅重画）。详见该文件"皮肤换画法的钩子"注释。`skin.js` 必须在 `kit/illus.js` 之前加载（starter 模板就是这个顺序）。paper、pixel、fieldbook 都已用这个钩子，新皮肤照抄其中一套。皮肤的 `person` 不必自己包 `g.px-person`，kit 会补上。
+- **怎么接进 kit**：用 `kit/illus.js` 的钩子 `window.VL_SKIN.illus = function (base) { return { kit, svg, afterMount }; }`（`base = {kit, C, esc}`，三项都可选：`kit` 覆盖或新增绘制函数，自己计数换装时同时给 `reset`；`svg(it, name)` 自己包外层 `<svg>`；`afterMount(el, name)` 插画放进页面后调用，如彩铅重画）。详见该文件"皮肤换画法的钩子"注释。`skin.js` 必须在 `kit/illus.js` 之前加载（starter 模板就是这个顺序）。paper、pixel、fieldbook、collage 都已用这个钩子，新皮肤照抄其中一套。皮肤的 `person` 不必自己包 `g.px-person`，kit 会补上。
 - 各皮肤人物的脚底位置不一定相同：站在地面上的人用 `k.feetY(x, y, opts)` 核对，或按 `y = 地面y − k.feetY(x, 0, opts)` 推出头部 y，不写死某个数（starter 示例里的 y 是按 notebook 的几何写的）。
 - 一页只用一套画法：皮肤的绘制工具没做完，就别开这套皮肤的章。
 - 插画画法的常见坑见 `visuals.md` 第三节。
@@ -117,6 +117,7 @@
 | `paper` 纸片 | **已入库**（验收页 `skins/paper/gallery.html`） | 有叙事、有角色的课；初中到高中 | ink #1f2638、muted #4d566c；卡纸 #fbf6ea、牛皮纸 #dcc9a2 / #d9c49c；金 #ffd25e | 正文霞鹜文楷 17.5px（小字 Medium）；标签站酷快乐体 | 白裁边 3–6px + 柔和投影 + 纤维纹 + 牛皮纸垫层 | 剪纸 `paperKit` + `cut()` 三级投影；纸偶人物；数据图直边 | 爬塔：4 段主色 + 天空带 + 塔墙；戏台：每章主色 + 幕布 | 题头环境动画、登楼过场 / 幕布开场、纸片翻页、滚动翻出 |
 | `pixel` 掌机像素 | **已入库**（验收页 `skins/pixel/gallery.html`） | 计算、游戏化课的开头部分 | 四阶绿 #0f380f #306230 #8bac0f #9bbc0f；液晶 #eef3d4；洋红 A 键 #9b2257 | h1 Fusion Pixel 12px；数字 VT323；正文系统黑体 / 霞鹜文楷 | 掌机机身；4px 缺角像素框 + 斜边 + 整格投影 | 2px 网格像素（`skin.js` 绘制工具）；像素人不画眼镜 | 5 篇主色（`--p{n}a/b/s`）+ 章间色相 ±18° + 液晶点阵轮换 | `steps(n)` 阶梯缓动、扫描线、关卡开场 READY! |
 | `fieldbook` 田野手账 | **已入库**（验收页 `skins/fieldbook/gallery.html`） | 人文、社科、历史、田野类；高中到成人 | 墨 / 红笔 / 彩铅六色；活页纸暖白 | 正文霞鹜文楷；标题思源宋体；手写 Caveat | 牛皮纸桌面 + 方格活页纸、装订孔、红色页边线、胶带；纸片 1px 纸边浅投影 | 彩铅火柴人（`skin.js` 绘制工具 + Rough.js 排线，无 rough 时退回滤镜） | 6 篇主色 + 右侧篇章索引签 + 纸纹轮换 | 插画进入视口时彩铅重画 |
+| `collage` 贴纸拼贴 | **已入库**（验收页 `skins/collage/gallery.html`） | 名画、历史照片多的入门课；高中到成人 | ink #241f1a、手工纸 #f3eee3；马蒂斯剪纸色 群青 / 朱红 / 叶绿 / 柠檬黄 / 玫红 | 同 notebook：正文霞鹜文楷；h1 马善政；小标题、按钮霞鹜文楷 + Patrick Hand | 手工纸 + 点阵 + 纤维噪点；实体件不描黑边，靠错位彩纸垫层 + 同向浅投影；照片名画是白边贴纸 | 无描边平涂剪纸人，每人每物包 `#cl-stk` 白边贴纸滤镜；`k.sticker()` | 5 篇主色 | 无 |
 
 未入库的风格（红白机像素、微缩小镇等）不直接用于新课；想用就按第五节和用户一起做完、验收后进库。
 

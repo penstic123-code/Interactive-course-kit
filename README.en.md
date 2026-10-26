@@ -2,7 +2,7 @@
 
 **Claude Code skills for building interactive learning web courses that are comfortable to read, easy to understand and fun.** [中文](README.md)
 
-**Live demo**: [the four skin galleries, three sample chapters and the component demo pages](https://penstic123-code.github.io/Interactive-course-kit/)
+**Live demo**: [the five skin galleries, three sample chapters and the component demo pages](https://penstic123-code.github.io/Interactive-course-kit/)
 
 ![Game design course, chapter 2](docs/images/gd.jpg)
 
@@ -105,7 +105,7 @@ The skill itself comes in Chinese and English editions sharing one codebase. `ne
 
 ## Skins
 
-When a new course starts, the AI first asks which art style you want, then asks about readers, length, language and modules, and gives you a knowledge map and chapter table to approve before building anything. Four approved skins ship today; every component and interaction works in all four, so switching skins doesn't touch the text:
+When a new course starts, the AI first asks which art style you want, then asks about readers, length, language and modules, and gives you a knowledge map and chapter table to approve before building anything. Five approved skins ship today; every component and interaction works in all five, so switching skins doesn't touch the text:
 
 | Skin | Look | Suits |
 |---|---|---|
@@ -113,6 +113,7 @@ When a new course starts, the AI first asks which art style you want, then asks 
 | `paper` paper cut-out | Card-paper cut-outs, white edges, soft shadows; the contents page is a tower | Courses with a story and characters |
 | `pixel` handheld pixel | Four-green LCD screen, pixel illustrations, stepped motion | Computing, programming, gamified courses |
 | `fieldbook` field notebook | Grid loose-leaf, coloured pencil, taped-in photos and ticket stubs | Humanities, social science, history |
+| `collage` sticker collage | Handmade paper, Matisse cut-out colours; photos, paintings and cut-paper figures all as white-edged stickers | Intro courses heavy on paintings and historical photos |
 
 ![The four skins: notebook, paper, pixel, fieldbook](docs/images/skins.jpg)
 
@@ -137,7 +138,7 @@ Ask Claude Code to "make an interactive course about …". Then:
 
 | Step | AI does | You do |
 |---|---|---|
-| Look | Suggests the four skins and what each suits | Pick one |
+| Look | Suggests the five skins and what each suits | Pick one |
 | Plan | Asks about readers, length, language and modules; drafts a knowledge map and chapter list | Approve or change it |
 | Chapter outline | One page per chapter: the question it answers, how each section follows the last, concept difficulty, what each example and interaction is for; a context-free agent then checks the logic | Read the sample chapter's and each part's first outline closely, skim the rest |
 | Sample chapter | Writes chapter 1 from the outline, runs checks and screenshots | Read it through and say where you got lost or what felt off |
