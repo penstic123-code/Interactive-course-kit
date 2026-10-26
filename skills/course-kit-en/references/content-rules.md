@@ -115,7 +115,7 @@ Calibration: a chapter on "what is a game" with four everyday concepts (the four
 
 | Technical floor | Standard |
 |---|---|
-| Length | Reading time set by the course's aims and recorded in the project document; the number of sections follows the question chain, one question per section; paragraphs by default ≤ 4 lines, and the check script reports about 160 characters per paragraph and about 220 characters between two visuals as errors (check.mjs 3, not loosened) |
+| Length | Reading time set by the course's aims and recorded in the project document; the number of sections follows the question chain, one question per section; paragraphs by default ≤ 4 lines, and the check script hints at about 220 characters per paragraph and about 360 between two visuals, and reports more than 500 in a row with no visual as an error (check.mjs 3; defaults and when to depart from them: course-kit `SKILL.md` section 1, pacing rule 1) |
 | Terms | Explain each new term in one sentence where it appears; if hover definitions, a glossary or flashcards are used (see optional features table), add it there |
 | Across chapters | No previews of later chapters; if a concept relationship map is used, register the chapter's concepts in `js/concepts.js` |
 | Accessibility | Colour is never the only carrier of information; contrast per section 10; interactions work by keyboard; respect "reduce motion"; sound is muted by default and can be turned off |

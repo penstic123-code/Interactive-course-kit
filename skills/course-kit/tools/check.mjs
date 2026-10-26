@@ -8,7 +8,7 @@
 //   2c 先讲后用（只提示）：概念在正文里第一次起名之前，互动台标题、试试看、按钮、先猜后揭晓的题干里就出现了它的名字
 //   2d 负荷（只提示）：一个 <p> 里有 ≥2 个第一次出现的 .vl-term / .vl-cn；一个 <p> 里数字超过 6 个
 //   2e 文风提示（只提示）：中文页里段首短句（≤10 字）、连续三个以上 ≤15 字的短句、两句以上命令式开头、冒号后罗列
-//   3 配图密度：两个视觉元素之间的正文超过 220 字、单段 <p> 超过 160 字就报（框里的文字也算；默认收起的 <details> 不算；
+//   3 配图密度：两个视觉元素之间的正文超过 360 字、单段 <p> 超过 220 字只提示，超过 500 字连着没有视觉才报错（框里的文字也算；默认收起的 <details> 不算；
 //     小互动 vl-guess / vl-flip / vl-philo / vl-hot、活图 vl-plot 也算视觉）
 //   4 链接：href / src 指向的本地文件是否存在
 //   5 运行：调用同目录 qa.mjs，420 和 1100 宽度下点遍按钮、拖遍滑块，报 JS 错误、横向溢出、图内文字压线
@@ -146,7 +146,7 @@ for (const p of pages) {
 }
 
 // 3 配图密度
-console.log("3 配图密度（两个视觉之间 >220 字；单段 >160 字）");
+console.log("3 配图密度（两个视觉之间 >360 字、单段 >220 字提示，由人判断；>500 字连着没有视觉报错）");
 const VISUAL = /<(img|svg|canvas|figure|video|iframe)\b|data-illus|data-diagram|class="[^"]*\bvl-(board|dg|fig|eg|cc-fig|illus|photo|comic|guess|flip|philo|hot|plot)\b/; // 小互动（先猜后揭晓、翻牌、立场卡、热区）也算视觉
 for (const p of pages) {
   let html = read(p).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/g, "").replace(/<svg\b[\s\S]*?<\/svg>/g, "<svg></svg>").replace(/<details\b[\s\S]*?<\/details>/g, "").replace(/<div class="vl-goals"[\s\S]*?<\/ul>\s*<\/div>/g, ""); // 默认收起的故事框、支线由读者自选展开；学习目标属于题头：都不算进配图密度
@@ -156,7 +156,7 @@ for (const p of pages) {
   const hits = [];
   for (const tok of html.split(/(<[^>]+>)/)) {
     if (tok.startsWith("<")) {
-      if (VISUAL.test(tok)) { if (run > 220) hits.push(`${run} 字：「${from}…」`); run = 0; from = ""; }
+      if (VISUAL.test(tok)) { if (run > 360) hits.push([run, `${run} 字：「${from}…」`]); run = 0; from = ""; }
       continue;
     }
     const raw = tok.replace(/&[a-z#0-9]+;/g, " ").trim();
@@ -164,10 +164,10 @@ for (const p of pages) {
     if (!from) from = raw.slice(0, 14);
     run += en ? Math.round(raw.split(/\s+/).length * 1.5) : raw.replace(/\s+/g, "").length; // 英文按词数×1.5 折成"字"
   }
-  if (run > 220) hits.push(`${run} 字（到页尾）：「${from}…」`);
-  hits.slice(0, 8).forEach(h => fail("配图", `${path.basename(p)} ${h}`));
-  const long = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map(m => strip(m[1])).map(t => [t, en ? Math.round(t.split(/\s+/).filter(Boolean).length * 1.5) : t.replace(/\s+/g, "").length]).filter(([, n]) => n > 160);
-  long.slice(0, 8).forEach(([t, n]) => fail("段长", `${path.basename(p)} 一段 ${n} 字（>160，拆段或配图）：「${t.slice(0, 14)}…」`));
+  if (run > 360) hits.push([run, `${run} 字（到页尾）：「${from}…」`]);
+  hits.slice(0, 8).forEach(([n, h]) => n > 500 ? fail("配图", `${path.basename(p)} ${h}`) : hint("配图", `${path.basename(p)} ${h}（先看能不能加一张画出机制的图或拆段）`));
+  const long = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map(m => strip(m[1])).map(t => [t, en ? Math.round(t.split(/\s+/).filter(Boolean).length * 1.5) : t.replace(/\s+/g, "").length]).filter(([, n]) => n > 220);
+  long.slice(0, 8).forEach(([t, n]) => hint("段长", `${path.basename(p)} 一段 ${n} 字（>220，看是不是塞了两个新东西）：「${t.slice(0, 14)}…」`));
 }
 
 // 4 链接

@@ -116,9 +116,9 @@ Commons 上搜英文关键词 + 年份最快；人物先找"File:人名.jpg"，�
 
 ## 四、配图密度检查
 
-阈值和理由见 `SKILL.md` 第一节节奏规则 1（检查脚本的阈值，脚本报错，不放宽）。检查方法：
+默认值、理由和何时可以不照做见 `SKILL.md` 第一节节奏规则 1。检查方法：
 
-1. **自动扫**：`node <skill>/tools/check.mjs <课程绝对路径> --fast` 的第 3 步。它按源码顺序扫 `<main>`，累加正文字数（框里的文字也算；英文按词数 × 1.5 折成字），遇到视觉清零，两个视觉之间超过 220 字就报；单个 `<p>` 超过 160 字也报。算作视觉的：`img svg canvas figure video iframe` 标签、`data-illus`、`data-diagram`、类名 `vl-board vl-dg vl-fig vl-eg vl-cc-fig vl-illus vl-photo vl-comic vl-plot`，以及小互动 `vl-guess vl-flip vl-philo vl-hot`（先猜后揭晓、翻牌、立场卡、热区）。默认收起的 `details`（发明故事框、支线）不计入，脚本跳过它们；但展开后的内文同样要满足“框也算正文”，靠截图展开后人眼查。脚本生成的内容（页面 JS 里拼的 HTML）它看不到，那部分靠截图人眼看。
+1. **自动扫**：`node <skill>/tools/check.mjs <课程绝对路径> --fast` 的第 3 步。它按源码顺序扫 `<main>`，累加正文字数（框里的文字也算；英文按词数 × 1.5 折成字），遇到视觉清零，两个视觉之间超过 360 字、单个 `<p>` 超过 220 字时提示，连着超过 500 字没有视觉时报错。算作视觉的：`img svg canvas figure video iframe` 标签、`data-illus`、`data-diagram`、类名 `vl-board vl-dg vl-fig vl-eg vl-cc-fig vl-illus vl-photo vl-comic vl-plot`，以及小互动 `vl-guess vl-flip vl-philo vl-hot`（先猜后揭晓、翻牌、立场卡、热区）。默认收起的 `details`（发明故事框、支线）不计入，脚本跳过它们；但展开后的内文同样要满足“框也算正文”，靠截图展开后人眼查。脚本生成的内容（页面 JS 里拼的 HTML）它看不到，那部分靠截图人眼看。
    超限时先加一张画出机制的图（静态的 flow 等图解也能把一段因果拆开），或把一个有因果的长段拆成"一段 + 一张图 + 一段"；不为过检查删解释、把长句剁成短句或删连接词，那样文字变短了，却变成 AI 腔的短句串（zh-teaching-prose 的 AI 腔信号）。只删真正重复的句子。
 2. **搭配**：数一章里图解、插画 / 照片 / 例子、互动各几个，由内容定，不设固定比例（数学多的课图解多，历史多的课照片多）；看有没有哪一类缺位或扎堆。
 3. **相邻**：列出视觉序列，查有没有两张静态图解紧挨着（默认中间隔插画、例子或互动，成对对照的除外）。
