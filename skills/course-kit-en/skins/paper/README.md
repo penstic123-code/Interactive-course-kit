@@ -8,7 +8,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sta
 
 | File | Contents |
 |---|---|
-| `skin.css` | Variables (three colour schemes + five part colours, sky bands, tower walls) + component looks + the paper tower on the contents page + the sky band in the chapter header |
+| `skin.css` | Variables (five part colours, sky bands, tower walls) + component looks + the paper tower on the contents page + the sky band in the chapter header |
 | `skin.js` | `window.VL_SKIN` (web fonts, cut-paper filters `#pp-cut1…3`, fibre texture `#pp-fiber`, illustration palette) + the paper-cut drawing kit (replaces the drawing style of `VL.illus.kit` through the kit's skin drawing hook `VL_SKIN.illus`) + header animation pause / freeze |
 | `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (made from the notebook files of the same name, redrawn in card style) |
 | `img/` | Fibre textures `fiber.png` `fiber-soft.png`, background paper clouds `clouds.svg`, grass `hills.svg` |
@@ -27,21 +27,19 @@ No local fonts are bundled: a woff2 subset cut to one course's characters would 
 
 ## Variables
 
-| Group | Light | Dark (variables only, not fine-tuned) | Sepia |
-|---|---|---|---|
-| `--ink --ink2 --muted` | #1f2638 / #3b4358 / #4d566c | #ece6d6 / #d0d6e0 / #b6bfcd | #3b3123 / #54473a / #5c4f3f |
-| `--page --panel --edge --sunk --kraft` | sky #cdeafa / card #fbf6ea / white trim #fffdf7 / #f3ecdc / kraft #dcc9a2 | dark blue ground, dark card | beige |
-| `--accent --accent2 --deep` | part colour (light, fills only) / secondary colour / part's dark colour for text | part colour blended into dark / part colour brightened | desaturated / dark colour blended with brown |
-| `--plate --plate-ink` | #fdfaf1 / #1f2638, unchanged in all three schemes | | #fffaf0 |
-| `--shadow-c` | one shadow colour rgba(40,60,90,.22) | | |
-| `--shadow-obj` | 5px white trim + kraft backing layer + distant shadow (interaction boards, numbered figures, badges) | | |
-| `--shadow-mid` `--shadow-soft` | 4px white trim + medium shadow (concept cards, carousel) / 3px white trim + soft shadow (Try it, wrap-up blocks) | | |
-| `--dg-*` | fills sky blue, grass green, coral, pale purple, light yellow, peach; selected #c8364f; boxes take the cut-paper filter `--dg-filter:url(#pp-cut1)`, lines don't | | |
-| `--q1…q6` | same as notebook (≥4.5:1 on the card) | | |
+| Group | Value |
+|---|---|
+| `--ink --ink2 --muted` | #1f2638 / #3b4358 / #4d566c |
+| `--page --panel --edge --sunk --kraft` | sky #cdeafa / card #fbf6ea / white trim #fffdf7 / #f3ecdc / kraft #dcc9a2 |
+| `--accent --accent2 --deep` | part colour (light, fills only) / secondary colour / part's dark colour for text |
+| `--plate --plate-ink` | #fdfaf1 / #1f2638 |
+| `--shadow-c` | one shadow colour rgba(40,60,90,.22) |
+| `--shadow-obj` | 5px white trim + kraft backing layer + distant shadow (interaction boards, numbered figures, badges) |
+| `--shadow-mid` `--shadow-soft` | 4px white trim + medium shadow (concept cards, carousel) / 3px white trim + soft shadow (Try it, wrap-up blocks) |
+| `--dg-*` | fills sky blue, grass green, coral, pale purple, light yellow, peach; selected #c8364f; boxes take the cut-paper filter `--dg-filter:url(#pp-cut1)`, lines don't |
+| `--q1…q6` | same as notebook (≥4.5:1 on the card) |
 
 Parts: five sets of `--p{n}a/b/d` (sky blue + grass green, mint + peach, pale purple + light yellow, coral + cloud grey, apricot + light blue), plus each part's sky band `--pp-sky-n`, window scene `--pp-art-n` (morning windmill → afternoon kite → dusk stars and moon → dawn sea of clouds) and tower wall `--pp-wall-n`. Hue within a part varies ±18°.
-
-Measured contrast (light, against the card #fbf6ea): ink 13.98, ink2 9.14, muted 6.80 (6.23 on the control ground); deep 5.28–6.76 across the five parts; selected button (ink on accent) 8.48–10.27; --ok on okbg 5.43; --q 4.52–6.00; focus 6.12 on the sky and 7.12 on the card. Sepia: ink 10.55, ink2 7.44, muted 6.58, deep 6.9–8.0, focus 4.55. Dark: ink 11.65, ink2 9.94, muted 7.83, selected button 5.33.
 
 ## What is heavy and what is light
 
@@ -68,7 +66,6 @@ Measured contrast (light, against the card #fbf6ea): ink 13.98, ink2 9.14, muted
 - Doesn't suit: serious history or medicine; courses based mainly on photos. Keep data charts straight-edged, without the cut-paper filter.
 
 ## Known issues
-- Dark has variables only and is not fine-tuned (the user put dark on hold).
 - From part 6 on, `.vl-tb-dots` wraps back to part 1's colours.
 - The paper tower on the contents page recognises only the `#ix-parts / .ix-part / .ix-ch` structure of starter/index.html; to beat in-page styles, its selectors carry `body #ix-parts`.
 - Replacing the illustrations relies on the kit hook `window.VL_SKIN.illus`: skin.js must load before kit/illus.js (the starter template already does).

@@ -8,7 +8,7 @@
 
 | 文件 | 内容 |
 |---|---|
-| `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 |
+| `skin.css` | 变量（五篇主色）+ 组件外观 |
 | `skin.js` | `window.VL_SKIN`：网络字体地址、手绘抖动滤镜 `#vl-rough`、插画配色 |
 | `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（其余三套皮肤由它们改画法而来） |
 | `gallery.html` | 验收页 |
@@ -28,20 +28,20 @@
 
 ## 变量
 
-| 组 | 变量 | 亮 | 暗 | 护眼 |
-|---|---|---|---|---|
-| 文字 | `--ink` `--ink2` `--muted` | #2b2b3a / #4b4b5e / #52526a | #ece6d6 / #cfc8b8 / #bdb6a6 | #3b3123 / #54473a / #5c4f3f |
-| 底 | `--page`（= 篇纸色）`--line`（格线）`--panel` `--edge`（实体件）`--sunk`（控件底） | 篇纸色 / 篇格线 / = page / #fff / #fffdf3 | #1d1d26 / #30303f / = page / #272733 / #22222c | #f3e9d2 / #e0d1ae / = page / #fbf4e3 / #f7eedb |
-| 主色 | `--accent` `--accent2`（只做底色）`--deep`（写字） | 篇色（同篇色相 ±18°） | 篇色混进深底 | 篇色降饱和 |
-| 强调 | `--hl` 荧光笔、`--focus` | = accent / #2b6cff | 深荧光 / #7aa7ff | 浅荧光 / #2b6cff |
-| 状态 | `--ok --okbg --no --nobg --warnbg` | 深绿、浅绿、深红、浅红、杏 | 亮绿字配深底 | 暖色版 |
-| 皮肤专用 | `--note`（试试看便签）`--egbg / --egbad`（例子 / 反例底）`--whybg`（原理框渐变）`--sidebg`（折页） | | | |
-| 图板 | `--plate` `--plate-ink` | #fff / #2b2b3a | 同亮（浅底） | #fffaf0 / #2b2b3a |
-| 图解 | `--dg-c1…c6`（黄 蓝 粉 绿 紫 橙）`--dg-ink --dg-ink2 --dg-hi`（选中 #d6336c）`--dg-filter` | 三套配色都不变（在图板上） | | |
-| 插画 | `--il-filter`；配色在 `skin.js` 的 `palette` | 不变 | | |
-| 量的编码 | `--q1…q6` | 蓝 橙 绿 紫 红 青（白底 ≥4.5:1） | | |
-| 形状 | `--stroke` 3px、`--radius` / `--radius-alt`（非对称手绘圆角）、`--shadow-obj` 5px 6px 0 墨色、`--shadow-soft` | | 投影变成近黑 | |
-| 动效 | `--ease`、`--dur-fb` .22s | | | |
+| 组 | 变量 | 值 |
+|---|---|---|
+| 文字 | `--ink` `--ink2` `--muted` | #2b2b3a / #4b4b5e / #52526a |
+| 底 | `--page`（= 篇纸色）`--line`（格线）`--panel` `--edge`（实体件）`--sunk`（控件底） | 篇纸色 / 篇格线 / = page / #fff / #fffdf3 |
+| 主色 | `--accent` `--accent2`（只做底色）`--deep`（写字） | 篇色（同篇色相 ±18°） |
+| 强调 | `--hl` 荧光笔、`--focus` | = accent / #2b6cff |
+| 状态 | `--ok --okbg --no --nobg --warnbg` | 深绿、浅绿、深红、浅红、杏 |
+| 皮肤专用 | `--note`（试试看便签）`--egbg / --egbad`（例子 / 反例底）`--whybg`（原理框渐变）`--sidebg`（折页） | |
+| 图板 | `--plate` `--plate-ink` | #fff / #2b2b3a |
+| 图解 | `--dg-c1…c6`（黄 蓝 粉 绿 紫 橙）`--dg-ink --dg-ink2 --dg-hi`（选中 #d6336c）`--dg-filter` | 在图板上 |
+| 插画 | `--il-filter`；配色在 `skin.js` 的 `palette` | |
+| 量的编码 | `--q1…q6` | 蓝 橙 绿 紫 红 青（白底 ≥4.5:1） |
+| 形状 | `--stroke` 3px、`--radius` / `--radius-alt`（非对称手绘圆角）、`--shadow-obj` 5px 6px 0 墨色、`--shadow-soft` | |
+| 动效 | `--ease`、`--dur-fb` .22s | |
 
 篇章主色：`--p1a…p5a`（主色）、`--p1b…p5b`（强调）、`--p1p…p5p`（纸色）、`--p1l…p5l`（格线），黄 / 蓝 / 绿 / 粉 / 紫五篇。第 6 篇以后回到第 1 篇的颜色，需要时在 skin.css 里加 `body[data-part="6"]`。
 
@@ -58,7 +58,6 @@
 - 平涂马卡龙色块（`palette`），一张图一个视觉重点；人物靠帽子、发型、眼镜、胡子区分（`illus.js` 自动换装）。
 - 站着的人脚落在 `ground()`（y=126）上；坐着的人自带椅子；拿东西用 `holding()` 放在两手之间；指东西的手对准画面里的东西。
 - 气泡用 `bubble()`，字短，不压人物；字号 ≥12。
-- 暗色 / 护眼下插画放在浅色图板上，配色不变，不要为暗色另画。
 
 ## 何时适合用
 - 适合：入门到中级的概念课，读者想轻松读、愿意动手（游戏设计、心理学、产品、教育、写作……）；插画以人物和日常场景为主。

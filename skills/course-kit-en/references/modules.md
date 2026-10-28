@@ -10,9 +10,8 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 | Term hover / glossary / flashcards | on when there are many terms | One term data set used in three places |
 | Sound | off | Short sound effects, muted by default |
 | Learning paths | on when readers start from very different places | A few routes; pick one and the rest dim |
-| Town-style contents page | only for skins with offline-rendered art | One map = whole-course progress + this chapter's contents |
+| Contents as map | when the skin itself is a map | One map = whole-course progress + this chapter's contents |
 | Timeline of events | on when history carries a lot of weight | Every invention story in the course, in year order |
-| Reader colour schemes | required (dark on hold) | Light / dark / easy on the eyes; part of the skin contract; dark has variables only and is not fully approved |
 
 ---
 
@@ -29,19 +28,19 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 | Each correct round / clearing the end-of-part review | `vl:review-round` / `vl:review-done` events; stored in `<id>-review` (see `kit/README.md` section 7, P2) |
 | 3 quiz answers right in a row (optional small celebration, not stored) | — |
 
-**Never do**: triggers by scroll percentage (bad: marking a chapter "read" at 92% and firing confetti at 98.5%), triggers by time spent (bad: flying a paper plane into the backpack after 1.5s on a concept card), score leaderboards, health bars, failure endings, daily streaks.
+**Explicitly not done** (this is the only place this is stated; other files point here): triggers by scroll percentage (bad: marking a chapter "read" at 92% and firing confetti at 98.5%), triggers by time spent (bad: flying a paper plane into the backpack after 1.5s on a concept card), score leaderboards, health bars, failure endings, daily streaks. Why: reaching the bottom or staying long is not understanding; reward the wrong thing and readers start grinding progress.
 
 **Shared core × skin look**
 
-| Core | What it does | Notebook | Paper (tower / stage) | Pixel (GB / FC) | Town |
-|---|---|---|---|---|---|
-| Unit badge | One object per chapter representing its concept; click to review the definition | A stamp, stuck into the stamp album | A prop into the backpack / the stage prop box | Cartridge, trophy | A new building in town |
-| Sub-concept cards | One per sub-concept; a celebration when a set is complete | A cell on an album page | A small object in the collection book | Coins, inventory slots | A piece of furniture in the building |
-| Progress lights | Chapters understood light up on the course map | Contents page stamped | Tower window lit / playbill ticked | ★ + chapter block turns green | Scaffolding becomes a finished building |
-| Task tick | "Try it" completed | Sticky note ticked | White tick on a note + paper confetti | CLEAR! | Clay bead turns green |
-| Silhouette for not yet earned | Unearned items shown as silhouettes + "understand chapter N to get this" | Empty stamp frame | Grey silhouette + "?" | Question-mark block | Empty foundations |
-| Next-step pointer | Points to the first chapter not yet understood | Bookmark | Little flag "keep climbing" | Flashing level entrance | Signpost |
-| Completion ceremony | Once, when a chapter is understood | Stamp: "Got it" | Floor guardian shatters / curtain call | STAGE CLEAR + fireworks | Flag goes up |
+| Core | What it does | Notebook | Paper (tower / stage) | Pixel (GB / FC) |
+|---|---|---|---|---|
+| Unit badge | One object per chapter representing its concept; click to review the definition | A stamp, stuck into the stamp album | A prop into the backpack / the stage prop box | Cartridge, trophy |
+| Sub-concept cards | One per sub-concept; a celebration when a set is complete | A cell on an album page | A small object in the collection book | Coins, inventory slots |
+| Progress lights | Chapters understood light up on the course map | Contents page stamped | Tower window lit / playbill ticked | ★ + chapter block turns green |
+| Task tick | "Try it" completed | Sticky note ticked | White tick on a note + paper confetti | CLEAR! |
+| Silhouette for not yet earned | Unearned items shown as silhouettes + "understand chapter N to get this" | Empty stamp frame | Grey silhouette + "?" | Question-mark block |
+| Next-step pointer | Points to the first chapter not yet understood | Bookmark | Little flag "keep climbing" | Flashing level entrance |
+| Completion ceremony | Once, when a chapter is understood | Stamp: "Got it" | Floor guardian shatters / curtain call | STAGE CLEAR + fireworks |
 
 **How**
 - Components only fire events (in the kit now: `vl:try {id, el, first}`, `vl:quiz-perfect {ch, firstTry, n}`, `vl:answer {i, firstTry}`; the end-of-part review's events are `vl:review-round {id, i, n, claim, revealed, last}` and `vl:review-done {id, first, revealed}`, see `kit/README.md` section 7). The rewards module (`kit/modules/collect.js`, `VL.collect`) subscribes, records, plays the look, and rewards only when `first` is true. No reward logic inside components.
@@ -66,19 +65,19 @@ Purpose: the modules to decide on, one by one, when starting a course — when e
 
 | Rule | How |
 |---|---|
-| Talks when clicked | Speaks unprompted only at a few key moments ("Try it" done, review cleared), ≤3 times per chapter |
+| Talks when clicked | Speaks unprompted only at a few key moments ("Try it" done, review cleared), ≤3 times per chapter (rule of thumb: more feels like nagging the reader to talk) |
 | Lines follow the content | Each section has 1–3 lines in `data-lines` (English in `data-lines-en`); the current section's are used; a section with none stays quiet ("…") — never pad with generic lines |
 | Can be switched off | Toggle in the top bar's "Display" pop-up, next to motion and sound, saved (`<id>-companion`) |
 | Keyboard-triggerable | The character is a `button` with an accessible name ("Hero — click to hear what it says"); Enter / Space triggers; the bubble is `aria-live=polite` |
-| Ordinary tone | Like a friend reading alongside: appears with a question, a mistake, a discovery, a feeling. Not cutesy, not mystical, never reads out the definition or gives away the answer |
-| Never blocks the text | Bubble `pointer-events:none`, doesn't cover the text, closes on scroll, disappears after about 2.6s |
+| Tone | See en-teaching-prose, "Dialogue" (appears with a question, a mistake, a discovery, a feeling; not cutesy, never reads out the definition); also never gives away the answer |
+| Never blocks the text | Bubble `pointer-events:none`, doesn't cover the text, closes on scroll, disappears after about 2.6s (rule of thumb: long enough to read one or two sentences; longer blocks the text) |
 | When it's the course's thread | Write the character's growth into the project doc (content-rules.md 1B ②) |
 
 Example lines (same section, "selection bias"): ✓ "Oh — I only cast the net near the bank. No wonder it's all yellow fish." ✗ "Brave one, the fog of data surrounds us!" ✗ "Selection bias is when a sample is filtered before it is collected." (reading out the definition)
 
 ## 3. Concept map
 
-**Worth adding when**: there are many concepts (>40), tangled together, with prerequisites.
+**Worth adding when**: there are many concepts (rule of thumb: more than 40; with fewer, the contents and concept cards are enough to find the links), tangled together, with prerequisites.
 
 **One concept data set, three uses**:
 
@@ -97,7 +96,7 @@ The course's `js/concepts.js` sets `window.VL_CONCEPTS = {items, links, terms}`,
 **Pitfalls**
 - Nodes not keyboard-operable (bad: nodes have no tabindex): every node `tabindex=0`, Enter selects, arrow keys move between neighbours. (The kit's graph uses roving focus: one node in the Tab order, arrows move to the nearest node.)
 - Sideways scrolling on phones (bad: a hard-coded `min-width:900px` on the SVG): on narrow screens switch to a list grouped by part, opening each to show its neighbours.
-- Force-directed layout turning into a hairball: with >60 nodes lay out in zones by part, don't rely on automatic layout alone.
+- Force-directed layout turning into a hairball: with more than 60 nodes (rule of thumb) lay out in zones by part, don't rely on automatic layout alone, or it tangles into a hairball.
 - Concepts from chapters not yet open stay out of the map, or appear grey and unclickable.
 
 ## 4. Term hover, glossary, flashcards
@@ -125,21 +124,21 @@ The English edition needs English fields for all three; storage keys are shared 
 
 ## 6. Learning paths
 
-**Worth adding when**: readers start from very different places, many chapters (>20).
+**Worth adding when**: readers start from very different places, many chapters (rule of thumb: more than 20, which cannot be read in one sitting, so readers need to choose a route).
 
 **How**: 2–5 routes on the contents page (e.g. "One-week intro", "Full route", "Under-the-hood route"); each route = a name + one line on who it suits + a list of chapter numbers. Click one and the other chapters dim and the route's chapters are joined by a line. Route data goes in `VL_COURSE.paths` in the course's `js/course.js` (`{name, who, chs}`; vl.js doesn't read it, the contents page does; `starter/index.html` already does "click one, the rest dim").
 
 **Pitfall**: a route that skips a prerequisite concept a later chapter needs — check every route for "every concept a chapter uses was taught earlier on the route".
 
-## 7. Town-style contents page (and other "contents as map" pages)
+## 7. Contents as map
 
-**Worth adding when**: the skin itself is a map (town, tower, level route) and there is an offline rendering pipeline.
+**Worth adding when**: the skin itself is a map (tower, level route).
 
-**How**: one map does three jobs — the course map, cumulative progress (chapters understood are "built"), and this chapter's contents (click a building to jump to its section). Render transparent PNGs offline, so chapter pages don't run three.js.
+**How**: one map on the contents page does three jobs — the course map, cumulative progress (chapters understood light up), and this chapter's contents (click a point on the map to jump to its section).
 
 **Pitfalls**
 - When it replaces the N4 floating button, test narrow-screen behaviour separately.
-- Keyboard: every building on the map is a `button`, reachable by Tab, with a text name.
+- Keyboard: every entry on the map is a `button`, reachable by Tab, with a text name.
 - Chapter illustrations must use the same drawing style as the map, or the two styles clash.
 
 ## 8. Timeline of events
@@ -149,7 +148,3 @@ The English edition needs English fields for all three; storage keys are shared 
 **How**: every invention story in the course in year order, filterable by type; clicking an event jumps to the story box in its chapter (the kit has no timeline module yet). Event data is collected from each chapter's K10 / T5, not written a second time.
 
 **Pitfall**: years and names on the timeline must match the chapters — generate both from the same data.
-
-## 9. Reader colour schemes
-
-Not optional; part of the skin contract (`skin-contract.md`): every skin provides light / dark / easy-on-the-eyes schemes, switched under "Display" in the top bar and saved (key `vl-scheme`, shared across courses). **Dark is on hold**: the switch stays; dark has variables only and is not fully approved. Light and easy-on-the-eyes are checked by screenshot per `skin-contract.md` section 5. **The skin is fixed when the course starts; readers only change the colour scheme**, because illustrations are drawn in the skin's style and the drawing style can't be swapped at runtime.

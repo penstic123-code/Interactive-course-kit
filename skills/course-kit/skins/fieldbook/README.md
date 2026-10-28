@@ -8,7 +8,7 @@
 
 | 文件 | 内容 |
 |---|---|
-| `skin.css` | 变量（三套配色 + 六篇主色）+ 组件外观 + 纸面、装订孔、页边线、索引签 |
+| `skin.css` | 变量（六篇主色）+ 组件外观 + 纸面、装订孔、页边线、索引签 |
 | `skin.js` | `window.VL_SKIN`：网络字体、墨线微抖滤镜 `#vl-fb-wobble`、插画配色、**本皮肤的绘制工具**（经 kit 的换画法钩子 `VL_SKIN.illus` 装进 `VL.illus.kit`，`skin.js` 须在 `kit/illus.js` 之前加载）、Rough.js 彩铅化、篇章索引签 |
 | `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（由 notebook 版改成 1px 纸边 + 浅投影 + 小圆角） |
 | `rough.js` | Rough.js 4.6.6（MIT，Copyright (c) 2019 Preet Shihn），本地，离线可用 |
@@ -29,17 +29,17 @@
 
 ## 变量（实测对比度见末尾）
 
-| 组 | 亮 | 护眼 | 暗（只给变量，未精调） |
-|---|---|---|---|
-| `--ink` `--ink2` `--muted` | #2a2622 / #4e453c / #5a5046 | #3b2f22 / #4f4132 / #56473a | #ece3d0 / #d2c7b2 / #c4b9a3 |
-| `--page`=`--panel` `--edge` `--sunk` | #fbf6ea / #fffdf8 / #fbf5e6 | #f1e4c8 / #f8eed8 / #f4e8cf | #26221d / #2f2a24 / #2b2620 |
-| `--desk`（桌面） | #c9ae82 + 牛皮纸纹 | 同 | #15120f |
-| `--accent`（浅底）`--accent2`（彩铅线）`--deep`（写字） | 篇色 a / b / d | 降饱和 | 篇色混深底 |
-| `--hl` 荧光笔、`--focus` | #f5d96e / #2f4a7a 铅笔蓝 | | #6b5a1e / #9db4e6 |
-| 皮肤专用 | `--rim` `--rim2`（1px 纸边）、`--uiline`（控件墨线）、`--redpen`、`--pencil`、`--bar` `--bar-ink`（顶栏）、`--note` `--whybg` `--sidebg` `--egbad` | | |
-| 图板 `--plate` `--plate-ink` | #fffdf8 / #2a2622 | #fcf5e6 | 同亮 |
-| `--q1…q6` | 蓝 橙 绿 紫 红 青（在纸面上 ≥4.7:1） | | |
-| 形状 | `--stroke` 1.5px、`--radius` 3px、`--radius-alt` 5px；`--shadow-obj` 浅而贴近的纸片投影、`--shadow-soft` 更浅 | | |
+| 组 | 值 |
+|---|---|
+| `--ink` `--ink2` `--muted` | #2a2622 / #4e453c / #5a5046 |
+| `--page`=`--panel` `--edge` `--sunk` | #fbf6ea / #fffdf8 / #fbf5e6 |
+| `--desk`（桌面） | #c9ae82 + 牛皮纸纹 |
+| `--accent`（浅底）`--accent2`（彩铅线）`--deep`（写字） | 篇色 a / b / d |
+| `--hl` 荧光笔、`--focus` | #f5d96e / #2f4a7a 铅笔蓝 |
+| 皮肤专用 | `--rim` `--rim2`（1px 纸边）、`--uiline`（控件墨线）、`--redpen`、`--pencil`、`--bar` `--bar-ink`（顶栏）、`--note` `--whybg` `--sidebg` `--egbad` |
+| 图板 `--plate` `--plate-ink` | #fffdf8 / #2a2622 |
+| `--q1…q6` | 蓝 橙 绿 紫 红 青（在纸面上 ≥4.7:1） |
+| 形状 | `--stroke` 1.5px、`--radius` 3px、`--radius-alt` 5px；`--shadow-obj` 浅而贴近的纸片投影、`--shadow-soft` 更浅 |
 
 篇章主色 `--p1…p6` 的 `a/b/d`：赭 / 青 / 橄榄 / 赤陶 / 靛 / 梅六篇（第 7 篇以后回到第 1 篇）。同篇各章只把彩铅线色相微移（`--vl-dh × 0.6`），写字色不动。纸纹 `body[data-pat]`：0 方格、1 横线、2 点阵、3 素纸。
 
@@ -73,11 +73,10 @@
 
 ## 已知问题
 
-- 暗色只给了变量，未逐组件精调（用户暂缓暗色）。
 - Rough.js 每张插画首次进入视口时重画，插画很多的页面滚动时首帧会略卡。
 - 站姿 / 坐姿身高与 kit 火柴人一致，但宽一些；kit 坐标写成的旧插画搬过来时，物件可能要挪几个像素。
 - 尚未单独验收“抽成皮肤后的样子”。
 
 ## 对比度（实测，WCAG 公式）
 
-亮：正文 13.9、次要 8.7、注释 7.3（对纸片 7.7）、选中按钮字对 accent ≥11.5、各篇 `--deep` 6.6–9.4、红笔 5.5、`--q*` 4.8–6.0、顶栏字 10.9、焦点 8.2。护眼：10.3 / 7.8 / 7.1。暗：12.4 / 9.5 / 8.1。
+亮：正文 13.9、次要 8.7、注释 7.3（对纸片 7.7）、选中按钮字对 accent ≥11.5、各篇 `--deep` 6.6–9.4、红笔 5.5、`--q*` 4.8–6.0、顶栏字 10.9、焦点 8.2。

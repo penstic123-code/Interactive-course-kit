@@ -162,7 +162,6 @@ Content rules (eight teaching principles, chapter outlines and difficulty budget
 
 - Courses are plain front-end HTML that works offline: double-click to open, no build step.
 - The checks need Node 22+ and Edge or Chrome (headless), found automatically or set with `EDGE_PATH`. Only tested on Windows so far.
-- The dark colour scheme has variables but is not fully approved.
 
 ## License
 

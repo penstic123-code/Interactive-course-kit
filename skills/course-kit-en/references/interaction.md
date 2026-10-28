@@ -1,6 +1,6 @@
 # Interaction and motion
 
-Purpose: the interaction types to choose from, how to design an interaction that is fun without being hard, keyboard and touch, and the timing and switch rules for the four kinds of motion. The baseline is in `SKILL.md` sections 3 and 4; each component's structure is in `components.md`. **`kit/README.md` is the API reference**: the code for G6–G10, M1 cards (`.vl-flip`), M2 hotspots, K5 voting, E2 drag-divider and `.vl-pad` in the tables below is in `kit/vl-interact.js`, and G11 live plots are in `kit/vl-plot.js`; both are documented in `kit/README.md` section 7 (互动组件 / interactive components). G1–G5 are only the `.vl-board` shell and control classes, with the stage written per chapter; M1 draw and then-run are not in the kit yet.
+Purpose: the interaction types to choose from, how to design an interaction that is fun without being hard, keyboard and touch, and the timing and switch rules for the four kinds of motion. The baseline is in `SKILL.md` sections 3 and 4; each component's structure is in `components.md`. **`kit/README.md` is the API reference**: the code for G6–G10, M1 cards (`.vl-flip`), M2 hotspots, K5 voting, E2 drag-divider and `.vl-pad` in the tables below is in `kit/vl-interact.js`, and G11 live plots are in `kit/vl-plot.js`; both are documented in `kit/README.md` section 7 (互动组件 / interactive components). G1–G5 are only the `.vl-board` shell and control classes, with the stage written per chapter; M1's draw and then-run are not in the kit yet and must be written in the page (likewise where rule 3 and the "Sketching a curve" row in section 3 point to them).
 
 ## 1. Interaction types
 
@@ -51,7 +51,7 @@ A good interaction has a **clear purpose and is easy to start**. Every rule belo
 |---|---|---|---|
 | 1 | Before it appears, one sentence says what question it answers | The board's title *is* the question; a reader who skips the text after it still knows what playing it will settle | Good: bomber diagram — the question is "where should the armour go?" and clicking a part is the answer. Bad: titles like "Lab" or "Simulator" |
 | 2 | Few controls; obvious how to play within 3 seconds | By default ≤3 groups of main controls (more and the first glance can't tell what to move); at a glance you see "drag this / click this"; no manual needed; every control can be said to help the reader understand something, and decorative controls are deleted (fog, health bars, timers and easter-egg buttons unrelated to the concept; a health bar that itself represents the loss is fine) | Good: take the house apart — click a piece, remove it. Bad: a row of five or six sliders all live at once; a board that needs fog, a health bar or a 2-D map understood before it can be played, so the interface becomes something to learn first |
-| 3 | At key points, predict first, then see | M1 then-run: you can't run until you've picked a prediction; a prediction question must expose a wrong intuition, and is skipped if it only asks for mental arithmetic; "hit the wall, then reveal" counts too: let the reader try first and fail (limited attempts, numbers only), then introduce the method, so the method is felt to be needed | Good: simulations that ask for a guess before running; three hand-tried attempts that cannot find it, then the systematic method |
+| 3 | At key points, predict first, then see | M1 then-run (not in the kit; write it in the page): you can't run until you've picked a prediction; a prediction question must expose a wrong intuition, and is skipped if it only asks for mental arithmetic; "hit the wall, then reveal" counts too: let the reader try first and fail (limited attempts, numbers only), then introduce the method, so the method is felt to be needed | Good: simulations that ask for a guess before running; three hand-tried attempts that cannot find it, then the systematic method |
 | 4 | Every action has a visible consequence | After each click or drag at least one of the chart, a reading or the feedback sentence changes; the consequence is the *concept's* consequence (the tower falls, the curve bends), not just a colour change; it starts from the numbers the text has just worked out, so the reader can check it against the hand calculation at once | Good: core-loop ring — click a stage to weaken or remove it and the loop breaks |
 | 5 | Undo and restart | Boards where the reader can mess up the state (multi-step actions, accumulating results) have "Start again", and multi-step ones also "undo one step"; a single slider that can simply be dragged back needs neither | — |
 | 6 | "Try it" gives an observable goal, checked by JS, with feedback on completion | The goal is a checkable state that makes the reader discover a conclusion (for example "find a learning rate at which a step raises the loss"), not merely drag a slider to a value; the default state must not already satisfy it; for the wording rule see content-rules.md section 1, item 2 | Bad: "have a play" with no completion condition |
@@ -64,6 +64,7 @@ A good interaction has a **clear purpose and is easy to start**. Every rule belo
 | 13 | An interaction is never the only explanation | The text tells readers who don't play what playing would show | A mini-game's text explains what happens in the game |
 | 14 | By default ≤5 big interactions per chapter (more tires the reader) | Keep signature interactions for the key moments of core concepts of difficulty ≥ 2 (content-rules.md 1A); a stretch of explanation between two big interactions gives the reader a breather (whether a picture is needed as well depends on the explanation) | — |
 | 15 | Test with a context-free reader before release | How: see reader review in `content-rules.md` section 8 | — |
+| 16 | Interface text (the "how to read this" note, Try-it tasks, button hints) is written so that someone who has never seen the page can picture the screen after reading it | (1) Describe only what is visible on screen, using the words already on screen (if the button shows a light bulb, say "light bulb", not your own name for the animation); (2) every action says three things: what to click, what you will see, and what it is for; (3) explain a term the first time it appears, with one concrete example ("gameplay is the thing the player does over and over in a game, such as dodging the monster that chases you"); (4) no metaphors or verbs without a referent ("scatter", "swarm over", "fly in", "flip open", "island") unless that word is on screen; (5) vague words such as "related", "a kind of", "various" must be followed by a concrete example saying what the relation is or which kind; (6) write a task hint as a complete "goal + action" sentence, not several imperatives in a row ("Click here. Drag that. Look at the result." reads like hurrying the reader; `check.mjs` 2e flags it), and don't preview later text or use a new word the prose hasn't named yet (rule 6); the sentences themselves still follow the sentence rules of `en-teaching-prose`; (7) check that it is understandable and that it is true; for the review method see the reader review (part D) in content-rules.md section 8, item 5 | Good: "Click 'Flow' in the left list; the right-hand panel shows its one-line explanation and the chapter it is in." Bad: "Click and the related concepts swarm over" ("related" is not on screen and nothing visibly swarms) |
 
 **Before designing an interaction, write these three lines** (into the chapter outline's element table, content-rules.md section 4; if you can't, don't build it):
 1. The question it answers: ____?
@@ -79,8 +80,8 @@ A good interaction has a **clear purpose and is easy to start**. Every rule belo
 | Pop-ups, panels | Esc closes; focus returns to the trigger; clicking outside closes | Tap outside closes |
 | Sideways swiping | ←→ turns; only while the component has focus, never hijacking the page | Swipe >50px turns; only the tab strip scrolls, not the page |
 | Dragging | Tab selects the object, arrow keys move it, Shift for big steps, Enter drops | pointer events + `setPointerCapture` + `touch-action:none`; no separate mouse and touch code |
-| Sketching a curve (M1 draw) | ↑↓ sets the height of each segment, or replace with a few sliders | Draw with a finger; redraw allowed |
-| Sliders | Native range (arrow keys, Home, End) | Thumb ≥28px |
+| Sketching a curve (M1 draw, written in the page) | ↑↓ sets the height of each segment, or replace with a few sliders | Draw with a finger; redraw allowed |
+| Sliders | Native range (arrow keys, Home, End) | Thumb (the small part of the slider that is dragged) ≥28px; this doesn't conflict with ≥44px: 44px is the height of the slider's whole touch area, 28px only the size of the thumb itself |
 | Mini-games | `keys` map; the stage is focusable and arrow keys don't scroll the page while it has focus | On-screen arrows `.vl-pad` 3×3 |
 | Sort / pair | Select a card → click the target ("Put here") | Same; drag-and-drop optional |
 | Status announcements | Readings and feedback sentences use `aria-live=polite` | — |
@@ -103,7 +104,7 @@ Durations are not in this table; the one duration table for the whole course is 
 
 **Atmosphere only outside the text** (header, background, margins, transitions). Elements in the text area have no constant animation and no entrance effects other than scroll-reveal.
 
-**Reading rewards only after understanding**: "Try it" completed, quiz all correct, end-of-part review cleared. Never triggered by scroll percentage or time spent (bad: firing confetti at 98.5% scrolled and flew a paper plane after 1.5s on a concept card). Each event plays once.
+**Reading rewards only after understanding**: "Try it" completed, quiz all correct, end-of-part review cleared. Never triggered by scroll or time spent; see "Explicitly not doing" in `modules.md` section 1. Each event plays once.
 
 ### 2 Durations and easing
 
@@ -135,7 +136,7 @@ Durations are not in this table; the one duration table for the whole course is 
 
 - The level class sits on `<html>`: `html.vl-fx-full` / `.vl-fx-lite` / `.vl-fx-off` (`kit/vl-head.js` writes it before first paint; `vl.js` updates it when the level changes and fires `vl:fx {level}`).
 - **Automatic choice** (the code is in `kit/vl-head.js`): system "reduce motion" or a headless browser → off; width ≤700px or `pointer:coarse` → lite; otherwise full.
-- **Manual in the top bar**: the "Display" pop-up offers Motion: Auto / Full / Light / Off. The reader's choice overrides the automatic one and is saved (key `vl-fx`, no course prefix, shared across courses and both languages). When the system asks for reduced motion it is **always off**; manual choices have no effect and the pop-up says why ("Your system asks for reduced motion, so motion stays off.").
+- **Manual in the top bar**: the "Display" pop-up offers Motion: Auto / Full / Light / Off. The reader's choice overrides the automatic one and is saved (key `vl-fx`, no course prefix, shared across courses and both languages). When the system asks for reduced motion it is **always off**; manual choices have no effect and the pop-up says why.
 - What each level allows:
 
   | | full | lite | off |
@@ -153,7 +154,7 @@ Durations are not in this table; the one duration table for the whole course is 
   }
   ```
   The kit's `vl.css` already includes this, plus `html.vl-fx-off *{animation:none!important;transition:none!important}`. JS-driven animation (rAF, Web Animations, particles) is not covered by these rules and must read the level itself: `if (!VL.motion()) { draw the final state; return; }` (`VL.fx()` returns full / lite / off).
-- Screenshots and tests: headless browsers default to off; add `?fx=1` to the URL so headless runs pick the normal level (already in the kit); `?scheme=dark|sepia` switches the colour scheme temporarily without saving it (already in the kit); `?freeze=seconds` stops at a given frame (not in the kit yet; the paper and pixel skins support it).
+- Screenshots and tests: headless browsers default to off; add `?fx=1` to the URL so headless runs pick the normal level (already in the kit); `?freeze=seconds` stops at a given frame, optional: build it only when screenshots need it (not in the kit yet; the paper and pixel skins have it).
 
 ### 4 What belongs to the skin
 

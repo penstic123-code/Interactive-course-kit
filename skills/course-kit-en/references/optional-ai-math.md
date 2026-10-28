@@ -4,7 +4,7 @@ Purpose: two practices that only some courses need, moved out of content-rules.m
 
 ## 1. Worldview knowledge base and weaving rules (formerly content-rules 1D)
 
-This kind of knowledge lets readers "see the world differently", and the user especially likes it. It is woven into each chapter's "why it works" and **spirals back** in 2–3 situations. A principle with enough weight can become its own "worldview chapter" (a law the reader can verify by hand, not a philosophical ramble), set up earlier by letting the reader meet it in concrete phenomena (without naming later chapters) and referred back to later. Verify sources online before use.
+This kind of knowledge lets readers "see the world differently", and the user especially likes it. It is woven into each chapter's "why it works" and **spirals back** in 2–3 situations. A principle with enough weight can become its own "worldview chapter" (a law the reader can verify by hand, not a philosophical ramble), set up earlier by letting the reader meet it in concrete phenomena (without naming later chapters) and referred back to later.
 
 **Weaving rules**:
 1. Build a "principle–chapter" matrix: each important principle by default appears in ≥2 chapters in different situations (the spiral is what gives it weight), and each chapter carries 0–2 principles: only when the chapter's concepts really have a principle to hang on it, never to fill the matrix.

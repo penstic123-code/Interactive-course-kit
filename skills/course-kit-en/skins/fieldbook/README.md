@@ -8,7 +8,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Thi
 
 | File | Contents |
 |---|---|
-| `skin.css` | Variables (three colour schemes + six part colours) + component looks + paper surface, binder holes, margin line, index tabs |
+| `skin.css` | Variables (six part colours) + component looks + paper surface, binder holes, margin line, index tabs |
 | `skin.js` | `window.VL_SKIN`: web fonts, the slight ink-line wobble filter `#vl-fb-wobble`, illustration palette, **this skin's drawing kit** (installed into `VL.illus.kit` through the kit's skin drawing hook `VL_SKIN.illus`; `skin.js` must load before `kit/illus.js`), Rough.js coloured-pencil conversion, part index tabs |
 | `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (the notebook versions redrawn with a 1px paper edge + light shadow + small radius) |
 | `rough.js` | Rough.js 4.6.6 (MIT, Copyright (c) 2019 Preet Shihn), local, works offline |
@@ -29,17 +29,17 @@ No decorative faces: the style comes from the paper, the coloured-pencil lines a
 
 ## Variables (measured contrast at the end)
 
-| Group | Light | Sepia | Dark (variables only, not fine-tuned) |
-|---|---|---|---|
-| `--ink` `--ink2` `--muted` | #2a2622 / #4e453c / #5a5046 | #3b2f22 / #4f4132 / #56473a | #ece3d0 / #d2c7b2 / #c4b9a3 |
-| `--page`=`--panel` `--edge` `--sunk` | #fbf6ea / #fffdf8 / #fbf5e6 | #f1e4c8 / #f8eed8 / #f4e8cf | #26221d / #2f2a24 / #2b2620 |
-| `--desk` (desktop) | #c9ae82 + kraft texture | same | #15120f |
-| `--accent` (light ground) `--accent2` (coloured-pencil line) `--deep` (for text) | part colours a / b / d | desaturated | part colour blended into dark |
-| `--hl` highlighter, `--focus` | #f5d96e / #2f4a7a pencil blue | | #6b5a1e / #9db4e6 |
-| Skin-specific | `--rim` `--rim2` (1px paper edge), `--uiline` (control ink line), `--redpen`, `--pencil`, `--bar` `--bar-ink` (top bar), `--note` `--whybg` `--sidebg` `--egbad` | | |
-| Plate `--plate` `--plate-ink` | #fffdf8 / #2a2622 | #fcf5e6 | same as light |
-| `--q1…q6` | blue, orange, green, purple, red, teal (≥4.7:1 on the paper) | | |
-| Shape | `--stroke` 1.5px, `--radius` 3px, `--radius-alt` 5px; `--shadow-obj` a light, close paper shadow, `--shadow-soft` lighter still | | |
+| Group | Value |
+|---|---|
+| `--ink` `--ink2` `--muted` | #2a2622 / #4e453c / #5a5046 |
+| `--page`=`--panel` `--edge` `--sunk` | #fbf6ea / #fffdf8 / #fbf5e6 |
+| `--desk` (desktop) | #c9ae82 + kraft texture |
+| `--accent` (light ground) `--accent2` (coloured-pencil line) `--deep` (for text) | part colours a / b / d |
+| `--hl` highlighter, `--focus` | #f5d96e / #2f4a7a pencil blue |
+| Skin-specific | `--rim` `--rim2` (1px paper edge), `--uiline` (control ink line), `--redpen`, `--pencil`, `--bar` `--bar-ink` (top bar), `--note` `--whybg` `--sidebg` `--egbad` |
+| Plate `--plate` `--plate-ink` | #fffdf8 / #2a2622 |
+| `--q1…q6` | blue, orange, green, purple, red, teal (≥4.7:1 on the paper) |
+| Shape | `--stroke` 1.5px, `--radius` 3px, `--radius-alt` 5px; `--shadow-obj` a light, close paper shadow, `--shadow-soft` lighter still |
 
 Part main colours `--p1…p6`, each `a/b/d`: ochre / teal / olive / terracotta / indigo / plum for six parts (from part 7 on, back to part 1). Chapters in the same part only shift the coloured-pencil line's hue slightly (`--vl-dh × 0.6`); the writing colour stays. Paper grain `body[data-pat]`: 0 grid, 1 ruled, 2 dots, 3 plain.
 
@@ -73,11 +73,10 @@ No atmosphere animation. Only popovers sliding in lightly, the Try-it tick bounc
 
 ## Known issues
 
-- Dark has variables only and is not tuned component by component (the user put dark on hold).
 - Rough.js redraws each illustration the first time it enters the viewport, so on pages with many illustrations the first frame may stutter slightly while scrolling.
 - Standing and sitting heights match the kit's stick figures but are wider; when moving over old illustrations written in the kit's coordinates, objects may need shifting a few pixels.
 - "How it looks once extracted as a skin" has not been approved separately yet.
 
 ## Contrast (measured, WCAG formula)
 
-Light: body 13.9, secondary 8.7, notes 7.3 (7.7 on paper pieces), selected-button text on accent ≥11.5, each part's `--deep` 6.6–9.4, red pen 5.5, `--q*` 4.8–6.0, top bar text 10.9, focus 8.2. Sepia: 10.3 / 7.8 / 7.1. Dark: 12.4 / 9.5 / 8.1.
+Body 13.9, secondary 8.7, notes 7.3 (7.7 on paper pieces), selected-button text on accent ≥11.5, each part's `--deep` 6.6–9.4, red pen 5.5, `--q*` 4.8–6.0, top bar text 10.9, focus 8.2.

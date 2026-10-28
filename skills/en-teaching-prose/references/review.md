@@ -32,16 +32,17 @@ Structure:
 - Do the examples of each core concept mark its edge (count: content-rules section 1, item 7)?
 - Does each heading say what the section covers, and does it contain the concept first named in that section? Check for slogans, "Why X Matters" and metaphor-only headings.
 - Does character dialogue lecture, recite definitions or run as neat Q&A?
-- Is there meta-language ("in this chapter", "as mentioned"), or any preview of later sections?
+- Is there meta-language ("in this chapter", "as mentioned"), or any preview of later sections? (See SKILL.md "Sentences", last item.)
 - Does the register fit the named audience, with the right sentence length, glossed terms and spelling, and no talking down?
 - For an English edition: do facts, sources, ids, answers and numbers match the Chinese exactly?
 
 ## 2. AI-voice signals (a run must be fixed; judge a single one in context)
 
-Scan for the signals below. How to judge: if several turn up in one paragraph, or the same pattern turns up paragraph after paragraph, it is a run and must be fixed. A lone occurrence gets a look at whether it earns its place here (a "not X but Y" that really corrects a misconception the reader holds; one em dash that gives a needed pause). If it does, keep it and mark it "kept" in the report.
+Scan for the signals below. How to judge: if several turn up in one paragraph, or the same pattern turns up paragraph after paragraph, it is a run and must be fixed. A lone occurrence gets a look at whether it earns its place here (a "not X but Y" that really corrects a misconception the reader holds; one em dash that gives a needed pause). If it does, keep it and mark it "kept" in the report. Exception: a signal marked "must avoid" (paragraph templates) is fixed even when it appears once.
 
 | Type | How to spot it | Fix |
 |---|---|---|
+| Paragraph templates (**must avoid**) | Every paragraph runs claim, example, aphorism; semicolon-paired antitheses; a tricolon followed by a summing-up sentence; sentences set side by side with no "but / so / which means" picking up the last result; a one-line verdict standing alone as its own sentence; concept paragraphs or parallel paragraphs built on one skeleton; a sentence chained from more than three comma clauses | Let each sentence's result start the next, use real connectives, turn the tricolon into one concrete scene, vary the skeleton, and stop when the point is made, with no closing maxim |
 | Antithesis template | Two or three sentences in a row that build up, then knock down ("before it was solved / after it was solved", "it finished the essay / it never started the next") | Keep one contrast and tell the rest straight, or move the contrasts into different paragraphs |
 | Labelling | "This is called X", "This phenomenon has a name: X", "AI that does Y is called Z", with every paragraph running example then definition | Let the name arrive inside the narration, and vary how paragraphs move forward |
 | Formulaic opening sentence | The paragraph opens with a short standalone sentence before the real content: an assertion ("Small bits count, of course."), a signpost, a mini-question ("Where does the knowledge come from?") or a preview ("Let us try a game character first."); more examples in SKILL.md | Delete it and start from the fact, or merge it into the next sentence. After fixing, scan every paragraph's first sentence once more |
@@ -67,7 +68,7 @@ Look in the project guide first for different settings. If there are none, use S
 
 - Any "X: Y" colon headings? More than one question heading? Headings over about 10 words?
 - More than one em dash in a paragraph?
-- More than two highlighter or emphasis marks of one kind in a paragraph? Any bold in running prose?
+- Do the emphasis marks break the "Emphasis marks" item in SKILL.md "Preferences"?
 
 Report preference problems as suggestions, separate from principles and signals.
 

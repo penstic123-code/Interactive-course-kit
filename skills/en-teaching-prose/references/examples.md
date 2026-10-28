@@ -57,7 +57,3 @@ Most rules in SKILL.md come from cases like these. Learn the reasoning behind ea
 4. **The tension builds to a question.** The last paragraph lays out what calculators, ghosts and chatbots have in common, lets the rules multiply, and ends on the question the next section answers.
 
 Note: the "AI effect" phrasing is commonly traced to McCorduck. Her best-known statement of it is in later editions of *Machines Who Think* (first published 1979, 2nd edition 2004). Cite the book without quoting exact wording unless it has been checked against the text.
-
-## 3. Mixing in narrative non-fiction
-
-The rewrite above is classic style. Narrative non-fiction asks for one more pass: restraint, economy and pictures. Phrases like "peak of human thought", or "awe" if it feels overstated, can be toned down further, and rhetorical questions such as "Wasn't each of these once a grand challenge?" should go. The timeline, the woven-in concepts and the dropped antitheses are already in the rewrite.

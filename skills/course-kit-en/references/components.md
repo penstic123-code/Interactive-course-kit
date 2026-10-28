@@ -1,6 +1,6 @@
 # Component library
 
-Purpose: what each core component does, when to use it, how to write its content, and how it behaves and looks in each skin. Check them one by one when laying out a chapter or choosing components. The general rules (pacing, visual baseline, interaction baseline) are in `SKILL.md` and are not repeated here. **A component is a container for an answer**: first write, in the chapter outline's element table, which question or which reading experience it serves (content-rules section 4), and only then choose it here; don't place components by running down the list. The numbers below are defaults a course may change.
+Purpose: what each core component does, when to use it, how to write its content, and how it behaves. Check them one by one when laying out a chapter or choosing components. The general rules (pacing, visual baseline, interaction baseline) are in `SKILL.md` and are not repeated here. **A component is a container for an answer**: first write, in the chapter outline's element table, which question or which reading experience it serves (content-rules section 4), and only then choose it here; don't place components by running down the list. The numbers below are defaults (the reason is given beside each) that a course may change.
 
 - Class prefix `vl-`, JS namespace `VL`. The HTML below follows the kit's current code (`kit/vl.js`, `kit/vl-interact.js`, `kit/README.md`). Anything marked "not in the kit yet" is not coded yet; its markup is only a sketch.
 - **`kit/README.md` is the API authority.** If it disagrees with this file, the code wins.
@@ -15,9 +15,9 @@ Purpose: what each core component does, when to use it, how to write its content
 | 2 | **Boxes count as body text**: any box with more than 2 paragraphs gets a picture or is split into "picture + short text"; the concept card always has a picture slot (`.vl-cc-fig`), while in boxes of 2 paragraphs or fewer, such as the why-it-works box, the slot (`.vl-why-fig`) is kept only when there is a mechanism to draw | Bad: a why-it-works box that runs past 250 characters with no picture |
 | 3 | No emoji as icons; icons are small pictures from the illustration library | Bad: card icons that are emoji |
 | 4 | Motion is filed under four kinds (aids understanding / feedback / reading reward / atmosphere), details and every duration in `interaction.md` section 4 (the "Motion" lines below only say which kind it is); a component plays only feedback motion itself, and for rewards it only dispatches events | Good: `VL.tryDone()` only ticks and saves; the confetti comes from a separate module listening for it |
-| 5 | General rule for text length: whatever fits inside the component without wrapping into a wall; the per-item word limits are gone. Paragraph counts in boxes still follow rule 2. Technical floors stay: picture slot ≤240px, touch targets ≥44px, text in figures ≥13px, contrast per `skin-contract.md` section 1 | Bad: a three-line definition that turns a concept card into a wall |
+| 5 | General rule for text length: whatever fits inside the component without wrapping into a wall; the per-item word limits are gone. Paragraph counts in boxes still follow rule 2. Technical floors stay: picture slot ≤240px (larger turns the card into a big picture with small text), touch targets ≥44px and keyboard alternatives per `interaction.md` section 3, text in figures ≥13px, contrast per `skin-contract.md` section 1 | Bad: a three-line definition that turns a concept card into a wall |
 
-The "Skins" lines run in this order: notebook | paper | pixel | town (town is not in the library, for reference only). For the field notebook skin see `skins/fieldbook/README.md`; what each skin actually draws is defined by `skins/<name>/gallery.html`.
+What each skin looks like is defined by `skins/<name>/gallery.html` (for the field notebook skin see also `skins/fieldbook/README.md`).
 
 ## 1. Overview
 
@@ -38,12 +38,11 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ## 2. Navigation
 
 ### N1 Top bar
-- **Job**: back to contents, course progress, jump to any chapter, preferences (colours Light / Dark / Easy on the eyes — dark has variables only and is not fully approved, see `skin-contract.md` section 1; motion Auto / Full / Light / Off; language). Sound switch and reward panel are added to the top bar by optional modules; see `kit/README.md`.
-- **Use / don't**: on every page. vl.js builds it from the chapter table (`VL_COURSE` in `js/course.js`) and `<body data-ch>`; never hand-write chapters. vl.js also writes `data-part`. `VL_COURSE.topbar:false` turns it off.
-- **Content**: navigation and switches only, no body hints. Course progress is a pair: mini map + popover list. On phones the mini map may hide, but the popover must stay (bad, from one course: the chapter dots hidden on phones, so you can't jump chapters).
-- **Interaction and keyboard**: all `button` / `a`; popover closes on Esc or outside click and returns focus to its button; cells in the mini map must not be both `tabindex=-1` and `aria-hidden` (bad: a tower-strip style mini map).
+- **Job**: back to contents, course progress, jump to any chapter, preferences (motion Auto / Full / Light / Off; language). Sound switch and reward panel are added to the top bar by optional modules; see `kit/README.md`.
+- **Use / don't**: on every page. vl.js builds it from the chapter table (`VL_COURSE` in `js/course.js`) and `<body data-ch>`; never hand-write chapters. vl.js writes `data-part`; don't hand-write it. `VL_COURSE.topbar:false` turns it off.
+- **Content**: navigation and switches only, no body hints. Course progress is a pair: mini map + popover list. On phones the mini map may hide, but the popover must stay (if both are hidden on phones, there is no way to jump chapters).
+- **Interaction and keyboard**: all `button` / `a`; popover closes on Esc or outside click and returns focus to its button; cells in the mini map must not be both `tabindex=-1` and `aria-hidden`.
 - **Motion**: feedback.
-- **Skins**: notebook = ink underline + part-coloured dots | paper = white paper strip + small tower icon + lit windows | pixel = dark HUD bar + 8×8 icons | town = walnut beam.
 
 ```html
 <body data-ch="3">   <!-- header.vl-topbar is generated by vl.js; vl.js also writes body[data-part], body[data-pat], --vl-dh, --vl-chnum -->
@@ -56,7 +55,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
   Bad: header drawings written straight into the HTML, outside the illustration library, so they can't be checked for duplicates or re-skinned.
 - **Interaction**: "you are here" cells are clickable to jump chapters.
 - **Motion**: atmosphere, entirely up to the skin, can be turned off.
-- **Skins**: notebook = pill badge at -3° + highlighter h1 | paper = sky band header + main-colour paper tag | pixel = level title card WORLD n-k | town = wooden sign with brass nails.
 
 ```html
 <div class="vl-hero">
@@ -74,7 +72,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Content**: how to write an h2 is set once in `en-teaching-prose` (chapter titles and headings; the only place the rule lives). ✗ "The aim of tuning is the lowest loss, and loss is a score for a set of parameters" (two concepts); ✓ "The *Literary Digest* poll lost to selection bias". Each section opens with a situation or the question the last one left.
 - **Interaction and keyboard**: click the heading / Enter / Space to fold; `role=button aria-expanded`; everything expands before printing.
 - **Motion**: feedback (no height animation when content shows or hides).
-- **Skins**: notebook = accent2 round number at -5° | paper = main-colour paper tag + red pin | pixel = level block | town = clay disc + sandy path.
 
 ```html
 <div class="vl-sec"><h2>The Literary Digest poll lost to selection bias</h2></div>
@@ -84,18 +81,16 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### N4 In-chapter contents and reading progress
 - **Job**: jump to any section, expand / collapse all in one click, back to top, see how far you've read.
-- **Use / don't**: appears automatically with ≥2 sections (floating button `.vl-fab` at bottom right → panel `.vl-navpanel`; progress bar `.vl-readbar` at the top). A skin may draw it as tower stairs or a narrow town strip, but function and keyboard behaviour stay the same (test narrow screens again whenever you change the form).
+- **Use / don't**: appears automatically with ≥2 sections (floating button `.vl-fab` at bottom right → panel `.vl-navpanel`; progress bar `.vl-readbar` at the top). A skin may draw it as tower stairs or a narrow strip, but function and keyboard behaviour stay the same (test narrow screens again whenever you change the form).
 - **Content**: entries are the h2 text verbatim; the current section is always "top edge past 35% of the viewport".
 - **Interaction and keyboard**: floating button → panel; Esc / outside click closes; clicking a link first expands that section, then scrolls to it.
 - **Motion**: feedback.
-- **Note**: the reading progress bar only shows position; it **never triggers rewards or "read" records** (bad: marking "read" at 92% scrolled).
-- **Skins**: notebook = tilted floating button | paper = round paper button + tower-section steps | pixel = pixel frame + segmented health bar | town = narrow town strip on the right.
+- **Note**: the reading progress bar only shows position; it **never triggers rewards or "read" records** (see "explicitly not done" in `modules.md` section 1).
 
 ### N5 End-of-chapter navigation
 - **Job**: previous / next chapter (`nav.vl-pager`, generated by vl.js); with a concept map, add "Related chapters" (prerequisites and principles / going further and applications / contrasts and links), generated by `modules/vl-concepts.js`; see `kit/README.md`.
-- **Content**: no preview of later chapters' content; chapters not yet open (`open:false` in the chapter table) get no link: the pager says "Chapter N is still being written" and links back to contents (good, from one course: `.related`).
+- **Content**: no preview of later chapters' content; chapters not yet open (`open:false` in the chapter table) get no link: the pager says "Chapter N is still being written" and links back to contents.
 - **Motion**: feedback; page-to-page transitions are atmosphere and can be turned off.
-- **Skins**: notebook = white card + accent shadow | paper = "upstairs / downstairs" paper signs | pixel = level exit | town = signpost.
 
 ---
 
@@ -117,10 +112,9 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
   | **Picture slot `.vl-cc-fig` (required)** | A small picture of the parts or mechanism (not a decorative corner icon), ≤240px; on the right on wide screens; on narrow screens (≤700px) it follows source order, and the template puts it last, so it sits at the bottom of the card; if there is no dedicated picture, write "see Figure 3" with a thumbnail. If missing, vl.js shows a red "Concept picture missing" placeholder and calls console.warn |
 
   Good: every field filled in, using `<aside aria-label>`. Bad: cards with no picture slot; corner props that are decoration, not explanatory pictures.
-- **Repetition rule**: the same example is not told three times in the opener, the concept card and the example card; the card has a one-line pointer only (see `SKILL.md` section 1, pacing rule 6).
-- **Interaction**: none; the reading-reward module may light it up "after understanding" (see `modules.md`), **never by dwell time** (bad: a card shown for 1.5s sends off a paper plane).
+- **Repetition rule**: the card's example is a one-line pointer back, never retold (for repeating the same example, see `SKILL.md` section 1, item 5, clause 6).
+- **Interaction**: none; the reading-reward module may light it up "after understanding" (trigger conditions in `modules.md` section 1).
 - **Motion**: none (except reward hooks).
-- **Skins**: notebook = white card + ink line + thick left edge + hard shadow + slanted tag | paper = ivory paper + thick left edge + small cutout picture | pixel = double-line dot-matrix frame | town = small wooden sign.
 
 ```html
 <aside class="vl-cc">                         <!-- the top "Concept card" tag (change with data-tag) and aria-label are added automatically -->
@@ -135,11 +129,10 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ```
 
 ### K2 Card grid
-- **Job**: show 3–7 sibling elements or types of one concept side by side.
+- **Job**: show 3–7 sibling elements or types of one concept side by side (fewer than 3 needn't form a grid; more than 7 can't be counted at a glance, so group them).
 - **Use / don't**: elements, categories, "lessons to take away"; not for long text, not for good-vs-bad contrasts (use E2); anything with hierarchy or causation becomes a diagram (`diagrams.md`).
 - **Content**: each card = small picture (required, from the illustration library, no emoji) + name + one sentence; one drawing style per group.
 - **Interaction**: static by default; optional "click a card for details" (the card version of M2).
-- **Skins**: notebook = small cards stuck on at angles | paper = staggered paper scraps | pixel = inventory slots | town = small signs on a wooden tray.
 
 ```html
 <!-- no card-grid component in the kit yet; lay it out with the equal-width grids .vl-grid2/3/4 (single column at ≤700px); card look goes in the page, class names with the chapter prefix -->
@@ -151,10 +144,9 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### K3 Why-it-works box
 - **Job**: explain why something holds: one principle + its source + an experiment the reader can verify themselves, plus one line of dispute if needed.
 - **Use / don't**: when there is a "why" worth its own box and with a citable source (a core concept of difficulty ≥ 2 is taught to this layer by default, though not always in a box), placed after a concrete phenomenon; no definitions (those go in K1).
-- **Content**: the title is the principle as a sentence (without the word "principle"); **body ≤2 paragraphs; beyond that add a picture or split into picture + short text** (boxes count as body text, section 0 rule 2); **keep a picture slot when there is a mechanism to draw** (`.vl-why-fig`: diagram, real photo, or a thumbnail of the interaction above; the code doesn't enforce it and won't error, so check step 3, picture density, is the backstop); the "Why it works" tag is added automatically; source line = who · which study · year + "Check it: the … above"; dispute in one line: "Not everyone agrees: … (so-and-so)".
-  Good: the source line says "Check it: the simulator above". Bad: a long flat card with a shadow, breaking "no PPT cards".
+- **Content**: the title is the principle as a sentence (without the word "principle"); **body ≤2 paragraphs** (boxes count as body text, section 0 rule 2); **keep a picture slot when there is a mechanism to draw** (`.vl-why-fig`: diagram, real photo, or a thumbnail of the interaction above; the code doesn't enforce it and won't error, so check step 3, picture density, is the backstop); the "Why it works" tag is added automatically; source line = who · which study · year + "Check it: the … above"; dispute in one line: "Not everyone agrees: … (so-and-so)".
+  Good: the source line says "Check it: the simulator above". Bad: a long flat card with a shadow (layout in `SKILL.md` section 2).
 - **Shape**: a light block (margin rule + small tag), not a floating card.
-- **Skins**: notebook = margin rule + hand-drawn magnifier tag | paper = thin sheet held by a brass pin | pixel = thin frame + coloured-block title | town = notice card pinned to a plaster board.
 
 ```html
 <div class="vl-why">                          <!-- with .vl-why-fig, two columns on wide screens, picture 34% on the right -->
@@ -168,11 +160,9 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### K4 Evolution chain
 - **Job**: draw "problem → solution → new problem → new solution" as a chain, so the reader sees the concept was forced into existence.
 - **Use / don't**: the backbone of an invention story, state transitions; not for parallel content with no order or causation (use K2).
-- **Content**: 3–5 nodes (keep only the ones that drive the story; more are not remembered; the version with years and a larger picture per node is T5, same node rule); each node = small picture + one line. Show the first two nodes and let the reader guess the next (link to M1), then reveal.
-  From one course: the "problems on top, fixes below" evolution charts.
+- **Content**: 3–5 nodes (keep only the ones that drive the story: more are not remembered, fewer don't show the concept being "forced into existence"; the version with years and a larger picture per node is T5, same node rule); each node = small picture + one line. Show the first two nodes and let the reader guess the next (link to M1), then reveal.
 - **Interaction**: optional one-at-a-time reveal ("And then?" button; not in the kit yet, currently a static chain). Horizontal on wide screens; at ≤600px it stacks vertically with arrows pointing down.
 - **Motion**: aids understanding (nodes appear in turn; with motion off, all show at once).
-- **Skins**: notebook = handwritten arrows joining small boxes | paper = paper strips pinned together | pixel = level route | town = stops along a path.
 
 ```html
 <ol class="vl-chain">
@@ -187,23 +177,12 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Use / don't**: when the chapter's concepts raise a question really worth thinking about (frequency: content-rules section 1, item 12); not for questions with a correct answer.
 - **Content**: first card = question + vote buttons; each middle card = one stance, ≤2 paragraphs, may have a picture, the stance is named by its view not its author ("rules come before the game"), the person goes in the source line; last card = open question, can lead into P3.
 - **Interaction and keyboard**: votes use `aria-pressed` and can be changed; stance cards echo "You chose: …"; ◀▶ / ←→ / swipe / dots labelled with stance names; all expanded in print.
-  Bad, from one course: the vote written separately in 13 chapters; in the library it is one component (`.vl-philo` / `.vl-vote`, see `kit/README.md`).
+  Usage: `kit/README.md` section 7, K5 (`.vl-philo` / `.vl-vote`).
 - **Motion**: feedback (page turn).
-- **Skins**: notebook = dashed page + sticky notes for stances | paper = pale purple paper + "Philosophy moment" tag | pixel = dark panel | town = walnut board.
-
-```html
-<!-- see kit/README.md; sketch below -->
-<div class="vl-philo" data-key="ch22-philo1">
-  <div class="vl-philo-slide" data-t="Question">…<div class="vl-vote" data-options="Yes|No|It depends"></div></div>
-  <div class="vl-philo-slide" data-t="The magic circle is real">…<p class="vl-src">Huizinga, 1938</p></div>
-  <div class="vl-philo-slide" data-t="Over to you">…</div>
-</div>
-```
 
 ### K6 Wrap-up blocks (common misconceptions / key points / one line)
 - **Job**: tighten understanding at the end: correct the most common wrong ideas, list what to take away, compress it into one line.
 - **Content**: each misconception = the wrong idea in its own words (bold) + why it's wrong in 1–2 sentences; 3–5 key points, one sentence each; one line, compressed to a single sentence. **Label text is written in the HTML** (e.g. `<p class="tldr"><b>In one line</b>: …</p>`). With more than 3 misconceptions, turn them into M1 flip cards: "Have you thought this too?"
-- **Skins**: notebook = orange-backed misconceptions + dashed key points + handwritten one-line strip | paper = apricot paper scraps + small tags | pixel = coloured-block titles in thin frames | town = notices on a plaster board.
 
 ```html
 <div class="vl-misc"><p><b>"Random means evenly spread"</b>: …</p></div>
@@ -213,10 +192,9 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K7 Inline marks (term definitions / naming / emphasis)
 - **Job**: a new term gets a one-line definition on the spot; a concept's first naming is noticed; the key sentence of a paragraph is noticed.
-- **Content**: a term's first appearance uses `.vl-term`, with a one-sentence `data-def` that doesn't repeat the term (`data-name` changes the popup title). Naming and emphasis: at most two per paragraph; don't pile up `<b>` (naming uses `<span class="vl-cn">`, drawn as a highlighter, only where a concept is first named; emphasis uses `<span class="vl-em">`, drawn as emphasis dots in Chinese and an underline on English pages; plain `<b>` is just bold, never a naming mark). A core concept's name is made visible in four places with the same name; see SKILL.md section 1, item 4. The glossary `glossary.html` is built by `kit/modules/terms.js` from the `terms` in the course's concept data `js/concepts.js`; `node kit/modules/build-concepts.mjs <absolute course path> --write` collects every chapter's `.vl-term[data-def]` into that data (a term defined two different ways is reported as ✗).
+- **Content**: a term's first appearance uses `.vl-term`, with a one-sentence `data-def` that doesn't repeat the term (`data-name` changes the popup title). Naming and emphasis: at most two per paragraph; don't pile up `<b>` (naming uses `<span class="vl-cn">`, drawn as a highlighter, only where a concept is first named; emphasis uses `<span class="vl-em">`, drawn as emphasis dots in Chinese and an underline on English pages; plain `<b>` is just bold, never a naming mark). A core concept's name is made visible in four places with the same name; see SKILL.md section 1, item 4. The glossary and the collected term data: `modules.md` section 4.
 - **Interaction and keyboard**: `tabindex=0` (added by vl.js); hover / focus / tap toggles; Esc or scroll closes; the popup is positioned by JS, clamped to the viewport and flips up or down (bad: a pure-CSS `::after` runs off the screen edge).
 - **Motion**: feedback (may be instant).
-- **Skins**: notebook = dotted underline + ink-backed bubble, highlighter | paper = dotted underline + white paper popup | pixel = dot-matrix bubble | town = small paper tag.
 
 ```html
 <span class="vl-term" data-def="Treating a hand-picked sample as if it were the whole group">selection bias</span>
@@ -227,7 +205,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### K8 Side notes and sources
 - **Job**: a useful line that doesn't fit the main thread, a source, an "illustrative" disclaimer, a usage hint.
 - **Content**: side notes are a sentence or two that fit in a few lines; sources follow the figure, why-it-works box or quotation; teaching models that are simplified must be marked "illustrative". Contrast and weight for small text: `skin-contract.md` section 1, "Contrast".
-- **Skins**: notebook = small pencil text in the margin | paper = 4px main-colour bar on the left | pixel = pale ground with a coloured left bar | town = pencil on the edge of a plaster board.
 
 ```html
 <p class="vl-src">Numbers are illustrative.</p>  <p class="vl-src">John Snow, 1855, public domain, Wikimedia Commons</p>
@@ -236,17 +213,11 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 
 ### K9 Document props
 - **Job**: turn a stretch of narrative into "an object" (case file, report, diary, newspaper, lab notebook, slip, letter, notice), so long text has physical presence without being a flat card.
-- **Use / don't**: opening hooks, cases, the original scene of an invention story; don't pile them up in one chapter (default ≤ 2; more are not remembered); not for explaining principles.
+- **Use / don't**: opening hooks, cases, the original scene of an invention story; don't pile them up in one chapter (default ≤ 2: each is a whole physical object, and piling them up turns into a row of cards); not for explaining principles.
 - **Content**: `data-kind` sets the shape; body ≤2 paragraphs, otherwise split into two props or add a picture; a slip is only a few lines.
-  From one course: case file, newspaper, letter; before joining the library these were ≥8 separate in-page implementations, now one component.
 - **Motion**: none (a slight rotation is static skin).
-- **Skins**: notebook = another sheet or a clipping tucked into the notebook | paper = cutouts in different paper colours | pixel = in-game item window | town = notice board, envelope.
 
-```html
-<!-- usage in kit/README.md section 7, K9; the look lives in the skin's interact.css -->
-<div class="vl-doc" data-kind="news"><h4>…</h4><p>…</p></div>
-<!-- data-kind: file | news | diary | letter | lab (notebook is an alias of lab); all four skins draw these five; fieldbook adds ticket / clipping / copy (see its README) -->
-```
+Usage and the five `data-kind` values (file / news / diary / letter / lab) are in `kit/README.md` section 7, K9; the look lives in each skin's `interact.css`. All five skins draw these five; fieldbook adds ticket / clipping / copy (see its README); which are shown in the demo pages follows each `gallery.html`.
 
 ### K10 Invention story box
 - **Job**: holds one core concept's invention story (problem → early attempts → key insight → evolution), collapsed by default for those who want it.
@@ -254,10 +225,8 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Content**:
   - Collapsed, it shows: type tag "Invention story" + **a concrete question-style title** (✓ "1898: a cat shut in a box, and how the law of reward was found"; ✗ "Ready to travel back in time and start a new adventure?") + one line of introduction (saying what's inside) + expand button.
   - Expanded, "boxes count as body text" applies: beyond 2 paragraphs, share the load with a K4 evolution chain, T5 timeline, T6 comic or T4 real photo; keep only the one or two people who drive the story.
-  - Bad: a story box that is always expanded, runs past 2 paragraphs and has no picture.
 - **Interaction and keyboard**: same as P4 (native `details/summary`, remembers open state, all expanded in print).
 - **Motion**: feedback.
-- **Skins**: notebook = fold-out page in the notebook + old paper colour | paper = beige folder paper | pixel = side-quest colour block | town = signpost at a fork in the path.
 
 ```html
 <p>…one or two sentences of key insight in the main text…</p>
@@ -274,9 +243,8 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### T1 Illustration slot
 - **Job**: write a name and it is replaced by a picture from the illustration library. The picture shows the *why*: a good example has every element, a counterexample shows the missing one.
 - **Use / don't**: every illustration goes through it; data charts and concept diagrams don't (use T3, G2).
-- **Content**: each picture once per course (`SKILL.md` section 1, pacing rule 6); alt text required; rules for people are in section 2 of `references/content-rules.md`, and illustration pitfalls are in `visuals.md`; text sits outside the filter group.
+- **Content**: each picture once per course (`SKILL.md` section 1, item 5, clause 6); alt text required; rules for people are in section 2 of `references/content-rules.md`, and illustration pitfalls are in `visuals.md`; text sits outside the filter group.
 - **Loading**: register with `VL.illus.add(name, alt, shapes, textLayer, options)` (a vertical canvas uses the option `{vb}`, see "插画位" / illustration slots in `kit/README.md`); alt becomes the SVG's `aria-label`. A missing picture doesn't error; it shows a placeholder `.vl-illus-miss` with the name. For content inserted later, call `VL.illus.mount(root)` or `VL.enhance(root)`. Each chapter's illustration pack `js/illus-chNN.js` is included with a `<script>` after `kit/illus.js` (the kit doesn't yet load packs from the chapter table).
-- **Skins**: notebook = stick figures + wobble filter + flat colour blocks (viewBox 200×140) | paper = layered cutouts + white trim + three-level shadows | pixel = 2px grid pixel art | town = offline-rendered PNG.
 
 ```html
 <span data-illus="c02-eg-tetris"></span>   <!-- alt goes in the second argument of VL.illus.add -->
@@ -286,7 +254,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Job**: long text has a picture right beside it.
 - **Rules**: on wide screens, one column of picture (38%) and one of text, **top-aligned, no wrapping, no vertical centring**; stacked at ≤700px (picture on top). Short caption; the explanation goes in the text. Tall pictures such as portraits get `.narrow` (picture column 26%); picture on the left by default, `.rev` puts it on the right. If the text is much longer than the picture, use a taller picture or split into two side-by-side groups; never let text wrap under the picture.
   Bad: vertical centring; a floating, wrapping picture; falling back to wrapping when the text is longer. Good: a 38% / 1fr grid, top-aligned; take 420 and 1100 screenshots with `tools/shot.mjs` and check by eye.
-- **Skins**: only the picture frame changes (notebook = tape | paper = white border + shadow | pixel = ink frame + hard shadow | town = wooden frame).
 
 ```html
 <div class="vl-withimg">                    <!-- first child is the picture, second is the text -->
@@ -298,7 +265,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### T3 Numbered figure
 - **Job**: diagrams, concept diagrams and data charts with "Figure N" and a caption, so the text can say "see Figure 3".
 - **Content**: same width as the text, about 2:1, height ≤300px; one accent colour per figure; text in figures ≥13px; `role=img aria-label` says what is drawn; **the caption says why** (what the figure shows), not a repeat of its labels; data charts have straight edges, no wobble. Numbers are generated by vl.js and the caption is prefixed "Figure N"; don't hand-write it. In the text, refer back with `<a data-figref="figure-id" href="#figure-id">figure</a>`, which becomes "Figure N"; after adding figures dynamically call `VL.figs()` (bad: inline SVGs with no number or caption).
-- **Skins**: notebook = hand-drawn wobbly lines, handwritten figure text | paper = paper colour blocks, straight-edged data charts | pixel = pixel lines + dark "Figure N" tag | town = blueprint paper.
 
 ```html
 <figure class="vl-fig" id="fig-axis"><svg role="img" aria-label="…" viewBox="0 0 700 300">…</svg>
@@ -310,7 +276,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Content**: public domain / CC only, downloaded locally; caption = one line of description + author, licence, source; register in the course project doc's picture-source list (`img/CREDITS.md` when there are many). Process in `visuals.md`. Portraits go in `.vl-withimg.narrow`.
   Good: a historical map, a portrait and a photo of the object. Bad: a whole course with no real photo.
 - **Interaction**: optional click to enlarge.
-- **Skins**: notebook = taped into the notebook | paper = white photo paper + tape | pixel = triple ink-and-white frame | town = framed picture on a wooden frame.
 
 ```html
 <div class="vl-withimg narrow">
@@ -323,10 +288,9 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### T5 Illustrated timeline
 - **Job**: the nodes of an invention story laid out by year, each with a picture big enough to see (the dated version of the K4 evolution chain; node count and selection: see K4).
 - **Use / don't**: inside a K10 invention story box or a P4 side path, collapsed by default; no full timelines in the main text.
-- **Content**: each node = year + small picture (required, ≥120px wide) + one or two sentences; keep only nodes that drive the story.
+- **Content**: each node = year + small picture (required, ≥120px wide; in narrower pictures nothing can be made out) + one or two sentences; keep only nodes that drive the story.
   Good: every node has a picture. Bad: a timeline with none; timelines that are all expanded.
 - **Interaction**: one node at a time, swipe sideways on narrow screens (scroll-snap; not in the kit yet, currently a vertical list with the picture on top at ≤600px).
-- **Skins**: notebook = ink line + yellow-centred dots + handwritten years | paper = paper cards strung on a cord | pixel = square nodes + monospace years | town = milestones along the road.
 
 ```html
 <div class="vl-timeline">
@@ -339,18 +303,13 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Use / don't**: the scene of an invention story, a process, a misunderstanding; not for abstract principles.
 - **Content**: each panel = illustration + a short one-line caption; one-sentence `aria-label` summary for the whole strip. It is rarely used; when you hit a long paragraph of "someone did one thing, then another thing happened", consider this first.
 - **Motion**: aids understanding (panels light up one by one on scroll; with motion off, all lit).
-- **Skins**: notebook = pencil panels | paper = paper panels + panel-number tags | pixel = dark ink panels + yellow captions | town = window panes.
 
-```html
-<!-- see kit/README.md; sketch below -->
-<div class="vl-comic" role="group" aria-label="…"><div class="vl-panel"><span data-illus="…"></span><p class="vl-cap">…</p></div></div>
-```
+Usage: `kit/README.md` section 7, T6.
 
 ### T7 Bar readouts and legends
 - **Job**: compare several quantities with horizontal bars (growing and shrinking as the reader acts), use a gauge for a single quantity, and make legends "shape + text".
 - **Content**: each row = name + bar + value; each legend item differs in shape (solid / dashed / dotted / ✓). Values use `aria-live=polite`. Bad: writing the bars separately in every chapter.
 - **Motion**: aids understanding (bar-growth transition; with motion off, jump to the final value).
-- **Skins**: notebook = hand-drawn bars + hard shadow | paper = pieced paper strips | pixel = segmented health bar | town = carved wooden ruler.
 
 ```html
 <!-- not in the kit yet; sketch below -->
@@ -359,9 +318,8 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ```
 
 ### T8 Tables and scroll wrappers
-- **Job**: comparison tables and truth tables of ≤8 rows; on phones wide tables / figures scroll sideways without breaking the page.
+- **Job**: comparison tables and truth tables of ≤8 rows (longer ones take a long scroll on a phone, so group them or use a scroll wrapper); on phones wide tables / figures scroll sideways without breaking the page.
 - **Content**: no symbol tables; header in accent; clicking a row may highlight it (link to M2). The scroll wrapper has `tabindex=0` for keyboard scrolling.
-- **Skins**: notebook = hand-drawn table lines | paper = paper table | pixel = 2px ink-framed table | town = ledger.
 
 ```html
 <div class="vl-scroll" tabindex="0"><table class="c05-tbl">…</table></div>   <!-- .vl-scroll is in the kit; table styles are not yet, so write them in the page -->
@@ -376,7 +334,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Content**: each = illustration (by default; a counterexample shows what's missing; in academic courses an example may be a worked calculation, a data chart or a quoted passage) + ≤2 paragraphs; tab label a short phrase (`data-t`); counterexamples get `.bad`, distinguished by a text tag + shape, not colour alone. With pictures on wide screens, two columns. Examples are not retold elsewhere. With only one example, don't use `.vl-eg` (a single `.vl-eg` stretches the picture to half a screen); use `.vl-withimg` side by side.
 - **Interaction and keyboard**: tabs / ◀▶ / ←→ / 50px swipe; `role=tablist / tab / aria-selected`.
 - **Motion**: feedback (a skin's own page-turn animation must also fit the feedback duration, `interaction.md` section 4).
-- **Skins**: notebook = sticky-note tabs + dashed counterexample | paper = folder tabs + paper page-turn | pixel = pixel tabs | town = wooden drawer labels.
 
 ```html
 <div class="vl-eg" data-t="Tetris"><span data-illus="…"></span><p>…</p></div>
@@ -391,7 +348,6 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 - **Content**: each column has a picture; good vs bad marked with text labels + ✓ / ✗. Bad: writing the two-column layout separately in every chapter.
 - **Interaction and keyboard**: drag-line mode is `role=slider`, ←→ Home End, pointer capture.
 - **Motion**: aids understanding (the drag line wiggles once on first appearance as a hint, can be turned off).
-- **Skins**: notebook = left and right notebook pages | paper = two paper sheets side by side | pixel = split screen | town = two buildings.
 
 ```html
 <div class="vl-vs"><div><b>✓ With feedback</b>…</div><div class="bad"><b>✗ No feedback</b>…</div></div>   <!-- the bad side gets .bad (dashed) -->
@@ -406,20 +362,19 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
 ### M1 Predict → reveal
 - **Job**: the reader guesses first, then sees the answer; the gap itself teaches.
 - **Use / don't**: only where it can expose a wrong intuition (`interaction.md` rule 3): section-opening hooks, "what did they do back then?" in invention stories, predictions before a simulation. It doesn't replace a signature interaction, and is never added just to reset the picture-density character count.
-- **Modes** (one component `.vl-guess`, switched by `data-mode`; `kit/vl.js` has think, pick, estimate; cards is `.vl-flip` in `kit/vl-interact.js` (kit/README.md section 7, "M1 补：翻牌"); draw and then-run are not in the kit yet — write them in the page if needed):
+- **Modes** (one component `.vl-guess`, switched by `data-mode`; `kit/vl.js` has think, pick, estimate; cards uses `.vl-flip` (`kit/README.md` section 7, "M1 supplement: flip cards"); draw and then-run are not in the kit yet and must be written in the page):
 
   | Mode | Shape | Good example |
   |---|---|---|
   | think | Question + "See an answer" button + answer | `.reveal` |
   | pick | Option chips + per-option feedback (`.right/.wrong/.miss`) | pick first |
   | estimate | Slider (linear / log) + "You" and "Answer" markers + gap + comment | estimate, then see the gap |
-  | draw | Hand-draw a curve on the chart → real curve + difference | from one course: a training-curve sketchpad |
+  | draw | Hand-draw a curve on the chart → real curve + difference (not in the kit yet; write it in the page) | from one course: a training-curve sketchpad |
   | cards | 2–6 flip cards | `.flip` |
-  | then-run | "Run" unlocks only after a prediction; the result is compared with it | guess then run |
+  | then-run | "Run" unlocks only after a prediction; the result is compared with it (not in the kit yet; write it in the page) | guess then run |
 - **Content**: the question in a sentence, answer ≤2 paragraphs; the reveal says *why*, not just right or wrong.
 - **Interaction and keyboard**: native buttons / range; flip cards `aria-pressed` + Enter / Space; **draw must have a keyboard alternative** (↑↓ to adjust each segment's height, or a few sliders instead).
 - **Motion**: feedback; a 3D card flip counts as aiding understanding (with motion off, show the back directly).
-- **Skins**: notebook = sticky note with a folded corner lifting | paper = white paper + answer below a dashed line | pixel = `steps(4)` pop-up | town = wooden lid flipping open.
 
 ```html
 <div class="vl-guess" data-mode="estimate" data-min="0" data-max="100" data-answer="62" data-unit=" people">
@@ -431,7 +386,7 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
   <ul class="vl-opts"><li data-right>Option<span class="vl-fb">feedback for this option</span></li><li>…</li></ul>
   <div class="vl-ans">The reveal</div>
 </div>
-<!-- estimate also takes data-scale="log", data-step, data-start, data-digits, data-pre; after the reveal the container gets .revealed and dispatches vl:guess -->
+<!-- all estimate attributes and the vl:guess event: kit/README.md section 3, "guess then reveal" -->
 ```
 
 ### M2 Hotspot picture
@@ -440,22 +395,14 @@ Concept diagrams (loops, nested circles…) are a family within T3 numbered figu
   Good: a nested-dolls diagram that says "click any layer, or Tab to it and press Enter"; a bomber bullet-hole diagram.
 - **Interaction and keyboard**: SVG `g[tabindex=0][role=button]` + Enter / Space; thicker stroke on hover / focus.
 - **Motion**: feedback.
-- **Skins**: notebook = bolder ink line | paper = paper piece lifts | pixel = blinking frame | town = building lights up.
 
-```html
-<!-- "click a layer to see that layer" in concept diagrams is already in VL.diagram (select:true, dispatches vl:dgselect); general hotspot pictures: kit/README.md section 7, M2 -->
-<figure class="vl-fig vl-hot" data-hint="Click a layer first.">
-  <svg><g data-hot="ml" data-name="Machine learning">…</g></svg>   <!-- tabindex, role, aria-pressed added automatically -->
-  <div class="vl-hot-text" data-for="ml"><b>Machine learning</b>: …</div>   <!-- info box .vl-hot-info is created if missing -->
-</figure>
-```
+"Click a layer to see that layer" in concept diagrams is already in `VL.diagram` (`select:true`, dispatches `vl:dgselect`); for general hotspot pictures see `kit/README.md` section 7, M2.
 
 ### M3 Try it
 - **Job**: give every signature / supporting interaction a clear small task, confirmed on the spot when done.
 - **Content**: write an observable goal (the "Try it:" label and checkbox are added by vl.js; don't hand-write them) (✓ "Get the error below 5%"; ✗ "Play around"); 1–3 per interaction; the completion condition lives in JS, not the reader's say-so; the default state must not already satisfy it without the reader doing anything.
-- **Interaction**: passive; when the interaction succeeds call `VL.tryDone(id, optional feedback)`, deduplicated by "filename#id" and saved in `<course id>-try`; the completion message comes from `data-done`; on reopening the page it shows "Done earlier." (change with `data-was`). The component only ticks; rewards come from the reward module listening on `document` for `vl:try {id, el, first}`, and only when `first` is true.
+- **Interaction**: passive; when the interaction succeeds call `VL.tryDone(id, optional feedback)` (saving, `data-done` and events: `kit/README.md` section 3, "Try it"). The component only ticks; rewards come from the reward module listening for `vl:try`, and only when `first` is true.
 - **Motion**: feedback (turn green and tick).
-- **Skins**: notebook = yellow sticky note + small checkbox | paper = yellow sticky note + white tick | pixel = "CLEAR!" | town = clay bead turns green.
 
 ```html
 <p class="vl-try" data-try="luck-90" data-done="Done! The winner changed: with that much luck, skill can't decide the ranking.">Turn luck up to 90% and see whether the strongest player still comes first.</p>
@@ -469,10 +416,9 @@ Interaction design rules (one sentence stating the question, playable in 3 secon
 
 ### G1 Interaction board
 - **Job**: the shell for every signature / supporting interaction: question sentence + Try it + stage + control row + readout + feedback sentence + restart.
-- **Content**: the title is the question this board answers (✓ "Definition tester: can you write a definition with zero errors?"); by default ≤3 control groups; a board whose state the reader can mess up must have "restart" or "undo" (`interaction.md`, rule 5). **Only interaction boards and concept diagrams get the heaviest physical presence in the course** (thick border, backing layer, shadow).
-- **Control family**: `.vl-btn` (primary; `.alt` secondary; `disabled`), `.vl-chip` (`.on/.right/.wrong/.miss`), `label.vl-ctl > output + input[type=range]`, segmented toggle `role=group` + `.vl-chip[aria-pressed]`, feedback sentence `.vl-msg`; touch targets ≥44px; feedback sentence `aria-live=polite`. Contrast of selected-state text against its fill: `skin-contract.md` section 1, "Contrast".
+- **Content**: the title is the question this board answers (✓ "Definition tester: can you write a definition with zero errors?"); by default ≤3 control groups (reason, and the total of big interactions per chapter: `interaction.md` rules 2 and 14); a board whose state the reader can mess up must have "restart" or "undo" (`interaction.md`, rule 5). Course-wide levels: `skin-contract.md` end of section 2 (the thick frame goes only to interaction boards and concept diagrams).
+- **Control family**: `.vl-btn` (primary; `.alt` secondary; `disabled`), `.vl-chip` (`.on/.right/.wrong/.miss`), `label.vl-ctl > output + input[type=range]`, segmented toggle `role=group` + `.vl-chip[aria-pressed]`, feedback sentence `.vl-msg`; touch targets and keyboard alternatives: `interaction.md` section 3; feedback sentence `aria-live=polite`. Contrast of selected-state text against its fill: `skin-contract.md` section 1, "Contrast".
 - **Motion**: feedback (press, a light shake on failure; durations in `interaction.md` section 4).
-- **Skins**: notebook = cardboard + ink line + hard shadow | paper = white paper + kraft backing | pixel = pixel frame + bevel | town = wood-edged workbench + brass title plate.
 
 ```html
 <div class="vl-board" id="c05-board">
@@ -500,7 +446,7 @@ Interaction design rules (one sentence stating the question, playable in 3 secon
 ### G4 Draggable objects
 - **Job**: drag something to a place on a chart (the position is the answer), or drag points / lines / circles in the chart to watch quantities change.
 - **Content**: after dropping, show the "reference position"; readouts update live while dragging. Good: nine draggable salary points.
-- **Interaction and keyboard**: pointer events + `setPointerCapture` + `touch-action:none`; **a keyboard alternative is required**: Tab selects an object, arrow keys move it, Shift for big steps (bad: dragging with no keyboard support).
+- **Interaction and keyboard**: usage and the required keyboard alternative: `interaction.md` section 3, "Dragging".
 - **Motion**: feedback (reference circle fades in after drop).
 
 ### G5 Assembly bench (take apart / build / slots)
@@ -521,25 +467,21 @@ The code for G6–G9 is in `kit/vl-interact.js`; usage in `kit/README.md`. Below
 ### G7 Round-based mini-game
 - **Job**: genuinely playable and losable, a few rounds from easy to hard; the gameplay *is* the concept, the last round reveals its limits, and it ends with a look back.
 - **Content**: the default settings must not win without the reader doing anything; the look-back conveys meaning, not a list of numbers; when collapsed, the summary says "how many rounds, about how many minutes, can be skipped".
-- **Interaction and keyboard**: `keys` mapping; the stage is focusable; on-screen arrow pad for phones `.vl-pad` (3×3, see `kit/README.md`); buttons ≥44px; messages `aria-live`.
+- **Interaction and keyboard**: `keys` mapping; the stage is focusable; on-screen arrow pad for phones `.vl-pad` (see `kit/README.md` section 7; touch rules in `interaction.md` section 3); messages `aria-live`.
 - **Motion**: feedback (shake on losing), reward (stars / particles on winning, handled by the module, can be turned off).
 
 ### G8 Step-through demo (step / slow motion / short clip)
 - **Job**: break a process into steps you can go forward, back or scrub to, or watch as a short narrated clip.
-- **Content**: each step's explanation ≤2 sentences; narration `aria-live`. All three modes share one control bar (◀▶, progress bar, ⏮ ▶⏸ ⏭, back to start). From one course: a "one road, three stops" stepper.
+- **Content**: each step's explanation ≤2 sentences; narration `aria-live`. All three modes share one control bar (◀▶, progress bar, ⏮ ▶⏸ ⏭, back to start).
 - **Motion**: aids understanding (step change; under reduced motion the clip shows its final state and pages are turned by hand).
 
 ### G9 Formula anatomy
 - **Job**: formula pieces and plain-language explanations highlighted in matching colours (step 4 of the five-step maths ladder, see `references/optional-ai-math.md`, Part 2).
 - **Content**: placed right after the picture or interaction of the concept it belongs to; one colour per piece, circled with a pale fill (no underlines); each explanation line = how to read it + what it means + its value in the example; the course-wide colour code `--q1…--q6` for quantities is fixed, so text, formula and figure share colours. Derivations go into P4.
-- **Interaction and keyboard**: hover / focus / click to pin; both sides highlight together and the rest fades; `li[tabindex=0]`. From one course: the anatomy of the loss J.
+- **Interaction and keyboard**: hover / focus / click to pin; both sides highlight together and the rest fades; `li[tabindex=0]` (added by the kit). From one course: the loss J taken apart, with J and d² each in one colour; as the reader hovers over a piece of the formula, the matching plain-language line lights up in the same colour.
 - **Motion**: aids understanding (opacity only).
 
-```html
-<!-- see kit/README.md; sketch below -->
-<div class="vl-anat vl-board"><div class="vl-anat-f"><span data-k="3">J</span> = Σ <span data-k="6">d²</span></div>   <!-- with KaTeX, \htmlClass{vl-k3}{J} is also recognised; data-k takes 1–6 -->
-  <ul class="vl-anat-key"><li data-k="3"><b>J</b>, read as …, means …, here it equals 14</li></ul></div>
-```
+Usage (`data-k` takes 1–6; KaTeX `\htmlClass{vl-k3}` is also recognised): `kit/README.md` section 7, G9.
 
 ### G10 Grid picker
 - **Job**: rows of clickable cells; the reader picks cells to make choices, and cells cross out, light up or mark a hit: guessing a number, choosing seats, a calendar, a board, sampling.
@@ -555,18 +497,17 @@ The code for G6–G9 is in `kit/vl-interact.js`; usage in `kit/README.md`. Below
 - **Accessibility**: the plot is read-only; put the reading in a feedback sentence with `aria-live`; colour is not the only signal (the kit supplies legend, dashes and dot shapes).
 - **Skins**: all colours come from skin variables (series `--q1…`, axes and text `--ink`, highlight `--accent`).
 
-G2–G9 all look like the G1 interaction board in each skin; shapes on the stage follow the skin's drawing style (notebook hand-drawn, paper cutout, pixel grid, town model).
+G2–G9 all look like the G1 interaction board; shapes on the stage follow the current skin's drawing style.
 
 ---
 
 ## 8. Exercises and collapsibles
 
 ### P1 End-of-chapter quiz
-- **Job**: 4–6 questions that test the learning goals (number and types of questions in section 1A of `references/content-rules.md`). Multiple choice goes in exercises only (`interaction.md` section 2, rule 12).
+- **Job**: test the learning goals (number and types of questions: `references/content-rules.md` section 1A). Multiple choice goes in exercises only (`interaction.md` section 2, rule 12).
 - **Content**: each question `{q, opts, a, why, fixed, img}`, with an explanation; options are shuffled with a seed from chapter number + question number (`fixed:true` means no shuffle), and after shuffling the right answer is never in its original position; check that the right answer isn't always the longest (the skill has no script for this; read every question once before delivery); questions may have a picture (`img`).
-- **Interaction and keyboard**: one question at a time, turned sideways (◀ dots ▶ / ←→; dots have three states: `.tried` answered wrong before / `.ok` answered right / `.on` current); a wrong option is struck through, disabled and shaken lightly, the right one shows the explanation. Two ways to answer: click an option (`mode:"pick"`), or drag an answer card into the answer slot (`mode:"drag"`: select a card + press Enter on the slot to place it). All correct: show the badge, `VL.Progress.done(chapter number)` records "understood" (`progress:false` skips it), dispatch `vl:quiz-perfect {ch, firstTry, n}`; each correct answer dispatches `vl:answer {i, firstTry}`.
+- **Interaction and keyboard**: one question at a time, turned sideways (◀ dots ▶ / ←→; dots have three states: `.tried` answered wrong before / `.ok` answered right / `.on` current); a wrong option is struck through, disabled and shaken lightly, the right one shows the explanation. Two ways to answer: click an option (`mode:"pick"`), or drag an answer card into the answer slot (`mode:"drag"`: select a card + press Enter on the slot to place it). All correct records "understood" and dispatches `vl:quiz-perfect` (`progress:false` skips the record); details in `kit/README.md` section 3, "Quiz".
 - **Motion**: feedback; the all-correct celebration is handled by the reward module.
-- **Skins**: notebook = handwritten options + completion badge | paper = paper buttons | pixel = STAGE CLEAR! | town = the house is finished.
 
 ```html
 <div id="c05-quiz"></div>          <!-- .vl-quiz is added by VL.quiz -->
@@ -575,12 +516,11 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 
 ### P2 End-of-part review
 - **Job**: in a course divided into parts, the last chapter of each part: a knowledge map of the part + "What you can make sense of now" + cross-chapter hands-on review tasks.
-- **Content** (code in `kit/vl-interact.js`, see `kit/README.md`): the map uses the network / flow templates in `diagrams.md`, with nodes linking back to chapters; the review has 3 rounds by default, each knocking down one "wrong claim", with G6 task types; no health bar, no score, no failing. Good: an end-of-part review and guarded rounds. "Floor guardian / BOSS" is skin appearance only.
-- **Skins**: notebook = "Review page" + red-pen crossings-out | paper = floor guardian + wooden signs torn down | pixel = save point + BOSS | town = town council.
+- **Content** (code in `kit/vl-interact.js`, see `kit/README.md`): the map uses the network / flow templates in `diagrams.md`, with nodes linking back to chapters; the review has 3 rounds by default (each knocks down one wrong claim; 3 cover a part's main line without dragging, and a short part may use 2), with G6 task types; no health bar, no score, no failing. Good: an end-of-part review and guarded rounds. "Floor guardian / BOSS" is skin appearance only.
 
 ### P3 Note box
 - **Job**: the reader writes down their thoughts, saved automatically.
-- **Content**: after an open question (a philosophy moment) or a "your design" task; the placeholder gives a concrete opening; **storage key = `<course id>-note-<chapter filename>-<data-save or index>`**, assembled by vl.js; `data-save` is only a short name within this chapter, never a hand-written "chN" (bad: reusing another chapter's short name, so two chapters' notes overwrite each other); same-named Chinese and English pages share it.
+- **Content**: after an open question (a philosophy moment) or a "your design" task; the placeholder gives a concrete opening; the storage key is assembled by vl.js (rules: `kit/README.md` section 3, "Note box"); `data-save` is only a short name within this chapter, never a hand-written "chN" (bad: reusing another chapter's short name, so two chapters' notes overwrite each other).
 - **Interaction**: saves on input; 0.5 seconds after typing stops, a line shows "Saved".
 
 ```html
@@ -592,7 +532,7 @@ G2–G9 all look like the G1 interaction board in each skin; shapes on the stage
 - **Use / don't**: timelines, going further, derivations, extra cases, original sources, a big game that can be skipped; used when such material exists, with the number set by the content; never the main thread. Invention stories use K10.
 - **Content**: summary = type tag (`data-kind`, added automatically; EN labels: history "History" / math "Maths" / play "Play more" / debate "Debate" / source "Original source" / extra "Extra practice" / more "Going further") + concrete question-style title + one line of introduction + expand button (added automatically); the inside is also bound by "boxes count as body text".
   Good: "1854: someone had already seen the cholera bacterium under a microscope / they saw the bacterium, so why did nobody treat it as the cause?"
-- **Interaction and keyboard**: native `details/summary`; collapsed by default, remembers open state (key `<course id>-side-<filename>-<id or index>`); all expanded in print; numbered per page as "Side path N" (not in the kit yet).
+- **Interaction and keyboard**: native `details/summary`; collapsed by default, remembers open state; all expanded in print; numbered per page as "Side path N" (not in the kit yet).
 
 ```html
 <details class="vl-side" data-kind="math">

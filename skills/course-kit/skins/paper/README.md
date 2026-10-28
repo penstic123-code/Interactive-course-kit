@@ -8,7 +8,7 @@
 
 | 文件 | 内容 |
 |---|---|
-| `skin.css` | 变量（三套配色 + 五篇主色、天空带、塔墙）+ 组件外观 + 目录页纸塔 + 题头天空带 |
+| `skin.css` | 变量（五篇主色、天空带、塔墙）+ 组件外观 + 目录页纸塔 + 题头天空带 |
 | `skin.js` | `window.VL_SKIN`（网络字体、剪纸滤镜 `#pp-cut1…3`、纤维纹 `#pp-fiber`、插画配色）+ 剪纸绘制工具（经 kit 的换画法钩子 `VL_SKIN.illus` 换掉 `VL.illus.kit` 的画法）+ 题头动画暂停 / 冻结 |
 | `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（由 notebook 同名文件改成卡纸画法） |
 | `img/` | 纤维纹 `fiber.png` `fiber-soft.png`、背景纸云 `clouds.svg`、草地 `hills.svg` |
@@ -27,21 +27,21 @@
 
 ## 变量
 
-| 组 | 亮 | 暗（只给变量，未精调） | 护眼 |
-|---|---|---|---|
-| `--ink --ink2 --muted` | #1f2638 / #3b4358 / #4d566c | #ece6d6 / #d0d6e0 / #b6bfcd | #3b3123 / #54473a / #5c4f3f |
-| `--page --panel --edge --sunk --kraft` | 天空 #cdeafa / 卡纸 #fbf6ea / 白裁边 #fffdf7 / #f3ecdc / 牛皮纸 #dcc9a2 | 深蓝底、深卡纸 | 米黄 |
-| `--accent --accent2 --deep` | 篇色（浅，只做底）/ 副色 / 篇深色写字 | 篇色混深底 / 篇色提亮 | 降饱和 / 深色混棕 |
-| `--plate --plate-ink` | #fdfaf1 / #1f2638，三套配色都不变 | | #fffaf0 |
-| `--shadow-c` | 一种投影色 rgba(40,60,90,.22) | | |
-| `--shadow-obj` | 白边 5px + 牛皮纸垫层 + 远投影（互动台、编号图、徽章） | | |
-| `--shadow-mid` `--shadow-soft` | 白边 4px + 中投影（概念卡、轮播）/ 白边 3px + 软影（试试看、收束块） | | |
-| `--dg-*` | 色块天蓝 草绿 珊瑚 淡紫 浅黄 蜜桃；选中 #c8364f；框加剪纸滤镜 `--dg-filter:url(#pp-cut1)`，线不加 | | |
-| `--q1…q6` | 同 notebook（卡纸上 ≥4.5:1） | | |
+| 组 | 值 |
+|---|---|
+| `--ink --ink2 --muted` | #1f2638 / #3b4358 / #4d566c |
+| `--page --panel --edge --sunk --kraft` | 天空 #cdeafa / 卡纸 #fbf6ea / 白裁边 #fffdf7 / #f3ecdc / 牛皮纸 #dcc9a2 |
+| `--accent --accent2 --deep` | 篇色（浅，只做底）/ 副色 / 篇深色写字 |
+| `--plate --plate-ink` | #fdfaf1 / #1f2638 |
+| `--shadow-c` | 一种投影色 rgba(40,60,90,.22) |
+| `--shadow-obj` | 白边 5px + 牛皮纸垫层 + 远投影（互动台、编号图、徽章） |
+| `--shadow-mid` `--shadow-soft` | 白边 4px + 中投影（概念卡、轮播）/ 白边 3px + 软影（试试看、收束块） |
+| `--dg-*` | 色块天蓝 草绿 珊瑚 淡紫 浅黄 蜜桃；选中 #c8364f；框加剪纸滤镜 `--dg-filter:url(#pp-cut1)`，线不加 |
+| `--q1…q6` | 同 notebook（卡纸上 ≥4.5:1） |
 
 篇章：`--p{n}a/b/d` 五套（天蓝 + 草绿、薄荷 + 蜜桃、淡紫 + 浅黄、珊瑚 + 云灰、杏黄 + 浅蓝），另有每篇的天空带 `--pp-sky-n`、窗外小景 `--pp-art-n`（清晨风车 → 午后风筝 → 黄昏星月 → 黎明云海）和塔墙 `--pp-wall-n`。同篇各章色相 ±18°。
 
-对比度实测（亮色，对卡纸 #fbf6ea）：ink 13.98、ink2 9.14、muted 6.80（对控件底 6.23）；deep 五篇 5.28–6.76；选中按钮（ink 压 accent）8.48–10.27；--ok 对 okbg 5.43；--q 4.52–6.00；focus 对天空 6.12、对卡纸 7.12。护眼：ink 10.55、ink2 7.44、muted 6.58、deep 6.9–8.0、focus 4.55。暗：ink 11.65、ink2 9.94、muted 7.83、选中按钮 5.33。
+对比度实测（亮色，对卡纸 #fbf6ea）：ink 13.98、ink2 9.14、muted 6.80（对控件底 6.23）；deep 五篇 5.28–6.76；选中按钮（ink 压 accent）8.48–10.27；--ok 对 okbg 5.43；--q 4.52–6.00；focus 对天空 6.12、对卡纸 7.12。
 
 ## 谁重谁轻
 
@@ -68,7 +68,6 @@
 - 不太适合：严肃历史 / 医学题材；以照片为主的课。数据图请保持直边、不加剪纸滤镜。
 
 ## 已知问题
-- 暗色只给了变量，未精调（用户暂缓暗色）。
 - `.vl-tb-dots` 第 6 篇以后回到第 1 篇颜色。
 - 目录页纸塔只认 starter/index.html 的 `#ix-parts / .ix-part / .ix-ch` 结构；为了压过页内样式，选择器带 `body #ix-parts`。
 - 插画替换靠 kit 的钩子 `window.VL_SKIN.illus`：必须在 kit/illus.js 之前加载 skin.js（starter 模板就是这个顺序）。

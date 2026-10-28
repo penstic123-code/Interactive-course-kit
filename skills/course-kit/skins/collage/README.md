@@ -8,7 +8,7 @@
 
 | 文件 | 内容 |
 |---|---|
-| `skin.css` | 变量（三套配色 + 五篇主色）+ 组件外观 + `.cl-sticker` 小贴纸 |
+| `skin.css` | 变量（五篇主色）+ 组件外观 + `.cl-sticker` 小贴纸 |
 | `skin.js` | `window.VL_SKIN`：网络字体、贴纸滤镜 `#cl-stk`（白边 + 浅投影）、插画配色、**贴纸绘制工具**（经 kit 的换画法钩子 `VL_SKIN.illus` 装进 `VL.illus.kit`，`skin.js` 须在 `kit/illus.js` 之前加载） |
 | `interact.css` `modules.css` `diagrams.css` | 互动组件、可选模块、后七种图解的外观（与 notebook 相同） |
 | `fonts/` | Patrick Hand（字母数字手写体）+ OFL 授权，本地，离线可用 |
@@ -32,7 +32,6 @@
 | `--cl-blue/red/green/yellow/pink/black/tape` | 剪纸纯色 | 皮肤专用 |
 | `--q1…q6` | 蓝 橙 绿 紫 红 青 | 数据图 |
 | 形状 | `--stroke` 2px、`--radius` 3px、`--shadow-obj` 同向浅投影 | 实体件不描黑边 |
-| 暗、护眼 | 只给变量，未精调 | |
 
 ## 谁是什么
 
@@ -67,5 +66,4 @@
 
 ## 已知问题
 
-- 暗色、护眼只给了变量，未逐组件精调。
 - 引线标签拆解（贴纸零件 + 引线）还没做成组件，用到时在页内写。

@@ -8,7 +8,7 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sta
 
 | File | Contents |
 |---|---|
-| `skin.css` | Variables (three colour schemes + five part colours) + component looks + the console shell + level-select styles for the contents page + intro styles |
+| `skin.css` | Variables (five part colours) + component looks + the console shell + level-select styles for the contents page + intro styles |
 | `skin.js` | `window.VL_SKIN` (VT323 web font, illustration palette); the pixel drawing kit (attached to `VL.illus.kit`); the READY! level intro and header animation pause |
 | `interact.css` `modules.css` `diagrams.css` | Looks for the interactive components, optional modules and the later seven diagrams (square corners, whole-pixel shadows) |
 | `img/gb-dpad.svg` `img/gb-ab.svg` | The D-pad and A/B buttons on the console body (on both sides at wide widths) |
@@ -31,30 +31,30 @@ Purpose: this skin's style, variables, illustration style and what it suits. Sta
 
 ## Variables
 
-| Group | Light | Dark | Sepia |
-|---|---|---|---|
-| `--ink` `--ink2` `--muted` | #122412 / #2b3f25 / #3a4d33 | #dcebb4 / #c3d69a / #b3c78c | #2a2614 / #433c22 / #4f472c |
-| `--page` (console body) `--panel` (LCD) `--edge` `--sunk` | part body colour / #eef3d4 / #f7faea / #e3ebc4 | #1d2024 / #162416 / #1f321f / #122012 | #cfc3a8 / #f3ead0 / #f9f3df / #ebe0c0 |
-| `--accent` (light, for fills) `--accent2` (dark, for fills with `--on2` text) `--deep` (for text) | part light colour / part dark colour / part dark colour darkened | light colour blended into dark / part light colour (with dark text) / part light colour | desaturated |
-| `--focus` | #9b2257 magenta dashed | #ff7fb5 | #9b2257 |
-| `--plate` `--plate-ink` | #f5f8e3 / #0f380f | same as light | #fbf6e4 / #0f380f |
-| Constants | four greens `--gb0…gb3` #0f380f #306230 #8bac0f #9bbc0f; A button `--gbA` #9b2257 | | |
-| Shape | `--stroke` 3px, `--radius` 0, `--px-f` / `--px-f3` (a notched outline made of four whole-pixel shadows), `--shadow-obj` 8px 8px 0 | | |
-| Motion | `--ease: steps(4)`, `--steps: 4`, `--dur-fb` .2s | | |
+| Group | Value |
+|---|---|
+| `--ink` `--ink2` `--muted` | #122412 / #2b3f25 / #3a4d33 |
+| `--page` (console body) `--panel` (LCD) `--edge` `--sunk` | part body colour / #eef3d4 / #f7faea / #e3ebc4 |
+| `--accent` (light, for fills) `--accent2` (dark, for fills with `--on2` text) `--deep` (for text) | part light colour / part dark colour / part dark colour darkened |
+| `--focus` | #9b2257 magenta dashed |
+| `--plate` `--plate-ink` | #f5f8e3 / #0f380f |
+| Constants | four greens `--gb0…gb3` #0f380f #306230 #8bac0f #9bbc0f; A button `--gbA` #9b2257 |
+| Shape | `--stroke` 3px, `--radius` 0, `--px-f` / `--px-f3` (a notched outline made of four whole-pixel shadows), `--shadow-obj` 8px 8px 0 |
+| Motion | `--ease: steps(4)`, `--steps: 4`, `--dur-fb` .2s |
 
 Part colours: `--p1…p5`, each with a (light) / b (dark) / s (console body): lime, mint, amber, berry pink, grey-blue; the light colour's hue varies ±18° within a part (`--vl-dh`). The LCD dot pattern rotates by `data-pat`: fine grid / dots / horizontal scan lines / coarse grid.
 
-## Contrast (measured by script, minimum across the three schemes)
+## Contrast (measured by script)
 
-| Item | Light | Dark | Sepia |
-|---|---|---|---|
-| Body / secondary / notes (on panel, edge, sunk, Try-it ground) | ≥9.15 / — / ≥7.35 | ≥8.28 / — / ≥7.08 | ≥8.33 / — / ≥7.00 |
-| Selected state (light text on dark green / dark text on the part's light colour in dark) | 6.39 | ≥10.1 | — |
-| White text on the A button / disabled button | 7.61 / 5.05 | same | same |
-| `--on2` text on the part's dark colour (chapter number, section number, small tags) | ≥6.56 | ≥10.1 | ≥7.26 |
-| Text in figures plate-ink / captions | 12.19 / 10.36 | same | same |
-| `--q1…q6` on panel / plate | ≥4.75 | — | ≥4.75 |
-| `--focus` on page / panel (≥3 required) | ≥4.28 | ≥6.9 | ≥4.36 |
+| Item | Value |
+|---|---|
+| Body / notes (on panel, edge, sunk, Try-it ground) | ≥9.15 / ≥7.35 |
+| Selected state (light text on dark green) | 6.39 |
+| White text on the A button / disabled button | 7.61 / 5.05 |
+| `--on2` text on the part's dark colour (chapter number, section number, small tags) | ≥6.56 |
+| Text in figures plate-ink / captions | 12.19 / 10.36 |
+| `--q1…q6` on panel / plate | ≥4.75 |
+| `--focus` on page / panel (≥3 required) | ≥4.28 |
 
 ## What is heavy and what is light
 
@@ -82,7 +82,6 @@ Part colours: `--p1…p5`, each with a (light) / b (dark) / s (console body): li
 
 ## Known issues
 
-- Dark has variables only and is not fine-tuned (the user put dark on hold); in dark the console frame and LCD have rather low contrast.
 - The contents page only turns chapter cards into "level blocks + dot-matrix dividers"; it is not drawn as a true level-select map route.
 - The full Simplified Chinese Fusion Pixel is about 0.9MB; the whole course uses it only for h1, so it can be subset to the course's characters (see "Font rules" in section 1 of `skin-contract.md`).
 - VT323 is a web font; offline, digits fall back to Consolas.

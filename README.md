@@ -160,7 +160,6 @@ node ~/.claude/skills/course-kit/tools/check.mjs <课程文件夹绝对路径> -
 
 - 课程是纯前端、离线可用的 HTML，双击就能打开，不需要构建。
 - 检查工具需要 Node 22+ 和 Edge 或 Chrome（无头模式），会自动查找，也可用环境变量 `EDGE_PATH` 指定。目前只在 Windows 上实测过。
-- 暗色配色有变量但未完整验收。
 
 ## 许可
 
