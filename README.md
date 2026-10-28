@@ -69,7 +69,7 @@ A set of Claude Code skills for building interactive, illustrated learning web c
 
 ![十二种概念图解模板](docs/images/diagrams.jpg)
 
-### 互动是"拆房子"，不是选择题
+### 多样的互动
 直接拖、调、拼、排，立刻看到后果：漫画分镜、逐步演示、公式拆解、动手分类、分局小游戏、前后对比、翻牌、热区图等。出场前一句话说清它要回答什么问题，"试试看"任务完成时给反馈。
 
 ![互动组件演示页](docs/images/interact.jpg)
