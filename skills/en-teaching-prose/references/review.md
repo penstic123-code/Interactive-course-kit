@@ -16,6 +16,7 @@ Sentences and paragraphs:
 | Nominalisation | "perform an analysis of", "the utilisation of", "make a decision" | Turn the noun back into a verb |
 | Latinate abstraction / shell nouns | aspect, factor, dimension, mechanism, framework, dynamics; utilise, facilitate, demonstrate | Use concrete nouns and short verbs |
 | Excess you/we | "you" or "we" several times in one paragraph, or an authorial "I" appearing in the body | Make the people, objects or events the subject |
+| Names only the writer knows | Internal code names and project terms ("experiment A", "the move", "section ten"), background that appeared only in conversation, home-made abbreviations; the reader has no way to know them | Explain it in one sentence where it appears; if that is not possible, replace it with a description anyone can follow |
 | Curse of knowledge | An acronym, jargon or an "obviously" hides a step a first-time reader lacks | Fill in the step; put a concrete example before an abstract statement |
 | Overlong sentence | Cannot be read in one breath, or carries two main ideas | Split where the idea turns |
 | Translationese (English editions) | Chinese topic-first order ("How fragile it is, the experiment shows"), comma chains of clauses, literal idioms, a heavy noun stack before the subject | Rewrite from meaning, with the agent first and the verb early, and split long chains |
